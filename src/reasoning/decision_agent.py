@@ -18,6 +18,24 @@ from .mock_tools import MockToolRegistry
 from .rag_layer import RAGLayer
 
 
+# Kanal B prompt'u: VLM'den GENEL betimleme ister. Spesifik sınıf adları
+# (forklift, palet, baret...) bilinçli olarak verilmez ve istenmez — doğruluk
+# genel terimlerle artar; spesifik tanımları algı katmanı (YOLO) sağlar,
+# birleştirme karar ajanında yapılır.
+GENERAL_OBSERVATION_PROMPT = (
+    "Bu görüntüler bir çalışma sahasına ait video kareleridir. "
+    "Her karede gördüklerini GENEL terimlerle betimle: 'kişi/insan', 'araç', "
+    "'yük/nesne', 'raf/yapı', 'sıvı/madde', 'duman veya alev' gibi genel "
+    "kategoriler kullan.\n"
+    "Nesnelerin kesin tipini tahmin etmeye ÇALIŞMA (örneğin 'forklift' deme, "
+    "'araç' de); spesifik tanımlamalar ayrı bir algı katmanından gelecektir.\n"
+    "Dikkat çeken durumları genel ifadelerle belirt: bir aracın devrilmesi, "
+    "bir kişinin düşmesi veya hareketsiz kalması, kişilerin toplanması, "
+    "sıvı sızıntısı, duman/alev, yükün dengesiz durması gibi.\n"
+    "Kısa ve maddeler halinde Türkçe yanıt ver."
+)
+
+
 class DecisionAgent:
     """VLM odaklı karar ajanı; RAG ve geometrik sinyalleri birleştirir."""
 
@@ -38,18 +56,42 @@ class DecisionAgent:
         self.backend = backend or create_backend(vlm_config)
         self.logger = get_logger("DecisionAgent")
 
+    def interpret_frames(
+        self,
+        images: List[NDArray[np.uint8]],
+        max_tokens: int = 512,
+    ) -> str:
+        """Kanal B: kritik kareleri algı katmanından bağımsız, GENEL terimlerle yorumlar.
+
+        Spesifik sınıf adı içermeyen bağımsız bakış; karar prompt'una
+        çapraz doğrulama girdisi olarak gider.
+        """
+        if not images:
+            return ""
+        temperature = self.vlm_config.vllm.temperature
+        if self.backend.name() == "llama_cpp":
+            temperature = self.vlm_config.llama_cpp.temperature
+        observation = self.backend.generate(
+            images, GENERAL_OBSERVATION_PROMPT, temperature=temperature, max_tokens=max_tokens
+        )
+        self.logger.debug(f"Kanal B VLM yorumu:\n{observation}")
+        return observation
+
     def decide(
         self,
         images: List[NDArray[np.uint8]],
         event_signals: List[Dict[str, Any]],
         scene_graphs: List[Dict[str, Any]],
         fps: float,
+        vlm_observation: str = "",
     ) -> Dict[str, Any]:
         """VLM çağrısı yapar; RAG ve hafızayı prompta dahil eder."""
         rag_context = self.rag.build_context(event_signals)
         memory_context = self.memory.to_prompt_context()
 
-        prompt = self._build_prompt(event_signals, scene_graphs, rag_context, memory_context)
+        prompt = self._build_prompt(
+            event_signals, scene_graphs, rag_context, memory_context, vlm_observation
+        )
         self.logger.debug(f"VLM prompt uzunluğu: {len(prompt)} karakter")
 
         temperature = self.vlm_config.vllm.temperature
@@ -72,6 +114,7 @@ class DecisionAgent:
         scene_graphs: List[Dict[str, Any]],
         rag_context: Dict[str, Any],
         memory_context: str,
+        vlm_observation: str = "",
     ) -> str:
         system = self.config.system_prompt
 
@@ -93,12 +136,26 @@ class DecisionAgent:
             if scene_graphs:
                 parts.append(json.dumps(scene_graphs[-1], ensure_ascii=False, indent=2))
 
+        if vlm_observation:
+            parts.append("\n--- VLM KARE YORUMU (GENEL) ---")
+            parts.append(vlm_observation)
+            parts.append(
+                "Not: Bu yorum bağımsız bir genel betimlemedir. Spesifik nesne "
+                "tanımları (örn. forklift, palet, baret) için ALGI KATMANI "
+                "sinyallerindeki sınıf adlarını esas al; VLM yorumundaki genel "
+                "ifadeleri (örn. 'araç') algı katmanındaki sınıflarla eşleştir. "
+                "İki kaynak çelişirse bunu reasoning alanında açıkça belirt ve "
+                "hangi kanıta neden güvendiğini yaz."
+            )
+
         parts.append("\n--- KISA SÜRELİ HAFIZA ---")
         parts.append(memory_context)
 
         parts.append(
             "\nYukarıdaki bilgilere dayanarak videoyu analiz et ve SADECE aşağıdaki JSON "
-            "şemasına uygun Türkçe yanıt ver. Açıklama ekleme:\n"
+            "şemasına uygun Türkçe yanıt ver. Açıklama ekleme. Nesne sınıflarını "
+            "yazarken algı katmanındaki tanımları kullan; kendi gözlemlerini genel "
+            "terimlerle betimle:\n"
             '{\n'
             '  "summary": "Videonun genel özeti",\n'
             '  "events": [\n'

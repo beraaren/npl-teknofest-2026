@@ -23,6 +23,8 @@ class Detection:
         # x1, y1, x2, y2 (piksel)
         self.bbox = bbox
         self.frame_idx = frame_idx
+        # Bazı modeller (örn. PP-DocLayoutV3) segmentasyon poligonu da döndürür
+        self.polygon: Any = None
 
     @property
     def center(self) -> tuple[float, float]:
@@ -43,17 +45,22 @@ class Detection:
         return self.width / h if h > 0 else 0.0
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        data = {
             "class": self.class_name,
             "confidence": round(self.confidence, 3),
             "bbox": [round(v, 2) for v in self.bbox],
             "center": [round(self.center[0], 2), round(self.center[1], 2)],
             "frame_idx": self.frame_idx,
         }
+        if self.polygon is not None:
+            data["polygon_points"] = self.polygon
+        return data
 
 
 class ObjectDetector:
     """Ultralytics YOLOv8 wrapper."""
+
+    supports_tracking = True
 
     def __init__(self, model_path: str = "yolov8n.pt", confidence: float = 0.35, custom_classes: List[str] | None = None):
         self.model_path = model_path
@@ -109,3 +116,35 @@ class ObjectDetector:
 
     def detect_batch(self, frames: List[NDArray[np.uint8]]) -> List[List[Detection]]:
         return [self.detect(f, idx) for idx, f in enumerate(frames)]
+
+
+def create_detector(config: Any) -> Any:
+    """config.perception'a göre uygun tespit backend'ini oluşturur.
+
+    detector_backend:
+      - "ultralytics"    -> ObjectDetector (YOLO, ByteTrack destekli)
+      - "hf_transformers" -> HFObjectDetector (geçici; YOLO eğitilene kadar)
+    """
+    from ..utils.logger import get_logger
+
+    logger = get_logger("DetectorFactory")
+    backend = getattr(config, "detector_backend", "ultralytics")
+
+    if backend == "hf_transformers":
+        from .hf_detector import HFObjectDetector
+
+        logger.info(f"HF transformers detection backend'i seçildi: {config.hf_model}")
+        return HFObjectDetector(
+            model_path=config.hf_model,
+            confidence=getattr(config, "hf_threshold", 0.5),
+            custom_classes=config.custom_classes,
+        )
+
+    if backend != "ultralytics":
+        logger.warning(f"Bilinmeyen detector_backend '{backend}'; ultralytics kullanılacak.")
+
+    return ObjectDetector(
+        model_path=config.yolo_model,
+        confidence=config.confidence_threshold,
+        custom_classes=config.custom_classes,
+    )

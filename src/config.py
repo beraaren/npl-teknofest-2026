@@ -20,6 +20,7 @@ class PreprocessingConfig(BaseModel):
     enhance_low_light: bool = True
     clahe_clip_limit: float = 2.0
     clahe_grid_size: list[int] = Field(default_factory=lambda: [8, 8])
+    critical_frame_count: int = 4  # VLM'e (Kanal B) gidecek kritik kare sayısı
 
 
 class PerceptionConfig(BaseModel):
@@ -29,6 +30,9 @@ class PerceptionConfig(BaseModel):
     confidence_threshold: float = 0.35
     tracker: str = "bytetrack"
     tracker_persist: bool = True
+    # HF transformers detection backend'i (YOLO eğitilene kadar geçici)
+    hf_model: str = "PaddlePaddle/PP-DocLayoutV3_safetensors"
+    hf_threshold: float = 0.5
 
 
 class EventThresholds(BaseModel):

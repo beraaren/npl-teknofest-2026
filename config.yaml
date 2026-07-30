@@ -22,13 +22,14 @@ preprocessing:
   enhance_low_light: true         # CLAHE/gamma düzeltme
   clahe_clip_limit: 2.0
   clahe_grid_size: [8, 8]
+  critical_frame_count: 4         # VLM'e (Kanal B) gönderilecek kritik kare sayısı
 
 # ---------------------------------------------------------------------------
 # Algı (Perception)
 # ---------------------------------------------------------------------------
 perception:
-  detector_backend: "ultralytics"      # "ultralytics" | "grounding_dino"
-  yolo_model: "yolov8n.pt"             # COCO önceden eğitilmiş veya kendi ağırlığınız
+  detector_backend: "hf_transformers"  # "ultralytics" | "hf_transformers" (YOLO eğitilene kadar HF aktif)
+  yolo_model: "yolov8n.pt"             # COCO önceden eğitilmiş veya kendi ağırlığınız (eğitim sonrası aktifleşecek)
   custom_classes:                      # TEKNOFEST özel sınıfları (kendi modelinizde varsa)
     - forklift
     - insan
@@ -38,6 +39,9 @@ perception:
   confidence_threshold: 0.35
   tracker: "bytetrack"                 # "bytetrack" | "botsort"
   tracker_persist: true
+  # HF transformers detection backend'i (geçici)
+  hf_model: "PaddlePaddle/PP-DocLayoutV3_safetensors"
+  hf_threshold: 0.5
 
 # ---------------------------------------------------------------------------
 # Olay Tespit Motoru
@@ -130,14 +134,19 @@ decision_agent:
     geometrik olay sinyalleri ve risk kataloğu bilgileri eşlik ediyor.
 
     Görevin:
-    1. Videodaki iş kazalarını, forklift veya iş makinelerinin devrilmesini,
-       malzemelerin/yapıların çökmesini, düşmeleri, sızıntıları, yangın/dumanı ve diğer
-       tehlikeli durumları tespit et.
+    1. Videodaki iş kazalarını, araç devrilmelerini, malzemelerin/yapıların çökmesini,
+       düşmeleri, sızıntıları, yangın/dumanı ve diğer tehlikeli durumları tespit et.
     2. Her olayı zaman damgasıyla birlikte detaylandır.
     3. Genel video özetini Türkçe olarak yaz.
     4. Risk seviyesini belirle (Düşük / Orta / Yüksek).
     5. Alınması gereken acil ve uzun vadeli aksiyonları öner.
     6. Geometrik sinyallerle VLM yorumun arasında çelişki varsa, bunu açıkça belirt.
+
+    Önemli kurallar:
+    - Spesifik nesne tanımları (forklift, palet, baret, yelek...) için algı katmanı
+      sinyallerindeki sınıf adlarını esas al; bunlar objektif tespittir.
+    - Kendi görsel gözlemlerini genel terimlerle betimle ("araç", "kişi", "yük",
+      "yapı", "sıvı", "duman"); kesin tip tahmini yapmaya çalışma.
 
     Yanıtını SADECE aşağıdaki JSON şemasına uygun olarak ver. JSON dışında hiçbir açıklama ekleme.
 

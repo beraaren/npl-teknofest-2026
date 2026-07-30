@@ -42,6 +42,7 @@ def main(args=None) -> None:
     from .models.vlm_backend import create_backend
     from .output.guardrail import OutputGuardrail
     from .perception.observer_agent import ObserverAgent
+    from .preprocessing.critical_frames import select_critical_frames
     from .preprocessing.enhancer import LowLightEnhancer
     from .preprocessing.frame_sampler import FrameSampler
     from .preprocessing.video_reader import VideoReader
@@ -105,7 +106,7 @@ def main(args=None) -> None:
     # ------------------------------------------------------------------
     with metrics.measure("perception"):
         observer = ObserverAgent(config.perception)
-        observations = observer.observe_video(sampled_frames, reader.fps)
+        observations = observer.observe_video(sampled_frames, reader.fps, sampled_indices=sampled_indices)
         scene_graphs = [obs["scene_graph"] for obs in observations]
 
     # ------------------------------------------------------------------
@@ -117,6 +118,19 @@ def main(args=None) -> None:
             event_engine.process_observation(obs)
         event_signals = event_engine.get_signals()
         logger.info(f"Tespit edilen geometrik olay sinyalleri: {len(event_signals)}")
+
+    # ------------------------------------------------------------------
+    # 4b. Kanal B için kritik kare seçimi
+    # ------------------------------------------------------------------
+    with metrics.measure("critical_frames"):
+        critical_frames, critical_indices = select_critical_frames(
+            sampled_frames,
+            sampled_indices,
+            event_signals,
+            fps=reader.fps,
+            max_count=config.preprocessing.critical_frame_count,
+        )
+        logger.info(f"Kritik kare indeksleri: {critical_indices}")
 
     # ------------------------------------------------------------------
     # 5. RAG Katmanı
@@ -149,11 +163,16 @@ def main(args=None) -> None:
             tools=tools,
             backend=backend,
         )
+
+        # Kanal B: kritik karelerin bağımsız, genel betimlemesi
+        vlm_observation = agent.interpret_frames(critical_frames)
+
         decision_result = agent.decide(
             images=sampled_frames,
             event_signals=event_signals,
             scene_graphs=scene_graphs,
             fps=reader.fps,
+            vlm_observation=vlm_observation,
         )
 
     # ------------------------------------------------------------------
@@ -165,7 +184,13 @@ def main(args=None) -> None:
         def retry_generate(temp: float) -> str:
             return backend.generate(
                 sampled_frames,
-                agent._build_prompt(event_signals, scene_graphs, rag_context, memory.to_prompt_context()),
+                agent._build_prompt(
+                    event_signals,
+                    scene_graphs,
+                    rag_context,
+                    memory.to_prompt_context(),
+                    vlm_observation,
+                ),
                 temperature=temp,
                 max_tokens=config.vlm.vllm.max_new_tokens,
             )
@@ -195,7 +220,9 @@ def main(args=None) -> None:
         "total_frames": reader.total_frames,
         "fps": reader.fps,
         "sampled_indices": sampled_indices,
+        "critical_indices": critical_indices,
         "vlm_backend": backend.name(),
+        "vlm_observation": vlm_observation,
         "geometric_signals": event_signals,
     }
 

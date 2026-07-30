@@ -36,7 +36,7 @@ Bera (mimari/VLM backend), Talha (prompt/LLM ajanları), Hüseyin (veri/rapor), 
 - [ ] Kanal B prompt varyantları: maddeli serbest betimleme vs kısıtlı JSON; hangisinin karar ajanıyla daha iyi birleştiğinin ölçümü.
 - [ ] Sonuçların `outputs/` altında deney bazlı arşivlenmesi (tarih + config hash'i ile).
 
-## 4. Görüntü Ön İşleme — YOLO ve VLM ayrı ayrı (Atagün + Bera)
+## 4. Görüntü Ön İşleme — YOLO ve VLM ayrı ayrı (Atagün)
 
 - [ ] **YOLO tarafı (Kanal A):** letterbox resize, yoğun kare örnekleme (şu an 8 kare uniform — Kanal A için daha yoğun örnekleme plan 01'de öngörülüyor), model imgsz ile uyum.
 - [ ] **VLM tarafı (Kanal B):** CLAHE parametre taraması (`clahe_clip_limit`, `clahe_grid_size`), kare çözünürlüğü taraması (384x216 vs 512x288 vs 640x360 — VLM doğruluğu vs token maliyeti).

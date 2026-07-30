@@ -40,3 +40,33 @@ tools:
       forklift_id: "string"
       reason: "string"
     enabled: false
+
+  lockdown_facility:
+    description: "Kritik tesis bölgesini (Kırmızı/Sarı Alan) acil durum protokolüyle kilit altına al (erişimi durdur)."
+    params:
+      zone_id: "string (Örn: A-Blok, Mühimmat Deposu)"
+      security_level: "Kırmızı | Sarı"
+      reason: "string"
+    enabled: true
+
+  trigger_fire_suppression:
+    description: "Hassas cihazların bulunduğu bölgede gazlı (FM200 vb.) yangın söndürme sistemini otomatik tetikle."
+    params:
+      zone_id: "string"
+      agent_type: "FM200 | Kopuk | Su"
+    enabled: true
+
+  activate_cbrn_protocol:
+    description: "Kimyasal sızıntı veya tehlikeli duman durumunda KBRN havalandırma ve tahliye protokolünü başlat."
+    params:
+      threat_type: "Kimyasal | Yangın | Bilinmeyen"
+      evacuation_required: "boolean"
+    enabled: true
+
+  sound_alarm:
+    description: "Tehlike anında sahada akustik uyarı (siren/anons) sistemini devreye sok."
+    params:
+      alarm_type: "Tahliye | Uyarı | KKD_Ihlali"
+      target_location: "string"
+      message: "string (Otomatik okunacak metin)"
+    enabled: true

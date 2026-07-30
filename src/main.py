@@ -16,6 +16,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--output", type=str, default=None, help="Çıktı JSON yolu")
     parser.add_argument("--no-enhance", action="store_true", help="Görsel iyileştirmeyi devre dışı bırak")
     parser.add_argument("--save-grid", action="store_true", help="VLM'e gönderilen grid'i kaydet")
+    parser.add_argument(
+        "--experiment", type=str, default=None,
+        help="Deney adı: outputs/experiments/<isim>/ altına tarih+config-hash ile kaydeder (A/B test arşivi için)",
+    )
     return parser
 
 
@@ -202,7 +206,7 @@ def main(args=None) -> None:
         )
 
     # ------------------------------------------------------------------
-    # 9. Mock tool'ları zenginleştir
+    # 9. Mock tool'ları zenginleştir ve ÇALIŞTIR
     # ------------------------------------------------------------------
     triggered = final_output.get("triggered_mock_tools", [])
     if not triggered:
@@ -211,6 +215,14 @@ def main(args=None) -> None:
             {"tool_name": s["tool_name"], "params": {"location": "saha", "reason": final_output["summary"][:100]}}
             for s in suggested
         ]
+
+    # Seçilen araçları gerçekten çalıştır ve sonuçları kaydet
+    tool_results = []
+    for tool_call in final_output["triggered_mock_tools"]:
+        result = tools.execute(tool_call["tool_name"], tool_call["params"])
+        logger.info(f"Tool çalıştırıldı: {tool_call['tool_name']} → {result['status']}")
+        tool_results.append(result)
+    final_output["tool_execution_results"] = tool_results
 
     # ------------------------------------------------------------------
     # 10. Kaydet
@@ -224,9 +236,28 @@ def main(args=None) -> None:
         "vlm_backend": backend.name(),
         "vlm_observation": vlm_observation,
         "geometric_signals": event_signals,
+        # Olay zaman damgalarını öne çıkar (deneme.py'deki başlangıç/bitiş mantığıyla uyumlu)
+        "event_timestamps": [
+            {
+                "event_type": sig.get("event_type", ""),
+                "timestamp": sig.get("timestamp", ""),
+                "seconds": _time_to_seconds(sig.get("timestamp", "00:00")),
+            }
+            for sig in event_signals
+        ],
     }
 
-    output_path = Path(args.output) if args.output else out_dir / "analysis_result.json"
+    if args.experiment:
+        import datetime
+        import hashlib
+        exp_dir = out_dir / "experiments" / args.experiment
+        exp_dir.mkdir(parents=True, exist_ok=True)
+        ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        cfg_hash = hashlib.md5(open(args.config, "rb").read()).hexdigest()[:6]
+        output_path = exp_dir / f"result_{ts}_{cfg_hash}.json"
+    else:
+        output_path = Path(args.output) if args.output else out_dir / "analysis_result.json"
+
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(final_output, f, ensure_ascii=False, indent=2)
     logger.info(f"Sonuç kaydedildi: {output_path}")

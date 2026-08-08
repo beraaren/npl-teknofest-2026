@@ -70,8 +70,11 @@ class ObjectTracker:
         self._model = None
 
     def _get_tracker_str(self) -> str:
-        # Ultralytics yerleşik tracker isimleri
-        return self.tracker_name
+        # Ultralytics yerleşik tracker isimleri yaml uzantısı ister ("bytetrack.yaml")
+        name = self.tracker_name
+        if not name.endswith((".yaml", ".yml")):
+            name = f"{name}.yaml"
+        return name
 
     def track(self, frame: NDArray[np.uint8], detector: Any, frame_idx: int = 0) -> List[TrackedObject]:
         """Tespit + takip tek adımda yapılır."""

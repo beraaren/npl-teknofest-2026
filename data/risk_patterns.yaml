@@ -44,7 +44,7 @@ patterns:
       - "insan yakınında baret/yelek tespit edilmedi"
     required_nodes: ["insan"]
 
-  forklift_human_proximity:
+  dangerous_proximity:
     description: "Forklift ile personel arasında tehlikeli yakınlık."
     risk_score: 80
     risk_level: "Yüksek"

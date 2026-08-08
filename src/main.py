@@ -12,7 +12,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="TEKNOFEST 2026 Senaryo 3 — Video Analiz Ajanı")
     parser.add_argument("--video", type=str, default="video.mp4", help="Analiz edilecek video dosyası")
     parser.add_argument("--config", type=str, default="config.yaml", help="config.yaml yolu")
-    parser.add_argument("--backend", type=str, default=None, help="VLM backend: vllm|llama_cpp|transformers")
+    parser.add_argument("--backend", type=str, default=None, help="VLM backend: vllm|llama_cpp|transformers|server")
+    parser.add_argument("--detector", type=str, default=None, help="Tespit backend'i: ultralytics|hf_transformers")
     parser.add_argument("--output", type=str, default=None, help="Çıktı JSON yolu")
     parser.add_argument("--no-enhance", action="store_true", help="Görsel iyileştirmeyi devre dışı bırak")
     parser.add_argument("--save-grid", action="store_true", help="VLM'e gönderilen grid'i kaydet")
@@ -34,6 +35,13 @@ def save_grid_image(frames: List[Any], cols: int, path: Path) -> None:
         r, c = divmod(idx, cols)
         grid[r * h:(r + 1) * h, c * w:(c + 1) * w] = f
     Image.fromarray(grid).save(path)
+
+
+def _short_text(value: Any, limit: int = 400) -> str:
+    text = value if isinstance(value, str) else json.dumps(value, ensure_ascii=False, indent=2)
+    if len(text) > limit:
+        return text[:limit] + f"\n... ({len(text)} karakter, kısaltıldı)"
+    return text
 
 
 def main(args=None) -> None:
@@ -60,9 +68,14 @@ def main(args=None) -> None:
     if args is None:
         args = build_parser().parse_args()
     config: AppConfig = load_config(args.config)
+    if args.detector:
+        config.perception.detector_backend = args.detector
 
     logger = get_logger("main", config.project.log_dir)
     logger.info(f"{config.project.name} v{config.project.version} başlatıldı.")
+    logger.info(f"Girdi video: {args.video}")
+    logger.info(f"Seçilen backend: {args.backend or config.vlm.backend}")
+    logger.info(f"Seçilen detector: {args.detector or config.perception.detector_backend}")
 
     metrics = MetricsCollector(config.metrics.output_json)
 
@@ -71,16 +84,31 @@ def main(args=None) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     # ------------------------------------------------------------------
-    # 1. Video oku ve kareleri çıkar
+    # 1. Video oku — Kanal A: yoğun örnekleme (track sürekliliği için)
     # ------------------------------------------------------------------
     with metrics.measure("video_read"):
         reader = VideoReader(args.video)
-        logger.info(f"Video: {args.video} | {reader.total_frames} kare | {reader.fps:.2f} fps")
-        frames = list(reader.iter_frames())
+        native_fps = reader.fps
+        target_fps = config.preprocessing.channel_a_fps
+        step = max(1, round(native_fps / target_fps)) if target_fps > 0 else 1
+        fps_a = native_fps / step  # Kanal A'nın efektif fps'i (zaman kuralları buna göre)
+        logger.info(
+            f"Video: {args.video} | {reader.total_frames} kare | {native_fps:.2f} fps"
+            f" → Kanal A: her {step}. kare ({fps_a:.1f} fps)"
+        )
+        channel_a_frames, channel_a_indices = [], []
+        for i, frame in enumerate(reader.iter_frames()):
+            if i % step == 0:
+                channel_a_frames.append(frame)
+                channel_a_indices.append(i)
         reader.close()
+        logger.info(
+            f"Video özeti: toplam_kare={reader.total_frames}, fps={native_fps:.2f}, "
+            f"Kanal A kare_sayısı={len(channel_a_frames)}, örnekleme_adımı={step}, Kanal_A_fps={fps_a:.1f}"
+        )
 
     # ------------------------------------------------------------------
-    # 2. Akıllı örnekleme
+    # 2. Kanal B: akıllı örnekleme (Kanal A akışından 8 kare)
     # ------------------------------------------------------------------
     with metrics.measure("preprocessing"):
         sampler = FrameSampler(
@@ -89,8 +117,8 @@ def main(args=None) -> None:
             ssim_threshold=config.preprocessing.ssim_threshold,
             min_laplacian_variance=config.preprocessing.min_laplacian_variance,
         )
-        sampled_frames, sampled_indices = sampler.sample(frames, reader.total_frames)
-        logger.info(f"Seçilen kare indeksleri: {sampled_indices}")
+        sampled_frames, sampled_pos = sampler.sample(channel_a_frames, len(channel_a_frames))
+        sampled_indices = [channel_a_indices[p] for p in sampled_pos]  # gerçek video indeksleri
 
         # Görsel iyileştirme
         if not args.no_enhance and config.preprocessing.enhance_low_light:
@@ -104,24 +132,38 @@ def main(args=None) -> None:
         # Resize
         target_size = (config.preprocessing.frame_width, config.preprocessing.frame_height)
         sampled_frames = [np.array(Image.fromarray(f).resize(target_size)) for f in sampled_frames]
+        logger.info(
+            f"Ön işleme çıktısı: seçilen_kare_sayısı={len(sampled_frames)}, "
+            f"indeksler={sampled_indices}, boyut={target_size[0]}x{target_size[1]}"
+        )
 
     # ------------------------------------------------------------------
-    # 3. Gözlemci Ajan
+    # 3. Gözlemci Ajan — Kanal A'nın tamamı üzerinde (yoğun akış)
     # ------------------------------------------------------------------
     with metrics.measure("perception"):
         observer = ObserverAgent(config.perception)
-        observations = observer.observe_video(sampled_frames, reader.fps, sampled_indices=sampled_indices)
+        observations = observer.observe_video(channel_a_frames, native_fps, sampled_indices=channel_a_indices)
         scene_graphs = [obs["scene_graph"] for obs in observations]
+        total_nodes = sum(len(obs.get("scene_graph", {}).get("nodes", [])) for obs in observations)
+        logger.info(
+            f"Algılama çıktısı: gözlem_sayısı={len(observations)}, toplam_nesne_düğümü={total_nodes}"
+        )
 
     # ------------------------------------------------------------------
-    # 4. Olay Tespit Motoru
+    # 4. Olay Tespit Motoru — zaman kuralları Kanal A fps'iyle
     # ------------------------------------------------------------------
     with metrics.measure("event_engine"):
-        event_engine = EventEngine(config.events, fps=reader.fps)
+        event_engine = EventEngine(config.events, fps=fps_a)
         for obs in observations:
             event_engine.process_observation(obs)
         event_signals = event_engine.get_signals()
-        logger.info(f"Tespit edilen geometrik olay sinyalleri: {len(event_signals)}")
+        signal_preview = [
+            {"event_type": s.get("event_type"), "timestamp": s.get("timestamp")}
+            for s in event_signals[:5]
+        ]
+        logger.info(
+            f"Olay sinyali çıktısı: sinyal_sayısı={len(event_signals)}, ilk_sinyaller={signal_preview}"
+        )
 
     # ------------------------------------------------------------------
     # 4b. Kanal B için kritik kare seçimi
@@ -131,17 +173,27 @@ def main(args=None) -> None:
             sampled_frames,
             sampled_indices,
             event_signals,
-            fps=reader.fps,
+            fps=native_fps,
             max_count=config.preprocessing.critical_frame_count,
         )
-        logger.info(f"Kritik kare indeksleri: {critical_indices}")
+        logger.info(
+            f"Kritik kare çıktısı: kritik_kare_sayısı={len(critical_frames)}, indeksler={critical_indices}"
+        )
 
     # ------------------------------------------------------------------
     # 5. RAG Katmanı
     # ------------------------------------------------------------------
     with metrics.measure("rag"):
         rag = RAGLayer()
-        rag_context = rag.build_context(event_signals)
+        # Ana sorgu: Observer raporu; event_signals ikincil filtre/boost
+        rag_context = rag.build_context(observations, event_signals)
+        logger.info(
+            "RAG çıktısı: "
+            f"risk_level={rag_context.get('risk_level')}, "
+            f"risk_score={rag_context.get('risk_score')}, "
+            f"matched_patterns={rag_context.get('matched_patterns', [])}, "
+            f"actions={rag_context.get('actions', [])}"
+        )
 
     # ------------------------------------------------------------------
     # 6. Hafıza ve Mock Tool'lar
@@ -151,6 +203,8 @@ def main(args=None) -> None:
         memory.add(sig, entry_type="event", timestamp=_time_to_seconds(sig.get("timestamp", "00:00")))
 
     tools = MockToolRegistry()
+    logger.info(f"Hafıza çıktısı: {_short_text(memory.to_prompt_context(), limit=600)}")
+    logger.info(f"Mock araçlar: {', '.join(sorted(tools.tools.keys()))}")
 
     # ------------------------------------------------------------------
     # 7. Karar Ajanı (VLM)
@@ -168,16 +222,35 @@ def main(args=None) -> None:
             backend=backend,
         )
 
-        # Kanal B: kritik karelerin bağımsız, genel betimlemesi
-        vlm_observation = agent.interpret_frames(critical_frames)
+        # Kanal B: bağımsız VLM kanalı (S8). Önce Kanal_B paketi denenir
+        # (kendi 1b ön işlemesi + backend'i var); çalışmazsa kritik kareler
+        # üzerinden interpret_frames'e düşülür.
+        vlm_interpretation = None
+        try:
+            import sys
+            kanal_b_dir = str(Path(__file__).resolve().parent.parent / "Kanal_B")
+            if kanal_b_dir not in sys.path:
+                sys.path.insert(0, kanal_b_dir)
+            from pipeline import run_channel_b  # Kanal_B/pipeline.py
 
-        decision_result = agent.decide(
-            images=sampled_frames,
+            vlm_interpretation = run_channel_b(
+                args.video,
+                video_id=Path(args.video).stem,
+                output_dir=str(out_dir / "channel_b"),
+            )
+        except Exception as e:
+            logger.warning(f"Kanal_B paketi çalışmadı ({e}); interpret_frames'e düşülüyor.")
+            vlm_interpretation = agent.interpret_frames(critical_frames)
+
+        logger.info(f"Kanal B çıktısı: {_short_text(vlm_interpretation, limit=1200)}")
+
+        decision_raw = agent.decide(
             event_signals=event_signals,
             scene_graphs=scene_graphs,
-            fps=reader.fps,
-            vlm_observation=vlm_observation,
+            rag_context=rag_context,
+            vlm_interpretation=vlm_interpretation,
         )
+        logger.info(f"Karar ajanı ham çıktısı: {_short_text(decision_raw.get('raw_text', ''), limit=1600)}")
 
     # ------------------------------------------------------------------
     # 8. Guardrail
@@ -185,24 +258,18 @@ def main(args=None) -> None:
     with metrics.measure("guardrail"):
         guardrail = OutputGuardrail(config.output.guardrail)
 
-        def retry_generate(temp: float) -> str:
-            return backend.generate(
-                sampled_frames,
-                agent._build_prompt(
-                    event_signals,
-                    scene_graphs,
-                    rag_context,
-                    memory.to_prompt_context(),
-                    vlm_observation,
-                ),
-                temperature=temp,
-                max_tokens=config.vlm.vllm.max_new_tokens,
-            )
-
         final_output = guardrail.validate(
-            decision_result["raw"],
-            retry_generate,
-            rag_risk_level=rag_context.get("risk_level", "Düşük"),
+            decision_raw["raw_text"],
+            decision_raw["retry_fn"],
+            rag_risk_level=decision_raw["rag_risk_level"],
+        )
+        logger.info(
+            "Guardrail çıktısı: "
+            f"risk={final_output.get('risk')}, "
+            f"confidence={final_output.get('confidence')}, "
+            f"confidence_word={final_output.get('confidence_word')}, "
+            f"summary={final_output.get('summary')}, "
+            f"actions={final_output.get('actions', [])}"
         )
 
     # ------------------------------------------------------------------
@@ -215,12 +282,14 @@ def main(args=None) -> None:
             {"tool_name": s["tool_name"], "params": {"location": "saha", "reason": final_output["summary"][:100]}}
             for s in suggested
         ]
+        logger.info(f"Önerilen araçlar: {final_output['triggered_mock_tools']}")
 
     # Seçilen araçları gerçekten çalıştır ve sonuçları kaydet
     tool_results = []
+    logger.info(f"Çalıştırılacak araçlar: {final_output['triggered_mock_tools']}")
     for tool_call in final_output["triggered_mock_tools"]:
         result = tools.execute(tool_call["tool_name"], tool_call["params"])
-        logger.info(f"Tool çalıştırıldı: {tool_call['tool_name']} → {result['status']}")
+        logger.info(f"Tool sonucu: {tool_call['tool_name']} → {result}")
         tool_results.append(result)
     final_output["tool_execution_results"] = tool_results
 
@@ -234,7 +303,7 @@ def main(args=None) -> None:
         "sampled_indices": sampled_indices,
         "critical_indices": critical_indices,
         "vlm_backend": backend.name(),
-        "vlm_observation": vlm_observation,
+        "vlm_interpretation": vlm_interpretation,
         "geometric_signals": event_signals,
         # Olay zaman damgalarını öne çıkar (deneme.py'deki başlangıç/bitiş mantığıyla uyumlu)
         "event_timestamps": [
@@ -260,6 +329,7 @@ def main(args=None) -> None:
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(final_output, f, ensure_ascii=False, indent=2)
+    logger.info(f"Sonuç JSON çıktısı: {_short_text(final_output, limit=2000)}")
     logger.info(f"Sonuç kaydedildi: {output_path}")
 
     if args.save_grid:

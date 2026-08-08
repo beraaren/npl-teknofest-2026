@@ -30,10 +30,12 @@ class HFObjectDetector:
         model_path: str = "PaddlePaddle/PP-DocLayoutV3_safetensors",
         confidence: float = 0.5,
         custom_classes: List[str] | None = None,
+        device: str = "auto",
     ):
         self.model_path = model_path
         self.confidence = confidence
         self.custom_classes = set(custom_classes or [])
+        self.device = device  # "auto" | "cuda" | "cpu"
         self.logger = get_logger("HFObjectDetector")
         self._model = None
         self._processor = None
@@ -44,7 +46,10 @@ class HFObjectDetector:
             import torch
             from transformers import AutoImageProcessor, AutoModelForObjectDetection
 
-            self._device = "cuda" if torch.cuda.is_available() else "cpu"
+            if self.device == "auto":
+                self._device = "cuda" if torch.cuda.is_available() else "cpu"
+            else:
+                self._device = self.device
             self._processor = AutoImageProcessor.from_pretrained(self.model_path)
             self._model = AutoModelForObjectDetection.from_pretrained(self.model_path).to(self._device)
             self._model.eval()
@@ -62,6 +67,11 @@ class HFObjectDetector:
         with torch.inference_mode():
             outputs = model(**inputs)
 
+        # Post-processing GPU'da bazı modellerde (PP-DocLayoutV3 + transformers 5.x)
+        # illegal memory access veriyor; tensor'ları CPU'ya taşı (tip korunarak).
+        outputs = type(outputs)(
+            {k: v.cpu() if torch.is_tensor(v) else v for k, v in outputs.items()}
+        )
         results = self._processor.post_process_object_detection(
             outputs,
             threshold=self.confidence,

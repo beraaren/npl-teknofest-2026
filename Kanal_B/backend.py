@@ -261,7 +261,7 @@ class VLLMBackend(VLMBackendBase):
                 },
             ],
         }
-        resp = requests.post(f"{self.base_url}/v1/chat/completions", json=payload, timeout=60)
+        resp = requests.post(f"{self.base_url}/v1/chat/completions", json=payload, timeout=600)
         resp.raise_for_status()  # HTTP hatalarını yukarı taşı
         data = resp.json()
         text   = data["choices"][0]["message"]["content"]
@@ -315,7 +315,7 @@ class LlamaCppBackend(VLMBackendBase):
                 },
             ],
         }
-        resp = requests.post(f"{self.base_url}/v1/chat/completions", json=payload, timeout=60)
+        resp = requests.post(f"{self.base_url}/v1/chat/completions", json=payload, timeout=600)
         resp.raise_for_status()
         data   = resp.json()
         text   = data["choices"][0]["message"]["content"]

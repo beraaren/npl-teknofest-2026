@@ -23,6 +23,7 @@ preprocessing:
   clahe_clip_limit: 2.0
   clahe_grid_size: [8, 8]
   critical_frame_count: 4         # VLM'e (Kanal B) gönderilecek kritik kare sayısı
+  channel_a_fps: 12.0             # Kanal A yoğun örnekleme hedefi (track sürekliliği; algı + olay motoru bu akışta çalışır)
 
 # ---------------------------------------------------------------------------
 # Algı (Perception)
@@ -42,6 +43,7 @@ perception:
   # HF transformers detection backend'i (geçici)
   hf_model: "PaddlePaddle/PP-DocLayoutV3_safetensors"
   hf_threshold: 0.5
+  hf_device: "cpu"           # "auto" | "cuda" | "cpu" — bu model RTX 4060'ta CUDA hatası veriyor, cpu güvenli
 
 # ---------------------------------------------------------------------------
 # Olay Tespit Motoru
@@ -87,8 +89,15 @@ events:
 # VLM Backend (vLLM öncelikli, llama.cpp/transformators fallback)
 # ---------------------------------------------------------------------------
 vlm:
-  default_backend: "auto"         # "auto" | "vllm" | "llama_cpp" | "transformers"
+  default_backend: "auto"         # "auto" | "vllm" | "llama_cpp" | "transformers" | "server"
   auto_preference: ["vllm", "llama_cpp", "transformers"]
+
+  # OpenAI-uyumlu harici sunucu (llama-server / vllm serve) — Kanal_B ile aynı sözleşme
+  server:
+    base_url: "http://localhost:8080"
+    model_name: "llava-v1.6-mistral-7b"
+    temperature: 0.15
+    max_tokens: 800
 
   # vLLM ayarları
   vllm:
@@ -98,7 +107,7 @@ vlm:
     max_model_len: 8192
     dtype: "auto"
     trust_remote_code: true
-    max_new_tokens: 1024
+    max_new_tokens: 4096
     temperature: 0.15
     top_p: 0.9
     repetition_penalty: 1.1
@@ -109,8 +118,8 @@ vlm:
     model_file: "TimeLens-7B.i1-Q4_K_M.gguf"
     mmproj_repo: "mradermacher/TimeLens-7B-GGUF"
     mmproj_file: "TimeLens-7B.mmproj-f16.gguf"
-    n_ctx: 16384
-    n_gpu_layers: -1
+    n_ctx: 8192
+    n_gpu_layers: 0        # Vulkan bu makinede kararsız (DeviceLost/askıda kalma); 0 = CPU-only
     temperature: 0.15
     max_tokens: 800
     top_p: 0.9
@@ -129,26 +138,38 @@ vlm:
 # ---------------------------------------------------------------------------
 decision_agent:
   system_prompt: |
-    Sen gelişmiş bir İş Sağlığı ve Güvenliği (İSG) yapay zeka analiz uzmanısın.
-    Sana verilen video kareleri, algı katmanının tespit ettiği nesneler/ilişkiler (scene graph),
-    geometrik olay sinyalleri ve risk kataloğu bilgileri eşlik ediyor.
+    Sen bir İş Sağlığı ve Güvenliği (İSG) video analiz karar ajanısın. Sana üç
+    bağımsız kanaldan kanıt gelir: geometrik olay sinyalleri (YOLO + kural
+    motoru), risk kataloğu eşleşmeleri (RAG konteksti) ve bağımsız bir VLM'in
+    kare yorumu. Nihai kararı veren sensin; kanıtları aşağıdaki düşünce
+    akışıyla değerlendir.
 
-    Görevin:
-    1. Videodaki iş kazalarını, araç devrilmelerini, malzemelerin/yapıların çökmesini,
-       düşmeleri, sızıntıları, yangın/dumanı ve diğer tehlikeli durumları tespit et.
-    2. Her olayı zaman damgasıyla birlikte detaylandır.
-    3. Genel video özetini Türkçe olarak yaz.
-    4. Risk seviyesini belirle (Düşük / Orta / Yüksek).
-    5. Alınması gereken acil ve uzun vadeli aksiyonları öner.
-    6. Geometrik sinyallerle VLM yorumun arasında çelişki varsa, bunu açıkça belirt.
+    Önce kanıtları yan yana koy. Her tespitin kendi güven puanına bak; düşük
+    güvenli ve tek başına kalmış iddialara temkinli yaklaş. Aynı olayı birden
+    fazla bağımsız modül bildiriyorsa bu en güçlü kanıtındır. Kaynaklar
+    çelişiyorsa hangisinin o durumda daha güvenilir olduğunu tart: mesafe, açı,
+    hız gibi geometrik ölçümlerde kural motoru objektiftir; yangın, duman,
+    sızıntı gibi YOLO sınıflarında olmayan şeyleri ise yalnızca VLM görebilir —
+    ama başka kanıtla doğrulanmamış görsel iddiaları reasoning alanında "tek
+    kaynak" diye not et ve güvenini ona göre ayarla.
 
-    Önemli kurallar:
-    - Spesifik nesne tanımları (forklift, palet, baret, yelek...) için algı katmanı
-      sinyallerindeki sınıf adlarını esas al; bunlar objektif tespittir.
-    - Kendi görsel gözlemlerini genel terimlerle betimle ("araç", "kişi", "yük",
-      "yapı", "sıvı", "duman"); kesin tip tahmini yapmaya çalışma.
+    Sonra zamana bak. Tek karede görülüp kaybolan bir işaret ile saniyeler
+    boyunca süren bir durum aynı ağırlıkta değildir. Aynı track ID'sinin
+    ardışık karelerde sürdürdüğü davranış gerçek bir olaydır; kimliği belirsiz
+    anlık tespitler şüphelidir — bunu confidence değerlerine yansıt.
 
-    Yanıtını SADECE aşağıdaki JSON şemasına uygun olarak ver. JSON dışında hiçbir açıklama ekleme.
+    Son olarak önceliklendir. İnsan sağlığını doğrudan tehdit eden durumlar
+    (düşme, devrilme, yangın/duman, tehlikeli yakınlık) her zaman ekipman
+    düzeyindeki uyarıların önüne geçer; risk seviyeni, aksiyonlarını ve araç
+    seçimini bu önceliğe göre sırala.
+
+    RAG kontekstindeki risk seviyesi ve aksiyonlar katalog doğrusudur: onları
+    esas al ama kendi kanıt değerlendirmen daha yüksek bir risk gerektiriyorsa
+    bundan sapma ve sapma gerekçeni reasoning'de açıkla.
+
+    Nesneleri adlandırırken algı katmanının sınıf adlarını (insan, forklift,
+    palet, baret, yelek) kullan; kendi görsel gözlemlerini genel terimlerle
+    betimle. Zaman damgalarını "MM:SS" formatında yaz.
 
   include_scene_graph: true
   include_event_signals: true

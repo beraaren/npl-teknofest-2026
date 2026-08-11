@@ -29,6 +29,7 @@ class OutputGuardrail:
             text = raw_text if attempt == 0 else generate_fn(temp)
             try:
                 parsed = self._extract_json(text)
+                parsed = self._normalize(parsed)
                 output = AnalysisOutput(**parsed)
                 if self.config.enable_semantic_check:
                     self._semantic_check(output, rag_risk_level)
@@ -55,6 +56,37 @@ class OutputGuardrail:
             raise ValueError("JSON bloğu bulunamadı")
 
         return json.loads(text[start : end + 1])
+
+    def _normalize(self, parsed: Dict[str, Any]) -> Dict[str, Any]:
+        """Şemaya yakın ama formatı sapmış alanları kurtarır.
+
+        - events[].time: "0:01-0:04" gibi aralıklarda ilk zamanı alır,
+          tek haneli dakikayı sıfır doldurur ("0:01" -> "00:01").
+        - events[].confidence: eksikse 0.5 varsayılır.
+        """
+        events = parsed.get("events")
+        if isinstance(events, list):
+            for ev in events:
+                if not isinstance(ev, dict):
+                    continue
+                if "time" in ev:
+                    ev["time"] = self._normalize_time(ev["time"])
+                if "confidence" not in ev:
+                    ev["confidence"] = 0.5
+        return parsed
+
+    @staticmethod
+    def _normalize_time(value: Any) -> str:
+        """Her türlü zaman ifadesini MM:SS formatına indirger."""
+        match = re.search(r"(\d{1,3}):(\d{1,2})(?::(\d{1,2}))?", str(value))
+        if not match:
+            return str(value)
+        if match.group(3) is not None:  # HH:MM:SS -> toplam MM:SS
+            minutes = int(match.group(1)) * 60 + int(match.group(2))
+            seconds = int(match.group(3))
+        else:
+            minutes, seconds = int(match.group(1)), int(match.group(2))
+        return f"{minutes:02d}:{seconds:02d}"
 
     def _semantic_check(self, output: AnalysisOutput, rag_risk_level: str) -> None:
         """Risk seviyesi ile aksiyon/olay tutarlılığını kontrol eder."""

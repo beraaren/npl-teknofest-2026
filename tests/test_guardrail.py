@@ -30,3 +30,35 @@ def test_guardrail_retries_and_null_response():
     guardrail = OutputGuardrail(GuardrailConfig(max_retries=2, temperatures=[0.1, 0.05]))
     result = guardrail.validate(bad, lambda t: bad, rag_risk_level="Düşük")
     assert result["summary"] == "Bilmiyorum"
+
+
+def test_guardrail_normalizes_malformed_events():
+    """Demoda görülen gerçek hata: aralıklı/sıfırsız time + eksik confidence kurtarılmalı."""
+    raw = '''
+    {
+        "summary": "Araç devrilmesi",
+        "events": [
+            {"time": "0:01-0:04", "event": "araç devrildi", "event_type": "tip_over"},
+            {"time": "0:05-0:07", "event": "kişiler toplandı", "event_type": "gathering", "confidence": 0.9}
+        ],
+        "risk": "Yüksek",
+        "actions": ["alanı güvene al", "sağlık ekibi çağır"],
+        "reasoning": "r",
+        "confidence": 0.8,
+        "triggered_mock_tools": []
+    }
+    '''
+    guardrail = OutputGuardrail(GuardrailConfig())
+    result = guardrail.validate(raw, lambda t: raw, rag_risk_level="Yüksek")
+    assert result["summary"] == "Araç devrilmesi"
+    assert result["events"][0]["time"] == "00:01"
+    assert result["events"][0]["confidence"] == 0.5  # varsayılan
+    assert result["events"][1]["time"] == "00:05"
+    assert result["events"][1]["confidence"] == 0.9
+
+
+def test_normalize_time_variants():
+    assert OutputGuardrail._normalize_time("0:01-0:04") == "00:01"
+    assert OutputGuardrail._normalize_time("12:34") == "12:34"
+    assert OutputGuardrail._normalize_time("1:02:03") == "62:03"
+    assert OutputGuardrail._normalize_time(5.0) == "5.0"

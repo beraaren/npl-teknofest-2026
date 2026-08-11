@@ -14,6 +14,7 @@ class PreprocessingConfig(BaseModel):
     grid_columns: int = 4
     frame_width: int = 384
     frame_height: int = 216
+    channel_a_fps: float = 12.0  # Kanal A yoğun örnekleme hedefi (track sürekliliği)
     use_smart_sampling: bool = True
     ssim_threshold: float = 0.92
     min_laplacian_variance: float = 80.0
@@ -33,6 +34,7 @@ class PerceptionConfig(BaseModel):
     # HF transformers detection backend'i (YOLO eğitilene kadar geçici)
     hf_model: str = "PaddlePaddle/PP-DocLayoutV3_safetensors"
     hf_threshold: float = 0.5
+    hf_device: str = "auto"  # "auto" | "cuda" | "cpu" — PP-DocLayoutV3 bazı GPU'larda kararsız, "cpu" güvenli
 
 
 class EventThresholds(BaseModel):
@@ -85,12 +87,21 @@ class TransformersConfig(BaseModel):
     repetition_penalty: float = 1.15
 
 
+class ServerConfig(BaseModel):
+    """OpenAI-uyumlu harici sunucu (llama-server / vllm serve) — Kanal_B ile aynı sözleşme."""
+    base_url: str = "http://localhost:8080"
+    model_name: str = "llava-v1.6-mistral-7b"
+    temperature: float = 0.15
+    max_tokens: int = 800
+
+
 class VLMConfig(BaseModel):
     default_backend: str = "auto"
     auto_preference: list[str] = Field(default_factory=lambda: ["vllm", "llama_cpp", "transformers"])
     vllm: VLLMConfig = Field(default_factory=VLLMConfig)
     llama_cpp: LlamaCppConfig = Field(default_factory=LlamaCppConfig)
     transformers: TransformersConfig = Field(default_factory=TransformersConfig)
+    server: ServerConfig = Field(default_factory=ServerConfig)
 
 
 class DecisionAgentConfig(BaseModel):

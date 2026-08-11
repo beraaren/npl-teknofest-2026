@@ -198,8 +198,13 @@ Respond ONLY in valid JSON format in Turkish language:
     print("---------------------\n")
 
     try:
-        clean = result_text.replace("```json", "").replace("```", "").strip()
-        parsed = json.loads(clean)
+        # Model ```json fence'i veya kısa bir ön laf ekleyebilir:
+        # ilk { ile son } arasını parse et (decision_agent._extract_json ile aynı mantık)
+        clean = result_text.replace("```json", "").replace("```", "")
+        start, end = clean.find("{"), clean.rfind("}")
+        if start == -1 or end <= start:
+            raise ValueError("çıktıda JSON bloğu yok")
+        parsed = json.loads(clean[start:end + 1])
         print("✅ Başarılı: Çıktı JSON formatına uygun!")
         print(f"📌 Özet: {parsed.get('summary')}")
         print(f"⚠️  Risk: {parsed.get('risk')}")

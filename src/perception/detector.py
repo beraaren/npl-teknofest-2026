@@ -138,6 +138,7 @@ def create_detector(config: Any) -> Any:
             model_path=config.hf_model,
             confidence=getattr(config, "hf_threshold", 0.5),
             custom_classes=config.custom_classes,
+            device=getattr(config, "hf_device", "auto"),
         )
 
     if backend != "ultralytics":

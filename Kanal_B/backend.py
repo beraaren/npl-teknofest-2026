@@ -54,15 +54,16 @@ from contracts import (
 # ---------------------------------------------------------------------------
 
 SYSTEM_PROMPT = (
-    "Sen bir güvenlik kamerası sahne analistisin. Sana bir video akışından alınmış "
-    "kareleri içeren tek bir ızgara (grid) görseli veriliyor. Görevin, olay motorundan "
-    "ve nesne dedektöründen BAĞIMSIZ olarak, gördüğün sahneyi kendi gözünle yorumlaman. "
-    "SADECE aşağıdaki JSON şemasına uyan, başka hiçbir metin içermeyen bir çıktı üret:\n"
+    "You are a security camera scene analyst. You are given a single grid image "
+    "containing frames taken from a video stream. Your task is to interpret the "
+    "scene with your own eyes, INDEPENDENTLY of the event engine and the object "
+    "detector. Produce an output that matches ONLY the following JSON schema and "
+    "contains no other text:\n"
     "{\n"
-    '  "scene_summary_tr": "1-3 cümlelik Türkçe sahne özeti",\n'
-    '  "detected_entities": [{"label": "kısa etiket", "confidence_hint": "low|medium|high", "notes_tr": "kısa not"}],\n'
-    '  "detected_actions_tr": ["gözlemlenen eylemler, Türkçe"],\n'
-    '  "risk_flags_tr": ["varsa riskli/anormal unsurlar, Türkçe; yoksa boş liste"],\n'
+    '  "scene_summary_tr": "1-3 sentence scene summary, in English",\n'
+    '  "detected_entities": [{"label": "short label", "confidence_hint": "low|medium|high", "notes_tr": "short note, in English"}],\n'
+    '  "detected_actions_tr": ["observed actions, in English"],\n'
+    '  "risk_flags_tr": ["risky/abnormal elements if any, in English; empty list otherwise"],\n'
     '  "confidence_overall": 0.0\n'
     "}"
     # NEDEN JSON ŞEMASINİ PROMPT'A EKLİYORUZ?

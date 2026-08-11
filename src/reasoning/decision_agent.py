@@ -27,15 +27,16 @@ from .rag_layer import RAGLayer
 # Spesifik sınıf adları (forklift, palet...) bilinçli istenmez — genel terimlerle
 # doğruluk artar; spesifik tanımları algı katmanı (YOLO) sağlar.
 STRUCTURED_OBSERVATION_PROMPT = (
-    "Bu görüntüler bir çalışma sahasına ait video kareleridir. "
-    "Gördüklerini GENEL terimlerle betimle: 'kişi/insan', 'araç', 'yük/nesne', "
-    "'raf/yapı', 'sıvı/madde', 'duman veya alev' gibi; kesin tip tahmini YAPMA.\n"
-    "Yanıtını SADECE aşağıdaki JSON şemasına uygun ver, açıklama ekleme:\n"
+    "These images are video frames from a work site. "
+    "Describe what you see in GENERAL terms: 'person/human', 'vehicle', 'load/object', "
+    "'rack/structure', 'liquid/substance', 'smoke or flame' and so on; do NOT make "
+    "definite type guesses.\n"
+    "Give your answer ONLY in accordance with the following JSON schema, do not add explanations:\n"
     "{\n"
-    '  "scene_summary_tr": "sahne özeti",\n'
-    '  "detected_entities": [{"label": "genel etiket", "confidence_hint": "low|mid|high", "notes_tr": "not"}],\n'
-    '  "detected_actions_tr": ["gözlenen eylemler"],\n'
-    '  "risk_flags_tr": ["dikkat çeken riskli durumlar: devrilme, düşme, duman, sızıntı, toplanma..."],\n'
+    '  "scene_summary_tr": "scene summary",\n'
+    '  "detected_entities": [{"label": "general label", "confidence_hint": "low|mid|high", "notes_tr": "note"}],\n'
+    '  "detected_actions_tr": ["observed actions"],\n'
+    '  "risk_flags_tr": ["risky situations that stand out: tip-over, fall, smoke, leakage, gathering..."],\n'
     '  "confidence_overall": 0.0-1.0,\n'
     '  "notable_frames": [0]\n'
     "}"

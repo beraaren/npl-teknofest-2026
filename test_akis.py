@@ -39,11 +39,41 @@ def pj(obj, limit: int = 0) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--video", default="video.mp4")
+    ap.add_argument("--video", default=None, help="Video dosyası (verilmezse --random-dir'den rastgele seçilir)")
+    ap.add_argument(
+        "--random-dir",
+        default=str(REPO.parent / "INDIR_BENCHMARK" / "videos"),
+        help="Rastgele video seçilecek dizin (alt dizinler = kategoriler)",
+    )
+    ap.add_argument("--category", default=None, help="Sadece bu kategoriden seç (örn. Arson)")
+    ap.add_argument("--seed", type=int, default=None, help="Tekrarlanabilir seçim için sabit tohum")
     ap.add_argument("--config", default="config.yaml")
     ap.add_argument("--backend", default="server")
     ap.add_argument("--detector", default="ultralytics")
     args = ap.parse_args()
+
+    if args.video is None:
+        import random
+        root = Path(args.random_dir)
+        if args.category:
+            candidates = sorted((root / args.category).glob("*.mp4"))
+        else:
+            candidates = sorted(p for p in root.rglob("*.mp4"))
+        if not candidates:
+            raise SystemExit(f"Video bulunamadı: {root} (category={args.category})")
+        rng = random.Random(args.seed)
+        args.video = str(rng.choice(candidates))
+    print(f"🎲 Seçilen video: {args.video}")
+
+    if args.backend == "server":
+        import urllib.request
+        try:
+            urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=3)
+        except Exception:
+            raise SystemExit(
+                "❌ VLM sunucusu ayakta değil (127.0.0.1:8080).\n"
+                "   Önce başlat:  ./start_vlm_server.sh --bg"
+            )
 
     import numpy as np
     from PIL import Image
@@ -53,7 +83,6 @@ def main() -> None:
     from src.models.vlm_backend import create_backend
     from src.output.guardrail import OutputGuardrail
     from src.perception.observer_agent import ObserverAgent
-    from src.preprocessing.critical_frames import select_critical_frames
     from src.preprocessing.enhancer import LowLightEnhancer
     from src.preprocessing.frame_sampler import FrameSampler
     from src.preprocessing.video_reader import VideoReader
@@ -129,12 +158,6 @@ def main() -> None:
     for s in event_signals:
         print(f"  [{s.get('timestamp')}] {s.get('event_type')} (güven {s.get('confidence')}): {s.get('description')}")
 
-    critical_frames, critical_indices = select_critical_frames(
-        sampled_frames, sampled_indices, event_signals,
-        fps=native_fps, max_count=config.preprocessing.critical_frame_count,
-    )
-    print(f"\nKanal B kritik kareleri: {critical_indices}")
-
     # ---------------------------------------------------------------- AŞAMA 5
     hdr("AŞAMA 5 — RAG Katmanı (TF-IDF vektör arama, risk kataloğu)")
     rag = RAGLayer()
@@ -172,7 +195,7 @@ def main() -> None:
         print("Kanal_B paketi kullanıldı (run_channel_b).")
     except Exception as e:
         print(f"Kanal_B paketi çalışmadı ({e}); interpret_frames'e düşülüyor.")
-        vlm_interpretation = agent.interpret_frames(critical_frames)
+        vlm_interpretation = agent.interpret_frames(sampled_frames)
     sub("S8 — ham model çıktısı")
     print(vlm_interpretation.get("raw_model_output", "(yok)")[:1500])
     sub("S8 — ayrıştırılmış yorum")

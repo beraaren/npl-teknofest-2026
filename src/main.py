@@ -222,9 +222,9 @@ def main(args=None) -> None:
             backend=backend,
         )
 
-        # Kanal B: bağımsız VLM kanalı (S8). Önce Kanal_B paketi denenir
-        # (kendi 1b ön işlemesi + backend'i var); çalışmazsa kritik kareler
-        # üzerinden interpret_frames'e düşülür.
+        # Kanal B: bağımsız VLM kanalı (S8). Kanal_B paketi videoyu KENDİ
+        # ön işlemesiyle işler — ona olay sinyali, RAG, kritik kare gibi
+        # başka kanal çıktısı VERİLMEZ. Birleştirme yalnızca karar ajanında.
         vlm_interpretation = None
         try:
             import sys
@@ -240,7 +240,7 @@ def main(args=None) -> None:
             )
         except Exception as e:
             logger.warning(f"Kanal_B paketi çalışmadı ({e}); interpret_frames'e düşülüyor.")
-            vlm_interpretation = agent.interpret_frames(critical_frames)
+            vlm_interpretation = agent.interpret_frames(sampled_frames)
 
         logger.info(f"Kanal B çıktısı: {_short_text(vlm_interpretation, limit=1200)}")
 

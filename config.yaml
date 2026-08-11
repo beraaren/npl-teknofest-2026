@@ -23,6 +23,21 @@ preprocessing:
   clahe_clip_limit: 2.0
   clahe_grid_size: [8, 8]
   critical_frame_count: 4         # VLM'e (Kanal B) gönderilecek kritik kare sayısı
+  temporal_windows: 4             # Video kaç zaman dilimine bölünür
+  min_frames_per_window: 1        # Her dilimden minimum kare sayısı
+
+  # Son Pencere Güçlendirmesi — videonun sonunda gerçekleşen olaylar için
+  # (araç çarpması, çökme gibi olaylar genellikle son saniyelerde oluşur)
+  last_window_boost: 2            # Son pencere için ekstra kare kotası (toplam = min_frames + boost = 3)
+  last_window_fraction: 0.25      # Videonun son kaçta biri "son pencere" sayılır (%25)
+
+  # Sahne Değişimi Segmentasyonu (run_channel_b_scene_based için)
+  scene_ssim_threshold: 0.30      # 1-SSIM bu değeri aşarsa yeni sahne sayılır
+                                  # Daha düşük → daha hassas (fazla segment)
+                                  # Daha yüksek → daha az segment
+  scene_min_segment_sec: 15.0     # Segment en az bu kadar uzun olmalı (sn)
+  scene_max_segment_sec: 60.0     # Segment bu süreyi geçemez (sn); güvenlik tavanı
+  scene_detect_stride: 5          # SSIM her kaç karede bir hesaplanır (hız/hassasiyet dengesi)
 
 # ---------------------------------------------------------------------------
 # Algı (Perception)
@@ -105,6 +120,8 @@ vlm:
 
   # llama.cpp ayarları
   llama_cpp:
+    base_url: "http://localhost:8080"   # llama-server'ın dinlediği adres
+    model: "TimeLens-7B.i1-Q4_K_M.gguf"  # pipeline.py'nin "model" key'iyle okuduğu alan
     model_repo: "mradermacher/TimeLens-7B-i1-GGUF"
     model_file: "TimeLens-7B.i1-Q4_K_M.gguf"
     mmproj_repo: "mradermacher/TimeLens-7B-GGUF"

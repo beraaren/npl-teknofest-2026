@@ -103,8 +103,8 @@ class HFObjectDetector:
     def _map_class(self, class_name: str) -> str:
         mapping = {
             "person": "insan",
-            "truck": "forklift",
-            "car": "forklift",
+            "truck": "kamyon",
+            "car": "araba",
             "pallet": "palet",
         }
         mapped = mapping.get(class_name.lower(), class_name)

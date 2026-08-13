@@ -27,14 +27,22 @@ from .rag_layer import RAGLayer
 # Spesifik sınıf adları (forklift, palet...) bilinçli istenmez — genel terimlerle
 # doğruluk artar; spesifik tanımları algı katmanı (YOLO) sağlar.
 STRUCTURED_OBSERVATION_PROMPT = (
-    "These images are video frames from a work site. "
-    "Describe what you see in GENERAL terms: 'person/human', 'vehicle', 'load/object', "
-    "'rack/structure', 'liquid/substance', 'smoke or flame' and so on; do NOT make "
-    "definite type guesses.\n"
+    "These images are video frames from a work site or surveillance camera. "
+    "Describe what you see carefully.\n\n"
+    "VEHICLE IDENTIFICATION — THINK STEP BY STEP:\n"
+    "When you see ANY vehicle or machine, reason about its exact type before labeling it. "
+    "Consider visual cues: size, shape, wheels vs tracks, cabin position, forks, boom arm, "
+    "bucket, flatbed, road context vs industrial site. Possible types include: forklift, "
+    "crane, excavator, loader, truck, pickup, car, van, bus, motorcycle, bicycle. "
+    "A vehicle on a public road is most likely a car/truck/bus — do NOT assume industrial equipment. "
+    "Write your reasoning in \"vehicle_type_reasoning\".\n\n"
+    "For non-vehicle objects use general terms: 'person/human', 'load/object', "
+    "'rack/structure', 'liquid/substance', 'smoke or flame'.\n\n"
     "Give your answer ONLY in accordance with the following JSON schema, do not add explanations:\n"
     "{\n"
     '  "scene_summary_tr": "scene summary",\n'
-    '  "detected_entities": [{"label": "general label", "confidence_hint": "low|mid|high", "notes_tr": "note"}],\n'
+    '  "vehicle_type_reasoning": "step-by-step reasoning about what type each vehicle/machine is and why",\n'
+    '  "detected_entities": [{"label": "specific vehicle type or object label", "confidence_hint": "low|mid|high", "notes_tr": "note"}],\n'
     '  "detected_actions_tr": ["observed actions"],\n'
     '  "risk_flags_tr": ["risky situations that stand out: tip-over, fall, smoke, leakage, gathering..."],\n'
     '  "confidence_overall": 0.0-1.0,\n'
@@ -87,7 +95,7 @@ class DecisionAgent:
     def interpret_frames(
         self,
         images: List[NDArray[np.uint8]],
-        max_tokens: int = 512,
+        max_tokens: int = 4096,
     ) -> Dict[str, Any]:
         """Kritik kareleri bağımsız yorumlar; yapılandırılmış vlm_interpretation döner."""
         if not images:
@@ -162,6 +170,8 @@ class DecisionAgent:
 
     def _generation_params(self, backend: VLMBackend) -> tuple[float, int]:
         name = backend.name()
+        if name == "server":
+            return self.vlm_config.server.temperature, self.vlm_config.server.max_tokens
         if name == "llama_cpp":
             return self.vlm_config.llama_cpp.temperature, self.vlm_config.llama_cpp.max_tokens
         if name == "transformers":

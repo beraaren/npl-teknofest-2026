@@ -97,7 +97,7 @@ vlm:
     base_url: "http://localhost:8080"
     model_name: "llava-v1.6-mistral-7b"
     temperature: 0.15
-    max_tokens: 800
+    max_tokens: 16000
 
   # vLLM ayarları
   vllm:
@@ -121,7 +121,7 @@ vlm:
     n_ctx: 8192
     n_gpu_layers: 0        # Vulkan bu makinede kararsız (DeviceLost/askıda kalma); 0 = CPU-only
     temperature: 0.15
-    max_tokens: 800
+    max_tokens: 16000
     top_p: 0.9
     repeat_penalty: 1.15
 

@@ -104,8 +104,8 @@ class ObjectDetector:
     def _map_class(self, coco_name: str) -> str:
         mapping = {
             "person": "insan",
-            "truck": "forklift",
-            "car": "forklift",
+            "truck": "kamyon",
+            "car": "araba",
             "pallet": "palet",
         }
         mapped = mapping.get(coco_name.lower(), coco_name)

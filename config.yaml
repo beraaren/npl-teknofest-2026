@@ -29,14 +29,17 @@ preprocessing:
 # Algı (Perception)
 # ---------------------------------------------------------------------------
 perception:
-  detector_backend: "hf_transformers"  # "ultralytics" | "hf_transformers" (YOLO eğitilene kadar HF aktif)
-  yolo_model: "yolov8n.pt"             # COCO önceden eğitilmiş veya kendi ağırlığınız (eğitim sonrası aktifleşecek)
+  detector_backend: "ultralytics"  # "ultralytics" | "hf_transformers" (YOLO eğitilene kadar HF aktif)
+  yolo_model: "best.pt"             # COCO önceden eğitilmiş veya kendi ağırlığınız (eğitim sonrası aktifleşecek)
   custom_classes:                      # TEKNOFEST özel sınıfları (kendi modelinizde varsa)
     - forklift
     - insan
     - palet
     - baret
     - yelek
+    - yangin
+    - duman
+    - makine
   confidence_threshold: 0.35
   tracker: "bytetrack"                 # "bytetrack" | "botsort"
   tracker_persist: true

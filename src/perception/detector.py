@@ -101,18 +101,22 @@ class ObjectDetector:
             )
         return detections
 
-    def _map_class(self, coco_name: str) -> str:
+    def _map_class(self, class_name: str) -> str:
         mapping = {
             "person": "insan",
-            "truck": "forklift",
-            "car": "forklift",
+            "forklift": "forklift",
             "pallet": "palet",
+            "helmet": "baret",
+            "vest": "yelek",
+            "fire": "yangin",
+            "smoke": "duman",
+            "machinery": "makine",
         }
-        mapped = mapping.get(coco_name.lower(), coco_name)
-        # Eğer özel sınıf listesi varsa ve mapped içindeyse koru
+        mapped = mapping.get(class_name.lower(), class_name)
         if self.custom_classes and mapped not in self.custom_classes:
-            return coco_name
+            return class_name
         return mapped
+
 
     def detect_batch(self, frames: List[NDArray[np.uint8]]) -> List[List[Detection]]:
         return [self.detect(f, idx) for idx, f in enumerate(frames)]

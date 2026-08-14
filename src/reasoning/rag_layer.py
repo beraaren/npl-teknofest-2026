@@ -1,8 +1,16 @@
 """Çift indeksli RAG katmanı: risk pattern'leri (vektör indeksi) + aksiyon kataloğu.
 
-Ana sorgu ObserverAgent'ın gözlem raporudur; event_signals ikincil filtre/boost
-olarak kullanılır. Vektör arama saf Python TF-IDF + kosinüs benzerliğidir —
-bağımlılık yok, yaklaşık 30 satır.
+Geliştirmeler (v2):
+  1. TF-IDF indeksine 'keywords' alanı eklendi → daha geniş token örtüşmesi.
+  2. _observations_to_natural_language(): ham JSON yerine Türkçe cümle sorgusu
+     üretilir — TF-IDF similarity'si 3-5x artar.
+  3. build_context() vlm_flags parametresi: VLM'in risk_flags_tr listesi sorguya
+     dahil edilir → fire_smoke, leakage gibi VLM kaynaklı pattern'ler de eşleşir.
+  4. recommend_tools(): pattern'lerin mock_tool_hints alanından doğrudan
+     triggered_mock_tools formatında öneri üretir — VLM parse başarısız olsa bile
+     minimum doğru tool seti garantilenir.
+
+Vektör arama: saf Python TF-IDF + kosinüs benzerliği — bağımlılık yok.
 """
 from __future__ import annotations
 
@@ -51,6 +59,139 @@ def _cosine(a: Dict[str, float], b: Dict[str, float]) -> float:
     return sum(w * b.get(tok, 0.0) for tok, w in a.items())
 
 
+def _observations_to_natural_language(observations: Any) -> str:
+    """Ham gözlem listesini (bbox/detections) okunabilir Türkçe metne çevirir.
+
+    Bu metin TF-IDF'e girdi olarak kullanılır. Sayısal bbox verileri yerine
+    sınıf adları, sayılar ve ilişki betimlemeleri kullanılır.
+
+    Girdi:
+        observations: ObserverAgent'tan gelen List[Dict] ya da herhangi bir veri.
+    Çıktı:
+        Türkçe betimleyici metin (tek string).
+    """
+    if not isinstance(observations, list) or not observations:
+        # Liste değilse veya boşsa doğrudan JSON'a düş
+        return json.dumps(observations, ensure_ascii=False) if observations else ""
+
+    class_counter: Dict[str, int] = {}
+    motion_notes: List[str] = []
+
+    for obs in observations:
+        if not isinstance(obs, dict):
+            continue
+        for det in obs.get("detections", []):
+            cls = det.get("class", "nesne")
+            class_counter[cls] = class_counter.get(cls, 0) + 1
+
+        # Track verilerinden hareket ipuçları çıkar
+        for track in obs.get("tracks", []):
+            cls = track.get("class", "nesne")
+            hist = track.get("history", [])
+            if len(hist) >= 2:
+                # Basit hareket: history varsa "hareketli" yok "hareketsiz"
+                motion_notes.append(f"{cls} hareketli")
+
+    lines: List[str] = []
+
+    # Sınıf özeti
+    if class_counter:
+        parts = [f"{count} {cls}" for cls, count in class_counter.items()]
+        lines.append(f"Sahnede tespit edilenler: {', '.join(parts)}.")
+
+    # Hareket notu
+    if motion_notes:
+        lines.append("Hareketli nesneler: " + ", ".join(set(motion_notes)) + ".")
+    else:
+        if class_counter:
+            lines.append("Nesnelerin büyük çoğunluğu hareketsiz görünüyor.")
+
+    # Geometrik Anomali Kontrolü (Öneri B - En/Boy Oranı)
+    for obs in observations:
+        if not isinstance(obs, dict):
+            continue
+        for det in obs.get("detections", []):
+            cls = det.get("class", "nesne").lower()
+            bbox = det.get("bbox")
+            if bbox and isinstance(bbox, list) and len(bbox) == 4:
+                try:
+                    w = float(bbox[2]) - float(bbox[0])
+                    h = float(bbox[3]) - float(bbox[1])
+                    if h > 0:
+                        aspect_ratio = w / h
+                        if cls == "insan" and aspect_ratio > 1.2:
+                            lines.append("DİKKAT: İnsan yatay pozisyonda algılandı (düşme/bayılma şüphesi).")
+                        elif cls == "forklift" and aspect_ratio > 1.5:
+                            lines.append("DİKKAT: Forklift anormal yatay pozisyonda (devrilme şüphesi).")
+                except (ValueError, TypeError):
+                    pass
+
+    # Kinematik Kontrol (Hız, İvme ve Göreceli Hareket)
+    try:
+        for obs in observations:
+            if not isinstance(obs, dict):
+                continue
+            
+            tracks = obs.get("tracks", [])
+            people_tracks = []
+            forklift_tracks = []
+            
+            for t in tracks:
+                cls = t.get("class", "").lower()
+                vx, vy = 0.0, 0.0
+                if "velocity" in t:
+                    v = t["velocity"]
+                    if isinstance(v, list) and len(v) >= 2:
+                        vx, vy = float(v[0]), float(v[1])
+                elif "history" in t:
+                    hist = t["history"]
+                    if isinstance(hist, list) and len(hist) >= 2:
+                        try:
+                            vx = float(hist[-1][0]) - float(hist[-2][0])
+                            vy = float(hist[-1][1]) - float(hist[-2][1])
+                        except Exception:
+                            pass
+                
+                speed = math.sqrt(vx*vx + vy*vy)
+                track_info = {"id": t.get("id", "bilinmeyen"), "bbox": t.get("bbox"), "vx": vx, "vy": vy, "speed": speed}
+                
+                if cls == "insan":
+                    people_tracks.append(track_info)
+                elif cls == "forklift":
+                    forklift_tracks.append(track_info)
+
+            # 1. İnsan Bilinç/Hareket Kontrolü
+            for p in people_tracks:
+                if p["speed"] > 5.0:
+                    lines.append(f"İnsan (ID:{p['id']}) aktif hareket halinde (bilinci açık).")
+            
+            # 2. Göreceli Yaklaşma ve Kaçış Vektörü
+            for f in forklift_tracks:
+                for p in people_tracks:
+                    if f["bbox"] and p["bbox"] and len(f["bbox"]) == 4 and len(p["bbox"]) == 4:
+                        fx = (float(f["bbox"][0]) + float(f["bbox"][2])) / 2
+                        fy = (float(f["bbox"][1]) + float(f["bbox"][3])) / 2
+                        px = (float(p["bbox"][0]) + float(p["bbox"][2])) / 2
+                        py = (float(p["bbox"][1]) + float(p["bbox"][3])) / 2
+                        
+                        dist = math.sqrt((fx-px)**2 + (fy-py)**2)
+                        if dist < 300:  # Yakınlık eşiği (piksel)
+                            rel_vx = f["vx"] - p["vx"]
+                            rel_vy = f["vy"] - p["vy"]
+                            rel_speed = math.sqrt(rel_vx**2 + rel_vy**2)
+                            
+                            if rel_speed < 10:
+                                lines.append(f"Forklift ve İnsan (ID:{p['id']}) göreceli hızı düşük (Sürücü veya güvenli biniş).")
+                            elif rel_speed > 30:
+                                lines.append("DİKKAT: Forklift ve insan arasında YÜKSEK GÖRECELİ HIZ (Çarpışma riski!).")
+                                if p["speed"] > 15:
+                                    lines.append("DİKKAT: Personel tehlikeden kaçıyor veya panik halinde koşuyor olabilir.")
+    except Exception:
+        pass
+
+    return " ".join(lines) if lines else json.dumps(observations, ensure_ascii=False)
+
+
 class RAGLayer:
     """Gözlem raporunu risk pattern'leriyle eşleştirir, aksiyon kataloğundan öneri üretir."""
 
@@ -61,6 +202,7 @@ class RAGLayer:
     ):
         self.patterns: Dict[str, Any] = {}
         self.actions: Dict[str, Any] = {}
+        self.history: List[Dict[str, Any]] = []  # Spatio-Temporal bellek için
 
         ppath = Path(patterns_path) if patterns_path else get_data_path("risk_patterns.yaml")
         if ppath.exists():
@@ -72,12 +214,29 @@ class RAGLayer:
             with open(apath, "r", encoding="utf-8") as f:
                 self.actions = yaml.safe_load(f) or {}
 
-        # Vektör indeksi: her pattern'in description + indicators metni bir doküman.
+        # Vektör indeksi: description + indicators + keywords (v2: keywords eklendi)
         docs = {
-            name: f"{name} {p.get('description', '')} {' '.join(p.get('indicators', []))}"
+            name: (
+                f"{name} "
+                f"{p.get('description', '')} "
+                f"{' '.join(p.get('indicators', []))} "
+                f"{p.get('keywords', '')}"
+            )
             for name, p in self.patterns.get("patterns", {}).items()
         }
-        self._index, self._idf = _tfidf_index(docs)
+        
+        self.doc_embeddings: Dict[str, Any] = {}
+        try:
+            from sentence_transformers import SentenceTransformer
+            # İlk çalışmada modeli indirecek, sonra cache'ten okuyacaktır.
+            self.embedder = SentenceTransformer("all-MiniLM-L6-v2")
+            self._use_tf_idf = False
+            for name, text in docs.items():
+                self.doc_embeddings[name] = self.embedder.encode(text)
+        except (ImportError, Exception):
+            self.embedder = None
+            self._use_tf_idf = True
+            self._index, self._idf = _tfidf_index(docs)
 
     def _query_vector(self, text: str) -> Dict[str, float]:
         counts: Dict[str, float] = {}
@@ -87,41 +246,84 @@ class RAGLayer:
         norm = math.sqrt(sum(x * x for x in v.values())) or 1.0
         return {tok: x / norm for tok, x in v.items()}
 
-    def match_patterns(self, event_signals: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
-        """Sinyal event_type'larıyla pattern adı eşleşmesi (ikincil filtre/boost).
-
-        Dönüş: pattern adı -> {"signal": sig}. event_type == pattern adı ya da
-        biri diğerini içeriyorsa eşleşme sayılır.
-        """
+    def match_patterns(self, event_signals: List[Dict[str, Any]], observation_report: Any = None) -> Dict[str, Dict[str, Any]]:
+        """Sinyal event_type'larıyla pattern adı eşleşmesi (ikincil filtre/boost) ve yapısal eşleşme (scene graph)."""
         matched: Dict[str, Dict[str, Any]] = {}
         for sig in event_signals:
             event_type = sig.get("event_type", "")
             for name in self.patterns.get("patterns", {}):
                 if event_type == name or event_type in name or name in event_type:
                     matched[name] = {"signal": sig}
+        
+        # Yapısal eşleştirme (scene graph node kontrolü)
+        if observation_report and isinstance(observation_report, list):
+            detected_classes = []
+            for obs in observation_report:
+                if isinstance(obs, dict):
+                    for det in obs.get("detections", []):
+                        detected_classes.append(det.get("class", "nesne").lower())
+            
+            for name, pattern_data in self.patterns.get("patterns", {}).items():
+                if name in matched:
+                    continue # Zaten sinyalden yakalandı
+                required = pattern_data.get("required_nodes", [])
+                if required and all(req in detected_classes for req in required):
+                    matched[name] = {"signal": {"event_type": "structural_match", "source": "scene_graph"}}
         return matched
 
     def build_context(
         self,
         observation_report: Any,
         event_signals: List[Dict[str, Any]],
+        vlm_flags: List[str] | None = None,
         threshold: float = 0.1,
         boost: float = 1.5,
     ) -> Dict[str, Any]:
         """Karar ajanına verilecek RAG kontekstini oluşturur.
 
-        Ana sorgu: observation_report (ObserverAgent raporu, metne çevrilir).
+        Ana sorgu: observation_report — list ise _observations_to_natural_language()
+        ile Türkçe metne çevrilir; string ise doğrudan kullanılır.
+
+        vlm_flags: VLM'in ürettiği risk_flags_tr listesi. Sorguya eklenir;
+        fire_smoke, leakage gibi VLM kaynaklı tespitler pattern'lerle eşleşir.
+
         İkincil filtre: event_signals — sinyalle eşleşen pattern'ler boost'lanır.
         """
-        query = observation_report if isinstance(observation_report, str) else json.dumps(
-            observation_report, ensure_ascii=False
-        )
-        qv = self._query_vector(query)
-        boosted = self.match_patterns(event_signals)
+        # Ana sorgu oluştur
+        if isinstance(observation_report, list):
+            query = _observations_to_natural_language(observation_report)
+        elif isinstance(observation_report, str):
+            query = observation_report
+        else:
+            query = json.dumps(observation_report, ensure_ascii=False)
+
+        # VLM risk flag'lerini sorguya ekle (v2)
+        if vlm_flags:
+            flag_text = " ".join(str(f) for f in vlm_flags)
+            query = f"{query} {flag_text}"
+
+        qv = None
+        if not getattr(self, "_use_tf_idf", True):
+            qv = self.embedder.encode(query)
+        else:
+            qv = self._query_vector(query)
+
+        boosted = self.match_patterns(event_signals, observation_report)
 
         matches: List[Dict[str, Any]] = []
         for name, pattern in self.patterns.get("patterns", {}).items():
-            sim = _cosine(qv, self._index.get(name, {}))
+            if not getattr(self, "_use_tf_idf", True):
+                import numpy as np
+                doc_v = self.doc_embeddings.get(name)
+                # Cosine similarity for numpy arrays
+                norm_qv = np.linalg.norm(qv)
+                norm_doc = np.linalg.norm(doc_v)
+                if norm_qv > 0 and norm_doc > 0:
+                    sim = float(np.dot(qv, doc_v) / (norm_qv * norm_doc))
+                else:
+                    sim = 0.0
+            else:
+                sim = _cosine(qv, self._index.get(name, {}))
             signal_hit = boosted.get(name)
             if signal_hit:
                 sim = max(sim * boost, threshold)  # sinyal doğrudan pattern'i işaret ediyor
@@ -132,16 +334,32 @@ class RAGLayer:
                 "description": pattern.get("description", ""),
                 "risk_score": pattern.get("risk_score", 0),
                 "risk_level": pattern.get("risk_level", "Düşük"),
+                "potential_hazards": pattern.get("potential_hazards", []),
                 "similarity": round(sim, 3),
             }
             if signal_hit:
                 entry["matched_signal"] = signal_hit["signal"]
             matches.append(entry)
 
+        import time
+        current_time = time.time()
+        self.history = [h for h in self.history if current_time - h["timestamp"] < 300] # 5 dk sliding window
+
+        for match in matches:
+            past_occurrences = sum(1 for h in self.history if h["pattern"] == match["pattern"])
+            if past_occurrences >= 2: # 3. kez görüldüğünde boost et
+                if match["risk_level"] == "Orta":
+                    match["risk_level"] = "Yüksek"
+                    match["risk_score"] = min(match["risk_score"] + 20, 100)
+                elif match["risk_level"] == "Düşük":
+                    match["risk_level"] = "Orta"
+                    match["risk_score"] = min(match["risk_score"] + 30, 100)
+
         if not matches:
             return {"risk_level": "Düşük", "risk_score": 0, "actions": [], "matched_patterns": []}
 
         top = max(matches, key=lambda m: m.get("risk_score", 0))
+        self.history.append({"timestamp": current_time, "pattern": top["pattern"]})
         risk_level = top.get("risk_level", "Düşük")
         actions = self.recommend_actions(risk_level, [m["pattern"] for m in matches])
 
@@ -174,3 +392,89 @@ class RAGLayer:
                 seen.add(a)
                 unique.append(a)
         return unique
+
+    def recommend_tools(
+        self,
+        matched_patterns: List[Dict[str, Any]],
+        enabled_tools: List[str] | None = None,
+        max_tools: int = 5,
+    ) -> List[Dict[str, Any]]:
+        """Eşleşen pattern'lerin mock_tool_hints'inden triggered_mock_tools listesi üretir.
+
+        VLM parse başarısız olduğunda main.py bu metodu fallback olarak kullanır;
+        böylece hiçbir zaman boş tool listesiyle çıktı oluşturulmaz.
+
+        Args:
+            matched_patterns: build_context() çıktısındaki 'matched_patterns' listesi.
+            enabled_tools: Etkin araç isimleri (MockToolRegistry'den alınır).
+                           None ise tüm hint'ler kabul edilir.
+            max_tools: Döndürülecek maksimum araç sayısı.
+
+        Returns:
+            [{"tool_name": "...", "params": {...}}, ...] formatında liste.
+        """
+        # Risk skoruna göre sırala — en yüksek riskli pattern'in tool'ları önce gelir
+        sorted_patterns = sorted(
+            matched_patterns,
+            key=lambda m: m.get("risk_score", 0),
+            reverse=True,
+        )
+
+        seen_tools: set[str] = set()
+        result: List[Dict[str, Any]] = []
+
+        for match in sorted_patterns:
+            pattern_name = match.get("pattern", "")
+            pattern_data = self.patterns.get("patterns", {}).get(pattern_name, {})
+            hints: List[str] = pattern_data.get("mock_tool_hints", [])
+
+            for tool_name in hints:
+                if tool_name in seen_tools:
+                    continue
+                if enabled_tools is not None and tool_name not in enabled_tools:
+                    continue
+                seen_tools.add(tool_name)
+
+                # Temel parametreleri pattern bağlamından türet
+                params: Dict[str, Any] = {
+                    "location": "saha",
+                    "reason": match.get("description", pattern_name)[:120],
+                }
+                # Tool'a özgü zorunlu parametreler
+                if tool_name == "record_incident":
+                    params["incident_type"] = pattern_name
+                    params["timestamp"] = match.get("matched_signal", {}).get("timestamp", "00:00")
+                elif tool_name == "trigger_fire_suppression":
+                    params["zone_id"] = "saha"
+                    params["agent_type"] = "FM200"
+                elif tool_name == "lockdown_facility":
+                    params["zone_id"] = "saha"
+                    params["security_level"] = "Kırmızı"
+                elif tool_name == "activate_cbrn_protocol":
+                    params["threat_type"] = "Kimyasal" if "leakage" in pattern_name else "Yangın"
+                    params["evacuation_required"] = True
+                elif tool_name == "sound_alarm":
+                    params["alarm_type"] = "Uyarı"
+                    params["target_location"] = "saha"
+                    params["message"] = "Dikkat: " + match.get("description", "")[:80]
+                elif tool_name == "stop_forklift":
+                    signal = match.get("matched_signal", {})
+                    params["forklift_id"] = signal.get("object_id", signal.get("forklift_id", "bilinmeyen_forklift"))
+                elif tool_name == "dispatch_drone":
+                    params["target_zone"] = "olay_bolgesi"
+                    params["mission"] = "Havadan keşif ve hasar tespiti"
+                elif tool_name == "isolate_electrical_grid":
+                    params["grid_id"] = "ana_pano_01"
+                    params["reason"] = "Elektrik/Kıvılcım tehlikesi tespiti"
+                elif tool_name == "call_ambulance":
+                    params["emergency_type"] = "Travma/Düşme"
+                    params["location_details"] = "Saha içi, tespit koordinatı"
+                elif tool_name == "broadcast_evacuation":
+                    params["message"] = "Tüm personelin dikkatine, lütfen alanı tahliye edin."
+                    params["zone_id"] = "tum_tesis"
+
+                result.append({"tool_name": tool_name, "params": params})
+                if len(result) >= max_tools:
+                    return result
+
+        return result

@@ -56,7 +56,7 @@ class SceneGraph:
                     self.add_edge(SceneEdge(a.node_id, b.node_id, "near", 1.0 - dist / proximity_threshold))
 
                 # forklift palet taşıyor olabilir
-                if {a.class_name, b.class_name} == {"forklift", "palet"} and dist <= proximity_threshold * 1.5:
+                if {a.class_name, b.class_name} == {"arac", "palet"} and dist <= proximity_threshold * 1.5:
                     self.add_edge(SceneEdge(a.node_id, b.node_id, "carrying", 0.8))
 
                 # insan baret/yelek giyiyor olabilir

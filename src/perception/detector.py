@@ -104,15 +104,14 @@ class ObjectDetector:
     def _map_class(self, class_name: str) -> str:
         mapping = {
             "person": "insan",
-            "truck": "kamyon",
-            "car": "araba",
-            "forklift": "forklift",
+            "forklift": "arac",
+            "car": "arac",
+            "machinery": "arac",
             "pallet": "palet",
             "helmet": "baret",
             "vest": "yelek",
             "fire": "yangin",
             "smoke": "duman",
-            "machinery": "makine",
         }
         mapped = mapping.get(class_name.lower(), class_name)
         if self.custom_classes and mapped not in self.custom_classes:

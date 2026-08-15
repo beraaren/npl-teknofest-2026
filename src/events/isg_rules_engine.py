@@ -41,8 +41,7 @@ class CanonicalClass(str, Enum):
     PERSON = "person"
     HELMET = "helmet"
     VEST = "vest"
-    FORKLIFT = "forklift"
-    MACHINERY = "machinery"
+    VEHICLE = "arac"
     FIRE = "fire"
     SMOKE = "smoke"
     UNKNOWN = "unknown"
@@ -77,16 +76,19 @@ CANONICAL_CLASS_MAP: Dict[str, str] = {
     "ikaz_yelegi": CanonicalClass.VEST.value,
     "ikaz_yeleği": CanonicalClass.VEST.value,
     "safety_vest": CanonicalClass.VEST.value,
-    # Forklift
-    "forklift": CanonicalClass.FORKLIFT.value,
-    # İş Makinesi / Araç
-    "machinery": CanonicalClass.MACHINERY.value,
-    "is_makinesi": CanonicalClass.MACHINERY.value,
-    "iş_makinesi": CanonicalClass.MACHINERY.value,
-    "makine": CanonicalClass.MACHINERY.value,
-    "machine": CanonicalClass.MACHINERY.value,
-    "truck": CanonicalClass.MACHINERY.value,
-    "kamyon": CanonicalClass.MACHINERY.value,
+    # Araçlar (Forklift + Car + Machinery + Truck -> HEPSİ TEK SINIF)
+    "arac": CanonicalClass.VEHICLE.value,
+    "araç": CanonicalClass.VEHICLE.value,
+    "forklift": CanonicalClass.VEHICLE.value,
+    "machinery": CanonicalClass.VEHICLE.value,
+    "is_makinesi": CanonicalClass.VEHICLE.value,
+    "iş_makinesi": CanonicalClass.VEHICLE.value,
+    "makine": CanonicalClass.VEHICLE.value,
+    "machine": CanonicalClass.VEHICLE.value,
+    "car": CanonicalClass.VEHICLE.value,
+    "araba": CanonicalClass.VEHICLE.value,
+    "truck": CanonicalClass.VEHICLE.value,
+    "kamyon": CanonicalClass.VEHICLE.value,
     # Yangın / Ateş
     "fire": CanonicalClass.FIRE.value,
     "yangin": CanonicalClass.FIRE.value,
@@ -103,8 +105,7 @@ CLASS_DISPLAY_NAMES_TR: Dict[str, str] = {
     CanonicalClass.PERSON.value: "Personel",
     CanonicalClass.HELMET.value: "Baret",
     CanonicalClass.VEST.value: "Yelek",
-    CanonicalClass.FORKLIFT.value: "Forklift",
-    CanonicalClass.MACHINERY.value: "İş Makinesi",
+    CanonicalClass.VEHICLE.value: "Araç",
     CanonicalClass.FIRE.value: "Ateş/Yangın",
     CanonicalClass.SMOKE.value: "Duman",
 }
@@ -416,8 +417,7 @@ class ISGRulesEngine:
     # Sınıf bazlı gerçek boyut referansları (Metre) — mesafe ve hız ölçeklemesi için
     CLASS_HEIGHTS_M = {
         CanonicalClass.PERSON.value: 1.70,
-        CanonicalClass.FORKLIFT.value: 2.00,
-        CanonicalClass.MACHINERY.value: 2.50,
+        CanonicalClass.VEHICLE.value: 2.20,
     }
     DEFAULT_HEIGHT_M = 1.70
 
@@ -841,7 +841,7 @@ class ISGRulesEngine:
             v_display = CLASS_DISPLAY_NAMES_TR.get(v["class_name"], v["class_name"].capitalize())
             v_id = f"{v_display}-{v['track_id']}"
             speed = 0.0
-            if store and v["class_name"] == CanonicalClass.FORKLIFT.value:
+            if store and v["class_name"] == CanonicalClass.VEHICLE.value:
                 prev_v = store.get_previous_record(f"forklift_{v['track_id']}")
                 if prev_v:
                     speed = self.estimate_speed_kmh(
@@ -917,7 +917,7 @@ class ISGRulesEngine:
         elif cls == CanonicalClass.VEST.value:
             return f"🦺 Yelek-{track_id}: {conf_str}{bbox_str}"
 
-        elif cls == CanonicalClass.FORKLIFT.value:
+        elif cls == CanonicalClass.VEHICLE.value:
             aspect_ratio = w / float(h) if h > 0 else 1.0
             orient_str = f" | En/Boy: {aspect_ratio:.2f}"
             if aspect_ratio > 1.6:
@@ -928,14 +928,8 @@ class ISGRulesEngine:
                 speed = self.estimate_speed_kmh(r, prev_record, curr_frame=curr_frame, prev_frame=prev_frame)
                 speed_str = f" | Hız: {speed} km/h"
 
-            return f"🚜 Forklift-{track_id}: {conf_str}{bbox_str}{orient_str}{speed_str}"
+            return f"🚜 Araç-{track_id}: {conf_str}{bbox_str}{orient_str}{speed_str}"
 
-        elif cls == CanonicalClass.MACHINERY.value:
-            speed_str = ""
-            if prev_record is not None:
-                speed = self.estimate_speed_kmh(r, prev_record, curr_frame=curr_frame, prev_frame=prev_frame)
-                speed_str = f" | Hız: {speed} km/h"
-            return f"⚙️ İş Makinesi-{track_id}: {conf_str}{bbox_str}{speed_str}"
 
         elif cls == CanonicalClass.FIRE.value:
             return f"🔥 Ateş/Yangın-{track_id}: {conf_str}{bbox_str} (Acil Durum Varlığı)"
@@ -1146,7 +1140,7 @@ def run_isg_analysis(
                 persons.append(r)
             elif cls in [CanonicalClass.HELMET.value, CanonicalClass.VEST.value]:
                 equipments.append(r)
-            elif cls in [CanonicalClass.FORKLIFT.value, CanonicalClass.MACHINERY.value]:
+            elif cls == CanonicalClass.VEHICLE.value:
                 vehicles.append(r)
             elif cls in [CanonicalClass.FIRE.value, CanonicalClass.SMOKE.value]:
                 hazards.append(r)
@@ -1165,7 +1159,7 @@ def run_isg_analysis(
 
         # 2. Forklift & İş Makinesi Kontrolleri
         for v in vehicles:
-            if v.class_name == CanonicalClass.FORKLIFT.value:
+            if v.class_name == CanonicalClass.VEHICLE.value:
                 prev_v_info = store.get_valid_previous_record(f"forklift_{v.track_id}", frame_no)
                 prev_v = prev_v_info[0] if prev_v_info else None
                 prev_f_idx = prev_v_info[1] if prev_v_info else None

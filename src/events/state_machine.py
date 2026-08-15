@@ -32,7 +32,7 @@ class TrackState:
 
         # Devrilme için bbox en/boy oranı takibi
         ar = det.aspect_ratio
-        if detection.class_name == "forklift":
+        if detection.class_name == "arac":
             if ar > 1.45:
                 self.tip_over_frames += 1
             else:

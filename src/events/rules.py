@@ -1,4 +1,17 @@
-"""Geometrik olay tespit kuralları."""
+"""Geometrik ve Uzamsal İSG Olay Tespit Kuralları Modülü.
+
+Bu modül, Kanal A algılama katmanından gelen nesne takipleri (TrackedObject),
+durum geçmişleri (TrackStateMachine) ve anlamsal sahne grafiği (SceneGraph)
+verilerini geometrik kurallarla değerlendirerek tehlikeli İSG durumlarını tespit eder.
+
+Tespit Edilen Temel Olaylar:
+  1. Forklift Devrilmesi (`forklift_tip_over`): En/boy oranının (aspect ratio) değişmesi.
+  2. İnsan Düşmesi (`person_fall`): Dikey eksende (Y ekseni) ani ve yüksek hızlı düşüş hareketi.
+  3. Tehlikeli Toplanma (`gathering`): Belirli bir mesafe içinde birden fazla personelin kümelenmesi.
+  4. Hareketsizlik / Bayılma (`immobile_person`): Personelin belirli bir süre durağan kalması.
+  5. KKD Eksikliği (`ppe_missing`): Sahne grafiğinde baret veya yelek giyilme ilişkisinin bulunmaması.
+  6. Tehlikeli Yakınlık (`dangerous_proximity`): Forklift ile yaya arasındaki mesafenin risk sınırına inmesi.
+"""
 from __future__ import annotations
 
 import math
@@ -12,6 +25,17 @@ from .state_machine import TrackStateMachine
 
 @dataclass
 class EventSignal:
+    """Tespit edilen bir İSG olay sinyalini temsil eden veri sınıfı.
+
+    Attributes:
+        event_type (str): Olayın tür kodu (örn. 'forklift_tip_over', 'person_fall', 'ppe_missing').
+        timestamp (float): Olayın gerçekleştiği saniye cinsinden zaman damgası.
+        description (str): Olayın insan tarafından okunabilir Türkçe açıklaması.
+        confidence (float): 0.0 ile 1.0 arasında olayın kesinlik / güven skoru.
+        involved_track_ids (List[int]): Olaya karışan nesnelerin takip kimlikleri (track_id).
+        metadata (Dict[str, Any]): Olayla ilgili ek sayısal ve geometrik detaylar (hız, mesafe, oran vb.).
+    """
+
     event_type: str
     timestamp: float
     description: str
@@ -20,6 +44,11 @@ class EventSignal:
     metadata: Dict[str, Any]
 
     def to_dict(self) -> dict[str, Any]:
+        """Olay sinyalini JSON uyumlu sözlük formatına dönüştürür.
+
+        Returns:
+            dict[str, Any]: 'MM:SS' formatında zaman damgası ve olay detaylarını içeren sözlük.
+        """
         return {
             "event_type": self.event_type,
             "timestamp": self._format_time(self.timestamp),
@@ -31,15 +60,37 @@ class EventSignal:
 
     @staticmethod
     def _format_time(seconds: float) -> str:
+        """Saniye cinsinden zamanı 'MM:SS' (Dakika:Saniye) formatına dönüştürür.
+
+        Args:
+            seconds (float): Saniye değeri.
+
+        Returns:
+            str: '01:24' gibi biçimlendirilmiş zaman metni.
+        """
         minutes = int(seconds // 60)
         secs = int(seconds % 60)
         return f"{minutes:02d}:{secs:02d}"
 
 
 class RuleSet:
-    """Yapılandırılabilir geometrik kurallar kümesi."""
+    """Yapılandırılabilir İSG geometrik kurallar kümesi yöneticisi.
+
+    `config.yaml` içindeki eşik değerlerini ve aktif kural listesini alarak
+    her video karesi için kuralları çalıştırır ve üretilen olay sinyallerini döner.
+
+    Attributes:
+        thresholds (Dict[str, Any]): Kurallara ait eşik ve parametre sözlüğü.
+        fps (float): Videonun zaman hesaplamalarında kullanılan efektif kare/saniye hızı.
+    """
 
     def __init__(self, thresholds: Dict[str, Any], fps: float = 25.0):
+        """RuleSet nesnesini başlatır.
+
+        Args:
+            thresholds: config.yaml'daki 'events' bloğu ve eşik değerleri.
+            fps: Video kare/saniye hızı (varsayılan 25.0).
+        """
         self.thresholds = thresholds
         self.fps = fps
 
@@ -49,6 +100,16 @@ class RuleSet:
         states: TrackStateMachine,
         graph: SceneGraph,
     ) -> List[EventSignal]:
+        """Tüm aktif kuralları değerlendirir ve tespit edilen olay sinyallerini toplar.
+
+        Args:
+            tracks (List[TrackedObject]): Mevcut karedeki aktif takip nesneleri.
+            states (TrackStateMachine): Nesnelerin zamansal durum ve hareket geçmişi makinesi.
+            graph (SceneGraph): Karedeki nesneler arası anlamsal ve mekansal ilişkiler grafiği.
+
+        Returns:
+            List[EventSignal]: Bu karede tetiklenen tüm olay sinyalleri listesi.
+        """
         signals: List[EventSignal] = []
 
         enabled = self.thresholds.get("enabled_rules", [])
@@ -69,13 +130,26 @@ class RuleSet:
         return signals
 
     def _rule_tip_over(self, tracks: List[TrackedObject], states: TrackStateMachine) -> List[EventSignal]:
+        """Forklift Devrilmesi Kuralı: En/Boy Oranı (Aspect Ratio) Analizi.
+
+        Normalde forklift dikey veya dengeli bir dikdörtgendir. Yan yattığında veya
+        devrildiğinde bounding box genişliği yüksekliğinden belirgin şekilde fazla olur (ar >= 1.45).
+        Bu durum en az `min_duration_frames` (örn. 3 kare) boyunca sürerse devrilme alarmı üretilir.
+
+        Args:
+            tracks: Aktif takip listesi.
+            states: Nesne durum makinesi.
+
+        Returns:
+            List[EventSignal]: Devrilen forkliftler için üretilen sinyaller.
+        """
         signals = []
         cfg = self.thresholds.get("tip_over", {})
         min_frames = cfg.get("min_duration_frames", 3)
         ar_min = cfg.get("aspect_ratio_min", 1.45)
 
         for t in tracks:
-            if t.class_name != "forklift":
+            if t.class_name != "arac":
                 continue
             state = states.get(t.track_id)
             if state and state.tip_over_frames >= min_frames:
@@ -85,7 +159,7 @@ class RuleSet:
                         EventSignal(
                             event_type="forklift_tip_over",
                             timestamp=t.last_detection.frame_idx / self.fps,
-                            description=f"Forklift (track {t.track_id}) devrilme pozisyonunda; en/boy oranı {det.aspect_ratio:.2f}",
+                            description=f"Araç (track {t.track_id}) devrilme pozisyonunda; en/boy oranı {det.aspect_ratio:.2f}",
                             confidence=min(1.0, det.aspect_ratio / 3.0),
                             involved_track_ids=[t.track_id],
                             metadata={"aspect_ratio": det.aspect_ratio},
@@ -94,6 +168,19 @@ class RuleSet:
         return signals
 
     def _rule_fall(self, tracks: List[TrackedObject], states: TrackStateMachine) -> List[EventSignal]:
+        """Personel Düşmesi Kuralı: Dikey Hız (Kinematik) Analizi.
+
+        İnsan nesnesinin merkez noktasının Y eksenindeki dikey hızı aniden pozitif
+        yönde yüksek bir eşiği geçerse (speed_y > 30 px/frame) ve bu hareket en az 2 kare
+        sürerse personelin düştüğü tespit edilir.
+
+        Args:
+            tracks: Aktif takip listesi.
+            states: Nesne durum makinesi.
+
+        Returns:
+            List[EventSignal]: Düşen personel için üretilen sinyaller.
+        """
         signals = []
         cfg = self.thresholds.get("fall", {})
         speed_drop_ratio = cfg.get("speed_drop_ratio", 0.5)
@@ -117,6 +204,17 @@ class RuleSet:
         return signals
 
     def _rule_gathering(self, tracks: List[TrackedObject]) -> List[EventSignal]:
+        """Tehlikeli Toplanma Kuralı: Mekansal Kümeleme (Clustering) Analizi.
+
+        Belirli bir maksimum mesafe (`max_dist`, örn. 120 px) içinde en az `min_persons`
+        (örn. 3 kişi) personel bir araya gelmişse izinsiz/tehlikeli toplanma sinyali üretir.
+
+        Args:
+            tracks: Aktif takip listesi.
+
+        Returns:
+            List[EventSignal]: Toplanan gruplar için üretilen sinyaller.
+        """
         signals = []
         cfg = self.thresholds.get("gathering", {})
         min_persons = cfg.get("min_persons", 3)
@@ -158,6 +256,18 @@ class RuleSet:
         return signals
 
     def _rule_immobility(self, tracks: List[TrackedObject], states: TrackStateMachine) -> List[EventSignal]:
+        """Hareketsizlik / Bayılma Kuralı: Zaman Sürekliliği Analizi.
+
+        Personel belirli bir süreden (`min_seconds`, örn. 2.5 saniye) daha uzun süre
+        boyunca durağan kalmışsa (bayılma, sakatlanma veya kaza şüphesi) sinyal üretir.
+
+        Args:
+            tracks: Aktif takip listesi.
+            states: Nesne durum makinesi.
+
+        Returns:
+            List[EventSignal]: Hareketsiz kalan personel için üretilen sinyaller.
+        """
         signals = []
         cfg = self.thresholds.get("immobility", {})
         min_seconds = cfg.get("min_duration_seconds", 2.5)
@@ -180,6 +290,18 @@ class RuleSet:
         return signals
 
     def _rule_ppe_missing(self, graph: SceneGraph) -> List[EventSignal]:
+        """Kişisel Koruyucu Donanım (KKD) Eksikliği Kuralı: Sahne Grafiği Analizi.
+
+        Karedeki her bir `insan` düğümü için sahne grafiğindeki `wearing` ilişkilerini
+        denetler. Gerekli sınıflardan (`baret`, `yelek`) herhangi biriyle `wearing`
+        ilişkisi bulunamazsa KKD eksikliği sinyali üretir.
+
+        Args:
+            graph (SceneGraph): Karenin anlık sahne grafiği.
+
+        Returns:
+            List[EventSignal]: Baret veya yeleği eksik olan personel için üretilen sinyaller.
+        """
         signals = []
         cfg = self.thresholds.get("ppe_missing", {})
         proximity = cfg.get("proximity_threshold_pixels", 80)
@@ -211,6 +333,19 @@ class RuleSet:
         return signals
 
     def _rule_proximity(self, graph: SceneGraph) -> List[EventSignal]:
+        """Tehlikeli Yakınlık Kuralı: Forklift ve Yaya Etkileşimi.
+
+        Sahne grafiğindeki `near` ilişkilerini inceler. Eğer birbiriyle yakın olan
+        nesne çifti tehlikeli ikili listesindeyse (örn. `['forklift', 'insan']`) ve
+        aralarındaki Öklid mesafesi eşik değerinden (`threshold`, örn. 100 px) küçükse
+        çarpışma riski sinyali üretir.
+
+        Args:
+            graph (SceneGraph): Karenin anlık sahne grafiği.
+
+        Returns:
+            List[EventSignal]: Forklift ve insan arasındaki yakınlaşma sinyalleri.
+        """
         signals = []
         cfg = self.thresholds.get("proximity", {})
         dangerous_pairs = [set(p) for p in cfg.get("dangerous_pairs", [["forklift", "insan"]])]
@@ -224,7 +359,7 @@ class RuleSet:
             if not a or not b:
                 continue
             if {a.class_name, b.class_name} in dangerous_pairs:
-                # Mesafe tahmini: weight 1 - dist/threshold
+                # Mesafe tahmini: weight = 1 - dist/threshold => dist = (1 - weight) * threshold
                 estimated_dist = (1 - edge.weight) * threshold
                 if estimated_dist <= threshold:
                     signals.append(

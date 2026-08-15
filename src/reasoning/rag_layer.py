@@ -121,8 +121,8 @@ def _observations_to_natural_language(observations: Any) -> str:
                         aspect_ratio = w / h
                         if cls == "insan" and aspect_ratio > 1.2:
                             lines.append("DİKKAT: İnsan yatay pozisyonda algılandı (düşme/bayılma şüphesi).")
-                        elif cls == "forklift" and aspect_ratio > 1.5:
-                            lines.append("DİKKAT: Forklift anormal yatay pozisyonda (devrilme şüphesi).")
+                        elif cls == "arac" and aspect_ratio > 1.5:
+                            lines.append("DİKKAT: Araç anormal yatay pozisyonda (devrilme şüphesi).")
                 except (ValueError, TypeError):
                     pass
 
@@ -157,7 +157,7 @@ def _observations_to_natural_language(observations: Any) -> str:
                 
                 if cls == "insan":
                     people_tracks.append(track_info)
-                elif cls == "forklift":
+                elif cls == "arac":
                     forklift_tracks.append(track_info)
 
             # 1. İnsan Bilinç/Hareket Kontrolü
@@ -250,7 +250,7 @@ class RAGLayer:
         """Sinyal event_type'larıyla pattern adı eşleşmesi (ikincil filtre/boost) ve yapısal eşleşme (scene graph)."""
         matched: Dict[str, Dict[str, Any]] = {}
         for sig in event_signals:
-            event_type = sig.get("event_type", "")
+            event_type = sig.event_type if hasattr(sig, "event_type") else (sig.get("event_type", "") if isinstance(sig, dict) else "")
             for name in self.patterns.get("patterns", {}):
                 if event_type == name or event_type in name or name in event_type:
                     matched[name] = {"signal": sig}

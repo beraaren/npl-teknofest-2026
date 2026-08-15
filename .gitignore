@@ -7,11 +7,14 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 
-# Çıktılar ve loglar
+# Çıktılar, loglar ve test videoları
 outputs/*
 !outputs/.gitkeep
 logs/*
 !logs/.gitkeep
+test_videos/*
+!test_videos/.gitkeep
+
 
 # Model ağırlıkları
 *.gguf

@@ -16,7 +16,14 @@ import numpy as np
 from numpy.typing import NDArray
 
 from ..config import DecisionAgentConfig, VLMConfig
-from ..models.vlm_backend import VLMBackend, create_backend
+try:
+    from ..models.vlm_backend import VLMBackend, create_backend
+except (ImportError, ModuleNotFoundError):
+    try:
+        from Kanal_B.backend import VLMBackendBase as VLMBackend, build_backend as create_backend  # type: ignore
+    except (ImportError, ModuleNotFoundError):
+        VLMBackend = Any  # type: ignore
+        create_backend = None  # type: ignore
 from ..utils.logger import get_logger
 from .memory import ShortTermMemory
 from .mock_tools import MockToolRegistry

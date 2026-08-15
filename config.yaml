@@ -47,16 +47,15 @@ preprocessing:
 # ---------------------------------------------------------------------------
 perception:
   detector_backend: "ultralytics"  # "ultralytics" | "hf_transformers" (YOLO eğitilene kadar HF aktif)
-  yolo_model: "best.pt"             # COCO önceden eğitilmiş veya kendi ağırlığınız (eğitim sonrası aktifleşecek)
+  yolo_model: "yoloworld_ft_v2_1.pt"             # COCO önceden eğitilmiş veya kendi ağırlığınız (eğitim sonrası aktifleşecek)
   custom_classes:                      # TEKNOFEST özel sınıfları (kendi modelinizde varsa)
-    - forklift
+    - arac
     - insan
     - palet
     - baret
     - yelek
     - yangin
     - duman
-    - makine
   confidence_threshold: 0.35
   tracker: "bytetrack"                 # "bytetrack" | "botsort"
   tracker_persist: true
@@ -98,7 +97,7 @@ events:
       proximity_threshold_pixels: 80
     proximity:
       dangerous_pairs:
-        - ["forklift", "insan"]
+        - ["arac", "insan"]
       distance_threshold_pixels: 100
     fire_smoke:
       enabled: false                # VLM tabanlı placeholder

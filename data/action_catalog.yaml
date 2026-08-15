@@ -1,5 +1,7 @@
 # Aksiyon Kataloğu
 # Risk seviyesi + olay tipi kombinasyonuna göre önerilen aksiyonlar.
+# ÖNEMLI: Buradaki anahtar isimler risk_patterns.yaml'daki pattern adlarıyla
+# birebir eşleşmeli — RAGLayer.recommend_actions() bu eşleşmeyle çalışır.
 
 actions:
   Yüksek:
@@ -7,33 +9,102 @@ actions:
       - "Acil durum ekibini ve sağlık personelini derhal çağır."
       - "Olay bölgesini güvenlik şeridi ile izole et."
       - "Güvenlik kameralarını ve kayıtları sakla, yetkililere bildir."
-      - "Benzer kazaları önlemek için risk değerlendirmesi yap."
+      - "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
     forklift_tip_over:
       - "Forklift operatörünün durumunu kontrol et, ilk yardım sağla."
-      - "Yangın/sızıntı riskine karşı çevreyi kontrol et."
+      - "Forklifti ve çevresini yangın/sızıntı riskine karşı kontrol et."
+      - "Forklift operasyonlarını bölgede durdur."
     person_fall:
       - "Yaralıyı hareket ettirmeden sağlık ekibini bekle."
-      - "Düşme nedenini (kaygan zemin, engel) tespit et."
-    forklift_human_proximity:
-      - "Forklift operatörünü acil durdur."
+      - "Düşme nedenini (kaygan zemin, engel, yükseklik) tespit et."
+      - "Çevredeki personeli bölgeden uzaklaştır."
+    dangerous_proximity:
+      - "Forklift operatörünü acil olarak durdur."
       - "Yaya trafiğini alternatif güzergaha yönlendir."
+      - "Çarpışmaya karışan personelin durumunu kontrol et."
+    fire_smoke:
+      - "Yangın söndürme sistemini derhal devreye al."
+      - "Bölgedeki tüm personeli tahliye et."
+      - "İtfaiye ve acil müdahale ekiplerini çağır."
+      - "Yakıt veya kimyasal kaynakları kapatmaya çalış (güvenlik varsa)."
+    pallet_collapse:
+      - "Çöken palet çevresindeki personelin durumunu kontrol et."
+      - "Dengesiz palet yüklerini güvenli şekilde kaldır veya sabitle."
+      - "Depo/saha bölümünü erişime kapat."
+    electrical_hazard:
+      - "Bölgenin ana şalterden elektriğini kes."
+      - "Kıvılcım veya yangın ihtimaline karşı alanı izole et."
+      - "Acil bakım/onarım ekibine derhal bilgi ver."
+    blocked_emergency_exit:
+      - "Acil çıkış yolundaki engelleri (palet, kutu) acilen kaldır."
+      - "Yangın söndürme ekipmanının erişilebilirliğini kontrol et."
+      - "İlgili alan sorumlusunu prosedür ihlali hakkında uyar."
+    blind_spot_movement:
+      - "Forklift operatörünü uyar ve hızını düşürmesini sağla."
+      - "Yayaları kör noktalara girmemeleri konusunda sesli ikaz et."
+      - "Bölgedeki uyarı aynalarının açısını kontrol et."
+
+
+    overhead_hazard:
+      - "Vinci acil durdur ve operatörle telsiz iletişimi kur."
+      - "Yük altındaki personeli sesli sirenle uyar."
+      - "Riskli alanı güvenlik şeridiyle kapat."
+    vehicle_speeding:
+      - "Forkliftin hızını uzaktan sınırlandır (IoT entegrasyonu ile)."
+      - "Sürücüye hız limitini aştığına dair kabin içi uyarı gönder."
+      - "Bölgedeki yayaları olası kazaya karşı uyar."
 
   Orta:
     default:
-      - "Alan sorumlusunu bilgilendir."
+      - "Alan sorumlusunu derhal bilgilendir."
       - "Durumu güvenlik kayıtlarına ekle."
-      - "Önleyici tedbirleri gözden geçir."
+      - "Önleyici tedbirleri gözden geçir ve uygula."
     ppe_missing:
-      - "İlgili personele KKD kullanımı konusunda uyarı ver."
-      - "Eğitim programını güncelle."
+      - "İlgili personele KKD (baret/yelek) kullanımı konusunda uyarı ver."
+      - "Eksik KKD temin edilene kadar çalışmayı durdur."
+      - "Eğitim programını ve KKD stoklarını güncelle."
     gathering:
-      - "Toplanma bölgesindeki personeli dağıt."
-      - "Bölgedeki tehlikeli hareketleri durdur."
+      - "Toplanma bölgesindeki personeli güvenli alana dağıt."
+      - "Bölgedeki tehlikeli makineleri veya hareketleri durdur."
+      - "Çalışma bölgesi kapasitesini ve erişim kontrolünü gözden geçir."
     immobile_person:
-      - "Kişinin bilincini kontrol et, sağlık ekibine haber ver."
-      - "Yakınında güvenli alan oluştur."
+      - "Kişinin bilincini ve durumunu kontrol et, sağlık ekibine haber ver."
+      - "Çevresinde güvenli alan oluştur, diğer personeli uzaklaştır."
+      - "Kişinin son bilinen aktivitesini kayıt altına al."
+    leakage:
+      - "Sızıntı kaynağını tespit et ve varsa vanayı/boruyu kapat."
+      - "Bölgeyi sızıntı temizlenene kadar erişime kapat."
+      - "Sıvı türüne göre (kimyasal/yağ/su) uygun temizlik protokolü uygula."
+      - "Kayma riskine karşı uyarı işaretleri yerleştir."
+    unauthorized_access:
+      - "Yetkisiz personeli güvenli ve yetkili olduğu alana yönlendir."
+      - "İlgili giriş noktasındaki güvenlik önlemlerini kontrol et."
+      - "Durumu güvenlik birimine raporla."
+    spill_slip_hazard:
+      - "Dökülme/kayma riski olan bölgeye uyarı levhaları koy."
+      - "Temizlik personelini bölgeye yönlendir."
+      - "Personeli alternatif yürüme yollarına yönlendir."
+    running_in_facility:
+      - "Koşan personeli anons ile yavaşlaması için uyar."
+      - "Acil bir durum olup olmadığını teyit et."
+      - "Çevredeki iş makinelerinin hızını düşür."
+
+
+    fatigue_detection:
+      - "Personelin yanına giderek iyi olup olmadığını kontrol et."
+      - "Mola sistemine bildirim gönder, kişiyi dinlenmeye yönlendir."
+      - "Çalışma alanının ergonomisini incele."
+    restricted_time_access:
+      - "Bölgede yalnız çalışma prosedürünün aktif olup olmadığını kontrol et."
+      - "Personelin kimliğini sorgulamak üzere güvenlik birimine haber ver."
+      - "Aydınlatmaları artırarak kamera görüşünü iyileştir."
 
   Düşük:
     default:
-      - "Durumu rutin kontrol listesine kaydet."
+      - "Durumu rutin İSG kontrol listesine kaydet."
       - "Gerekirse gözetim altında çalışmaya devam et."
+      - "Bir sonraki düzenli denetimde değerlendir."
+    cluttered_workspace:
+      - "Alan sorumlusundan temizlik ve düzenleme talep et."
+      - "Geçiş yollarını engelleyen kutu/kabloları güvenli yere al."
+      - "Gereksiz malzemelerin depoya kaldırılmasını sağla."

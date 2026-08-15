@@ -1,24 +1,56 @@
 # Risk Pattern Deposu
 # Her pattern, scene graph / olay sinyalleriyle eşleştirildiğinde risk skoru üretir.
+# keywords: TF-IDF indeksine eklenir — doğal dil sorgularıyla benzerlik artar.
+# mock_tool_hints: RAGLayer.recommend_tools() bu alanı okur; VLM parse başarısız
+#                  olsa bile doğru tool seti önerilebilir.
 
 patterns:
   forklift_tip_over:
-    description: "Forkliftin yan yatması veya tekerleklerinin yerden kesilmesi."
+    description: "Forkliftin yan yatması, devrilmesi veya tekerleklerinin yerden kesilmesi."
     risk_score: 95
     risk_level: "Yüksek"
     indicators:
-      - "forklift bbox en/boy oranı anormal"
-      - "forklift açısı > 20°"
+      - "forklift bbox en/boy oranı anormal (yatay)"
+      - "forklift açısı > 20° eğik"
+      - "forklift merkezi ani yatay kayma"
+      - "forklift hareketsiz ve anormal pozisyonda"
+      - "çevresinde insan toplanması"
+    keywords: "forklift devrilme yatma eğilme kaza çarpma çarpışma araç devrildi"
     required_nodes: ["forklift"]
+    potential_hazards:
+      - "Yakıt sızıntısı ve yangın"
+      - "Sürücü travması"
+      - "Operasyon durması"
+    mock_tool_hints:
+      - "call_health_team"
+      - "call_ambulance"
+      - "secure_area"
+      - "record_incident"
+      - "notify_supervisor"
+      - "stop_forklift"
 
   person_fall:
-    description: "Personelin ani düşüşü."
+    description: "Personelin ani düşüşü veya zemine çökmesi."
     risk_score: 90
     risk_level: "Yüksek"
     indicators:
-      - "insan merkezi dikeyde ani düşüş"
-      - "hız vektörü yukarıdan aşağıya değişim"
+      - "insan merkezi dikeyde ani düşüş (yüksek hız)"
+      - "hız vektörü yukarıdan aşağıya ani değişim"
+      - "insan bbox yüksekliği aniden küçüldü"
+      - "insan hareketsiz zemin seviyesinde"
+      - "çevresinde toplanma veya koşuşturma"
+    keywords: "düşme düştü yere çöktü bayılma yaralanma kaza insan kişi personel"
     required_nodes: ["insan"]
+    potential_hazards:
+      - "Ciddi yaralanma"
+      - "Kanama"
+      - "Bilinç kaybı"
+    mock_tool_hints:
+      - "call_health_team"
+      - "call_ambulance"
+      - "secure_area"
+      - "record_incident"
+      - "notify_supervisor"
 
   gathering:
     description: "Üç veya daha fazla personelin tehlikeli bölgede toplanması."
@@ -26,52 +58,334 @@ patterns:
     risk_level: "Orta"
     indicators:
       - "≥3 insan merkezi arası mesafe < eşik"
+      - "insan sayısı yüksek dar alanda"
+      - "hareket yönleri merkeze doğru"
+      - "toplanma aktif çalışma bölgesinde"
+    keywords: "toplanma kalabalık kümelenme çok insan personel yığılma bölge"
     required_nodes: ["insan", "insan", "insan"]
+    potential_hazards:
+      - "Toplu kaza riski"
+      - "Tahliye güçlüğü"
+      - "İş verimi kaybı"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "sound_alarm"
+      - "record_incident"
 
   immobile_person:
-    description: "Personel uzun süre hareketsiz kalması."
+    description: "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi."
     risk_score: 70
     risk_level: "Orta"
     indicators:
       - "insan merkezi 2.5 sn'den fazla sabit"
+      - "insan bbox değişmiyor"
+      - "çevresinde yardım hareketi yok"
+      - "insan zemin seviyesinde hareketsiz"
+    keywords: "hareketsiz sabit bayılma bilinçsiz yerde yatan kişi insan personel"
     required_nodes: ["insan"]
+    potential_hazards:
+      - "Hayati tehlike"
+      - "Tıbbi müdahale gecikmesi"
+    mock_tool_hints:
+      - "call_health_team"
+      - "call_ambulance"
+      - "record_incident"
+      - "notify_supervisor"
 
   ppe_missing:
-    description: "Baret veya yelek gibi kişisel koruyucu donanım eksikliği."
+    description: "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği."
     risk_score: 45
     risk_level: "Orta"
     indicators:
       - "insan yakınında baret/yelek tespit edilmedi"
+      - "kafa koruyucu yok"
+      - "reflektif yelek görünmüyor"
+      - "KKD sınıfı tespit skoru düşük"
+    keywords: "baret kask yelek kkd koruyucu donanım eksik ihlal kişisel güvenlik"
     required_nodes: ["insan"]
+    potential_hazards:
+      - "Kafa travması"
+      - "Görünmezlik kaynaklı ezilme"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "notify_supervisor"
+      - "record_incident"
 
   dangerous_proximity:
-    description: "Forklift ile personel arasında tehlikeli yakınlık."
+    description: "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski."
     risk_score: 80
     risk_level: "Yüksek"
     indicators:
-      - "forklift ve insan merkezi arası mesafe < eşik"
+      - "forklift ve insan merkezi arası mesafe < güvenli eşik"
+      - "forklift hareket yönü insana doğru"
+      - "insan forklift güvenlik koridorunda"
+      - "manevra sırasında insan yakın"
+    keywords: "yakınlık çarpma riski forklift insan tehlikeli mesafe güvenlik koridoru"
     required_nodes: ["forklift", "insan"]
+    potential_hazards:
+      - "Çarpışma"
+      - "Ezilme"
+      - "Ölümcül kaza"
+    mock_tool_hints:
+      - "stop_forklift"
+      - "sound_alarm"
+      - "call_health_team"
+      - "call_ambulance"
+      - "record_incident"
+      - "notify_supervisor"
 
   fire_smoke:
-    description: "Yangın veya duman görülmesi."
+    description: "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir."
     risk_score: 100
     risk_level: "Yüksek"
     indicators:
-      - "VLM tarafından yangın/duman tespiti"
+      - "görüntüde alev veya ateş tespiti"
+      - "görüntüde duman veya sis anomalisi"
+      - "kırmızı/turuncu/gri renk anomalisi geniş alanda"
+      - "VLM tarafından yangın veya duman bildirimi"
+      - "ısıl bölge veya parlama"
+    keywords: "yangın alev duman ateş sis kıvılcım tutuşma yanma parlama dumanlanma"
     required_nodes: []
+    potential_hazards:
+      - "Tesis yangını"
+      - "Zehirli gaz soluma"
+      - "Patlama"
+    mock_tool_hints:
+      - "trigger_fire_suppression"
+      - "lockdown_facility"
+      - "call_health_team"
+      - "call_ambulance"
+      - "activate_cbrn_protocol"
+      - "record_incident"
+      - "broadcast_evacuation"
+      - "dispatch_drone"
 
   leakage:
-    description: "Sıvı/sızıntı birikintisi."
+    description: "Sıvı/kimyasal sızıntı veya birikintisi — kayma ve zehirlenme riski."
     risk_score: 60
     risk_level: "Orta"
     indicators:
-      - "VLM tarafından sızıntı tespiti"
+      - "VLM tarafından sıvı birikintisi tespiti"
+      - "zemin yansıması veya ıslak görünüm"
+      - "garip renkte sıvı birikimi"
+      - "insan kayma riski bölgede"
+    keywords: "sızıntı sıvı birikinti dökülme kimyasal su yağ zemin ıslak kayma"
     required_nodes: []
+    potential_hazards:
+      - "Kayma ve düşme"
+      - "Kimyasal yanık"
+      - "Yangın (yanıcı madde ise)"
+    mock_tool_hints:
+      - "activate_cbrn_protocol"
+      - "secure_area"
+      - "notify_supervisor"
+      - "record_incident"
 
   pallet_collapse:
-    description: "Palet yükünün devrilmesi veya çökmesi."
+    description: "Palet yükünün devrilmesi, çökmesi veya tehlikeli pozisyonda olması."
     risk_score: 75
     risk_level: "Yüksek"
     indicators:
-      - "palet yüksekte veya eğik"
+      - "palet bbox eğimli veya anormal"
+      - "palet yüksekte dengesiz pozisyon"
+      - "palet üzerindeki yük dağılımı bozulmuş"
+      - "palet çevresinde insan varlığı"
+      - "istif yüksekliği güvenli sınırı aşıyor"
+    keywords: "palet yük devrilme çökme istif dağılma düşme raf depolama kargo"
     required_nodes: ["palet"]
+    potential_hazards:
+      - "Çalışanların ezilmesi"
+      - "Acil çıkış yollarının kapanması"
+    mock_tool_hints:
+      - "secure_area"
+      - "notify_supervisor"
+      - "record_incident"
+
+  electrical_hazard:
+    description: "Açık pano, kablo veya elektrik tehlikesi barındıran durum."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "açık elektrik panosu"
+      - "yerde uzanan izolesiz kablo"
+      - "kıvılcım veya ark tespiti"
+    keywords: "elektrik pano kablo çarpma ark kıvılcım voltaj şok"
+    required_nodes: ["pano"]
+    potential_hazards:
+      - "Elektrik çarpması"
+      - "Elektrik kaynaklı yangın"
+    mock_tool_hints:
+      - "secure_area"
+      - "sound_alarm"
+      - "record_incident"
+      - "notify_supervisor"
+      - "isolate_electrical_grid"
+
+  unauthorized_access:
+    description: "Yetkisiz personelin tehlikeli veya kısıtlı alana girişi."
+    risk_score: 65
+    risk_level: "Orta"
+    indicators:
+      - "yetkisiz bölgede insan tespiti"
+      - "güvenlik ihlali çizgisi aşıldı"
+    keywords: "yetkisiz giriş ihlal yasak bölge kısıtlı alan personel"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Sabotaj"
+      - "Eğitimsiz personel kazası"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "notify_supervisor"
+      - "record_incident"
+
+  blocked_emergency_exit:
+    description: "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması."
+    risk_score: 75
+    risk_level: "Yüksek"
+    indicators:
+      - "çıkış kapısı önünde engel (palet, kutu vb.)"
+      - "yangın ekipmanı önünde nesne"
+    keywords: "acil çıkış kapı blokaj yangın tüpü engel tıkanıklık kaçış"
+    required_nodes: ["palet", "kutu"]
+    potential_hazards:
+      - "Tahliye engeli"
+      - "Toplu panik"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "record_incident"
+
+  spill_slip_hazard:
+    description: "Zeminde dökülmüş sıvı, yağ veya su kaynaklı kayma tehlikesi."
+    risk_score: 55
+    risk_level: "Orta"
+    indicators:
+      - "zeminde ıslaklık, yansıma veya birikinti"
+      - "kaygan zemin uyarısı yok"
+    keywords: "sıvı dökülme kayma yağ su zemin ıslaklık tehlike"
+    required_nodes: []
+    potential_hazards:
+      - "Başını çarpma"
+      - "Kırık/Çıkık"
+      - "Kimyasal reaksiyon"
+    mock_tool_hints:
+      - "secure_area"
+      - "notify_supervisor"
+      - "record_incident"
+
+  cluttered_workspace:
+    description: "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski)."
+    risk_score: 40
+    risk_level: "Düşük"
+    indicators:
+      - "yürüme yolunda kutu/kablo"
+      - "dağınık malzeme"
+    keywords: "dağınık düzensiz engel takılma çalışma alanı"
+    required_nodes: ["kutu"]
+    potential_hazards:
+      - "Takılma ve düşme"
+      - "Acil müdahale gecikmesi"
+      - "Forklift manevra engeli"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "record_incident"
+
+  running_in_facility:
+    description: "Tesis içinde koşan personel (çarpışma/kayma riski)."
+    risk_score: 60
+    risk_level: "Orta"
+    indicators:
+      - "insan hız vektörü yüksek"
+      - "koşma tespiti"
+    keywords: "koşma koşan hızlı personel ivme panik"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Kör noktada forkliftle çarpışma"
+      - "Kayma ve düşme"
+      - "Panik yaratma"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "notify_supervisor"
+      - "record_incident"
+
+  blind_spot_movement:
+    description: "Kavşak veya kör noktalarda kontrolsüz hareket."
+    risk_score: 75
+    risk_level: "Yüksek"
+    indicators:
+      - "kör noktada yaya"
+      - "kavşakta hizalanma eksikliği"
+    keywords: "kör nokta kavşak görünmezlik ani çıkış"
+    required_nodes: ["insan", "forklift"]
+    potential_hazards:
+      - "Ani çarpışma"
+      - "Fren mesafesi yetersizliği"
+      - "Ölümcül kaza"
+    mock_tool_hints:
+      - "stop_forklift"
+      - "sound_alarm"
+      - "record_incident"
+
+  overhead_hazard:
+    description: "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük)."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "insanın hemen üzerinde hareketli yük"
+    keywords: "vinç yük raf düşme tepeden yüksek malzeme"
+    required_nodes: []
+    potential_hazards:
+      - "Kafa travması"
+      - "Ölümcül ezilme"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "secure_area"
+      - "record_incident"
+
+  fatigue_detection:
+    description: "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski)."
+    risk_score: 50
+    risk_level: "Orta"
+    indicators:
+      - "personel çok uzun süre hareketsiz"
+      - "duruş anomalisi"
+    keywords: "yorgunluk bitkinlik hareketsiz sabit ergonomi tükenmişlik"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "İş kazası potansiyeli artışı"
+      - "Bayılma öncülü"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "call_health_team"
+      - "record_incident"
+
+  vehicle_speeding:
+    description: "Forkliftin veya aracın tesis içi hız limitini aşması."
+    risk_score: 75
+    risk_level: "Yüksek"
+    indicators:
+      - "araç hız vektörü > limit"
+    keywords: "hız sürat limiti aştı hızlı araç forklift"
+    required_nodes: ["forklift"]
+    potential_hazards:
+      - "Manevra kaybı"
+      - "Ani çarpışma"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "stop_forklift"
+      - "notify_supervisor"
+
+  restricted_time_access:
+    description: "Mesai saatleri dışında veya izinsiz zamanda bölgede yaya tespiti."
+    risk_score: 65
+    risk_level: "Orta"
+    indicators:
+      - "zaman damgası mesai dışı ve insan tespit edildi"
+    keywords: "gece izinsiz mesai dışı yasak saat giriş yaya"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Hırsızlık/Sabotaj"
+      - "Yalnız çalışma kazası"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "notify_supervisor"
+      - "record_incident"

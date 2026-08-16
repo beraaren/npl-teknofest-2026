@@ -109,10 +109,10 @@ class EventEngine:
                 confidence=1.0,
                 bbox=(0.0, 0.0, 0.0, 0.0),
             )
-            # Daha zengin detection bilgisi varsa kullan
+            # Daha zengin detection bilgisi varsa kullan (önce track_id ile, yoksa class ile eşle)
             det_data = next(
-                (d for d in observation.get("detections", []) if d.get("class") == t["class"]),
-                None,
+                (d for d in observation.get("detections", []) if d.get("track_id") == t["track_id"]),
+                next((d for d in observation.get("detections", []) if d.get("class") == t["class"]), None),
             )
             if det_data:
                 det = Detection(
@@ -120,6 +120,7 @@ class EventEngine:
                     confidence=det_data.get("confidence", 1.0),
                     bbox=tuple(det_data.get("bbox", [0, 0, 0, 0])),
                     frame_idx=det_data.get("frame_idx", 0),
+                    track_id=t["track_id"],
                 )
             to = TrackedObject(track_id=t["track_id"], class_name=t["class"], initial_detection=det)
             to.history = [det]

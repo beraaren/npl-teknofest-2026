@@ -90,12 +90,13 @@ class SceneGraph:
     def from_detections(cls, frame_idx: int, timestamp: float, detections: List[Detection]) -> SceneGraph:
         graph = cls(frame_idx=frame_idx, timestamp=timestamp)
         for idx, det in enumerate(detections):
-            node_id = f"{det.class_name}_{idx}"
+            tid = getattr(det, "track_id", None)
+            node_id = f"{det.class_name}_{tid}" if tid is not None else f"{det.class_name}_{idx}"
             graph.add_node(
                 SceneNode(
                     node_id=node_id,
                     class_name=det.class_name,
-                    track_id=None,
+                    track_id=tid,
                     bbox=det.bbox,
                     confidence=det.confidence,
                     frame_idx=frame_idx,

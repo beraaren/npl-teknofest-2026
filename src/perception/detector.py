@@ -17,12 +17,14 @@ class Detection:
         confidence: float,
         bbox: tuple[float, float, float, float],
         frame_idx: int = 0,
+        track_id: int | None = None,
     ):
         self.class_name = class_name
         self.confidence = confidence
         # x1, y1, x2, y2 (piksel)
         self.bbox = bbox
         self.frame_idx = frame_idx
+        self.track_id = track_id
         # Bazı modeller (örn. PP-DocLayoutV3) segmentasyon poligonu da döndürür
         self.polygon: Any = None
 
@@ -47,6 +49,7 @@ class Detection:
     def to_dict(self) -> dict[str, Any]:
         data = {
             "class": self.class_name,
+            "track_id": self.track_id,
             "confidence": round(self.confidence, 3),
             "bbox": [round(v, 2) for v in self.bbox],
             "center": [round(self.center[0], 2), round(self.center[1], 2)],

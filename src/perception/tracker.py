@@ -105,6 +105,7 @@ class ObjectTracker:
                 confidence=float(conf),
                 bbox=tuple(float(v) for v in box),
                 frame_idx=frame_idx,
+                track_id=int(tid),
             )
             tracked.append(TrackedObject(track_id=int(tid), class_name=class_name, initial_detection=det))
 

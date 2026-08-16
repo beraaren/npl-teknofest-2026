@@ -1,5 +1,6 @@
 # Sanal ortamlar / geçici bağımlılıklar
 .venv/
+venv/
 .pydeps/
 __pycache__/
 *.py[cod]
@@ -14,6 +15,7 @@ logs/*
 !logs/.gitkeep
 test_videos/*
 !test_videos/.gitkeep
+!test_videos/*.py
 
 
 # Model ağırlıkları

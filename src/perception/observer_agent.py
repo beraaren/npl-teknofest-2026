@@ -58,6 +58,8 @@ class ObserverAgent:
         for tid, t in self.tracks.items():
             if tid not in active_ids:
                 t.disappeared += 1
+            else:
+                t.disappeared = 0
 
         # Scene graph
         detections: List[Detection] = [t.last_detection for t in self.tracks.values() if t.disappeared < 5]
@@ -107,5 +109,6 @@ class ObserverAgent:
                 best_id = self._next_track_id
                 self._next_track_id += 1
             used_ids.add(best_id)
+            det.track_id = best_id
             tracked.append(TrackedObject(track_id=best_id, class_name=det.class_name, initial_detection=det))
         return tracked

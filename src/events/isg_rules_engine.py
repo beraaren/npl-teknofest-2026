@@ -417,7 +417,7 @@ class ISGRulesEngine:
     # Sınıf bazlı gerçek boyut referansları (Metre) — mesafe ve hız ölçeklemesi için
     CLASS_HEIGHTS_M = {
         CanonicalClass.PERSON.value: 1.70,
-        CanonicalClass.VEHICLE.value: 2.20,
+        CanonicalClass.VEHICLE.value: 2.00,
     }
     DEFAULT_HEIGHT_M = 1.70
 

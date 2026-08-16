@@ -1,0 +1,148 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api-gateway:
+    build:
+      context: ..          # bera/ kökü — Dockerfile src/,Kanal_B/,backend/ kopyalar
+      dockerfile: backend/Dockerfile
+    command: uvicorn backend.gateway.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - INGEST_SERVICE_URL=http://camera-ingest:8001
+      - PERCEPTION_SERVICE_URL=http://perception:8002
+      - VLM_SERVICE_URL=http://vlm:8003
+      - DECISION_SERVICE_URL=http://decision:8004
+      - NOTIFICATION_SERVICE_URL=http://notification:8005
+      - TEKNOFEST_CONFIG=/app/config.yaml
+      - PYTHONPATH=/app
+    volumes:
+      - ../data:/app/data
+      - ../src:/app/src
+      - ../Kanal_B:/app/Kanal_B
+      - ../backend:/app/backend
+      - ../config.yaml:/app/config.yaml
+
+  camera-ingest:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    command: uvicorn backend.ingest.main:app --host 0.0.0.0 --port 8001
+    ports:
+      - "8001:8001"
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - TEKNOFEST_CONFIG=/app/config.yaml
+      - PYTHONPATH=/app
+    volumes:
+      - ../data:/app/data
+      - ../src:/app/src
+      - ../Kanal_B:/app/Kanal_B
+      - ../backend:/app/backend
+      - ../config.yaml:/app/config.yaml
+
+  perception:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    command: uvicorn backend.perception.main:app --host 0.0.0.0 --port 8002
+    ports:
+      - "8002:8002"
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - TEKNOFEST_CONFIG=/app/config.yaml
+      - PYTHONPATH=/app
+    volumes:
+      - ../data:/app/data
+      - ../src:/app/src
+      - ../Kanal_B:/app/Kanal_B
+      - ../backend:/app/backend
+      - ../config.yaml:/app/config.yaml
+
+  vlm:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    command: uvicorn backend.vlm.main:app --host 0.0.0.0 --port 8003
+    ports:
+      - "8003:8003"
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - TEKNOFEST_CONFIG=/app/config.yaml
+      - PYTHONPATH=/app
+    volumes:
+      - ../data:/app/data
+      - ../src:/app/src
+      - ../Kanal_B:/app/Kanal_B
+      - ../backend:/app/backend
+      - ../config.yaml:/app/config.yaml
+
+  decision:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    command: uvicorn backend.decision.main:app --host 0.0.0.0 --port 8004
+    ports:
+      - "8004:8004"
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - TEKNOFEST_CONFIG=/app/config.yaml
+      - PYTHONPATH=/app
+    volumes:
+      - ../data:/app/data
+      - ../src:/app/src
+      - ../Kanal_B:/app/Kanal_B
+      - ../backend:/app/backend
+      - ../config.yaml:/app/config.yaml
+
+  notification:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    command: uvicorn backend.notification.main:app --host 0.0.0.0 --port 8005
+    ports:
+      - "8005:8005"
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - TEKNOFEST_CONFIG=/app/config.yaml
+      - PYTHONPATH=/app
+    volumes:
+      - ../data:/app/data
+      - ../src:/app/src
+      - ../Kanal_B:/app/Kanal_B
+      - ../backend:/app/backend
+      - ../config.yaml:/app/config.yaml
+
+volumes:
+  redis_data:

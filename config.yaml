@@ -63,6 +63,13 @@ perception:
   hf_model: "PaddlePaddle/PP-DocLayoutV3_safetensors"
   hf_threshold: 0.5
   hf_device: "cpu"           # "auto" | "cuda" | "cpu" — bu model RTX 4060'ta CUDA hatası veriyor, cpu güvenli
+  # Araç isimlendirme: YOLO 'arac' etiketlerini Kanal B öncesi VLM ile spesifikleştirir
+  vehicle_labeling:
+    enabled: true
+    max_vehicles: 8             # tek VLM çağrısında gönderilecek max crop
+    min_confidence: 0.35        # bu eşiğin altındaki track'ler isimlendirilmez
+    padding_ratio: 0.15         # bbox genişletme oranı
+    max_tokens: 768
 
 # ---------------------------------------------------------------------------
 # Olay Tespit Motoru

@@ -24,6 +24,15 @@ class PreprocessingConfig(BaseModel):
     critical_frame_count: int = 4  # VLM'e (Kanal B) gidecek kritik kare sayısı
 
 
+class VehicleLabelingConfig(BaseModel):
+    """YOLO 'arac' etiketlerini VLM ile spesifikleştirme (Kanal B öncesi ön adım)."""
+    enabled: bool = True
+    max_vehicles: int = 8        # tek VLM çağrısında gönderilecek max crop
+    min_confidence: float = 0.35  # bu eşiğin altındaki track'ler isimlendirilmez
+    padding_ratio: float = 0.15  # bbox genişletme oranı
+    max_tokens: int = 768
+
+
 class PerceptionConfig(BaseModel):
     detector_backend: str = "ultralytics"
     yolo_model: str = "yolov8n.pt"
@@ -35,6 +44,7 @@ class PerceptionConfig(BaseModel):
     hf_model: str = "PaddlePaddle/PP-DocLayoutV3_safetensors"
     hf_threshold: float = 0.5
     hf_device: str = "auto"  # "auto" | "cuda" | "cpu" — PP-DocLayoutV3 bazı GPU'larda kararsız, "cpu" güvenli
+    vehicle_labeling: VehicleLabelingConfig = Field(default_factory=VehicleLabelingConfig)
 
 
 class EventThresholds(BaseModel):

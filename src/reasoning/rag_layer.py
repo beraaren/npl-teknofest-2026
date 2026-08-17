@@ -84,12 +84,17 @@ def _observations_to_natural_language(observations: Any) -> str:
             cls = det.get("class", "nesne")
             class_counter[cls] = class_counter.get(cls, 0) + 1
 
-        # Track verilerinden hareket ipuçları çıkar
+        # Track verilerinden hareket ipuçları çıkar.
+        # TrackedObject.to_dict() → {"track_id", "class", "history_length",
+        #                             "last_center": [x, y], "speed": [vx, vy]}
         for track in obs.get("tracks", []):
             cls = track.get("class", "nesne")
-            hist = track.get("history", [])
-            if len(hist) >= 2:
-                # Basit hareket: history varsa "hareketli" yok "hareketsiz"
+            speed_vec = track.get("speed", [0.0, 0.0])
+            if isinstance(speed_vec, (list, tuple)) and len(speed_vec) >= 2:
+                spd = math.sqrt(float(speed_vec[0]) ** 2 + float(speed_vec[1]) ** 2)
+            else:
+                spd = 0.0
+            if spd > 1.5:  # 1.5 px/frame hareketsizlik eşiği
                 motion_notes.append(f"{cls} hareketli")
 
     lines: List[str] = []
@@ -106,14 +111,14 @@ def _observations_to_natural_language(observations: Any) -> str:
         if class_counter:
             lines.append("Nesnelerin büyük çoğunluğu hareketsiz görünüyor.")
 
-    # Geometrik Anomali Kontrolü (Öneri B - En/Boy Oranı)
+    # Geometrik Anomali Kontrolü (En/Boy Oranı) — detection bbox'larından
     for obs in observations:
         if not isinstance(obs, dict):
             continue
         for det in obs.get("detections", []):
             cls = det.get("class", "nesne").lower()
             bbox = det.get("bbox")
-            if bbox and isinstance(bbox, list) and len(bbox) == 4:
+            if bbox and isinstance(bbox, (list, tuple)) and len(bbox) == 4:
                 try:
                     w = float(bbox[2]) - float(bbox[0])
                     h = float(bbox[3]) - float(bbox[1])
@@ -126,35 +131,43 @@ def _observations_to_natural_language(observations: Any) -> str:
                 except (ValueError, TypeError):
                     pass
 
-    # Kinematik Kontrol (Hız, İvme ve Göreceli Hareket)
+    # Kinematik Kontrol — TrackedObject.to_dict() formatıyla uyumlu
+    # (last_center: [x, y], speed: [vx, vy])
     try:
         for obs in observations:
             if not isinstance(obs, dict):
                 continue
-            
-            tracks = obs.get("tracks", [])
-            people_tracks = []
-            forklift_tracks = []
-            
-            for t in tracks:
+
+            people_tracks: List[Dict[str, Any]] = []
+            forklift_tracks: List[Dict[str, Any]] = []
+
+            for t in obs.get("tracks", []):
                 cls = t.get("class", "").lower()
-                vx, vy = 0.0, 0.0
-                if "velocity" in t:
-                    v = t["velocity"]
-                    if isinstance(v, list) and len(v) >= 2:
-                        vx, vy = float(v[0]), float(v[1])
-                elif "history" in t:
-                    hist = t["history"]
-                    if isinstance(hist, list) and len(hist) >= 2:
-                        try:
-                            vx = float(hist[-1][0]) - float(hist[-2][0])
-                            vy = float(hist[-1][1]) - float(hist[-2][1])
-                        except Exception:
-                            pass
-                
-                speed = math.sqrt(vx*vx + vy*vy)
-                track_info = {"id": t.get("id", "bilinmeyen"), "bbox": t.get("bbox"), "vx": vx, "vy": vy, "speed": speed}
-                
+                speed_vec = t.get("speed", [0.0, 0.0])
+                if isinstance(speed_vec, (list, tuple)) and len(speed_vec) >= 2:
+                    vx, vy = float(speed_vec[0]), float(speed_vec[1])
+                else:
+                    vx, vy = 0.0, 0.0
+                spd = math.sqrt(vx * vx + vy * vy)
+
+                # Bbox'u önce track dict'ten, yoksa eşleşen detection'dan al
+                bbox = t.get("bbox")
+                if bbox is None:
+                    tid = t.get("track_id")
+                    for det in obs.get("detections", []):
+                        if det.get("track_id") == tid:
+                            bbox = det.get("bbox")
+                            break
+
+                track_info = {
+                    "id": t.get("track_id", "bilinmeyen"),
+                    "bbox": bbox,
+                    "center": t.get("last_center"),
+                    "vx": vx,
+                    "vy": vy,
+                    "speed": spd,
+                }
+
                 if cls == "insan":
                     people_tracks.append(track_info)
                 elif cls == "arac":
@@ -164,28 +177,38 @@ def _observations_to_natural_language(observations: Any) -> str:
             for p in people_tracks:
                 if p["speed"] > 5.0:
                     lines.append(f"İnsan (ID:{p['id']}) aktif hareket halinde (bilinci açık).")
-            
+
             # 2. Göreceli Yaklaşma ve Kaçış Vektörü
-            for f in forklift_tracks:
+            for fk in forklift_tracks:
                 for p in people_tracks:
-                    if f["bbox"] and p["bbox"] and len(f["bbox"]) == 4 and len(p["bbox"]) == 4:
-                        fx = (float(f["bbox"][0]) + float(f["bbox"][2])) / 2
-                        fy = (float(f["bbox"][1]) + float(f["bbox"][3])) / 2
-                        px = (float(p["bbox"][0]) + float(p["bbox"][2])) / 2
-                        py = (float(p["bbox"][1]) + float(p["bbox"][3])) / 2
-                        
-                        dist = math.sqrt((fx-px)**2 + (fy-py)**2)
-                        if dist < 300:  # Yakınlık eşiği (piksel)
-                            rel_vx = f["vx"] - p["vx"]
-                            rel_vy = f["vy"] - p["vy"]
-                            rel_speed = math.sqrt(rel_vx**2 + rel_vy**2)
-                            
-                            if rel_speed < 10:
-                                lines.append(f"Forklift ve İnsan (ID:{p['id']}) göreceli hızı düşük (Sürücü veya güvenli biniş).")
-                            elif rel_speed > 30:
-                                lines.append("DİKKAT: Forklift ve insan arasında YÜKSEK GÖRECELİ HIZ (Çarpışma riski!).")
-                                if p["speed"] > 15:
-                                    lines.append("DİKKAT: Personel tehlikeden kaçıyor veya panik halinde koşuyor olabilir.")
+                    # Önce center kullan, yoksa bbox'tan hesapla
+                    fc = fk.get("center")
+                    pc = p.get("center")
+                    if fc is None and fk.get("bbox") and len(fk["bbox"]) == 4:
+                        bx = fk["bbox"]
+                        fc = [(float(bx[0]) + float(bx[2])) / 2, (float(bx[1]) + float(bx[3])) / 2]
+                    if pc is None and p.get("bbox") and len(p["bbox"]) == 4:
+                        bx = p["bbox"]
+                        pc = [(float(bx[0]) + float(bx[2])) / 2, (float(bx[1]) + float(bx[3])) / 2]
+                    if fc is None or pc is None:
+                        continue
+
+                    dist = math.sqrt((float(fc[0]) - float(pc[0])) ** 2 + (float(fc[1]) - float(pc[1])) ** 2)
+                    if dist < 300:
+                        rel_vx = fk["vx"] - p["vx"]
+                        rel_vy = fk["vy"] - p["vy"]
+                        rel_speed = math.sqrt(rel_vx ** 2 + rel_vy ** 2)
+
+                        if rel_speed < 10:
+                            lines.append(
+                                f"Forklift ve İnsan (ID:{p['id']}) göreceli hızı düşük (Sürücü veya güvenli biniş)."
+                            )
+                        elif rel_speed > 30:
+                            lines.append("DİKKAT: Forklift ve insan arasında YÜKSEK GÖRECELİ HIZ (Çarpışma riski!).")
+                            if p["speed"] > 15:
+                                lines.append(
+                                    "DİKKAT: Personel tehlikeden kaçıyor veya panik halinde koşuyor olabilir."
+                                )
     except Exception:
         pass
 
@@ -247,25 +270,45 @@ class RAGLayer:
         return {tok: x / norm for tok, x in v.items()}
 
     def match_patterns(self, event_signals: List[Dict[str, Any]], observation_report: Any = None) -> Dict[str, Dict[str, Any]]:
-        """Sinyal event_type'larıyla pattern adı eşleşmesi (ikincil filtre/boost) ve yapısal eşleşme (scene graph)."""
+        """Sinyal event_type'larıyla pattern adı eşleşmesi (ikincil filtre/boost) ve yapısal eşleşme.
+
+        event_signals: EventSignal.to_dict() listesi veya EventSignal nesneleri.
+        İçerdeki involved_track_ids, signal sözlüğüne taşınır — recommend_tools()
+        bunu stop_forklift gibi araçların forklift_id parametresi için kullanır.
+        """
         matched: Dict[str, Dict[str, Any]] = {}
         for sig in event_signals:
-            event_type = sig.event_type if hasattr(sig, "event_type") else (sig.get("event_type", "") if isinstance(sig, dict) else "")
+            # EventSignal nesnesi veya to_dict() çıktısı — her ikisini destekle
+            if hasattr(sig, "event_type"):
+                event_type = sig.event_type
+                sig_dict = sig.to_dict() if hasattr(sig, "to_dict") else {"event_type": event_type}
+            elif isinstance(sig, dict):
+                event_type = sig.get("event_type", "")
+                sig_dict = sig
+            else:
+                continue
+
             for name in self.patterns.get("patterns", {}):
                 if event_type == name or event_type in name or name in event_type:
-                    matched[name] = {"signal": sig}
-        
-        # Yapısal eşleştirme (scene graph node kontrolü)
+                    matched[name] = {"signal": sig_dict}
+
+        # Yapısal eşleştirme: detection sınıfları + track sınıfları birlikte kontrol
         if observation_report and isinstance(observation_report, list):
-            detected_classes = []
+            detected_classes: List[str] = []
             for obs in observation_report:
-                if isinstance(obs, dict):
-                    for det in obs.get("detections", []):
-                        detected_classes.append(det.get("class", "nesne").lower())
-            
+                if not isinstance(obs, dict):
+                    continue
+                for det in obs.get("detections", []):
+                    detected_classes.append(det.get("class", "nesne").lower())
+                # tracks'teki class bilgisi de değerlendir
+                for trk in obs.get("tracks", []):
+                    cls = trk.get("class", "").lower()
+                    if cls and cls not in detected_classes:
+                        detected_classes.append(cls)
+
             for name, pattern_data in self.patterns.get("patterns", {}).items():
                 if name in matched:
-                    continue # Zaten sinyalden yakalandı
+                    continue  # Zaten sinyalden yakalandı
                 required = pattern_data.get("required_nodes", [])
                 if required and all(req in detected_classes for req in required):
                     matched[name] = {"signal": {"event_type": "structural_match", "source": "scene_graph"}}
@@ -459,7 +502,13 @@ class RAGLayer:
                     params["message"] = "Dikkat: " + match.get("description", "")[:80]
                 elif tool_name == "stop_forklift":
                     signal = match.get("matched_signal", {})
-                    params["forklift_id"] = signal.get("object_id", signal.get("forklift_id", "bilinmeyen_forklift"))
+                    # EventSignal.to_dict() → involved_track_ids listesi
+                    track_ids = signal.get("involved_track_ids", [])
+                    vehicle_ids = [tid for tid in track_ids if isinstance(tid, (int, str))]
+                    params["forklift_id"] = (
+                        str(vehicle_ids[0]) if vehicle_ids
+                        else signal.get("object_id", signal.get("forklift_id", "bilinmeyen_forklift"))
+                    )
                 elif tool_name == "dispatch_drone":
                     params["target_zone"] = "olay_bolgesi"
                     params["mission"] = "Havadan keşif ve hasar tespiti"

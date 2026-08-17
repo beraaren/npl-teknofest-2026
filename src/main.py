@@ -54,6 +54,7 @@ def main(args=None) -> None:
     from .models.vlm_backend import create_backend
     from .output.guardrail import OutputGuardrail
     from .perception.observer_agent import ObserverAgent
+    from .perception.vehicle_labeler import apply_vehicle_labels, label_vehicles
     from .preprocessing.critical_frames import select_critical_frames
     from .preprocessing.enhancer import LowLightEnhancer
     from .preprocessing.frame_sampler import FrameSampler
@@ -150,6 +151,23 @@ def main(args=None) -> None:
         )
 
     # ------------------------------------------------------------------
+    # 3b. Araç isimlendirme — YOLO 'arac' etiketlerini VLM ile spesifikleştir.
+    # Kanal B / karar çağrılarından ÖNCE çalışır; kural motoru spesifik isimleri
+    # CanonicalClass.normalize() ile yine 'arac'a indirgediği için kurallar bozulmaz.
+    # Backend burada bir kez oluşturulur, adım 7'de karar ajanına aynısı geçilir.
+    # ------------------------------------------------------------------
+    backend = None
+    if config.perception.vehicle_labeling.enabled:
+        with metrics.measure("vehicle_labeling"):
+            backend = create_backend(config.vlm, force=args.backend)
+            logger.info(f"Kullanılan VLM backend: {backend.name()}")
+            label_map = label_vehicles(
+                observer.tracks, channel_a_frames, backend, config.perception.vehicle_labeling
+            )
+            labeled_count = apply_vehicle_labels(observer.tracks, observations, label_map)
+            logger.info(f"Araç isimlendirme çıktısı: {labeled_count} araç spesifik etiket aldı")
+
+    # ------------------------------------------------------------------
     # 4. Olay Tespit Motoru — zaman kuralları Kanal A fps'iyle
     # ------------------------------------------------------------------
     with metrics.measure("event_engine"):
@@ -210,8 +228,9 @@ def main(args=None) -> None:
     # 7. Karar Ajanı (VLM)
     # ------------------------------------------------------------------
     with metrics.measure("vlm_decision"):
-        backend = create_backend(config.vlm, force=args.backend)
-        logger.info(f"Kullanılan VLM backend: {backend.name()}")
+        if backend is None:  # araç isimlendirme kapalıysa burada oluştur
+            backend = create_backend(config.vlm, force=args.backend)
+            logger.info(f"Kullanılan VLM backend: {backend.name()}")
 
         agent = DecisionAgent(
             config=config.decision_agent,

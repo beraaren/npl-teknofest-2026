@@ -10,7 +10,7 @@ from __future__ import annotations
 from typing import Any, Dict, List
 
 from ..config import EventsConfig
-from ..perception.scene_graph import SceneGraph
+from ..perception.scene_graph import DEFAULT_PROXIMITY_THRESHOLD, SceneGraph
 from ..perception.tracker import TrackedObject
 from ..utils.logger import get_logger
 from .rules import EventSignal, RuleSet
@@ -23,6 +23,9 @@ class EventEngine:
     Attributes:
         config (EventsConfig): Olay motoru konfigürasyon nesnesi.
         fps (float): Zamanlama hesaplamaları için kullanılan kare hızı.
+        proximity_threshold (float): Sahne grafiği `near` kenarları için kullanılan
+            merkez mesafesi eşiği (piksel). `config.yaml` içindeki
+            `events.thresholds.proximity.distance_threshold_pixels` değerinden okunur.
         rules (RuleSet): Aktif geometrik kurallar motoru.
         states (TrackStateMachine): Takip edilen nesnelerin durum makinesi (durağanlık, düşme, devrilme sayaçları).
         signals (List[EventSignal]): Video boyunca üretilen tüm tekil olay sinyalleri listesi.
@@ -38,6 +41,12 @@ class EventEngine:
         """
         self.config = config
         self.fps = fps
+        # Sahne grafiği kenarları ile _rule_proximity aynı eşiği kullanmak zorundadır:
+        # kenar ağırlığı (1 - dist/threshold) ile kuralın mesafe geri hesabı
+        # ((1 - weight) * threshold) ancak aynı tabanla tutarlı sonuç verir.
+        self.proximity_threshold = float(
+            config.thresholds.proximity.get("distance_threshold_pixels", DEFAULT_PROXIMITY_THRESHOLD)
+        )
         self.rules = RuleSet({
             "enabled_rules": config.enabled_rules,
             **config.thresholds.model_dump(),
@@ -51,7 +60,8 @@ class EventEngine:
 
         İşlem Adımları:
           1. Gözlemdeki track verilerini `TrackedObject` formatına çevirir ve durum makinesini günceller.
-          2. Karedeki düğümler ve kenarlarla `SceneGraph` oluşturur.
+          2. Gözlemdeki sahne grafiği sözlüğünü `SceneGraph.from_dict()` ile geri kurar;
+             ilişkiler yapılandırmadan gelen `proximity_threshold` ile yeniden hesaplanır.
           3. `RuleSet.evaluate()` ile kuralları çalıştırır.
           4. `_is_recent()` filtresi ile son 10 saniye içinde aynı nesne için aynı olay üretilmişse yineleneni eler.
 
@@ -64,24 +74,10 @@ class EventEngine:
         tracks = self._observation_to_tracks(observation)
         self.states.update(tracks)
 
-        graph_data = observation.get("scene_graph", {})
-        graph = SceneGraph(
-            frame_idx=graph_data.get("frame_idx", 0),
-            timestamp=graph_data.get("timestamp", 0.0),
+        graph = SceneGraph.from_dict(
+            observation.get("scene_graph", {}),
+            proximity_threshold=self.proximity_threshold,
         )
-        for n in graph_data.get("nodes", []):
-            from ..perception.scene_graph import SceneNode
-            graph.add_node(
-                SceneNode(
-                    node_id=n["id"],
-                    class_name=n["class"],
-                    track_id=n.get("track_id"),
-                    bbox=tuple(n.get("bbox", [0, 0, 0, 0])),
-                    confidence=n.get("confidence", 0.0),
-                    frame_idx=n.get("frame_idx", 0),
-                )
-            )
-        graph.build_relations()
 
         new_signals = self.rules.evaluate(tracks, self.states, graph)
         # Yinelenen sinyalleri önle (aynı track + event_type son 10 saniye içinde varsa atla)

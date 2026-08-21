@@ -296,6 +296,14 @@ class RuleSet:
         denetler. Gerekli sınıflardan (`baret`, `yelek`) herhangi biriyle `wearing`
         ilişkisi bulunamazsa KKD eksikliği sinyali üretir.
 
+        Yalnızca ilgili personele **bağlı** kenarlar sayılır; başka bir personelin
+        ekipman kenarı bu personeli KKD'li saymaz. Kenar yönü hoşgörülü okunur
+        (kaynak veya hedef bu personel olabilir), ancak kenarın taraflarından biri
+        mutlaka bu personel olmalıdır.
+
+        `wearing` ilişkisinin kendisi `SceneGraph.build_relations()` içinde kapsama
+        (bounding box bandı) yöntemiyle kurulur; bu kural piksel eşiği kullanmaz.
+
         Args:
             graph (SceneGraph): Karenin anlık sahne grafiği.
 
@@ -304,7 +312,6 @@ class RuleSet:
         """
         signals = []
         cfg = self.thresholds.get("ppe_missing", {})
-        proximity = cfg.get("proximity_threshold_pixels", 80)
         ppe_classes = cfg.get("classes", ["baret", "yelek"])
 
         persons = graph.find_nodes("insan")
@@ -313,7 +320,15 @@ class RuleSet:
             for edge in graph.edges:
                 if edge.relation != "wearing":
                     continue
-                other_id = edge.source if edge.target == person.node_id else edge.target
+                # Kenarın bu personele ait olduğu doğrulanmalıdır. Aksi halde başka
+                # bir personelin ekipman kenarı da bu personeli KKD'li sayar ve
+                # karede tek kişi baret takıyorsa herkes muaf hale gelir.
+                if edge.source == person.node_id:
+                    other_id = edge.target
+                elif edge.target == person.node_id:
+                    other_id = edge.source
+                else:
+                    continue
                 other = graph.nodes.get(other_id)
                 if other and other.class_name in ppe_classes:
                     has_ppe[other.class_name] = True

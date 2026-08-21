@@ -16,6 +16,9 @@ logs/*
 test_videos/*
 !test_videos/.gitkeep
 !test_videos/*.py
+video_ile_test/*
+!video_ile_test/.gitkeep
+!video_ile_test/visualize_live.py
 
 
 # Model ağırlıkları

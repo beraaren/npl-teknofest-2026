@@ -9,7 +9,7 @@ from numpy.typing import NDArray
 from ..config import PerceptionConfig
 from ..utils.logger import get_logger
 from .detector import Detection, create_detector
-from .scene_graph import SceneGraph
+from .scene_graph import DEFAULT_PROXIMITY_THRESHOLD, SceneGraph
 from .tracker import ObjectTracker, TrackedObject
 
 
@@ -27,8 +27,22 @@ def _iou(a: tuple[float, float, float, float], b: tuple[float, float, float, flo
 class ObserverAgent:
     """Objektif algı katmanı; sadece gözlemlenen nesneleri ve ilişkileri raporlar."""
 
-    def __init__(self, config: PerceptionConfig):
+    def __init__(
+        self,
+        config: PerceptionConfig,
+        proximity_threshold: float = DEFAULT_PROXIMITY_THRESHOLD,
+    ):
+        """Gözlemci ajanı başlatır.
+
+        Args:
+            config: Algı katmanı yapılandırması (detector backend, tracker vb.).
+            proximity_threshold: Sahne grafiği `near` kenarları için merkez mesafesi
+                eşiği (piksel). Olay motoru grafiği kendi yapılandırma eşiğiyle
+                yeniden kurduğu için buradaki değer yalnızca gözlem JSON'una ve VLM
+                prompt'una yansır; ikisinin aynı olması raporlarda tutarlılık sağlar.
+        """
         self.config = config
+        self.proximity_threshold = proximity_threshold
         self.logger = get_logger("ObserverAgent")
         self.detector = create_detector(config)
         self.tracker = ObjectTracker(tracker_name=config.tracker, persist=config.tracker_persist)
@@ -63,7 +77,9 @@ class ObserverAgent:
 
         # Scene graph
         detections: List[Detection] = [t.last_detection for t in self.tracks.values() if t.disappeared < 5]
-        graph = SceneGraph.from_detections(frame_idx, timestamp, detections)
+        graph = SceneGraph.from_detections(
+            frame_idx, timestamp, detections, proximity_threshold=self.proximity_threshold
+        )
 
         return {
             "frame_idx": frame_idx,

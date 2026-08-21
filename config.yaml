@@ -101,7 +101,10 @@ events:
       min_duration_seconds: 2.5
     ppe_missing:
       classes: ["baret", "yelek"]
-      proximity_threshold_pixels: 80
+      # Not: KKD eşleştirmesi piksel eşiği kullanmaz. Baret/yelek, personel bbox'ının
+      # dikey bandında mı diye denetlenir (baret: üst %45, yelek: %15-85). Oranlar
+      # src/perception/scene_graph.py içindeki sabitlerde tanımlıdır; kameraya
+      # uzaklıktan bağımsız çalışması için sabit piksel eşiği bilinçli olarak kaldırıldı.
     proximity:
       dangerous_pairs:
         - ["arac", "insan"]

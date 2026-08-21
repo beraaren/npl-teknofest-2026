@@ -1,0 +1,2 @@
+# Bu dosya video_ile_test klasörünün git üzerinde korunmasını sağlar.
+# Video dosyaları (*.mp4, vb.) .gitignore tarafından hariç tutulur.

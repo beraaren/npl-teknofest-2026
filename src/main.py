@@ -247,10 +247,10 @@ def main(args=None) -> None:
         vlm_interpretation = None
         try:
             import sys
-            kanal_b_dir = str(Path(__file__).resolve().parent.parent / "Kanal_B")
-            if kanal_b_dir not in sys.path:
-                sys.path.insert(0, kanal_b_dir)
-            from pipeline import run_channel_b  # Kanal_B/pipeline.py
+            project_root = str(Path(__file__).resolve().parent.parent)
+            if project_root not in sys.path:
+                sys.path.insert(0, project_root)
+            from Kanal_B.pipeline import run_channel_b
 
             vlm_interpretation = run_channel_b(
                 args.video,

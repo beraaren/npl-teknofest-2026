@@ -90,11 +90,15 @@ events:
       aspect_ratio_max: 4.0
       min_duration_frames: 3
     fall:
-      vertical_drop_pixels: 60
-      speed_drop_ratio: 0.5
+      # Ölçeğe (kameraya uzaklığa) bağımsız pencereli düşme tespiti:
+      # son `window_seconds` saniye boyunca dikey yer değiştirme, track'in
+      # kendi bbox yüksekliği ortalamasına (scale_ema) oranlanır.
+      window_seconds: 1.0       # kümülatif düşüş penceresi (sn)
+      min_drop_ratio: 0.4       # pencere boyunca düşüş >= kendi bbox yüksekliğinin %40'ı
     gathering:
       min_persons: 3
-      max_inter_center_distance: 120  # piksel
+      max_inter_center_distance: 120  # piksel — ölçek bilinmiyorsa (scale_ema=0) fallback
+      max_inter_center_ratio: 1.5     # ölçek bilinen çiftler için: ortalama bbox yüksekliğinin katı
       min_duration_frames: 10
     immobility:
       stationary_threshold_pixels: 15
@@ -109,8 +113,12 @@ events:
       dangerous_pairs:
         - ["arac", "insan"]
       distance_threshold_pixels: 100
+      distance_threshold_ratio: 1.0   # ölçek bilinen çiftler için: ortalama bbox yüksekliğinin katı
+                                       # (iki eşikten daha KATI olanı uygulanır; bkz. rules.py _rule_proximity)
     fire_smoke:
-      enabled: false                # VLM tabanlı placeholder
+      classes: ["yangin", "duman"]  # detector._map_class çıktısı (fire->yangin, smoke->duman)
+      min_duration_frames: 3        # tek karelik parlama/yansıma/toz artefaktlarını ele
+      min_confidence: 0.35          # düşük güvenli alev/duman tespitlerini filtrele
     leakage:
       enabled: false                # VLM tabanlı placeholder
 

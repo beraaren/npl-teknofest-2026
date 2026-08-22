@@ -7,18 +7,54 @@ from typing import Any, Dict, List
 from ..perception.tracker import TrackedObject
 
 
+#: Ölçek (scale_ema) üstel ortalamasının ağırlığı. Yüksek değer = yeni kareye
+#: daha çok güven (daha hızlı adapte olur, gürültüye daha açık); düşük değer =
+#: daha yavaş adapte olur, tek karelik tespit gürültüsüne (occlusion, kısmi
+#: bbox) karşı daha dayanıklı. 0.2 hem tepkisel hem stabil bir orta nokta.
+SCALE_EMA_ALPHA: float = 0.2
+
+
 @dataclass
 class TrackState:
+    """Bir track_id için kareler arasında korunan türetilmiş (enrichment) durum.
+
+    Bu sınıf, birden fazla kuralın (fall, proximity, gathering) tekrar tekrar
+    aynı hesabı yapmasını önlemek için "ölçek" (scale_ema) bilgisini merkezi
+    olarak bir kez hesaplar ve saklar. Ölçek, nesnenin bbox yüksekliğinin
+    üstel hareketli ortalamasıdır (piksel) ve kameraya uzaklığın (derinliğin)
+    dolaylı bir göstergesidir: kameraya yakın nesnelerde büyük, uzak
+    nesnelerde küçüktür. Kurallar sabit piksel eşiği yerine bu değere oranlı
+    eşikler kullanarak kameraya uzaklıktan bağımsız (scale-invariant) çalışır
+    — aynı `src/perception/scene_graph.py` içindeki `wearing` ilişkisinin
+    kullandığı orantısal yaklaşımın diğer kurallara genellenmiş hali.
+
+    Attributes:
+        scale_ema: Bbox yüksekliğinin üstel hareketli ortalaması (piksel).
+            Henüz hiç güncellenmemişse 0.0; bu durumda kuralların ham bbox
+            yüksekliğine (fallback) düşmesi gerekir.
+    """
+
     track_id: int
     class_name: str
     stationary_frames: int = 0
     last_center: tuple[float, float] | None = None
     tip_over_frames: int = 0
-    fall_frames: int = 0
+    scale_ema: float = 0.0
     flags: Dict[str, Any] = field(default_factory=dict)
 
     def update(self, detection: TrackedObject, fps: float) -> None:
         det = detection.last_detection
+
+        # Ölçek: bbox yüksekliğinin üstel ortalaması. Her kural kendi
+        # başına yeniden hesaplamaz; burada bir kez güncellenir, kurallar
+        # (rules.py) sadece okur.
+        height = det.height
+        if height > 0:
+            if self.scale_ema <= 0.0:
+                self.scale_ema = height
+            else:
+                self.scale_ema = SCALE_EMA_ALPHA * height + (1 - SCALE_EMA_ALPHA) * self.scale_ema
+
         if self.last_center is None:
             self.last_center = det.center
             return
@@ -37,14 +73,6 @@ class TrackState:
                 self.tip_over_frames += 1
             else:
                 self.tip_over_frames = max(0, self.tip_over_frames - 1)
-
-        # Düşme: dikeyde hızlı düşüş
-        if detection.class_name == "insan":
-            speed_y = detection.speed[1]
-            if speed_y > 30:
-                self.fall_frames += 1
-            else:
-                self.fall_frames = max(0, self.fall_frames - 1)
 
         self.last_center = det.center
 

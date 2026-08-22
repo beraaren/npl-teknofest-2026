@@ -53,6 +53,14 @@ class EventEngine:
         }, fps=fps)
         self.states = TrackStateMachine(fps=fps)
         self.signals: List[EventSignal] = []
+        # Kalıcı track kayıtları: track_id -> TrackedObject. Bu sözlük olmadan
+        # her process_observation() çağrısında history=[det] ile sıfırdan bir
+        # TrackedObject üretilir; TrackedObject.speed en az 2 geçmiş kaydı
+        # gerektirdiğinden hız her zaman (0.0, 0.0) döner ve buna bağlı tüm
+        # kurallar (örn. person_fall) hiçbir zaman tetiklenemez. Bu sözlük,
+        # ObserverAgent.observe_frame() içindeki self.tracks ile aynı deseni
+        # kullanarak track geçmişinin kareler arasında korunmasını sağlar.
+        self._tracked_objects: Dict[int, TrackedObject] = {}
         self.logger = get_logger("EventEngine")
 
     def process_observation(self, observation: Dict[str, Any]) -> List[EventSignal]:
@@ -91,23 +99,28 @@ class EventEngine:
     def _observation_to_tracks(self, observation: Dict[str, Any]) -> List[TrackedObject]:
         """Gözlem sözlüğündeki ham track ve detection verilerini `TrackedObject` nesnelerine dönüştürür.
 
+        Aynı `track_id` için tekrar çağrıldığında **var olan** `TrackedObject`
+        güncellenir (geçmişe yeni bir `Detection` eklenir); sıfırdan
+        yeniden yaratılmaz. Bu, `TrackedObject.speed`'in en az iki geçmiş
+        kaydına ihtiyaç duyması ve geçmişin kareler arasında korunması
+        gerekmesi nedeniyle zorunludur — aksi halde hız her zaman
+        `(0.0, 0.0)` hesaplanır ve buna dayanan kurallar (örn. `person_fall`)
+        hiçbir zaman tetiklenemez.
+
         Args:
             observation (Dict[str, Any]): Kare bazlı gözlem verisi.
 
         Returns:
-            List[TrackedObject]: Takip nesneleri listesi.
+            List[TrackedObject]: Takip nesneleri listesi (bu kareden itibaren
+            aktif olanlar; kalıcı kayıtlar `self._tracked_objects` içindedir).
         """
         from ..perception.detector import Detection
         tracks: List[TrackedObject] = []
         for t in observation.get("tracks", []):
-            det = Detection(
-                class_name=t["class"],
-                confidence=1.0,
-                bbox=(0.0, 0.0, 0.0, 0.0),
-            )
+            tid = t["track_id"]
             # Daha zengin detection bilgisi varsa kullan (önce track_id ile, yoksa class ile eşle)
             det_data = next(
-                (d for d in observation.get("detections", []) if d.get("track_id") == t["track_id"]),
+                (d for d in observation.get("detections", []) if d.get("track_id") == tid),
                 next((d for d in observation.get("detections", []) if d.get("class") == t["class"]), None),
             )
             if det_data:
@@ -116,11 +129,23 @@ class EventEngine:
                     confidence=det_data.get("confidence", 1.0),
                     bbox=tuple(det_data.get("bbox", [0, 0, 0, 0])),
                     frame_idx=det_data.get("frame_idx", 0),
-                    track_id=t["track_id"],
+                    track_id=tid,
                 )
-            to = TrackedObject(track_id=t["track_id"], class_name=t["class"], initial_detection=det)
-            to.history = [det]
-            tracks.append(to)
+            else:
+                det = Detection(
+                    class_name=t["class"],
+                    confidence=1.0,
+                    bbox=(0.0, 0.0, 0.0, 0.0),
+                    track_id=tid,
+                )
+
+            existing = self._tracked_objects.get(tid)
+            if existing is not None:
+                existing.update(det)
+            else:
+                existing = TrackedObject(track_id=tid, class_name=t["class"], initial_detection=det)
+                self._tracked_objects[tid] = existing
+            tracks.append(existing)
         return tracks
 
     def _is_recent(self, sig: EventSignal, window_seconds: float = 10.0) -> bool:

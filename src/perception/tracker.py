@@ -39,6 +39,29 @@ class TrackedObject:
         c2 = self.history[-1].center
         return (c2[0] - c1[0], c2[1] - c1[1])
 
+    def displacement(self, window_frames: int) -> tuple[float, float]:
+        """`window_frames` kare öncesine göre kümülatif yer değiştirme.
+
+        Tek karelik `speed`'in aksine, birkaç kareye yayılan hareketleri
+        (örn. düşme) yakalamak için kısa bir pencere boyunca birikimli
+        farkı döner. Geçmiş `window_frames`'den kısaysa mevcut en eski
+        kayıt referans alınır — video başında sahte sıfır yer değiştirme
+        yerine gerçek kısmi hareket yansıtılır.
+
+        Args:
+            window_frames: Kaç kare öncesine bakılacağı (>= 1).
+
+        Returns:
+            `(dx, dy)`: pencere başı ile şu anki merkez arasındaki fark.
+            Geçmişte tek kayıt varsa `(0.0, 0.0)`.
+        """
+        if len(self.history) < 2:
+            return (0.0, 0.0)
+        idx = max(0, len(self.history) - 1 - max(1, window_frames))
+        c1 = self.history[idx].center
+        c2 = self.history[-1].center
+        return (c2[0] - c1[0], c2[1] - c1[1])
+
     @property
     def is_stationary(self, threshold_pixels: float = 15.0, window: int = 5) -> bool:
         recent = self.history[-window:]

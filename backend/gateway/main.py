@@ -13,13 +13,17 @@ import json
 import os
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
+
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
-from .routers import cameras, analyses
+from .routers import cameras, analyses, pseudolive, ops
 from ..common.health import create_health_router
 from ..common import redis as redis_helper
 from . import store
+from .replay import ReplayEngine
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -50,7 +54,12 @@ class ConnectionManager:
         self.connections.pop(websocket, None)
 
     async def broadcast(self, message: dict):
-        """Mesajı, camera_id filtresiyle eşleşen tüm istemcilere gönderir."""
+        """Mesajı, camera_id filtresiyle eşleşen tüm istemcilere gönderir.
+
+        Aynı zamanda modül düzeyindeki KPI sayaçlarını günceller; böylece
+        hem Redis üzerinden gelen gerçek olaylar hem de replay motoru
+        ürettikleri pseudo-live olaylar metriklere yansır.
+        """
         msg_camera = message.get("data", {}).get("camera_id")
         dead = []
         for ws, cam_filter in list(self.connections.items()):
@@ -62,6 +71,20 @@ class ConnectionManager:
                     dead.append(ws)
         for ws in dead:
             self.connections.pop(ws, None)
+
+        # KPI güncelleme (hem Redis hem replay için tek yerden)
+        stream_name = message.get("stream")
+        if stream_name == "event.detected":
+            _metrics["events_detected"] += 1
+        elif stream_name == "decision.final":
+            _metrics["decisions_made"] += 1
+            risk = message.get("data", {}).get("risk", "")
+            if risk in _metrics["risk_distribution"]:
+                _metrics["risk_distribution"][risk] += 1
+        elif stream_name == "tool.executed":
+            _metrics["tools_executed"] += 1
+        elif stream_name == "notification.push":
+            _metrics["notifications_sent"] += 1
 
 
 manager = ConnectionManager()
@@ -112,25 +135,13 @@ async def redis_listener():
                     if stream_name == "decision.final":
                         camera_id = payload.get("camera_id", "")
                         store.save_analysis(job_id, camera_id, payload)
-                        _metrics["decisions_made"] += 1
-                        risk = payload.get("risk", "")
-                        if risk in _metrics["risk_distribution"]:
-                            _metrics["risk_distribution"][risk] += 1
 
                     # Tüm olayları events tablosuna kaydet (debug/demo)
                     if job_id and stream_name in ("event.detected", "tool.executed",
                                                    "notification.push", "decision.final"):
                         store.save_event(job_id, stream_name, payload)
 
-                    # Metrik güncelle
-                    if stream_name == "event.detected":
-                        _metrics["events_detected"] += 1
-                    elif stream_name == "tool.executed":
-                        _metrics["tools_executed"] += 1
-                    elif stream_name == "notification.push":
-                        _metrics["notifications_sent"] += 1
-
-                    # WebSocket'e ilet
+                    # WebSocket'e ilet (broadcast KPI'ları da günceller)
                     await manager.broadcast({"stream": stream_name, "data": payload})
                     await client.xack(stream_name, group_name, msg_id)
 
@@ -146,8 +157,19 @@ async def redis_listener():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     store.init_db()
+    store.seed_cameras()
+
+    replay_engine = ReplayEngine(
+        broadcast_fn=manager.broadcast,
+        save_event_fn=store.save_event,
+    )
+    await replay_engine.start()
+    app.state.replay_engine = replay_engine
+    app.state.broadcast_fn = manager.broadcast
+
     task = asyncio.create_task(redis_listener())
     yield
+    replay_engine.stop()
     task.cancel()
     try:
         await task
@@ -170,7 +192,12 @@ app.add_middleware(
 
 app.include_router(cameras.router, prefix="/api/v1")
 app.include_router(analyses.router, prefix="/api/v1")
+app.include_router(pseudolive.router, prefix="/api/v1")
+app.include_router(ops.router, prefix="/api/v1")
 import httpx
+
+_STATIC_DIR = Path(__file__).resolve().parent / "static"
+_STATIC_DIR.mkdir(parents=True, exist_ok=True)
 
 DOWNSTREAM_SERVICES = {
     "camera-ingest": os.environ.get("INGEST_SERVICE_URL", "http://camera-ingest:8001"),
@@ -227,3 +254,11 @@ async def websocket_endpoint(websocket: WebSocket, camera_id: str | None = Query
             await websocket.receive_text()
     except WebSocketDisconnect:
         manager.disconnect(websocket)
+
+
+# UI statik dosyalarını sun (html=True ile / → index.html)
+app.mount(
+    "/",
+    StaticFiles(directory=_STATIC_DIR, html=True),
+    name="static",
+)

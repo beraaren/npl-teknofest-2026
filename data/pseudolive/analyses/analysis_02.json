@@ -1,0 +1,127 @@
+{
+  "summary": "Elektrik Panosu Odası bölgesinde 3 olay tespit edildi; en kritik: Forkliftin veya aracın tesis içi hız limitini aşması.",
+  "events": [
+    {
+      "time": "00:03",
+      "event": "Forkliftin veya aracın tesis içi hız limitini aşması.",
+      "event_type": "vehicle_speeding",
+      "confidence": 0.8
+    },
+    {
+      "time": "00:12",
+      "event": "Tesis içinde koşan personel (çarpışma/kayma riski).",
+      "event_type": "running_in_facility",
+      "confidence": 0.88
+    },
+    {
+      "time": "00:29",
+      "event": "Sıvı/kimyasal sızıntı veya birikintisi — kayma ve zehirlenme riski.",
+      "event_type": "leakage",
+      "confidence": 0.91
+    }
+  ],
+  "risk": "Yüksek",
+  "actions": [
+    "Forkliftin hızını uzaktan sınırlandır (IoT entegrasyonu ile).",
+    "Sürücüye hız limitini aştığına dair kabin içi uyarı gönder.",
+    "Bölgedeki yayaları olası kazaya karşı uyar.",
+    "Acil durum ekibini ve sağlık personelini derhal çağır."
+  ],
+  "reasoning": "Geometrik sinyaller vehicle_speeding, running_in_facility, leakage pattern'leriyle eşleşti. En yüksek risk skoru 75 (vehicle_speeding). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.82,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "sound_alarm",
+      "params": {
+        "location": "saha",
+        "reason": "Forkliftin veya aracın tesis içi hız limitini aşması."
+      }
+    },
+    {
+      "tool_name": "stop_forklift",
+      "params": {
+        "location": "saha",
+        "reason": "Forkliftin veya aracın tesis içi hız limitini aşması."
+      }
+    },
+    {
+      "tool_name": "notify_supervisor",
+      "params": {
+        "location": "saha",
+        "reason": "Forkliftin veya aracın tesis içi hız limitini aşması."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_02.mp4",
+    "camera_label": "Elektrik Panosu Odası",
+    "duration_sec": 40,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "vehicle_speeding",
+        "timestamp": "00:03",
+        "description": "Forkliftin veya aracın tesis içi hız limitini aşması.",
+        "confidence": 0.8,
+        "involved_track_ids": [],
+        "metadata": {}
+      },
+      {
+        "event_type": "running_in_facility",
+        "timestamp": "00:12",
+        "description": "Tesis içinde koşan personel (çarpışma/kayma riski).",
+        "confidence": 0.88,
+        "involved_track_ids": [],
+        "metadata": {}
+      },
+      {
+        "event_type": "leakage",
+        "timestamp": "00:29",
+        "description": "Sıvı/kimyasal sızıntı veya birikintisi — kayma ve zehirlenme riski.",
+        "confidence": 0.91,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "vehicle_speeding",
+        "timestamp": "00:03",
+        "seconds": 3
+      },
+      {
+        "event_type": "running_in_facility",
+        "timestamp": "00:12",
+        "seconds": 12
+      },
+      {
+        "event_type": "leakage",
+        "timestamp": "00:29",
+        "seconds": 29
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 3,
+        "end_sec": 8,
+        "event_type": "vehicle_speeding",
+        "risk": "Yüksek",
+        "description": "Forkliftin veya aracın tesis içi hız limitini aşması."
+      },
+      {
+        "start_sec": 12,
+        "end_sec": 20,
+        "event_type": "running_in_facility",
+        "risk": "Orta",
+        "description": "Tesis içinde koşan personel (çarpışma/kayma riski)."
+      },
+      {
+        "start_sec": 29,
+        "end_sec": 37,
+        "event_type": "leakage",
+        "risk": "Orta",
+        "description": "Sıvı/kimyasal sızıntı veya birikintisi — kayma ve zehirlenme riski."
+      }
+    ]
+  }
+}

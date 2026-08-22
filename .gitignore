@@ -2,11 +2,18 @@
 .venv/
 venv/
 .pydeps/
+.local_deps/
 __pycache__/
 *.py[cod]
 *.so
 *.egg-info/
 .pytest_cache/
+
+# Çalışma zamanı veritabanları
+data/gateway.db
+
+# Otomatik üretilen placeholder videolar (analiz JSON'ları commit edilebilir)
+data/pseudolive/videos/*.mp4
 
 # Çıktılar, loglar ve test videoları
 outputs/*

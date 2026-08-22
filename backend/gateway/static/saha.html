@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saha Ekibi | Video Risk Analizi</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="saha.js"></script>
+</head>
+<body>
+  <header>
+    <h1>🚨 Saha Ekibi Ekranı</h1>
+    <nav class="nav-links">
+      <a href="index.html">Süpervizör</a>
+      <a href="saha.html" class="active">Saha Ekibi</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </header>
+  <main class="main">
+    <div class="role-selector" id="role-selector">
+      <button class="btn active" data-role="">Tümü</button>
+      <button class="btn btn-secondary" data-role="temizlik">Temizlik Görevlisi</button>
+      <button class="btn btn-secondary" data-role="sağlık">Sağlık Ekibi</button>
+      <button class="btn btn-secondary" data-role="teknisyen">Teknisyen</button>
+    </div>
+    <div id="alarms-container"></div>
+  </main>
+  <div id="toast" class="toast"></div>
+</body>
+</html>

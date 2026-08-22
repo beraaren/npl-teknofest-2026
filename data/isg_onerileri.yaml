@@ -1,0 +1,140 @@
+# İSG İyileştirme Önerileri Koleksiyonu
+# =====================================
+# Admin paneli "Çalışma Alanı Önerileri" post-it listesi ve LLM chat akışı buradan beslenir.
+#
+# VERİ TOPLAMA KURALLARI:
+# - Her öneri benzersiz bir snake_case id altında tanımlanır.
+# - related_patterns: risk_patterns.yaml'daki pattern adlarıyla BİREBİR eşleşmeli
+#   (RAGLayer.match_suggestions bu eşleşmeye ek ağırlık verir).
+# - keywords: RAG indeksine eklenir — boşluklu Türkçe anahtar kelimeler; ne kadar
+#   zengin olursa doğal dil sorgularıyla eşleşme o kadar iyi olur.
+# - Maliyet aralıkları 2026 TL, KDV hariç tahmini değerlerdir.
+# - Hedef: risk_patterns.yaml'daki her pattern için en az 1-2 öneri.
+#
+# ZORUNLU ALANLAR: baslik, kategori, aciklama, related_patterns,
+#                  maliyet_tahmini.alt_sinir_tl, maliyet_tahmini.ust_sinir_tl, oncelik, keywords
+# OPSİYONEL (chat kalitesini artırır): tetikleyici_olaylar, maliyet_kalemleri,
+#                  uygulama_suresi_gun, mevzuat_referanslari, beklenen_risk_azalimi_yuzde,
+#                  gerekli_kaynaklar, olcum_kpi
+#
+# kategori: "Alan Düzenleme" | "Ekipman" | "Eğitim" | "Prosedür" | "KKD" | "Teknoloji"
+# oncelik:  "Düşük" | "Orta" | "Yüksek" | "Kritik"
+
+oneriler:
+  forklift_yaya_ayrisi:
+    baslik: "Forklift-yaya güzergahlarının fiziksel ayrılması"
+    kategori: "Alan Düzenleme"
+    aciklama: >
+      Forklift ve yaya trafiğinin bariyer/şerit ile ayrılması, kör noktalara
+      kubbe uyarı aynası ve zemin işaretlemesi yapılması. Yaya yolları en az
+      1 metre genişliğinde ve çift sarı şeritle tanımlanır.
+    related_patterns:
+      - "dangerous_proximity"
+      - "blind_spot_movement"
+    tetikleyici_olaylar: ["çarpma riski", "kör nokta", "tehlikeli yakınlık"]
+    maliyet_tahmini:
+      alt_sinir_tl: 15000
+      ust_sinir_tl: 60000
+      para_birimi: "TRY"
+      maliyet_kalemleri:
+        - kalem: "Bariyer ve şerit boyama (m²)"
+          tutar_araligi_tl: [10000, 40000]
+        - kalem: "Kubbe uyarı aynası (adet)"
+          tutar_araligi_tl: [500, 2000]
+    uygulama_suresi_gun: 14
+    oncelik: "Yüksek"
+    mevzuat_referanslari:
+      - "6331 sayılı İSG Kanunu Md.4 (işverenin genel yükümlülüğü)"
+      - "İşyeri Bina ve Eklentilerinde Alınacak Sağlık ve Güvenlik Önlemleri Yönetmeliği"
+    beklenen_risk_azalimi_yuzde: 60
+    gerekli_kaynaklar: ["şantiye/bakım ekibi", "boya ve şerit malzemesi", "uyarı aynaları"]
+    olcum_kpi: "aylık tehlikeli yakınlık olayı sayısı"
+    keywords: "forklift yaya bariyer şerit güzergah ayrımı kör nokta ayna zemin işaretleme yaya yolu"
+
+  kkd_takip_sistemi:
+    baslik: "KKD ihlalleri için otomatik uyarı ve takip sistemi"
+    kategori: "KKD"
+    aciklama: >
+      Baret/yelek ihlallerinde anlık sesli uyarı, tekrar eden ihlallerde
+      vardiya amirine otomatik raporlama. Giriş noktalarına KKD kontrol
+      istasyonu ve yedek KKD dolabı kurulması.
+    related_patterns:
+      - "ppe_missing"
+    tetikleyici_olaylar: ["baret eksik", "yelek eksik", "KKD ihlali"]
+    maliyet_tahmini:
+      alt_sinir_tl: 8000
+      ust_sinir_tl: 35000
+      para_birimi: "TRY"
+      maliyet_kalemleri:
+        - kalem: "Sesli uyarı/anons entegrasyonu"
+          tutar_araligi_tl: [5000, 20000]
+        - kalem: "Yedek KKD dolabı ve stok"
+          tutar_araligi_tl: [3000, 15000]
+    uygulama_suresi_gun: 7
+    oncelik: "Orta"
+    mevzuat_referanslari:
+      - "Kişisel Koruyucu Donanımların İşyerlerinde Kullanılması Hakkında Yönetmelik"
+      - "6331 sayılı İSG Kanunu Md.19 (çalışanların yükümlülükleri)"
+    beklenen_risk_azalimi_yuzde: 50
+    gerekli_kaynaklar: ["anons sistemi", "KKD stoğu", "vardiya amiri onayı"]
+    olcum_kpi: "haftalık KKD ihlali tekrar oranı"
+    keywords: "baret yelek kkd koruyucu donanım ihlal uyarı takip dolap stok anons"
+
+  kaygan_zemin_protokolu:
+    baslik: "Sızıntı/kayma riski için hızlı müdahale ve işaretleme protokolü"
+    kategori: "Prosedür"
+    aciklama: >
+      Sıvı sızıntısı tespitinde 5 dakika içinde bölgenin uyarı şeridiyle
+      kapatılması ve temizlik ekibinin görevlendirilmesi. Kritik noktalara
+      mobil 'kaygan zemin' levha setleri ve emici malzeme istasyonları konulur.
+    related_patterns:
+      - "leakage"
+      - "spill_slip_hazard"
+    tetikleyici_olaylar: ["sızıntı", "birikinti", "kayma", "ıslak zemin"]
+    maliyet_tahmini:
+      alt_sinir_tl: 3000
+      ust_sinir_tl: 12000
+      para_birimi: "TRY"
+      maliyet_kalemleri:
+        - kalem: "Uyarı levhası ve şerit seti (istasyon başı)"
+          tutar_araligi_tl: [500, 1500]
+        - kalem: "Emici malzeme/ped stoğu"
+          tutar_araligi_tl: [2000, 8000]
+    uygulama_suresi_gun: 3
+    oncelik: "Orta"
+    mevzuat_referanslari:
+      - "İş Sağlığı ve Güvenliği Risk Değerlendirmesi Yönetmeliği"
+    beklenen_risk_azalimi_yuzde: 55
+    gerekli_kaynaklar: ["temizlik ekibi", "uyarı levhaları", "emici malzeme"]
+    olcum_kpi: "sızıntı tespitinden bölge kapatmaya geçen süre"
+    keywords: "sızıntı kayma ıslak zemin temizlik levha işaretleme emici protokol müdahale"
+
+  forklift_hiz_limiti:
+    baslik: "Tesis içi forklift hız limiti ve telemetri denetimi"
+    kategori: "Teknoloji"
+    aciklama: >
+      Tesis içi forklift hız limitinin 10 km/s olarak ilan edilmesi, hız
+      aşımında operatöre kabin içi uyarı veren telemetri sistemi kurulması.
+      Tekrar eden aşımlar vardiya raporuna otomatik düşer.
+    related_patterns:
+      - "vehicle_speeding"
+      - "running_in_facility"
+    tetikleyici_olaylar: ["hız aşımı", "sürat", "koşan personel"]
+    maliyet_tahmini:
+      alt_sinir_tl: 25000
+      ust_sinir_tl: 90000
+      para_birimi: "TRY"
+      maliyet_kalemleri:
+        - kalem: "Telemetri/hız sensörü (forklift başı)"
+          tutar_araligi_tl: [8000, 25000]
+        - kalem: "Uyarı levhaları ve prosedür güncellemesi"
+          tutar_araligi_tl: [1000, 5000]
+    uygulama_suresi_gun: 21
+    oncelik: "Yüksek"
+    mevzuat_referanslari:
+      - "6331 sayılı İSG Kanunu Md.4"
+      - "İş Ekipmanlarının Kullanımında Sağlık ve Güvenlik Şartları Yönetmeliği"
+    beklenen_risk_azalimi_yuzde: 65
+    gerekli_kaynaklar: ["telemetri tedarikçisi", "forklift filosu erişimi", "İSG uzmanı"]
+    olcum_kpi: "aylık hız aşımı olayı sayısı"
+    keywords: "forklift hız sürat limit telemetri sensör uyarı denetim tesis içi trafik"

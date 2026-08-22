@@ -1,0 +1,101 @@
+{
+  "summary": "Ana Koridor bölgesinde 2 olay tespit edildi; en kritik: Personelin ani düşüşü veya zemine çökmesi.",
+  "events": [
+    {
+      "time": "00:13",
+      "event": "Personelin ani düşüşü veya zemine çökmesi.",
+      "event_type": "person_fall",
+      "confidence": 0.73
+    },
+    {
+      "time": "00:17",
+      "event": "Açık pano, kablo veya elektrik tehlikesi barındıran durum.",
+      "event_type": "electrical_hazard",
+      "confidence": 0.83
+    }
+  ],
+  "risk": "Yüksek",
+  "actions": [
+    "Yaralıyı hareket ettirmeden sağlık ekibini bekle.",
+    "Düşme nedenini (kaygan zemin, engel, yükseklik) tespit et.",
+    "Çevredeki personeli bölgeden uzaklaştır.",
+    "Bölgenin ana şalterden elektriğini kes."
+  ],
+  "reasoning": "Geometrik sinyaller person_fall, electrical_hazard pattern'leriyle eşleşti. En yüksek risk skoru 90 (person_fall). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.68,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "call_health_team",
+      "params": {
+        "location": "saha",
+        "reason": "Personelin ani düşüşü veya zemine çökmesi."
+      }
+    },
+    {
+      "tool_name": "call_ambulance",
+      "params": {
+        "location": "saha",
+        "reason": "Personelin ani düşüşü veya zemine çökmesi."
+      }
+    },
+    {
+      "tool_name": "secure_area",
+      "params": {
+        "location": "saha",
+        "reason": "Personelin ani düşüşü veya zemine çökmesi."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_13.mp4",
+    "camera_label": "Ana Koridor",
+    "duration_sec": 38,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "person_fall",
+        "timestamp": "00:13",
+        "description": "Personelin ani düşüşü veya zemine çökmesi.",
+        "confidence": 0.73,
+        "involved_track_ids": [],
+        "metadata": {}
+      },
+      {
+        "event_type": "electrical_hazard",
+        "timestamp": "00:17",
+        "description": "Açık pano, kablo veya elektrik tehlikesi barındıran durum.",
+        "confidence": 0.83,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "person_fall",
+        "timestamp": "00:13",
+        "seconds": 13
+      },
+      {
+        "event_type": "electrical_hazard",
+        "timestamp": "00:17",
+        "seconds": 17
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 13,
+        "end_sec": 18,
+        "event_type": "person_fall",
+        "risk": "Yüksek",
+        "description": "Personelin ani düşüşü veya zemine çökmesi."
+      },
+      {
+        "start_sec": 17,
+        "end_sec": 26,
+        "event_type": "electrical_hazard",
+        "risk": "Yüksek",
+        "description": "Açık pano, kablo veya elektrik tehlikesi barındıran durum."
+      }
+    ]
+  }
+}

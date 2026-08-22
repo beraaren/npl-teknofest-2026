@@ -1,0 +1,30 @@
+{
+  "summary": "Depo-A Giriş bölgesinde anlamlı bir risk tespit edilmedi; rutin operasyon.",
+  "events": [],
+  "risk": "Düşük",
+  "actions": [
+    "Durumu rutin İSG kontrol listesine kaydet.",
+    "Gerekirse gözetim altında çalışmaya devam et.",
+    "Bir sonraki düzenli denetimde değerlendir."
+  ],
+  "reasoning": "Olay motoru anlamlı sinyal üretmedi; sahnede yalnızca normal faaliyet gözlendi.",
+  "confidence": 0.89,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "Depo-A Giriş",
+        "reason": "Rutin kontrol kaydı"
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_08.mp4",
+    "camera_label": "Depo-A Giriş",
+    "duration_sec": 43,
+    "fps": 12.0,
+    "geometric_signals": [],
+    "event_timestamps": [],
+    "risk_segments": []
+  }
+}

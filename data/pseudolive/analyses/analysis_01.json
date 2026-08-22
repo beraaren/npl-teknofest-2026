@@ -1,0 +1,101 @@
+{
+  "summary": "Depo-B Raf Arası bölgesinde 2 olay tespit edildi; en kritik: Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük).",
+  "events": [
+    {
+      "time": "00:10",
+      "event": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük).",
+      "event_type": "overhead_hazard",
+      "confidence": 0.91
+    },
+    {
+      "time": "00:20",
+      "event": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
+      "event_type": "immobile_person",
+      "confidence": 0.72
+    }
+  ],
+  "risk": "Yüksek",
+  "actions": [
+    "Vinci acil durdur ve operatörle telsiz iletişimi kur.",
+    "Yük altındaki personeli sesli sirenle uyar.",
+    "Riskli alanı güvenlik şeridiyle kapat.",
+    "Acil durum ekibini ve sağlık personelini derhal çağır."
+  ],
+  "reasoning": "Geometrik sinyaller overhead_hazard, immobile_person pattern'leriyle eşleşti. En yüksek risk skoru 85 (overhead_hazard). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.78,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "sound_alarm",
+      "params": {
+        "location": "saha",
+        "reason": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük)."
+      }
+    },
+    {
+      "tool_name": "secure_area",
+      "params": {
+        "location": "saha",
+        "reason": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük)."
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "saha",
+        "reason": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük)."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_01.mp4",
+    "camera_label": "Depo-B Raf Arası",
+    "duration_sec": 35,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "overhead_hazard",
+        "timestamp": "00:10",
+        "description": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük).",
+        "confidence": 0.91,
+        "involved_track_ids": [],
+        "metadata": {}
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:20",
+        "description": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
+        "confidence": 0.72,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "overhead_hazard",
+        "timestamp": "00:10",
+        "seconds": 10
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:20",
+        "seconds": 20
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 10,
+        "end_sec": 19,
+        "event_type": "overhead_hazard",
+        "risk": "Yüksek",
+        "description": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük)."
+      },
+      {
+        "start_sec": 20,
+        "end_sec": 29,
+        "event_type": "immobile_person",
+        "risk": "Orta",
+        "description": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi."
+      }
+    ]
+  }
+}

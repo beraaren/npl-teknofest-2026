@@ -1,0 +1,75 @@
+{
+  "summary": "Kantin Çıkışı bölgesinde 1 olay tespit edildi; en kritik: Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir.",
+  "events": [
+    {
+      "time": "00:11",
+      "event": "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir.",
+      "event_type": "fire_smoke",
+      "confidence": 0.83
+    }
+  ],
+  "risk": "Yüksek",
+  "actions": [
+    "Yangın söndürme sistemini derhal devreye al.",
+    "Bölgedeki tüm personeli tahliye et.",
+    "İtfaiye ve acil müdahale ekiplerini çağır.",
+    "Yakıt veya kimyasal kaynakları kapatmaya çalış (güvenlik varsa)."
+  ],
+  "reasoning": "Geometrik sinyaller fire_smoke pattern'leriyle eşleşti. En yüksek risk skoru 100 (fire_smoke). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.76,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "trigger_fire_suppression",
+      "params": {
+        "location": "saha",
+        "reason": "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir."
+      }
+    },
+    {
+      "tool_name": "lockdown_facility",
+      "params": {
+        "location": "saha",
+        "reason": "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir."
+      }
+    },
+    {
+      "tool_name": "call_health_team",
+      "params": {
+        "location": "saha",
+        "reason": "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_12.mp4",
+    "camera_label": "Kantin Çıkışı",
+    "duration_sec": 40,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "fire_smoke",
+        "timestamp": "00:11",
+        "description": "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir.",
+        "confidence": 0.83,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "fire_smoke",
+        "timestamp": "00:11",
+        "seconds": 11
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 11,
+        "end_sec": 19,
+        "event_type": "fire_smoke",
+        "risk": "Yüksek",
+        "description": "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir."
+      }
+    ]
+  }
+}

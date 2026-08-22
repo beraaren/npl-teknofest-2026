@@ -1,0 +1,75 @@
+{
+  "summary": "Elektrik Panosu Odası bölgesinde 1 olay tespit edildi; en kritik: Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski).",
+  "events": [
+    {
+      "time": "00:28",
+      "event": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski).",
+      "event_type": "fatigue_detection",
+      "confidence": 0.82
+    }
+  ],
+  "risk": "Orta",
+  "actions": [
+    "Personelin yanına giderek iyi olup olmadığını kontrol et.",
+    "Mola sistemine bildirim gönder, kişiyi dinlenmeye yönlendir.",
+    "Çalışma alanının ergonomisini incele.",
+    "Alan sorumlusunu derhal bilgilendir."
+  ],
+  "reasoning": "Geometrik sinyaller fatigue_detection pattern'leriyle eşleşti. En yüksek risk skoru 50 (fatigue_detection). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.78,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "notify_supervisor",
+      "params": {
+        "location": "saha",
+        "reason": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski)."
+      }
+    },
+    {
+      "tool_name": "call_health_team",
+      "params": {
+        "location": "saha",
+        "reason": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski)."
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "saha",
+        "reason": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski)."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_10.mp4",
+    "camera_label": "Elektrik Panosu Odası",
+    "duration_sec": 42,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "fatigue_detection",
+        "timestamp": "00:28",
+        "description": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski).",
+        "confidence": 0.82,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "fatigue_detection",
+        "timestamp": "00:28",
+        "seconds": 28
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 28,
+        "end_sec": 35,
+        "event_type": "fatigue_detection",
+        "risk": "Orta",
+        "description": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski)."
+      }
+    ]
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "summary": "Kimyasal Depo bölgesinde 2 olay tespit edildi; en kritik: Kavşak veya kör noktalarda kontrolsüz hareket.",
+  "events": [
+    {
+      "time": "00:16",
+      "event": "Kavşak veya kör noktalarda kontrolsüz hareket.",
+      "event_type": "blind_spot_movement",
+      "confidence": 0.63
+    },
+    {
+      "time": "00:03",
+      "event": "Zeminde dökülmüş sıvı, yağ veya su kaynaklı kayma tehlikesi.",
+      "event_type": "spill_slip_hazard",
+      "confidence": 0.56
+    }
+  ],
+  "risk": "Yüksek",
+  "actions": [
+    "Forklift operatörünü uyar ve hızını düşürmesini sağla.",
+    "Yayaları kör noktalara girmemeleri konusunda sesli ikaz et.",
+    "Bölgedeki uyarı aynalarının açısını kontrol et.",
+    "Acil durum ekibini ve sağlık personelini derhal çağır."
+  ],
+  "reasoning": "Geometrik sinyaller blind_spot_movement, spill_slip_hazard pattern'leriyle eşleşti. En yüksek risk skoru 75 (blind_spot_movement). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.91,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "stop_forklift",
+      "params": {
+        "location": "saha",
+        "reason": "Kavşak veya kör noktalarda kontrolsüz hareket."
+      }
+    },
+    {
+      "tool_name": "sound_alarm",
+      "params": {
+        "location": "saha",
+        "reason": "Kavşak veya kör noktalarda kontrolsüz hareket."
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "saha",
+        "reason": "Kavşak veya kör noktalarda kontrolsüz hareket."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_11.mp4",
+    "camera_label": "Kimyasal Depo",
+    "duration_sec": 41,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "blind_spot_movement",
+        "timestamp": "00:16",
+        "description": "Kavşak veya kör noktalarda kontrolsüz hareket.",
+        "confidence": 0.63,
+        "involved_track_ids": [],
+        "metadata": {}
+      },
+      {
+        "event_type": "spill_slip_hazard",
+        "timestamp": "00:03",
+        "description": "Zeminde dökülmüş sıvı, yağ veya su kaynaklı kayma tehlikesi.",
+        "confidence": 0.56,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "spill_slip_hazard",
+        "timestamp": "00:03",
+        "seconds": 3
+      },
+      {
+        "event_type": "blind_spot_movement",
+        "timestamp": "00:16",
+        "seconds": 16
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 3,
+        "end_sec": 12,
+        "event_type": "spill_slip_hazard",
+        "risk": "Orta",
+        "description": "Zeminde dökülmüş sıvı, yağ veya su kaynaklı kayma tehlikesi."
+      },
+      {
+        "start_sec": 16,
+        "end_sec": 23,
+        "event_type": "blind_spot_movement",
+        "risk": "Yüksek",
+        "description": "Kavşak veya kör noktalarda kontrolsüz hareket."
+      }
+    ]
+  }
+}

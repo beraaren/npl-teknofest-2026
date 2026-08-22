@@ -166,3 +166,35 @@ model yükleme mock'lanır.
    değiştirirsen `main.py`'deki closure'ı da güncelle.
 5. **PP-DocLayoutV3 geçicidir** — üretime dair tespit bekleme; gerçek algı
    eğitilecek İSG YOLO'su ile gelecek (bkz. `YAPILACAKLAR.md` §1–2).
+
+---
+
+## 6. UI Katmanı (Yeni)
+
+### Ekranlar
+- **Süpervizör (`/`)** — 9'lu pseudo-live kamera grid; riskli olaylarda kırmızı
+  yanıp sönen çerçeve; kamera tıklayınca tam ekran modal; sağ panelde
+  bildirimler ve aksiyon butonları. "Saha Ekibine Bildirim Gönder" gerçek
+  sistem-içi push'tur, diğer aksiyonlar mock gösterimdir.
+- **Saha Ekibi (`/saha.html`)** — rol filtreli alarm listesi; riskli video
+  kesiti otomatik oynatılır; yeni alarmda kırmızı banner + bip sesi.
+- **Admin (`/admin.html`)** — KPI'lar, olay tablosu, post-it görünümlü
+  İSG çalışma alanı önerileri; öneriye tıklayınca LLM chat drawer açılır.
+  Öneriler admin tarafından elle tetiklenir (`/api/v1/suggestions/query`).
+
+### Çalıştırma
+```bash
+uvicorn backend.gateway.main:app --host 0.0.0.0 --port 8000
+```
+Tarayıcıda: `http://localhost:8000/`, `http://localhost:8000/saha.html`,
+`http://localhost:8000/admin.html`.
+
+### Pseudo-live veri kaynağı
+- Placeholder analizler: `data/pseudolive/analyses/analysis_01.json ... analysis_27.json`
+- Placeholder videolar: `data/pseudolive/videos/video_01.mp4 ... video_27.mp4`
+- Gerçek verilerle değiştirmek için aynı dosya adlarını koruyun.
+
+### Önemli Not
+UI, **normal AI risk tespit akışına dahil değildir**. `isg_onerileri.yaml`
+yeni bir RAG koleksiyonudur ve sadece admin paneli öneri/chat akışında
+kullanılır; `RAGLayer.build_context()` ve karar ajanı aynı kalmıştır.

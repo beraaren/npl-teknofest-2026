@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Süpervizör Ekranı | Video Risk Analizi</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="index.js"></script>
+</head>
+<body>
+  <header>
+    <h1>◫ Süpervizör Ekranı</h1>
+    <nav class="nav-links">
+      <a href="index.html" class="active">Süpervizör</a>
+      <a href="saha.html">Saha Ekibi</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </header>
+  <div class="app with-sidebar">
+    <main class="main">
+      <section id="camera-grid" class="camera-grid"></section>
+    </main>
+    <aside class="sidebar">
+      <h2>🔔 Bildirimler</h2>
+      <div id="notifications-list" class="notifications-list">
+        <div class="empty-state">Henüz bildirim yok.</div>
+      </div>
+      <div class="actions-panel">
+        <h3>⚡ Eylemler</h3>
+        <p id="selected-camera" class="meta">Kamera seçilmedi.</p>
+        <div id="actions-list" class="actions-list"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div id="modal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-title">Kamera Detayı</h2>
+        <button class="close-drawer" id="modal-close">×</button>
+      </div>
+      <div class="modal-body">
+        <video id="modal-video" autoplay muted loop controls></video>
+        <div style="margin-top:1rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
+          <span id="modal-risk" class="risk-badge">—</span>
+          <span id="modal-progress" class="meta">İlerleme: —</span>
+        </div>
+        <h3 style="margin:1rem 0 0.5rem;">Son Özet</h3>
+        <p id="modal-summary" class="meta">Henüz özet yok.</p>
+        <h3 style="margin:1rem 0 0.5rem;">Son Olaylar</h3>
+        <ul id="modal-events"></ul>
+        <h3 style="margin:1rem 0 0.5rem;">Eylemler</h3>
+        <div id="modal-actions" class="actions-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+</body>
+</html>

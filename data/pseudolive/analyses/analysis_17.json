@@ -1,0 +1,75 @@
+{
+  "summary": "Elektrik Panosu Odası bölgesinde 1 olay tespit edildi; en kritik: Üç veya daha fazla personelin tehlikeli bölgede toplanması.",
+  "events": [
+    {
+      "time": "00:16",
+      "event": "Üç veya daha fazla personelin tehlikeli bölgede toplanması.",
+      "event_type": "gathering",
+      "confidence": 0.82
+    }
+  ],
+  "risk": "Orta",
+  "actions": [
+    "Toplanma bölgesindeki personeli güvenli alana dağıt.",
+    "Bölgedeki tehlikeli makineleri veya hareketleri durdur.",
+    "Çalışma bölgesi kapasitesini ve erişim kontrolünü gözden geçir.",
+    "Alan sorumlusunu derhal bilgilendir."
+  ],
+  "reasoning": "Geometrik sinyaller gathering pattern'leriyle eşleşti. En yüksek risk skoru 50 (gathering). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.85,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "notify_supervisor",
+      "params": {
+        "location": "saha",
+        "reason": "Üç veya daha fazla personelin tehlikeli bölgede toplanması."
+      }
+    },
+    {
+      "tool_name": "sound_alarm",
+      "params": {
+        "location": "saha",
+        "reason": "Üç veya daha fazla personelin tehlikeli bölgede toplanması."
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "saha",
+        "reason": "Üç veya daha fazla personelin tehlikeli bölgede toplanması."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_17.mp4",
+    "camera_label": "Elektrik Panosu Odası",
+    "duration_sec": 41,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "gathering",
+        "timestamp": "00:16",
+        "description": "Üç veya daha fazla personelin tehlikeli bölgede toplanması.",
+        "confidence": 0.82,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "gathering",
+        "timestamp": "00:16",
+        "seconds": 16
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 16,
+        "end_sec": 22,
+        "event_type": "gathering",
+        "risk": "Orta",
+        "description": "Üç veya daha fazla personelin tehlikeli bölgede toplanması."
+      }
+    ]
+  }
+}

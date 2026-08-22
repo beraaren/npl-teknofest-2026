@@ -1,0 +1,68 @@
+{
+  "summary": "Üretim Hattı 2 bölgesinde 1 olay tespit edildi; en kritik: Acil çıkış yollarının veya yangın tüplerinin önünün kapanması.",
+  "events": [
+    {
+      "time": "00:14",
+      "event": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması.",
+      "event_type": "blocked_emergency_exit",
+      "confidence": 0.87
+    }
+  ],
+  "risk": "Yüksek",
+  "actions": [
+    "Acil çıkış yolundaki engelleri (palet, kutu) acilen kaldır.",
+    "Yangın söndürme ekipmanının erişilebilirliğini kontrol et.",
+    "İlgili alan sorumlusunu prosedür ihlali hakkında uyar.",
+    "Acil durum ekibini ve sağlık personelini derhal çağır."
+  ],
+  "reasoning": "Geometrik sinyaller blocked_emergency_exit pattern'leriyle eşleşti. En yüksek risk skoru 75 (blocked_emergency_exit). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.8,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "notify_supervisor",
+      "params": {
+        "location": "saha",
+        "reason": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması."
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "saha",
+        "reason": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_03.mp4",
+    "camera_label": "Üretim Hattı 2",
+    "duration_sec": 37,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "blocked_emergency_exit",
+        "timestamp": "00:14",
+        "description": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması.",
+        "confidence": 0.87,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "blocked_emergency_exit",
+        "timestamp": "00:14",
+        "seconds": 14
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 14,
+        "end_sec": 23,
+        "event_type": "blocked_emergency_exit",
+        "risk": "Yüksek",
+        "description": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması."
+      }
+    ]
+  }
+}

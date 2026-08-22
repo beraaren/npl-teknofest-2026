@@ -1,0 +1,101 @@
+{
+  "summary": "Acil Çıkış Kapısı 3 bölgesinde 2 olay tespit edildi; en kritik: Zeminde dökülmüş sıvı, yağ veya su kaynaklı kayma tehlikesi.",
+  "events": [
+    {
+      "time": "00:07",
+      "event": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski).",
+      "event_type": "cluttered_workspace",
+      "confidence": 0.76
+    },
+    {
+      "time": "00:15",
+      "event": "Zeminde dökülmüş sıvı, yağ veya su kaynaklı kayma tehlikesi.",
+      "event_type": "spill_slip_hazard",
+      "confidence": 0.56
+    }
+  ],
+  "risk": "Orta",
+  "actions": [
+    "Dökülme/kayma riski olan bölgeye uyarı levhaları koy.",
+    "Temizlik personelini bölgeye yönlendir.",
+    "Personeli alternatif yürüme yollarına yönlendir.",
+    "Alan sorumlusunu derhal bilgilendir."
+  ],
+  "reasoning": "Geometrik sinyaller cluttered_workspace, spill_slip_hazard pattern'leriyle eşleşti. En yüksek risk skoru 55 (spill_slip_hazard). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.72,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "notify_supervisor",
+      "params": {
+        "location": "saha",
+        "reason": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski)."
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "saha",
+        "reason": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski)."
+      }
+    },
+    {
+      "tool_name": "secure_area",
+      "params": {
+        "location": "saha",
+        "reason": "Zeminde dökülmüş sıvı, yağ veya su kaynaklı kayma tehlikesi."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_18.mp4",
+    "camera_label": "Acil Çıkış Kapısı 3",
+    "duration_sec": 34,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "cluttered_workspace",
+        "timestamp": "00:07",
+        "description": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski).",
+        "confidence": 0.76,
+        "involved_track_ids": [],
+        "metadata": {}
+      },
+      {
+        "event_type": "spill_slip_hazard",
+        "timestamp": "00:15",
+        "description": "Zeminde dökülmüş sıvı, yağ veya su kaynaklı kayma tehlikesi.",
+        "confidence": 0.56,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "cluttered_workspace",
+        "timestamp": "00:07",
+        "seconds": 7
+      },
+      {
+        "event_type": "spill_slip_hazard",
+        "timestamp": "00:15",
+        "seconds": 15
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 7,
+        "end_sec": 13,
+        "event_type": "cluttered_workspace",
+        "risk": "Düşük",
+        "description": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski)."
+      },
+      {
+        "start_sec": 15,
+        "end_sec": 20,
+        "event_type": "spill_slip_hazard",
+        "risk": "Orta",
+        "description": "Zeminde dökülmüş sıvı, yağ veya su kaynaklı kayma tehlikesi."
+      }
+    ]
+  }
+}

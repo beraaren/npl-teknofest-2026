@@ -222,9 +222,11 @@ class RAGLayer:
         self,
         patterns_path: str | None = None,
         actions_path: str | None = None,
+        suggestions_path: str | None = None,
     ):
         self.patterns: Dict[str, Any] = {}
         self.actions: Dict[str, Any] = {}
+        self.suggestions: Dict[str, Any] = {}
         self.history: List[Dict[str, Any]] = []  # Spatio-Temporal bellek için
 
         ppath = Path(patterns_path) if patterns_path else get_data_path("risk_patterns.yaml")
@@ -237,6 +239,11 @@ class RAGLayer:
             with open(apath, "r", encoding="utf-8") as f:
                 self.actions = yaml.safe_load(f) or {}
 
+        spath = Path(suggestions_path) if suggestions_path else get_data_path("isg_onerileri.yaml")
+        if spath.exists():
+            with open(spath, "r", encoding="utf-8") as f:
+                self.suggestions = yaml.safe_load(f) or {}
+
         # Vektör indeksi: description + indicators + keywords (v2: keywords eklendi)
         docs = {
             name: (
@@ -247,8 +254,21 @@ class RAGLayer:
             )
             for name, p in self.patterns.get("patterns", {}).items()
         }
-        
+
+        # Öneri indeksi: isg_onerileri.yaml — baslik + kategori + aciklama + keywords
+        sugg_docs = {
+            name: (
+                f"{name} "
+                f"{s.get('baslik', '')} "
+                f"{s.get('kategori', '')} "
+                f"{s.get('aciklama', '')} "
+                f"{s.get('keywords', '')}"
+            )
+            for name, s in self.suggestions.get("oneriler", {}).items()
+        }
+
         self.doc_embeddings: Dict[str, Any] = {}
+        self.sugg_embeddings: Dict[str, Any] = {}
         try:
             from sentence_transformers import SentenceTransformer
             # İlk çalışmada modeli indirecek, sonra cache'ten okuyacaktır.
@@ -256,16 +276,20 @@ class RAGLayer:
             self._use_tf_idf = False
             for name, text in docs.items():
                 self.doc_embeddings[name] = self.embedder.encode(text)
+            for name, text in sugg_docs.items():
+                self.sugg_embeddings[name] = self.embedder.encode(text)
         except (ImportError, Exception):
             self.embedder = None
             self._use_tf_idf = True
             self._index, self._idf = _tfidf_index(docs)
+            self._sugg_index, self._sugg_idf = _tfidf_index(sugg_docs) if sugg_docs else ({}, {})
 
-    def _query_vector(self, text: str) -> Dict[str, float]:
+    def _query_vector(self, text: str, idf: Dict[str, float] | None = None) -> Dict[str, float]:
+        idf = idf if idf is not None else self._idf
         counts: Dict[str, float] = {}
         for tok in _tokenize(text):
             counts[tok] = counts.get(tok, 0.0) + 1.0
-        v = {tok: c * self._idf.get(tok, 0.0) for tok, c in counts.items()}
+        v = {tok: c * idf.get(tok, 0.0) for tok, c in counts.items()}
         norm = math.sqrt(sum(x * x for x in v.values())) or 1.0
         return {tok: x / norm for tok, x in v.items()}
 
@@ -527,3 +551,106 @@ class RAGLayer:
                     return result
 
         return result
+
+    def match_suggestions(
+        self,
+        event_types: List[str] | None = None,
+        query_text: str = "",
+        top_k: int = 5,
+        boost: float = 1.5,
+    ) -> List[Dict[str, Any]]:
+        """İSG öneri koleksiyonundan (isg_onerileri.yaml) skorlu öneri listesi döner.
+
+        Skorlama: TF-IDF/embedding benzerliği (query_text) + related_patterns'in
+        event_types ile kesişmesi durumunda boost. Admin paneli öneri listesi ve
+        LLM chat akışı bu metotla beslenir.
+
+        Args:
+            event_types: Tespit edilen olay/pattern adları (örn. ["ppe_missing"]).
+            query_text: Serbest metin sorgusu (dashboard özeti veya chat mesajı).
+            top_k: Döndürülecek maksimum öneri sayısı.
+            boost: related_patterns eşleşme çarpanı.
+
+        Returns:
+            [{"oneri_id", "baslik", "kategori", "aciklama", "maliyet_tahmini",
+              "oncelik", "related_patterns", "skor"}, ...] — skora göre azalan.
+        """
+        oneriler = self.suggestions.get("oneriler", {})
+        if not oneriler:
+            return []
+
+        event_types = event_types or []
+        query = " ".join([query_text, *event_types]).strip()
+
+        qv = None
+        if query:
+            if not getattr(self, "_use_tf_idf", True):
+                qv = self.embedder.encode(query)
+            else:
+                qv = self._query_vector(query, idf=getattr(self, "_sugg_idf", {}))
+
+        # Sorgu tamamen boşsa (panel ilk açılışı) tüm önerileri önceliğe göre listele
+        _oncelik_sirasi = {"Kritik": 4, "Yüksek": 3, "Orta": 2, "Düşük": 1}
+        if not query:
+            return [
+                {
+                    "oneri_id": name,
+                    "baslik": s.get("baslik", name),
+                    "kategori": s.get("kategori", ""),
+                    "aciklama": str(s.get("aciklama", "")).strip(),
+                    "maliyet_tahmini": s.get("maliyet_tahmini", {}),
+                    "oncelik": s.get("oncelik", "Orta"),
+                    "related_patterns": s.get("related_patterns", []),
+                    "pattern_eslesmesi": False,
+                    "skor": 0.0,
+                }
+                for name, s in sorted(
+                    oneriler.items(),
+                    key=lambda kv: _oncelik_sirasi.get(kv[1].get("oncelik", "Orta"), 0),
+                    reverse=True,
+                )
+            ][:top_k]
+
+        results: List[Dict[str, Any]] = []
+        for name, s in oneriler.items():
+            sim = 0.0
+            if qv is not None:
+                if not getattr(self, "_use_tf_idf", True):
+                    import numpy as np
+                    doc_v = self.sugg_embeddings.get(name)
+                    norm_qv = np.linalg.norm(qv)
+                    norm_doc = np.linalg.norm(doc_v)
+                    if norm_qv > 0 and norm_doc > 0:
+                        sim = float(np.dot(qv, doc_v) / (norm_qv * norm_doc))
+                else:
+                    sim = _cosine(qv, getattr(self, "_sugg_index", {}).get(name, {}))
+
+            related = s.get("related_patterns", [])
+            pattern_hit = any(p in event_types for p in related)
+            if pattern_hit:
+                sim = max(sim * boost, 0.3)  # pattern eşleşmesi öneriyi öne taşır
+
+            if sim <= 0.0 and not pattern_hit:
+                continue
+
+            results.append({
+                "oneri_id": name,
+                "baslik": s.get("baslik", name),
+                "kategori": s.get("kategori", ""),
+                "aciklama": str(s.get("aciklama", "")).strip(),
+                "maliyet_tahmini": s.get("maliyet_tahmini", {}),
+                "oncelik": s.get("oncelik", "Orta"),
+                "related_patterns": related,
+                "pattern_eslesmesi": pattern_hit,
+                "skor": round(sim, 3),
+            })
+
+        results.sort(key=lambda r: r["skor"], reverse=True)
+        return results[:top_k]
+
+    def get_suggestion(self, oneri_id: str) -> Dict[str, Any] | None:
+        """Tek bir öneri kaydının tamamını döner (chat context'i için)."""
+        oneri = self.suggestions.get("oneriler", {}).get(oneri_id)
+        if oneri is None:
+            return None
+        return {"oneri_id": oneri_id, **oneri}

@@ -1,0 +1,75 @@
+{
+  "summary": "Elektrik Panosu Odası bölgesinde 1 olay tespit edildi; en kritik: Tesis içinde koşan personel (çarpışma/kayma riski).",
+  "events": [
+    {
+      "time": "00:16",
+      "event": "Tesis içinde koşan personel (çarpışma/kayma riski).",
+      "event_type": "running_in_facility",
+      "confidence": 0.59
+    }
+  ],
+  "risk": "Orta",
+  "actions": [
+    "Koşan personeli anons ile yavaşlaması için uyar.",
+    "Acil bir durum olup olmadığını teyit et.",
+    "Çevredeki iş makinelerinin hızını düşür.",
+    "Alan sorumlusunu derhal bilgilendir."
+  ],
+  "reasoning": "Geometrik sinyaller running_in_facility pattern'leriyle eşleşti. En yüksek risk skoru 60 (running_in_facility). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.78,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "sound_alarm",
+      "params": {
+        "location": "saha",
+        "reason": "Tesis içinde koşan personel (çarpışma/kayma riski)."
+      }
+    },
+    {
+      "tool_name": "notify_supervisor",
+      "params": {
+        "location": "saha",
+        "reason": "Tesis içinde koşan personel (çarpışma/kayma riski)."
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "saha",
+        "reason": "Tesis içinde koşan personel (çarpışma/kayma riski)."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_06.mp4",
+    "camera_label": "Elektrik Panosu Odası",
+    "duration_sec": 36,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "running_in_facility",
+        "timestamp": "00:16",
+        "description": "Tesis içinde koşan personel (çarpışma/kayma riski).",
+        "confidence": 0.59,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "running_in_facility",
+        "timestamp": "00:16",
+        "seconds": 16
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 16,
+        "end_sec": 25,
+        "event_type": "running_in_facility",
+        "risk": "Orta",
+        "description": "Tesis içinde koşan personel (çarpışma/kayma riski)."
+      }
+    ]
+  }
+}

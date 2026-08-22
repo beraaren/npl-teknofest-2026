@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | Video Risk Analizi</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .app.with-sidebar .main { margin-right: 360px; }
+    .app.with-sidebar .sidebar { width: 360px; }
+  </style>
+  <script type="module" src="admin.js"></script>
+</head>
+<body>
+  <header>
+    <h1>◫ Admin Paneli</h1>
+    <nav class="nav-links">
+      <a href="index.html">Süpervizör</a>
+      <a href="saha.html">Saha Ekibi</a>
+      <a href="admin.html" class="active">Admin</a>
+    </nav>
+  </header>
+  <div class="app with-sidebar">
+    <main class="main">
+      <section class="kpi-grid" id="kpi-grid">
+        <div class="kpi-card"><div class="value" id="kpi-events">—</div><div class="label">Tespit Edilen Olay</div></div>
+        <div class="kpi-card"><div class="value" id="kpi-decisions">—</div><div class="label">Alınan Karar</div></div>
+        <div class="kpi-card"><div class="value" id="kpi-tools">—</div><div class="label">Çalıştırılan Araç</div></div>
+        <div class="kpi-card"><div class="value" id="kpi-notifications">—</div><div class="label">Gönderilen Bildirim</div></div>
+      </section>
+
+      <h2 style="margin:1rem 0 0.5rem;">Son Olaylar</h2>
+      <table class="events-table">
+        <thead>
+          <tr><th>Zaman</th><th>Kamera</th><th>Akış</th><th>Olay</th><th>Risk</th></tr>
+        </thead>
+        <tbody id="events-body"><tr><td colspan="5" class="empty-state">Henüz olay yok.</td></tr></tbody>
+      </table>
+
+      <h2 style="margin:1rem 0 0.5rem;">Risk Dağılımı</h2>
+      <div class="chart-wrap">
+        <canvas id="risk-chart"></canvas>
+      </div>
+    </main>
+
+    <aside class="sidebar" style="width:360px;">
+      <h2>💡 Çalışma Alanı Önerileri</h2>
+      <label class="meta" for="query-text">Sorgu metni (isteğe bağlı)</label>
+      <input id="query-text" class="chat-input" style="padding:0.5rem;" placeholder="Örn: risk azaltma önlemleri..." />
+      <button id="suggest-btn" class="btn" style="width:100%;">Seçili olaylar için öneri al</button>
+      <div id="suggestions-list" style="display:flex;flex-direction:column;gap:0.75rem;margin-top:1rem;overflow-y:auto;flex:1;"></div>
+    </aside>
+  </div>
+
+  <div id="chat-drawer" class="chat-drawer">
+    <div class="modal-header">
+      <h3 id="chat-title">Öneri Sohbeti</h3>
+      <button class="close-drawer" id="chat-close">×</button>
+    </div>
+    <div id="chat-messages" class="chat-messages"></div>
+    <form id="chat-form" class="chat-input">
+      <input id="chat-input" type="text" placeholder="Mesaj yazın..." autocomplete="off" />
+      <button class="btn" type="submit">Gönder</button>
+    </form>
+  </div>
+
+  <div id="toast" class="toast"></div>
+</body>
+</html>

@@ -1,0 +1,127 @@
+{
+  "summary": "Depo-B Raf Arası bölgesinde 3 olay tespit edildi; en kritik: Forkliftin yan yatması, devrilmesi veya tekerleklerinin yerden kesilmesi.",
+  "events": [
+    {
+      "time": "00:03",
+      "event": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması.",
+      "event_type": "blocked_emergency_exit",
+      "confidence": 0.75
+    },
+    {
+      "time": "00:12",
+      "event": "Mesai saatleri dışında veya izinsiz zamanda bölgede yaya tespiti.",
+      "event_type": "restricted_time_access",
+      "confidence": 0.73
+    },
+    {
+      "time": "00:18",
+      "event": "Forkliftin yan yatması, devrilmesi veya tekerleklerinin yerden kesilmesi.",
+      "event_type": "forklift_tip_over",
+      "confidence": 0.93
+    }
+  ],
+  "risk": "Yüksek",
+  "actions": [
+    "Acil çıkış yolundaki engelleri (palet, kutu) acilen kaldır.",
+    "Yangın söndürme ekipmanının erişilebilirliğini kontrol et.",
+    "İlgili alan sorumlusunu prosedür ihlali hakkında uyar.",
+    "Forklift operatörünün durumunu kontrol et, ilk yardım sağla."
+  ],
+  "reasoning": "Geometrik sinyaller blocked_emergency_exit, restricted_time_access, forklift_tip_over pattern'leriyle eşleşti. En yüksek risk skoru 95 (forklift_tip_over). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.8,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "notify_supervisor",
+      "params": {
+        "location": "saha",
+        "reason": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması."
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "saha",
+        "reason": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması."
+      }
+    },
+    {
+      "tool_name": "sound_alarm",
+      "params": {
+        "location": "saha",
+        "reason": "Mesai saatleri dışında veya izinsiz zamanda bölgede yaya tespiti."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_19.mp4",
+    "camera_label": "Depo-B Raf Arası",
+    "duration_sec": 26,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "blocked_emergency_exit",
+        "timestamp": "00:03",
+        "description": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması.",
+        "confidence": 0.75,
+        "involved_track_ids": [],
+        "metadata": {}
+      },
+      {
+        "event_type": "restricted_time_access",
+        "timestamp": "00:12",
+        "description": "Mesai saatleri dışında veya izinsiz zamanda bölgede yaya tespiti.",
+        "confidence": 0.73,
+        "involved_track_ids": [],
+        "metadata": {}
+      },
+      {
+        "event_type": "forklift_tip_over",
+        "timestamp": "00:18",
+        "description": "Forkliftin yan yatması, devrilmesi veya tekerleklerinin yerden kesilmesi.",
+        "confidence": 0.93,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "blocked_emergency_exit",
+        "timestamp": "00:03",
+        "seconds": 3
+      },
+      {
+        "event_type": "restricted_time_access",
+        "timestamp": "00:12",
+        "seconds": 12
+      },
+      {
+        "event_type": "forklift_tip_over",
+        "timestamp": "00:18",
+        "seconds": 18
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 3,
+        "end_sec": 10,
+        "event_type": "blocked_emergency_exit",
+        "risk": "Yüksek",
+        "description": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması."
+      },
+      {
+        "start_sec": 12,
+        "end_sec": 17,
+        "event_type": "restricted_time_access",
+        "risk": "Orta",
+        "description": "Mesai saatleri dışında veya izinsiz zamanda bölgede yaya tespiti."
+      },
+      {
+        "start_sec": 18,
+        "end_sec": 26,
+        "event_type": "forklift_tip_over",
+        "risk": "Yüksek",
+        "description": "Forkliftin yan yatması, devrilmesi veya tekerleklerinin yerden kesilmesi."
+      }
+    ]
+  }
+}

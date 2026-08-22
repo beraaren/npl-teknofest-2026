@@ -1,0 +1,101 @@
+{
+  "summary": "Depo-A Giriş bölgesinde 2 olay tespit edildi; en kritik: Personelin ani düşüşü veya zemine çökmesi.",
+  "events": [
+    {
+      "time": "00:23",
+      "event": "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski.",
+      "event_type": "dangerous_proximity",
+      "confidence": 0.77
+    },
+    {
+      "time": "00:17",
+      "event": "Personelin ani düşüşü veya zemine çökmesi.",
+      "event_type": "person_fall",
+      "confidence": 0.9
+    }
+  ],
+  "risk": "Yüksek",
+  "actions": [
+    "Forklift operatörünü acil olarak durdur.",
+    "Yaya trafiğini alternatif güzergaha yönlendir.",
+    "Çarpışmaya karışan personelin durumunu kontrol et.",
+    "Yaralıyı hareket ettirmeden sağlık ekibini bekle."
+  ],
+  "reasoning": "Geometrik sinyaller dangerous_proximity, person_fall pattern'leriyle eşleşti. En yüksek risk skoru 90 (person_fall). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.75,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "stop_forklift",
+      "params": {
+        "location": "saha",
+        "reason": "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski."
+      }
+    },
+    {
+      "tool_name": "sound_alarm",
+      "params": {
+        "location": "saha",
+        "reason": "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski."
+      }
+    },
+    {
+      "tool_name": "call_health_team",
+      "params": {
+        "location": "saha",
+        "reason": "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_21.mp4",
+    "camera_label": "Depo-A Giriş",
+    "duration_sec": 31,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "dangerous_proximity",
+        "timestamp": "00:23",
+        "description": "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski.",
+        "confidence": 0.77,
+        "involved_track_ids": [],
+        "metadata": {}
+      },
+      {
+        "event_type": "person_fall",
+        "timestamp": "00:17",
+        "description": "Personelin ani düşüşü veya zemine çökmesi.",
+        "confidence": 0.9,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "person_fall",
+        "timestamp": "00:17",
+        "seconds": 17
+      },
+      {
+        "event_type": "dangerous_proximity",
+        "timestamp": "00:23",
+        "seconds": 23
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 17,
+        "end_sec": 23,
+        "event_type": "person_fall",
+        "risk": "Yüksek",
+        "description": "Personelin ani düşüşü veya zemine çökmesi."
+      },
+      {
+        "start_sec": 23,
+        "end_sec": 28,
+        "event_type": "dangerous_proximity",
+        "risk": "Yüksek",
+        "description": "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski."
+      }
+    ]
+  }
+}

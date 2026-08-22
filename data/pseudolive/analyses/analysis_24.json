@@ -1,0 +1,68 @@
+{
+  "summary": "Üretim Hattı 1 bölgesinde 1 olay tespit edildi; en kritik: Çalışma alanında düzensiz eşyalar ve engeller (takılma riski).",
+  "events": [
+    {
+      "time": "00:20",
+      "event": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski).",
+      "event_type": "cluttered_workspace",
+      "confidence": 0.72
+    }
+  ],
+  "risk": "Düşük",
+  "actions": [
+    "Alan sorumlusundan temizlik ve düzenleme talep et.",
+    "Geçiş yollarını engelleyen kutu/kabloları güvenli yere al.",
+    "Gereksiz malzemelerin depoya kaldırılmasını sağla.",
+    "Durumu rutin İSG kontrol listesine kaydet."
+  ],
+  "reasoning": "Geometrik sinyaller cluttered_workspace pattern'leriyle eşleşti. En yüksek risk skoru 40 (cluttered_workspace). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.72,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "notify_supervisor",
+      "params": {
+        "location": "saha",
+        "reason": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski)."
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "saha",
+        "reason": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski)."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_24.mp4",
+    "camera_label": "Üretim Hattı 1",
+    "duration_sec": 37,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "cluttered_workspace",
+        "timestamp": "00:20",
+        "description": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski).",
+        "confidence": 0.72,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "cluttered_workspace",
+        "timestamp": "00:20",
+        "seconds": 20
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 20,
+        "end_sec": 25,
+        "event_type": "cluttered_workspace",
+        "risk": "Düşük",
+        "description": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski)."
+      }
+    ]
+  }
+}

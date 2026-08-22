@@ -1,0 +1,101 @@
+{
+  "summary": "Üretim Hattı 1 bölgesinde 2 olay tespit edildi; en kritik: Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir.",
+  "events": [
+    {
+      "time": "00:16",
+      "event": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük).",
+      "event_type": "overhead_hazard",
+      "confidence": 0.8
+    },
+    {
+      "time": "00:10",
+      "event": "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir.",
+      "event_type": "fire_smoke",
+      "confidence": 0.82
+    }
+  ],
+  "risk": "Yüksek",
+  "actions": [
+    "Vinci acil durdur ve operatörle telsiz iletişimi kur.",
+    "Yük altındaki personeli sesli sirenle uyar.",
+    "Riskli alanı güvenlik şeridiyle kapat.",
+    "Yangın söndürme sistemini derhal devreye al."
+  ],
+  "reasoning": "Geometrik sinyaller overhead_hazard, fire_smoke pattern'leriyle eşleşti. En yüksek risk skoru 100 (fire_smoke). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.78,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "sound_alarm",
+      "params": {
+        "location": "saha",
+        "reason": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük)."
+      }
+    },
+    {
+      "tool_name": "secure_area",
+      "params": {
+        "location": "saha",
+        "reason": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük)."
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "saha",
+        "reason": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük)."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_20.mp4",
+    "camera_label": "Üretim Hattı 1",
+    "duration_sec": 29,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "overhead_hazard",
+        "timestamp": "00:16",
+        "description": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük).",
+        "confidence": 0.8,
+        "involved_track_ids": [],
+        "metadata": {}
+      },
+      {
+        "event_type": "fire_smoke",
+        "timestamp": "00:10",
+        "description": "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir.",
+        "confidence": 0.82,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "fire_smoke",
+        "timestamp": "00:10",
+        "seconds": 10
+      },
+      {
+        "event_type": "overhead_hazard",
+        "timestamp": "00:16",
+        "seconds": 16
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 10,
+        "end_sec": 15,
+        "event_type": "fire_smoke",
+        "risk": "Yüksek",
+        "description": "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir."
+      },
+      {
+        "start_sec": 16,
+        "end_sec": 24,
+        "event_type": "overhead_hazard",
+        "risk": "Yüksek",
+        "description": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük)."
+      }
+    ]
+  }
+}

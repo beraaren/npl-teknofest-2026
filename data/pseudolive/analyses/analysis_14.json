@@ -1,0 +1,127 @@
+{
+  "summary": "Üretim Hattı 1 bölgesinde 3 olay tespit edildi; en kritik: Kavşak veya kör noktalarda kontrolsüz hareket.",
+  "events": [
+    {
+      "time": "00:18",
+      "event": "Kavşak veya kör noktalarda kontrolsüz hareket.",
+      "event_type": "blind_spot_movement",
+      "confidence": 0.7
+    },
+    {
+      "time": "00:26",
+      "event": "Üç veya daha fazla personelin tehlikeli bölgede toplanması.",
+      "event_type": "gathering",
+      "confidence": 0.89
+    },
+    {
+      "time": "00:03",
+      "event": "Palet yükünün devrilmesi, çökmesi veya tehlikeli pozisyonda olması.",
+      "event_type": "pallet_collapse",
+      "confidence": 0.59
+    }
+  ],
+  "risk": "Yüksek",
+  "actions": [
+    "Forklift operatörünü uyar ve hızını düşürmesini sağla.",
+    "Yayaları kör noktalara girmemeleri konusunda sesli ikaz et.",
+    "Bölgedeki uyarı aynalarının açısını kontrol et.",
+    "Çöken palet çevresindeki personelin durumunu kontrol et."
+  ],
+  "reasoning": "Geometrik sinyaller blind_spot_movement, gathering, pallet_collapse pattern'leriyle eşleşti. En yüksek risk skoru 75 (blind_spot_movement). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "confidence": 0.79,
+  "triggered_mock_tools": [
+    {
+      "tool_name": "stop_forklift",
+      "params": {
+        "location": "saha",
+        "reason": "Kavşak veya kör noktalarda kontrolsüz hareket."
+      }
+    },
+    {
+      "tool_name": "sound_alarm",
+      "params": {
+        "location": "saha",
+        "reason": "Kavşak veya kör noktalarda kontrolsüz hareket."
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "saha",
+        "reason": "Kavşak veya kör noktalarda kontrolsüz hareket."
+      }
+    }
+  ],
+  "metadata": {
+    "video_file": "video_14.mp4",
+    "camera_label": "Üretim Hattı 1",
+    "duration_sec": 38,
+    "fps": 12.0,
+    "geometric_signals": [
+      {
+        "event_type": "blind_spot_movement",
+        "timestamp": "00:18",
+        "description": "Kavşak veya kör noktalarda kontrolsüz hareket.",
+        "confidence": 0.7,
+        "involved_track_ids": [],
+        "metadata": {}
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "00:26",
+        "description": "Üç veya daha fazla personelin tehlikeli bölgede toplanması.",
+        "confidence": 0.89,
+        "involved_track_ids": [],
+        "metadata": {}
+      },
+      {
+        "event_type": "pallet_collapse",
+        "timestamp": "00:03",
+        "description": "Palet yükünün devrilmesi, çökmesi veya tehlikeli pozisyonda olması.",
+        "confidence": 0.59,
+        "involved_track_ids": [],
+        "metadata": {}
+      }
+    ],
+    "event_timestamps": [
+      {
+        "event_type": "pallet_collapse",
+        "timestamp": "00:03",
+        "seconds": 3
+      },
+      {
+        "event_type": "blind_spot_movement",
+        "timestamp": "00:18",
+        "seconds": 18
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "00:26",
+        "seconds": 26
+      }
+    ],
+    "risk_segments": [
+      {
+        "start_sec": 3,
+        "end_sec": 11,
+        "event_type": "pallet_collapse",
+        "risk": "Yüksek",
+        "description": "Palet yükünün devrilmesi, çökmesi veya tehlikeli pozisyonda olması."
+      },
+      {
+        "start_sec": 18,
+        "end_sec": 24,
+        "event_type": "blind_spot_movement",
+        "risk": "Yüksek",
+        "description": "Kavşak veya kör noktalarda kontrolsüz hareket."
+      },
+      {
+        "start_sec": 26,
+        "end_sec": 32,
+        "event_type": "gathering",
+        "risk": "Orta",
+        "description": "Üç veya daha fazla personelin tehlikeli bölgede toplanması."
+      }
+    ]
+  }
+}

@@ -41,12 +41,19 @@ class EventEngine:
         """
         self.config = config
         self.fps = fps
-        # Sahne grafiği kenarları ile _rule_proximity aynı eşiği kullanmak zorundadır:
-        # kenar ağırlığı (1 - dist/threshold) ile kuralın mesafe geri hesabı
-        # ((1 - weight) * threshold) ancak aynı tabanla tutarlı sonuç verir.
+        # Sahne grafiği `near` kenarının kurulup kurulmayacağına karar veren TABAN
+        # eşik. Bu değerin altında kalan çiftler için near kenarı hiç oluşmaz ve
+        # _rule_proximity o çifti göremez — bu yüzden gerçek karar (sinyal üretilsin
+        # mi) burada değil, _rule_proximity içinde merkezler arası gerçek mesafe
+        # üzerinden verilir. Buradaki değer sadece "bu eşiğin altındaki adayları
+        # kenar listesine dahil et" filtresidir; her karede
+        # `_compute_proximity_graph_threshold` ile ölçeğe göre büyütülür.
         self.proximity_threshold = float(
             config.thresholds.proximity.get("distance_threshold_pixels", DEFAULT_PROXIMITY_THRESHOLD)
         )
+        self._proximity_dangerous_classes = {
+            cls for pair in config.thresholds.proximity.get("dangerous_pairs", [["arac", "insan"]]) for cls in pair
+        }
         self.rules = RuleSet({
             "enabled_rules": config.enabled_rules,
             **config.thresholds.model_dump(),
@@ -89,7 +96,7 @@ class EventEngine:
 
         graph = SceneGraph.from_dict(
             observation.get("scene_graph", {}),
-            proximity_threshold=self.proximity_threshold,
+            proximity_threshold=self._compute_proximity_graph_threshold(tracks),
         )
 
         new_signals = self.rules.evaluate(tracks, self.states, graph)
@@ -100,6 +107,49 @@ class EventEngine:
                 filtered.append(sig)
                 self.signals.append(sig)
         return filtered
+
+    def _compute_proximity_graph_threshold(self, tracks: List[TrackedObject]) -> float:
+        """Sahne grafiğinin `near` kenarı için o kareye özel eşiği hesaplar.
+
+        `SceneGraph.build_relations()` sabit bir eşik alır: bu eşiğin üstünde
+        kalan çiftler için `near` kenarı hiç kurulmaz, dolayısıyla
+        `_rule_proximity` o çifti asla göremez (kural içindeki oranlı/ölçekli
+        mantık kenarın var olmasına bağlıdır). Sabit `distance_threshold_pixels`
+        (örn. 100px) kameraya yakın çekilmiş sahnelerde çok düşük kalabilir:
+        bbox yüksekliği 300-400px olan bir forklift-insan çiftinde, gerçek
+        tehlikeli mesafe (kendi ölçeklerinin ~1 katı, örn. 270-300px) sabit
+        eşiğin üstünde kalır ve near kenarı hiç oluşmaz (bkz. proximity.mp4
+        gözlemi: forklift 278px'e kadar yaklaştı, hep "güvenli" sayıldı).
+
+        Bu yüzden buradaki eşik, o karede görülen tehlikeli sınıflardaki
+        (`dangerous_pairs`) track'lerin en büyük `scale_ema`'sına göre
+        `distance_threshold_ratio` oranında büyütülür. Nihai kabul/ret kararı
+        hâlâ `_rule_proximity`'de verilir (`estimated_dist <= effective_limit`);
+        burada yalnızca kenarın kurulabilmesi için yeterli genişlikte bir taban
+        sağlanır — kenar kurulmazsa kural hiç çalışamaz.
+
+        Args:
+            tracks: Bu karedeki aktif takip nesneleri.
+
+        Returns:
+            `near` kenarı için kullanılacak mesafe eşiği (piksel). En az
+            yapılandırılan sabit `distance_threshold_pixels` kadardır.
+        """
+        proximity_cfg = self.config.thresholds.proximity
+        distance_ratio = proximity_cfg.get("distance_threshold_ratio", 1.0)
+
+        max_scale = 0.0
+        for t in tracks:
+            if t.class_name not in self._proximity_dangerous_classes:
+                continue
+            state = self.states.get(t.track_id)
+            if state and state.scale_ema > max_scale:
+                max_scale = state.scale_ema
+
+        if max_scale <= 0.0:
+            return self.proximity_threshold
+
+        return max(self.proximity_threshold, max_scale * distance_ratio)
 
     def _observation_to_tracks(self, observation: Dict[str, Any]) -> List[TrackedObject]:
         """Gözlem sözlüğündeki ham track ve detection verilerini `TrackedObject` nesnelerine dönüştürür.

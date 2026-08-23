@@ -489,27 +489,78 @@ class RuleSet:
                 )
         return signals
 
+    @staticmethod
+    def _person_vehicle_overlap_ratio(person: SceneNode, vehicle: SceneNode) -> float:
+        """Kişinin bbox alanının araç bbox'ıyla kesişen oranını (0-1) hesaplar.
+
+        Bu oran yüksekse (varsayılan eşik 0.5) kişi aracın içinde/üzerinde
+        oturuyor demektir — yani forklift **operatörü**, ayrı bir yaya değil.
+        `_rule_proximity` bu durumu tehlikeli yakınlık olarak saymamalıdır:
+        merkez mesafesi tabanlı `near` ilişkisi, operatörün bbox'ı aracın
+        bbox'ıyla ağır örtüştüğü için sırf bu yüzden çok küçük çıkar ve
+        sürücüyü "aşırı yakın yaya" gibi işaretler.
+
+        Kavramsal olarak `wearing` ilişkisinin (`_is_ppe_worn`) kullandığı
+        kapsama mantığıyla aynıdır, ama genel `SceneGraph` ilişkilerine
+        eklenmez: bu ayrım yalnızca `dangerous_proximity` kuralının kendi iç
+        mantığına ait, sahne grafiğinin başka tüketicilerini (VLM prompt'u,
+        JSON raporu, diğer kurallar) etkilememesi için burada, yerel olarak
+        tutulur.
+
+        Args:
+            person: `insan` sınıfındaki düğüm.
+            vehicle: `arac` sınıfındaki düğüm.
+
+        Returns:
+            Kesişim alanının kişinin bbox alanına oranı. Kesişim yoksa veya
+            kişinin bbox'ı dejenere (alan <= 0) ise 0.0.
+        """
+        px1, py1, px2, py2 = person.bbox
+        vx1, vy1, vx2, vy2 = vehicle.bbox
+        ix1, iy1 = max(px1, vx1), max(py1, vy1)
+        ix2, iy2 = min(px2, vx2), min(py2, vy2)
+        if ix2 <= ix1 or iy2 <= iy1:
+            return 0.0
+        person_area = (px2 - px1) * (py2 - py1)
+        if person_area <= 0.0:
+            return 0.0
+        intersection = (ix2 - ix1) * (iy2 - iy1)
+        return intersection / person_area
+
     def _rule_proximity(self, graph: SceneGraph, states: TrackStateMachine) -> List[EventSignal]:
         """Tehlikeli Yakınlık Kuralı: Forklift ve Yaya Etkileşimi.
 
         Sahne grafiğindeki `near` ilişkilerini inceler. Eğer birbiriyle yakın olan
         nesne çifti tehlikeli ikili listesindeyse (örn. `['forklift', 'insan']`)
-        sinyal üretilmesi için iki koşuldan biri sağlanmalıdır:
-          1. Öklid mesafesi sabit piksel eşiğinin (`distance_threshold_pixels`)
-             altında olmalı (SceneGraph zaten `near` kenarını bu eşikle kurar), VE
+        gerçek mesafe (`estimated_dist`) şu eşiklerden **büyük olanının** altında
+        kalmalıdır:
+          1. Sabit piksel eşiği (`distance_threshold_pixels`) — ölçek bilgisi
+             yoksa (ilk kareler) güvenli taban.
           2. Çiftin ortalama ölçeğine (`TrackState.scale_ema`) oranlı mesafe
-             eşiğinin (`distance_threshold_ratio`) de altında olmalı.
+             (`distance_threshold_ratio`) — kameraya yakın/büyük görünen bir
+             çift için gerçek tehlike mesafesi, sabit pikselden büyük olabilir.
 
-        İkinci koşul, kameraya uzak/küçük görünen bir çiftin sabit piksel
-        eşiğini "yanlışlıkla" geçmesini önler: uzak nesnelerde aynı piksel
-        mesafesi gerçekte çok daha büyük bir fiziksel mesafeye denk gelir.
-        Not: Bu filtre yalnızca SIKILAŞTIRICI yönde çalışır (mevcut sabit eşiğin
-        işaretlediği adaylardan bir alt küme seçer); `SceneGraph.build_relations`
-        çağrısının kendisi hâlâ sabit piksel eşiğiyle `near` kenarı kurduğu için,
-        kameraya çok yakın/büyük bir çiftin gerçek tehlikeli mesafesi bu sabit
-        eşiği aşarsa (ör. çok büyük görünen forklift-insan çifti) o kenar hiç
-        oluşmaz ve bu kural onu göremez. Bunun tam çözümü `SceneGraph`'ın kenar
-        kurma eşiğinin de ölçekli hale gelmesini gerektirir; kapsam dışıdır.
+        Önceki tasarım iki eşiğin **küçüğünü** (`min`) kullanıyordu; bu, oranlı
+        eşiği anlamsız kılıyordu çünkü sabit eşik neredeyse her zaman daha
+        küçük çıkıp oranlı hesabı gölgeliyordu (bkz. proximity.mp4 gözlemi:
+        forklift 278px'e kadar yaklaştı — kişilerin kendi ölçeğine göre bu zaten
+        "tehlikeli yakın" sayılması gereken bir mesafeydi — ama sabit 100px
+        eşiği hep kazanıp sinyali bastırıyordu). `max()` bu ölçek-duyarlı
+        davranışı doğru yöne çevirir: kameraya yakın/büyük çiftlerde daha büyük
+        (daha erken tetiklenen), uzak/küçük çiftlerde sabit taban eşiği geçerli
+        olur.
+
+        Bu kuralın çalışabilmesi için `near` kenarının önce oluşmuş olması
+        gerekir; `EventEngine._compute_proximity_graph_threshold` bu kenarın
+        sabit eşik yüzünden hiç kurulmamasını önlemek için sahne grafiğine
+        geçirilen eşiği o karenin ölçeğine göre büyütür.
+
+        Operatör filtresi: kişi ile aracın bbox'ları ağır örtüşüyorsa (bkz.
+        `_person_vehicle_overlap_ratio`, eşik `operator_overlap_ratio`), bu
+        kişi aracın içinde/üzerinde oturan operatördür, yaya değildir; merkez
+        mesafesi çok küçük olsa bile sinyal üretilmez. Bu ayrım olmadan, bir
+        forklift operatörü sürekli "kendi aracına aşırı yakın yaya" olarak
+        yanlış pozitif üretirdi (bkz. proximity.mp4 gözlemi).
 
         Args:
             graph (SceneGraph): Karenin anlık sahne grafiği.
@@ -523,6 +574,7 @@ class RuleSet:
         dangerous_pairs = [set(p) for p in cfg.get("dangerous_pairs", [["forklift", "insan"]])]
         threshold = cfg.get("distance_threshold_pixels", 100)
         distance_ratio = cfg.get("distance_threshold_ratio", 1.0)
+        operator_overlap_threshold = cfg.get("operator_overlap_ratio", 0.5)
 
         for edge in graph.edges:
             if edge.relation != "near":
@@ -534,22 +586,44 @@ class RuleSet:
             if {a.class_name, b.class_name} not in dangerous_pairs:
                 continue
 
-            # Mesafe tahmini: weight = 1 - dist/threshold => dist = (1 - weight) * threshold
-            estimated_dist = (1 - edge.weight) * threshold
+            # Operatör filtresi: kişinin bbox'ı aracın bbox'ıyla ağır
+            # örtüşüyorsa (varsayılan >= %50) bu kişi aracın içinde/üzerinde
+            # oturan operatördür, ayrı bir yaya değil — sinyal üretilmez.
+            if "insan" in (a.class_name, b.class_name) and "arac" in (a.class_name, b.class_name):
+                person_node = a if a.class_name == "insan" else b
+                vehicle_node = b if a.class_name == "insan" else a
+                overlap_ratio = self._person_vehicle_overlap_ratio(person_node, vehicle_node)
+                if overlap_ratio >= operator_overlap_threshold:
+                    continue
+
+            # Gerçek mesafe doğrudan düğüm merkezlerinden hesaplanır (weight'ten
+            # geri çıkarım YAPILMAZ). `edge.weight`, near kenarını kuran
+            # SceneGraph.build_relations()'a o karede geçirilen ÖLÇEKLİ eşiğe
+            # (bkz. EventEngine._compute_proximity_graph_threshold) göre
+            # normalize edilmiştir; burada sabit `threshold` kullanarak geri
+            # hesaplama yapmak, iki farklı taban değeri karıştırıp yanlış bir
+            # mesafe üretir (örn. gerçek mesafe 318px iken 98px hesaplanması
+            # gibi). Doğrudan hesap bu tutarsızlığı ortadan kaldırır.
+            estimated_dist = math.hypot(a.center[0] - b.center[0], a.center[1] - b.center[1])
 
             state_a = states.get(a.track_id) if a.track_id is not None else None
             state_b = states.get(b.track_id) if b.track_id is not None else None
             scales = [s.scale_ema for s in (state_a, state_b) if s and s.scale_ema > 0.0]
             scale_limit = (sum(scales) / len(scales)) * distance_ratio if scales else threshold
-            effective_limit = min(threshold, scale_limit)
+            effective_limit = max(threshold, scale_limit)
 
             if estimated_dist <= effective_limit:
+                # Güven skoru da gerçek mesafeye göre hesaplanır (edge.weight
+                # KULLANILMAZ — yukarıdaki tutarsızlık nedeniyle): mesafe 0'a
+                # yaklaştıkça güven 1.0'a, effective_limit'e yaklaştıkça 0'a
+                # yakın olur.
+                confidence = max(0.0, min(1.0, 1.0 - estimated_dist / effective_limit)) if effective_limit > 0 else 0.0
                 signals.append(
                     EventSignal(
                         event_type="dangerous_proximity",
                         timestamp=graph.timestamp,
                         description=f"{a.class_name} ve {b.class_name} arasında tehlikeli yakınlık (~{estimated_dist:.0f} piksel).",
-                        confidence=edge.weight,
+                        confidence=confidence,
                         involved_track_ids=[tid for tid in (a.track_id, b.track_id) if tid is not None],
                         metadata={"estimated_distance_pixels": estimated_dist, "effective_limit_pixels": effective_limit},
                     )

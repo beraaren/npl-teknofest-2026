@@ -135,8 +135,16 @@ events:
       dangerous_pairs:
         - ["arac", "insan"]
       distance_threshold_pixels: 100
-      distance_threshold_ratio: 1.0   # ölçek bilinen çiftler için: ortalama bbox yüksekliğinin katı
-                                       # (iki eşikten daha KATI olanı uygulanır; bkz. rules.py _rule_proximity)
+      distance_threshold_ratio: 1.15  # ölçek bilinen çiftler için: ortalama bbox yüksekliğinin katı
+                                       # (iki eşikten daha GEVŞEK/büyük olanı uygulanır; bkz. rules.py _rule_proximity)
+      # Kalibrasyon (gerçek video ölçümü, proximity.mp4): gerçek yayada (tid=1)
+      # overlap oranı HER KAREDE tam 0.0 (hiç kesişmiyor); operatörde (tid=3)
+      # tespit henüz stabilize olmadığı ilk 1-2 karede ~0.27, sonra kalıcı
+      # olarak 1.0'a yerleşiyor. Bu iki değer arasında ara bölge görülmedi;
+      # eşik 0.2 hem gerçek yayayı asla operatör saymayacak kadar yüksek hem
+      # de operatörün geçici düşük-overlap anlarını da kapsayacak kadar düşük.
+      operator_overlap_ratio: 0.2      # kişinin bbox'ı aracın bbox'ıyla bu orandan fazla örtüşürse
+                                       # operatör (sürücü) sayılır, "yaya" değil -> sinyal üretilmez
     fire_smoke:
       classes: ["yangin", "duman"]  # detector._map_class çıktısı (fire->yangin, smoke->duman)
       min_duration_frames: 3        # tek karelik parlama/yansıma/toz artefaktlarını ele

@@ -1,15 +1,38 @@
 """Araç isimlendirme: YOLO'nun genel 'arac' etiketlerini VLM ile spesifikleştirir.
 
-Akış:
-  1. 'arac' track'lerinden temsili kırpıntılar (crop) toplanır
-  2. Kırpıntılar Kanal B / karar çağrılarından ÖNCE VLM'e gönderilir
-  3. VLM her aracı kapalı sınıf kümesinden isimlendirir (forklift, truck, ...)
-  4. Sonuç track_id -> etiket haritası olarak döner; apply_vehicle_labels()
-     ile track/observation verilerine işlenir
+Bu modül, algı katmanı ile karar katmanı arasında çalışan bir **zenginleştirme**
+(enrichment) adımıdır. YOLO tespit modeli tüm motorlu/tekerlekli araçları tek
+bir kanonik sınıfa (``"arac"``) eşler (bkz. `detector.py` ``_map_class``); bu
+modül ise VLM'e bu araçların kırpılmış görüntülerini göstererek her birinin
+gerçek türünü (forklift, kamyon, binek araç...) kapalı bir sınıf kümesinden
+seçtirir ve sonucu geri track/observation verilerine işler.
 
-Kural motoru (isg_rules_engine) CanonicalClass.normalize() üzerinden spesifik
-isimleri yine 'arac' kanonik sınıfına indirger — etiket güncellemesi kuralları bozmaz.
-VLM hatası / parse başarısızlığında sessiz fallback: etiketler 'arac' kalır.
+Akış:
+  1. :func:`collect_vehicle_crops` — ``"arac"`` sınıfındaki track'lerden,
+     her track için en güvenilir (en yüksek confidence, eşitlikte en büyük
+     bbox) algılamayı temsilci seçip kareden kırpar.
+  2. :func:`build_labeling_prompt` ile hazırlanan İngilizce prompt ve
+     kırpıntılar, Kanal B / karar çağrılarından **önce** VLM'e gönderilir
+     (:func:`label_vehicles`).
+  3. VLM her aracı :data:`VEHICLE_TYPES` kapalı kümesinden isimlendirir;
+     çıktı ``{"vehicles": [{"image_index", "vehicle_type", ...}]}`` şemasına
+     zorlanır ve :func:`_extract_json` ile ayrıştırılır.
+  4. Sonuç ``track_id -> etiket bilgisi`` haritası olarak döner;
+     :func:`apply_vehicle_labels` bu haritayı canlı track nesnelerine ve
+     zaten üretilmiş observation sözlüklerine işler.
+
+Neden bu adım kural motorunu bozmaz: `src/events/isg_rules_engine.py`
+içindeki ``CanonicalClass.normalize()`` (ve bu kod tabanındaki sınıf eşleme
+mantığı), spesifik isimleri (``"forklift"`` gibi) yine ``"arac"`` kanonik
+sınıfına indirger. Yani isimlendirme sadece **raporlama ve VLM bağlamını**
+zenginleştirir; geometrik kuralların (`src/events/rules.py`) sınıf tabanlı
+karşılaştırmalarını etkilemez.
+
+Hata toleransı: VLM çağrısı başarısız olursa veya çıktı beklenen şemaya
+uymazsa, bu modül **sessizce** boş bir harita döner — etiketler ``"arac"``
+olarak kalır ve pipeline'ın devamı hiç etkilenmeden çalışır. Bu bilinçli bir
+tasarım kararıdır: araç isimlendirme bir "nice to have" zenginleştirmedir,
+ana risk tespit akışının bir ön koşulu değildir.
 """
 from __future__ import annotations
 
@@ -32,7 +55,22 @@ VEHICLE_TYPES: List[str] = [
 
 
 def build_labeling_prompt(n_images: int) -> str:
-    """Araç kırpıntılarını sınıflandıran VLM prompt'u üretir (İngilizce — JSON tutarlılığı için)."""
+    """Araç kırpıntılarını sınıflandıran VLM prompt'unu oluşturur.
+
+    Prompt bilinçli olarak İngilizce yazılmıştır: JSON çıktı şemasına
+    uyumun ve model tutarlılığının, İngilizce talimatlarla daha güvenilir
+    olduğu gözlemlenmiştir (bu, kod tabanındaki diğer Türkçe-öncelikli
+    konvansiyondan bilinçli bir sapmadır).
+
+    Args:
+        n_images: VLM'e gönderilecek kırpıntı sayısı; her birinin bir
+            ``image_index`` ile (0'dan başlayarak) etiketlenmesi istenir.
+
+    Returns:
+        VLM'e gönderilecek tam prompt metni. Model, kapalı
+        :data:`VEHICLE_TYPES` kümesinden birer tür seçip belirtilen JSON
+        şemasında yanıt vermeye yönlendirilir.
+    """
     type_list = ", ".join(VEHICLE_TYPES)
     return (
         f"You are given {n_images} cropped image(s), each showing a single vehicle or machine "
@@ -54,7 +92,20 @@ def build_labeling_prompt(n_images: int) -> str:
 
 
 def _extract_json(text: str) -> Dict[str, Any] | None:
-    """```json fence'lerini temizleyip ilk { ... } bloğunu parse etmeyi dener."""
+    """VLM'in ham metin çıktısından JSON nesnesini ayrıştırmayı dener.
+
+    Modeller genellikle çıktıyı Markdown kod bloğuna (` ```json ... ``` `)
+    sarar veya JSON'dan önce/sonra ek açıklama metni ekler; bu fonksiyon
+    kod bloğu işaretlerini temizler ve metindeki ilk ``{`` ile son ``}``
+    arasındaki bölümü ayrıştırır.
+
+    Args:
+        text: VLM'in ham (post-processing yapılmamış) metin çıktısı.
+
+    Returns:
+        Ayrıştırılan JSON sözlüğü. Metin boşsa, süslü parantez çifti
+        bulunamazsa veya JSON geçersizse ``None``.
+    """
     text = re.sub(r"```(?:json)?", "", text)
     start, end = text.find("{"), text.rfind("}")
     if start == -1 or end <= start:
@@ -71,7 +122,24 @@ def _padded_crop(
     bbox: tuple[float, float, float, float],
     padding_ratio: float,
 ) -> NDArray[np.uint8] | None:
-    """BBox'ı padding_ratio oranında genişletip kareden kırpar; sınırlara kırpılır."""
+    """Bir sınırlayıcı kutuyu genişletip kareden kırpar.
+
+    Genişletme (padding), VLM'in aracın çevresindeki bağlamı (tekerlek,
+    yol/tesis zemini gibi) görebilmesi için eklenir — tam bbox'a sıkı sıkıya
+    kırpılmış görüntüler genellikle sınıflandırma için yetersiz bağlam
+    içerir.
+
+    Args:
+        frame: Kırpılacak RGB kare.
+        bbox: ``(x1, y1, x2, y2)`` piksel koordinatları.
+        padding_ratio: Her kenara, o kenarın uzunluğunun bu oranı kadar
+            piksel eklenir (örn. 0.15 = %15 genişletme).
+
+    Returns:
+        Kırpılmış görüntü dizisi. Genişletilmiş kutu kare sınırlarına
+        kırpıldıktan sonra dejenere (genişlik veya yükseklik <= 0) hale
+        geliyorsa ``None``.
+    """
     h_img, w_img = frame.shape[:2]
     x1, y1, x2, y2 = bbox
     pad_x = (x2 - x1) * padding_ratio
@@ -92,11 +160,30 @@ def collect_vehicle_crops(
     max_vehicles: int = 8,
     padding_ratio: float = 0.15,
 ) -> List[Dict[str, Any]]:
-    """'arac' track'lerinden temsili kırpıntıları toplar.
+    """``"arac"`` sınıfındaki track'lerden VLM'e gönderilecek temsili kırpıntıları toplar.
 
-    Temsili detection: track history'sindeki en yüksek confidence'lı (eşitlikte
-    en büyük bbox alanlı) kayıt — son kare şart değil.
-    Döner: [{"track_id", "crop", "frame_idx", "yolo_confidence"}], confidence'a göre azalan.
+    Her track için **tek** bir temsili algılama seçilir: track geçmişindeki
+    en yüksek güven skoruna sahip kayıt (eşitlik durumunda en büyük bbox
+    alanına sahip olan). Bu seçim son kareye bağlı değildir — bir aracın en
+    net görüldüğü an, videonun sonu olmak zorunda değildir; en güvenilir
+    algılamayı seçmek, VLM'e daha kaliteli bir görüntü sunar.
+
+    Args:
+        tracks: ``{track_id: TrackedObject}`` biçiminde takip durumu
+            (tipik olarak :attr:`src.perception.observer_agent.ObserverAgent.tracks`).
+        frames: Kırpıntıların alınacağı kare listesi; her track'in temsili
+            algılamasındaki ``frame_idx`` bu listedeki bir indekse karşılık
+            gelmelidir.
+        min_confidence: Bu eşiğin altındaki temsili algılamaya sahip
+            track'ler tamamen elenir (isimlendirmeye gönderilmez).
+        max_vehicles: Döndürülecek maksimum aday sayısı (VLM çağrısının
+            token/görüntü sayısını sınırlamak için).
+        padding_ratio: :func:`_padded_crop`'a geçirilen genişletme oranı.
+
+    Returns:
+        Her biri ``{"track_id", "crop", "frame_idx", "yolo_confidence"}``
+        anahtarlarını içeren aday sözlükleri, güven skoruna göre **azalan**
+        sırada ve en fazla ``max_vehicles`` eleman.
     """
     candidates: List[Dict[str, Any]] = []
     for track_id, track in tracks.items():
@@ -133,11 +220,31 @@ def label_vehicles(
     backend: Any,
     config: Any,
 ) -> Dict[int, Dict[str, Any]]:
-    """Araç track'lerini VLM ile isimlendirir.
+    """Araç track'lerini VLM'e sorup gerçek araç türlerini belirler.
 
-    Döner: {track_id: {"vehicle_type", "confidence_hint", "reasoning"}}
-    Herhangi bir hata / parse başarısızlığında {} döner (sessiz fallback —
-    etiketler 'arac' kalır, pipeline eskisi gibi çalışır).
+    `src/main.py` içinde, Kanal B çağrısından ve karar ajanından **önce**
+    çalıştırılır; böylece isimlendirilen etiketler sonraki tüm adımlara
+    (VLM bağlamı, nihai rapor) yansır.
+
+    Hata toleransı: yapılandırma kapalıysa, hiçbir aday bulunamazsa, VLM
+    çağrısı istisna fırlatırsa veya çıktı beklenen şemaya uymuyorsa, bu
+    fonksiyon **istisna fırlatmadan** boş bir sözlük döner. Bu, VLM
+    backend'inin kullanılamadığı veya modelin beklenmedik bir formatta
+    yanıt verdiği durumlarda pipeline'ın durmasını önler.
+
+    Args:
+        tracks: ``{track_id: TrackedObject}`` biçiminde takip durumu.
+        frames: Kırpıntıların alınacağı kare listesi.
+        backend: ``generate(images, prompt, max_tokens)`` arayüzüne sahip
+            bir VLM backend'i (bkz. `src/models/vlm_backend.py`).
+        config: ``enabled``, ``min_confidence``, ``max_vehicles``,
+            ``padding_ratio``, ``max_tokens`` alanlarına sahip yapılandırma
+            nesnesi (`VehicleLabelingConfig`).
+
+    Returns:
+        ``{track_id: {"vehicle_type", "confidence_hint", "reasoning"}}``
+        biçiminde etiket haritası. Yapılandırma kapalıysa, aday yoksa veya
+        herhangi bir hata/parse başarısızlığı oluşursa boş sözlük.
     """
     if not getattr(config, "enabled", False):
         return {}
@@ -196,16 +303,41 @@ def apply_vehicle_labels(
     observations: List[Dict[str, Any]],
     label_map: Dict[int, Dict[str, Any]],
 ) -> int:
-    """İsimlendirme sonucunu track ve observation verilerine işler.
+    """İsimlendirme sonucunu, EventEngine'in okuduğu tüm veri yollarına işler.
 
-    Güncellenen yerler (EventEngine üçünü de okur — tutarlılık şart):
-      - TrackedObject.class_name + history'deki Detection'ların class_name'i
-      - observation["detections"][*]["class"]   (track_id eşleşmesi)
-      - observation["tracks"][*]["class"]       (track_id eşleşmesi)
-      - observation["scene_graph"]["nodes"][*]["class"] ve "node_id"
-        (node_id '{class}_{track_id}' formatında üretiliyor)
+    :func:`label_vehicles`'ın döndürdüğü harita, üç bağımsız veri
+    temsilinde de güncellenmelidir; çünkü `src/events/event_engine.py`
+    içindeki :class:`~src.events.event_engine.EventEngine` bu üç yolu da
+    okur ve tutarsız bir güncelleme (örn. sadece track nesnelerini
+    güncelleyip observation dict'lerini atlamak), kural motorunun eski
+    ``"arac"`` etiketini görmesine yol açar:
 
-    Döner: güncellenen track sayısı.
+      1. Canlı :class:`~src.perception.tracker.TrackedObject` nesneleri —
+         ``class_name`` ve geçmişteki (``history``) ilgili
+         :class:`~src.perception.detector.Detection` kayıtlarının
+         ``class_name`` alanı.
+      2. ``observation["detections"][*]["class"]`` — ``track_id`` üzerinden
+         eşleştirilir.
+      3. ``observation["tracks"][*]["class"]`` — ``track_id`` üzerinden
+         eşleştirilir.
+      4. ``observation["scene_graph"]["nodes"][*]["class"]`` **ve**
+         ``"node_id"`` — düğüm kimliği
+         :meth:`src.perception.scene_graph.SceneGraph.from_detections`
+         tarafından ``"{class}_{track_id}"`` biçiminde üretildiğinden,
+         sınıf değiştiğinde kimliğin de yeniden üretilmesi gerekir; aksi
+         halde düğüm kimliği ile gerçek sınıf adı arasında tutarsızlık
+         oluşur.
+
+    Args:
+        tracks: ``{track_id: TrackedObject}`` biçiminde canlı takip durumu.
+        observations: :meth:`src.perception.observer_agent.ObserverAgent.observe_video`
+            tarafından üretilmiş, halihazırda oluşturulmuş gözlem sözlükleri
+            listesi. Bu liste **yerinde** (in-place) değiştirilir.
+        label_map: :func:`label_vehicles` çıktısı.
+
+    Returns:
+        Etiketlenen (``label_map``'te bulunan) benzersiz track sayısı.
+        ``label_map`` boşsa ``0`` ve hiçbir veri değiştirilmez.
     """
     if not label_map:
         return 0

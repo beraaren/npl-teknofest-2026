@@ -1,8 +1,20 @@
-"""HuggingFace transformers tabanlı nesne tespit backend'i.
+"""HuggingFace transformers tabanlı geçici nesne tespit backend'i.
 
-YOLO fine-tune edilene kadar geçici backend olarak kullanılır
-(örn. PaddlePaddle/PP-DocLayoutV3_safetensors). Model kimliği
-config.yaml -> perception.hf_model üzerinden değiştirilebilir.
+Bu modül, projenin özel İSG YOLO modeli eğitilene/entegre edilene kadar
+kullanılan bir **yer tutucu** (placeholder) tespit backend'i sağlar. Varsayılan
+model (``PaddlePaddle/PP-DocLayoutV3_safetensors``) bir doküman düzeni analizi
+modelidir ve İSG sahnelerinde (insan, forklift, KKD) anlamlı tespit üretmesi
+beklenmez; amacı, algı katmanının arayüzünü (:class:`Detection` sözleşmesi)
+gerçek model gelene kadar uçtan uca test edilebilir kılmaktır.
+
+Model kimliği ``config.yaml`` içindeki ``perception.hf_model`` anahtarı ile
+değiştirilebilir; bu backend :func:`src.perception.detector.create_detector`
+factory'si üzerinden ``detector_backend: "hf_transformers"`` seçildiğinde
+devreye girer.
+
+İlgili not: `benioku.md` §5 — "PP-DocLayoutV3 geçicidir; üretime dair tespit
+bekleme." Gerçek İSG YOLO'su hazır olduğunda ``detector_backend: "ultralytics"``
+değerine dönülmesi planlanmaktadır.
 """
 from __future__ import annotations
 
@@ -17,10 +29,29 @@ from .detector import Detection
 
 
 class HFObjectDetector:
-    """AutoImageProcessor + AutoModelForObjectDetection wrapper'ı.
+    """HuggingFace ``AutoImageProcessor`` + ``AutoModelForObjectDetection`` wrapper'ı.
 
-    Not: Ultralytics dışı modeller `.track()` desteklemez; takip
-    ObserverAgent tarafında IoU eşleşmesiyle yapılır.
+    :class:`src.perception.detector.ObjectDetector` (Ultralytics) ile aynı
+    ``detect`` / ``detect_batch`` arayüzünü sağlar, böylece
+    :class:`src.perception.observer_agent.ObserverAgent` iki backend'i
+    ayırt etmeden kullanabilir. Tek fark :attr:`supports_tracking` bayrağıdır.
+
+    Model yükleme lazy'dir (:meth:`_load`): ``torch`` ve ``transformers``
+    bağımlılıkları yalnızca ilk gerçek çağrıda import edilir.
+
+    Attributes:
+        supports_tracking: ``False``. HuggingFace ``AutoModelForObjectDetection``
+            modelleri Ultralytics'in ``model.track()`` metoduna sahip değildir;
+            bu bayrak sayesinde
+            :meth:`src.perception.observer_agent.ObserverAgent._track_by_iou`
+            devreye girip takibi IoU eşleşmesiyle kendisi yürütür.
+        model_path: HuggingFace model kimliği veya yerel yol.
+        confidence: Tespitlerin kabul edileceği minimum güven eşiği.
+        custom_classes: Boş değilse, eşlenmiş sınıf adı bu kümede değilse
+            eşleme geri alınır (bkz. :meth:`_map_class`).
+        device: Çalıştırma cihazı tercihi (``"auto"`` | ``"cuda"`` | ``"cpu"``).
+            ``"auto"`` seçiliyse, model yüklenirken CUDA varlığına göre karar
+            verilir ve gerçek seçim :attr:`_device`'ta saklanır.
     """
 
     supports_tracking = False
@@ -32,6 +63,14 @@ class HFObjectDetector:
         custom_classes: List[str] | None = None,
         device: str = "auto",
     ):
+        """Detector'ı yapılandırır; model henüz yüklenmez (lazy).
+
+        Args:
+            model_path: HuggingFace model kimliği veya yerel yol.
+            confidence: Tespit kabul eşiği (0.0-1.0).
+            custom_classes: Eşlenmiş sınıf adlarının kısıtlanacağı küme.
+            device: ``"auto"`` | ``"cuda"`` | ``"cpu"``.
+        """
         self.model_path = model_path
         self.confidence = confidence
         self.custom_classes = set(custom_classes or [])
@@ -42,6 +81,16 @@ class HFObjectDetector:
         self._device = "cpu"
 
     def _load(self):
+        """Model ve processor'ı ilk çağrıda yükler, cihazı çözümler ve önbelleğe alır.
+
+        ``device="auto"`` verildiyse, CUDA kullanılabilirliğine göre gerçek
+        çalıştırma cihazı (:attr:`_device`) burada belirlenir ve bir daha
+        değişmez; bu, aynı model örneğinin karışık cihazlarda tensor
+        hatalarıyla karşılaşmasını önler.
+
+        Returns:
+            Yüklü ve ``eval()`` moduna alınmış model nesnesi.
+        """
         if self._model is None:
             import torch
             from transformers import AutoImageProcessor, AutoModelForObjectDetection
@@ -57,6 +106,24 @@ class HFObjectDetector:
         return self._model
 
     def detect(self, frame: NDArray[np.uint8], frame_idx: int = 0) -> List[Detection]:
+        """Tek bir karede nesne tespiti yapar (takipsiz).
+
+        Çıktı tensor'ları, post-processing adımından önce bilinçli olarak
+        CPU'ya taşınır (bkz. kod içi not): bazı model/transformers sürüm
+        kombinasyonlarında (PP-DocLayoutV3 + transformers 5.x) GPU üzerinde
+        post-processing çağrısı "illegal memory access" hatası vermektedir.
+        Bu geçici bir uyumluluk önlemidir, performans optimizasyonu değildir.
+
+        Args:
+            frame: RGB, ``HWC`` düzeninde ``uint8`` kare.
+            frame_idx: Bu karenin indeksi; sonuç :class:`Detection`
+                kayıtlarına aktarılır.
+
+        Returns:
+            Karede bulunan her nesne için bir :class:`Detection`. Model
+            poligon çıktısı üretiyorsa (segmentasyon), ilgili
+            :attr:`Detection.polygon` alanı da doldurulur.
+        """
         import torch
 
         model = self._load()
@@ -101,6 +168,21 @@ class HFObjectDetector:
         return detections
 
     def _map_class(self, class_name: str) -> str:
+        """Ham model sınıf adını kod tabanının kanonik (Türkçe) adına çevirir.
+
+        Bu sınıfın eşleme sözlüğü, :meth:`src.perception.detector.ObjectDetector._map_class`
+        ile **aynı değildir** — HF backend'i geçici olduğu için burada
+        (``"kamyon"``, ``"araba"``) gibi daha kaba/geçici Türkçe adlar kullanılır.
+        Gerçek YOLO backend'ine geçildiğinde bu eşleme kümesinin de gözden
+        geçirilmesi gerekir.
+
+        Args:
+            class_name: Modelin döndürdüğü ham sınıf adı.
+
+        Returns:
+            Eşleme kümesindeyse kanonik ad; aksi halde (veya
+            ``custom_classes`` kısıtlamasını geçemiyorsa) orijinal ad.
+        """
         mapping = {
             "person": "insan",
             "truck": "kamyon",
@@ -113,4 +195,13 @@ class HFObjectDetector:
         return mapped
 
     def detect_batch(self, frames: List[NDArray[np.uint8]]) -> List[List[Detection]]:
+        """Birden fazla kareyi sırayla tespit eder.
+
+        Args:
+            frames: RGB kare listesi.
+
+        Returns:
+            Her kare için :meth:`detect` çıktısı; kare indeksi listedeki
+            konuma göre atanır.
+        """
         return [self.detect(f, idx) for idx, f in enumerate(frames)]

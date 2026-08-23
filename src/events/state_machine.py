@@ -1,6 +1,7 @@
 """Track bazlı durum makinesi."""
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 from typing import Any, Dict, List
 
@@ -42,7 +43,23 @@ class TrackState:
     scale_ema: float = 0.0
     flags: Dict[str, Any] = field(default_factory=dict)
 
-    def update(self, detection: TrackedObject, fps: float) -> None:
+    def update(
+        self,
+        detection: TrackedObject,
+        fps: float,
+        immobility_window_frames: int = 1,
+        movement_ratio_threshold: float = 0.1,
+    ) -> None:
+        """Track durumunu bir kare için günceller.
+
+        Args:
+            detection: Bu karedeki güncel `TrackedObject` (geçmişi de içerir).
+            fps: Efektif kare/saniye hızı.
+            immobility_window_frames: Hareketsizlik kontrolü için bakılacak
+                kümülatif pencere (kare sayısı). Bkz. aşağıdaki not.
+            movement_ratio_threshold: Pencere boyunca yer değiştirmenin
+                `scale_ema`'ya oranı bu değerin altındaysa "durağan" sayılır.
+        """
         det = detection.last_detection
 
         # Ölçek: bbox yüksekliğinin üstel ortalaması. Her kural kendi
@@ -59,12 +76,31 @@ class TrackState:
             self.last_center = det.center
             return
 
-        dx = abs(det.center[0] - self.last_center[0])
-        dy = abs(det.center[1] - self.last_center[1])
-        if dx < 15 and dy < 15:
-            self.stationary_frames += 1
+        # Hareketsizlik: anlık (frame-to-frame) fark yerine kümülatif pencere
+        # kullanılır. Eski tasarım (`dx < 15 and dy < 15` karşılaştırması, her
+        # karede önceki karşılaştırıldığı nokta güncellenir) yavaş ama sürekli
+        # hareketi (örn. normal yürüme, ~1-2px/kare) hiç yakalayamıyordu: her
+        # kare kendi başına eşiğin altında kaldığı için sayaç asla sıfırlanmıyor,
+        # kişi aslında hareket ederken "durağan" sayılıyordu. Kümülatif pencere
+        # (`TrackedObject.displacement`) bu küçük adımları toplayarak gerçek
+        # net hareketi görünür kılar. Oran (movement_ratio_threshold), sabit
+        # piksel eşiği yerine `scale_ema`'ya bölünerek kameraya uzaklıktan
+        # bağımsız hale getirilir (aynı `_rule_fall` mantığı).
+        if self.scale_ema > 0.0:
+            wdx, wdy = detection.displacement(immobility_window_frames)
+            movement_ratio = math.hypot(wdx, wdy) / self.scale_ema
+            if movement_ratio < movement_ratio_threshold:
+                self.stationary_frames += 1
+            else:
+                self.stationary_frames = 0
         else:
-            self.stationary_frames = 0
+            # Ölçek henüz hesaplanmadıysa (ilk kare) sabit piksel eşiğine düş.
+            dx = abs(det.center[0] - self.last_center[0])
+            dy = abs(det.center[1] - self.last_center[1])
+            if dx < 15 and dy < 15:
+                self.stationary_frames += 1
+            else:
+                self.stationary_frames = 0
 
         # Devrilme için bbox en/boy oranı takibi
         ar = det.aspect_ratio
@@ -81,14 +117,29 @@ class TrackState:
 
 
 class TrackStateMachine:
-    def __init__(self, fps: float = 25.0):
+    """Tüm track'lerin `TrackState`'ini kareler arasında tutan yönetici.
+
+    `immobility_window_seconds` ve `movement_ratio_threshold`, hareketsizlik
+    kontrolünün kümülatif pencere ve ölçeğe oranlı eşiğini belirler (bkz.
+    `TrackState.update` docstring'i). `EventEngine`, bu değerleri
+    `config.yaml`'daki `events.thresholds.immobility` bloğundan okuyup buraya iletir.
+    """
+
+    def __init__(
+        self,
+        fps: float = 25.0,
+        immobility_window_seconds: float = 1.0,
+        movement_ratio_threshold: float = 0.1,
+    ):
         self.fps = fps
         self.states: Dict[int, TrackState] = {}
+        self.immobility_window_frames = max(1, round(immobility_window_seconds * fps))
+        self.movement_ratio_threshold = movement_ratio_threshold
 
     def update(self, tracks: List[TrackedObject]) -> None:
         for t in tracks:
             state = self.states.setdefault(t.track_id, TrackState(t.track_id, t.class_name))
-            state.update(t, self.fps)
+            state.update(t, self.fps, self.immobility_window_frames, self.movement_ratio_threshold)
 
     def get(self, track_id: int) -> TrackState | None:
         return self.states.get(track_id)

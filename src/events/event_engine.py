@@ -51,7 +51,12 @@ class EventEngine:
             "enabled_rules": config.enabled_rules,
             **config.thresholds.model_dump(),
         }, fps=fps)
-        self.states = TrackStateMachine(fps=fps)
+        immobility_cfg = config.thresholds.immobility
+        self.states = TrackStateMachine(
+            fps=fps,
+            immobility_window_seconds=immobility_cfg.get("window_seconds", 1.0),
+            movement_ratio_threshold=immobility_cfg.get("movement_ratio_threshold", 0.1),
+        )
         self.signals: List[EventSignal] = []
         # Kalıcı track kayıtları: track_id -> TrackedObject. Bu sözlük olmadan
         # her process_observation() çağrısında history=[det] ile sıfırdan bir

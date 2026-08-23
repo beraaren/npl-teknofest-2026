@@ -300,3 +300,70 @@ def test_immobility_not_triggered_for_slowly_walking_person():
             break
 
     assert not triggered, "Yavaş yürüyen kişi yanlışlıkla immobile_person olarak işaretlendi"
+
+
+def _make_vehicle_obs(frame_idx: int, timestamp: float, x1: float, y1: float, x2: float, y2: float, tid: int = 1):
+    return {
+        "frame_idx": frame_idx,
+        "timestamp": timestamp,
+        "detections": [
+            {"class": "arac", "track_id": tid, "confidence": 0.9, "bbox": [x1, y1, x2, y2], "frame_idx": frame_idx},
+        ],
+        "tracks": [
+            {"track_id": tid, "class": "arac", "history_length": 1, "last_center": [(x1 + x2) / 2, (y1 + y2) / 2], "speed": [0, 0]},
+        ],
+        "scene_graph": {"frame_idx": frame_idx, "timestamp": timestamp, "nodes": [], "edges": []},
+    }
+
+
+def test_tip_over_not_triggered_by_rotation_without_height_collapse():
+    """Forklift kameraya dönerken (yaw) en/boy oranı yükselebilir ama bbox
+    yüksekliği stabil kalır — bu gerçek devrilme değildir, sinyal üretilmemeli.
+
+    Gerçek video ölçümünden (proximity.mp4): forklift dönerken aspect_ratio
+    0.37'den 1.31'e ~40 karede düzgün bir eğriyle çıkarken yükseklik sadece
+    ~%14 daralıyor (369px -> ~317px), ani bir çöküş değil. aspect_ratio_min
+    kasıtlı olarak düşürülse bile (1.2) sinyal üretilmemeli.
+    """
+    cfg = EventsConfig(
+        enabled_rules=["tip_over"],
+        thresholds={"tip_over": {"aspect_ratio_min": 1.2, "min_duration_frames": 3, "window_seconds": 0.5, "height_drop_ratio": 0.3}},
+    )
+    engine = EventEngine(cfg, fps=10.0)
+
+    # Sabit yükseklik (~330px, gerçek ölçümdeki gibi hafif dalgalanan ama
+    # ÇÖKMEYEN bir yükseklik), genişlik zamanla artıyor (dönüş simülasyonu).
+    widths = [130, 150, 175, 200, 230, 260, 290, 320, 350, 380, 400, 420]
+    heights = [370, 360, 345, 335, 335, 330, 325, 320, 320, 317, 315, 314]
+    signals = []
+    for i, (w, h) in enumerate(zip(widths, heights)):
+        signals = engine.process_observation(_make_vehicle_obs(i, i * 0.1, 500, 300, 500 + w, 300 + h))
+
+    assert not any(s["event_type"] == "forklift_tip_over" for s in engine.get_signals()), (
+        "Dönüş (rotation) yanlışlıkla devrilme olarak işaretlendi"
+    )
+
+
+def test_tip_over_triggered_by_widening_with_height_collapse():
+    """Gerçek devrilmede en/boy oranı yükselir VE bbox yüksekliği aynı anda
+    hızla düşer (kabin yere çöker) — bu durumda sinyal üretilmelidir."""
+    cfg = EventsConfig(
+        enabled_rules=["tip_over"],
+        thresholds={"tip_over": {"aspect_ratio_min": 1.2, "min_duration_frames": 3, "window_seconds": 0.5, "height_drop_ratio": 0.3}},
+    )
+    engine = EventEngine(cfg, fps=10.0)
+
+    # Genişlik artıyor, yükseklik HIZLA düşüyor (370 -> 150, ~%59 düşüş).
+    # window_seconds=0.5 @ fps=10.0 -> tip_over_window_frames=5; pencerenin
+    # gerçekten 5 kare geriye bakabilmesi için en az 5+min_duration_frames
+    # kadar kare üretilmesi gerekir, aksi halde `detection_at_offset` her
+    # zaman en eski kayda (idx=0) sabitlenip pencere hiç "kayamaz".
+    widths = [130, 140, 150, 160, 180, 200, 230, 260, 300, 350]
+    heights = [370, 365, 355, 340, 320, 260, 200, 160, 150, 145]
+    signals = []
+    for i, (w, h) in enumerate(zip(widths, heights)):
+        signals = engine.process_observation(_make_vehicle_obs(i, i * 0.1, 500, 300, 500 + w, 300 + h))
+
+    assert any(s["event_type"] == "forklift_tip_over" for s in engine.get_signals()), (
+        "Gerçek devrilme (oran artışı + yükseklik çöküşü) tetiklenmedi"
+    )

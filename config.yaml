@@ -86,8 +86,20 @@ events:
     - leakage
   thresholds:
     tip_over:
+      # Sadece en/boy oranının artması (aspect_ratio_min üstü) devrilme kanıtı
+      # DEĞİLDİR: forklift kameraya doğru dönerken (yaw) de önden görünümden
+      # (dar, ~0.4) yandan görünüme (geniş, ~1.3) geçer — bu, gerçek devrilmeyle
+      # (roll) aynı görüntüsel etkiyi yaratır ama forklift fiziksel olarak
+      # yatmamıştır (bkz. proximity.mp4 gözlemi: aspect_ratio ~40 karede düzgün
+      # bir eğriyle 0.37'den 1.31'e çıkıyor, sadece yön değiştiriyor).
+      # Ayırt edici gerçek kanıt: devrilirken kabin ANİDEN yere yaklaşır, bbox
+      # yüksekliği pencere boyunca hızla düşer; dönüşte yükseklik stabil kalır.
+      # Bu yüzden sinyal için oran artışı VE eşzamanlı hızlı yükseklik düşüşü
+      # birlikte gerekir (bkz. src/events/state_machine.py TrackState.update).
       aspect_ratio_min: 1.45        # w/h; forklift yandan görünümde düşük, devrilmede yüksek
       aspect_ratio_max: 4.0
+      window_seconds: 0.5           # yükseklik düşüşü kontrolü için kümülatif pencere
+      height_drop_ratio: 0.3        # pencere başına göre yükseklik >= %30 düşerse "kabin çöktü" say
       min_duration_frames: 3
     fall:
       # Ölçeğe (kameraya uzaklığa) bağımsız pencereli düşme tespiti:

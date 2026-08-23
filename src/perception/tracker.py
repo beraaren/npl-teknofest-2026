@@ -39,6 +39,26 @@ class TrackedObject:
         c2 = self.history[-1].center
         return (c2[0] - c1[0], c2[1] - c1[1])
 
+    def detection_at_offset(self, window_frames: int) -> Detection:
+        """`window_frames` kare öncesindeki (veya en eski mevcut) `Detection`'ı döner.
+
+        `displacement()` ile aynı pencere indeksleme mantığını kullanır, ama
+        sadece merkez farkını değil, tüm `Detection` nesnesini (bbox, aspect_ratio,
+        height dahil) döndürür. Bu, bir pencere boyunca birden fazla geometrik
+        özelliğin (örn. en/boy oranı VE yükseklik) birlikte karşılaştırılması
+        gerektiğinde tekrar tekrar indeks hesaplamaktan kaçınmak için kullanılır
+        (bkz. `TrackState.update` — forklift devrilme kontrolü).
+
+        Args:
+            window_frames: Kaç kare öncesine bakılacağı (>= 1).
+
+        Returns:
+            İlgili karedeki `Detection`. Geçmiş `window_frames`'den kısaysa en
+            eski kayıt döner.
+        """
+        idx = max(0, len(self.history) - 1 - max(1, window_frames))
+        return self.history[idx]
+
     def displacement(self, window_frames: int) -> tuple[float, float]:
         """`window_frames` kare öncesine göre kümülatif yer değiştirme.
 

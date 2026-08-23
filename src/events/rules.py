@@ -133,11 +133,18 @@ class RuleSet:
         return signals
 
     def _rule_tip_over(self, tracks: List[TrackedObject], states: TrackStateMachine) -> List[EventSignal]:
-        """Forklift Devrilmesi Kuralı: En/Boy Oranı (Aspect Ratio) Analizi.
+        """Forklift Devrilmesi Kuralı: En/Boy Oranı + Yükseklik Çöküşü Analizi.
 
-        Normalde forklift dikey veya dengeli bir dikdörtgendir. Yan yattığında veya
-        devrildiğinde bounding box genişliği yüksekliğinden belirgin şekilde fazla olur (ar >= 1.45).
-        Bu durum en az `min_duration_frames` (örn. 3 kare) boyunca sürerse devrilme alarmı üretilir.
+        `TrackState.update()` (`state_machine.py`) içinde sayaç (`tip_over_frames`)
+        artık iki koşulun **birlikte** sağlanmasını gerektiriyor: bbox en/boy
+        oranının yüksek olması (`ar >= aspect_ratio_min`, forklift yandan/yatık
+        görünüyor) VE aynı pencerede bbox yüksekliğinin hızla düşmüş olması
+        (kabinin gerçekten yere çökmesi). Sadece oran yüksekliği tek başına
+        yeterli değildir: forklift kameraya dönerken de (yaw) yandan görünüme
+        geçip geniş görünür, ama fiziksel olarak yatmamıştır (bkz. proximity.mp4
+        gözlemi). Bu ayrımın detayları `state_machine.py` içindedir; bu kural
+        sadece sayacın süreklilik eşiğini (`min_duration_frames`) ve son kontrolü
+        (`aspect_ratio_min`) uygular.
 
         Args:
             tracks: Aktif takip listesi.

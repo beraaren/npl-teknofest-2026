@@ -54,16 +54,17 @@ class EventEngine:
         self._proximity_dangerous_classes = {
             cls for pair in config.thresholds.proximity.get("dangerous_pairs", [["arac", "insan"]]) for cls in pair
         }
-        self.rules = RuleSet({
+        rule_thresholds = {
             "enabled_rules": config.enabled_rules,
             **config.thresholds.model_dump(),
-        }, fps=fps)
-        immobility_cfg = config.thresholds.immobility
-        self.states = TrackStateMachine(
-            fps=fps,
-            immobility_window_seconds=immobility_cfg.get("window_seconds", 1.0),
-            movement_ratio_threshold=immobility_cfg.get("movement_ratio_threshold", 0.1),
-        )
+        }
+        self.rules = RuleSet(rule_thresholds, fps=fps)
+        # TrackStateMachine, RuleSet ile AYNI thresholds sözlüğünü kullanır
+        # (isimle okuma deseni — bkz. TrackStateMachine docstring'i). Yeni bir
+        # kural saniye cinsinden bir pencere ayarı gerektirdiğinde, bu iki
+        # sınıfın constructor imzasına dokunmadan sadece config.yaml'a ve
+        # ilgili `_rule_*`/`TrackState.update` okuma satırına eklenir.
+        self.states = TrackStateMachine(fps=fps, thresholds=rule_thresholds)
         self.signals: List[EventSignal] = []
         # Kalıcı track kayıtları: track_id -> TrackedObject. Bu sözlük olmadan
         # her process_observation() çağrısında history=[det] ile sıfırdan bir

@@ -76,7 +76,7 @@ class AssignmentCreate(BaseModel):
 
 
 class AssignmentStatusUpdate(BaseModel):
-    status: Literal["atandi", "goruldu", "tamamlandi"]
+    status: Literal["atandi", "goruldu", "devam_ediyor", "tamamlandi"]
 
 
 class ToolExecuteRequest(BaseModel):

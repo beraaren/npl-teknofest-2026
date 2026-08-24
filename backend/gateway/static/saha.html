@@ -18,23 +18,26 @@
     <span id="role-status" class="meta">Ekip seçin</span>
   </header>
 
-  <main class="main">
-    <div class="role-selector" id="role-selector"></div>
+  <div class="app">
+    <main class="main">
+      <div class="role-selector" id="role-selector"></div>
 
-    <div class="filter-row">
-      <label class="meta">Durum
-        <select id="status-filter">
-          <option value="">Tümü</option>
-          <option value="atandi" selected>Bekleyen</option>
-          <option value="goruldu">Görülen</option>
-          <option value="tamamlandi">Tamamlanan</option>
-        </select>
-      </label>
-      <button class="btn btn-secondary" id="refresh-btn">Yenile</button>
-    </div>
+      <div class="filter-row">
+        <label class="meta">Durum
+          <select id="status-filter">
+            <option value="">Tümü</option>
+            <option value="atandi" selected>Bekleyen</option>
+            <option value="goruldu">Görülen</option>
+            <option value="devam_ediyor">İntikal Edilen</option>
+            <option value="tamamlandi">Biten</option>
+          </select>
+        </label>
+        <button class="btn btn-secondary" id="refresh-btn">Yenile</button>
+      </div>
 
-    <div id="assignments-container"></div>
-  </main>
+      <div id="assignments-container"></div>
+    </main>
+  </div>
 
   <div id="toast" class="toast"></div>
 </body>

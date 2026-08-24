@@ -20,7 +20,7 @@ import { WsClient } from './ws.js';
 const API = '/api/v1';
 
 const RISK_CLASS = { 'Yüksek': 'high', 'Orta': 'medium', 'Düşük': 'low' };
-const STATUS_LABEL = { atandi: 'Bekliyor', goruldu: 'Görüldü', tamamlandi: 'Tamamlandı' };
+const STATUS_LABEL = { atandi: 'Bekliyor', goruldu: 'Görüldü', devam_ediyor: 'İntikal Edildi', tamamlandi: 'Bitti' };
 /** Olayın kaç saniye öncesinden oynatmaya başlanacağı (bağlam için). */
 const PRE_ROLL_SEC = 3;
 
@@ -142,7 +142,8 @@ function renderAssignmentCard(row) {
 
     <div class="actions-list card-buttons">
       <button class="btn btn-secondary" data-status="goruldu">Gördüm</button>
-      <button class="btn btn-danger" data-status="tamamlandi">Tamamlandı</button>
+      <button class="btn btn-secondary" data-status="devam_ediyor">İntikal Edildi</button>
+      <button class="btn btn-danger" data-status="tamamlandi">Bitti</button>
       <button class="btn btn-secondary" data-tool="call_health_team">Sağlık Ekibi Çağır</button>
       <button class="btn btn-secondary" data-tool="secure_area">Alanı Güvene Al</button>
       <button class="btn btn-secondary" data-tool="record_incident">Olayı Kaydet</button>

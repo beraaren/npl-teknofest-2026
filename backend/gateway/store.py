@@ -326,7 +326,7 @@ def _row_to_field_alert(row: sqlite3.Row) -> dict:
 # "gördüm" / "tamamlandı" işaretler ve bu durum kalıcı olur.
 
 #: Atamanın yaşam döngüsü. Arayüzdeki durum etiketleriyle birebir aynıdır.
-ASSIGNMENT_STATUSES = ("atandi", "goruldu", "tamamlandi")
+ASSIGNMENT_STATUSES = ("atandi", "goruldu", "devam_ediyor", "tamamlandi")
 
 
 def create_assignment(
@@ -465,6 +465,13 @@ def update_assignment_status(assignment_id: int, status: str) -> Optional[dict]:
     conn = get_connection()
     cursor = conn.cursor()
     if status == "goruldu":
+        cursor.execute(
+            "UPDATE assignments SET status = ?, "
+            "acknowledged_at = COALESCE(acknowledged_at, CURRENT_TIMESTAMP) "
+            "WHERE id = ?",
+            (status, assignment_id),
+        )
+    elif status == "devam_ediyor":
         cursor.execute(
             "UPDATE assignments SET status = ?, "
             "acknowledged_at = COALESCE(acknowledged_at, CURRENT_TIMESTAMP) "

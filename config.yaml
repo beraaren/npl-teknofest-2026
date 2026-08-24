@@ -168,15 +168,44 @@ events:
 # VLM Backend (vLLM öncelikli, llama.cpp/transformators fallback)
 # ---------------------------------------------------------------------------
 vlm:
-  default_backend: "auto"         # "auto" | "vllm" | "llama_cpp" | "transformers" | "server"
-  auto_preference: ["vllm", "llama_cpp", "transformers"]
+  # TEKNOFEST EVREN çıkarım servisi kullanıldığı için varsayılan "server"dır.
+  # Yerel/çevrimdışı çalışmak için "vllm" | "llama_cpp" | "transformers" seçilebilir.
+  default_backend: "server"       # "auto" | "server" | "vllm" | "llama_cpp" | "transformers"
+  auto_preference: ["server", "vllm", "llama_cpp", "transformers"]
 
-  # OpenAI-uyumlu harici sunucu (llama-server / vllm serve) — Kanal_B ile aynı sözleşme
+  # OpenAI-uyumlu harici çıkarım servisi — TEKNOFEST EVREN (varsayılan sağlayıcı).
+  # Dokümantasyon: https://evren-teknofest.ssyz.org.tr
   server:
-    base_url: "http://localhost:8080"
-    model_name: "llava-v1.6-mistral-7b"
+    base_url: "https://evren-llmapi.ssyz.org.tr/v1"
+    # Görüntü + metin isteklerinin modeli. EVREN'de görüntü kabul eden modeller
+    # yalnızca llm-fast ve llm-large'dır; "vlm" görüntüyü HTTP 400 ile reddeder.
+    # llm-large seçildi: video analizi, Türkçe özet ve JSON çıktısını tek çağrıda
+    # üretebildiği için karar ajanının şema kısıtlı çıktısına en uygun modeldir.
+    model_name: "llm-large"
+    # Video (video_url) isteklerinin modeli; video analizine özelleşmiş alias.
+    video_model: "vlm"
+    # Anahtar buraya YAZILMAZ; bu ortam değişkeninden okunur (bkz. .env).
+    api_key_env: "EVREN_API_KEY"
+    # EVREN yığınındaki her katman 1800 sn kullanır; daha kısa istemci zaman aşımı
+    # bağlantıyı modelden önce koparır ve sonuç görüntülenemez.
+    timeout_sec: 1800
+    # Sağlayıcı istek başına en fazla 2 görüntü kabul eder; fazlası tek grid
+    # görüntüsünde birleştirilir (bkz. src/models/vlm_backend.py).
+    max_images_per_request: 2
+    grid_columns: 4
+    # Akıl yürütme (thinking) modu kapalı. Ölçüm bunu gerektiriyor: açıkken
+    # llm-large'ın skoru 0,900 -> 0,580'e düşüyor, token maliyeti 17,2 katına
+    # çıkıyor ve ayrıştırıcı düşünme izini sildiğinden iz bütçeyi taşırdığında
+    # yanıt HTTP 200 ile BOŞ dönüyor. Kapalıyken üretim 347-373 token arasında
+    # kararlı; açıkken 627-1321 arasında dalgalanıyordu.
+    enable_thinking: false
     temperature: 0.15
-    max_tokens: 16000
+    # Çıktı bütçesi olabildiğince yüksek tutulur; bu bir üst sınırdır, rezervasyon
+    # değildir (model doğal olarak "stop" ile biter, ölçümde gerçek çıktı 449-547
+    # token). Ölçümde 131072'ye kadar tüm değerler kabul edildi; 65536 seçildi
+    # çünkü bağlam penceresi (262144) prompt ile PAYLAŞILIR: 60 sn 720p video
+    # ~54k prompt token ürettiğinden 54k + 65k = 119k güvenli marj bırakır.
+    max_tokens: 65536
 
   # vLLM ayarları
   vllm:

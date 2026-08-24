@@ -1,0 +1,88 @@
+{
+  "packet_id": "62edd636-da32-4e8f-90f0-be92d7151b1f",
+  "video_id": "18-cctv-footage-of-man-caught-on-a-paper-03a4c6",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir endüstriyel üretim tesisi içinde, birkaç işçi büyük bir makineye yakın çalışmaktadır. İşçiler, büyük bir rulo veya yükü makineye yerleştirmek veya onarmak için birlikte çalışırken, biri mavi gömlek, diğeri beyaz gömlek giymektedir. İş yerinde çeşitli malzemeler, kablolar ve makineler yer almaktadır. İşçilerin bazıları makineye yakın, bazıları ise hareket halindedir.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İşçilerin en az üçü net bir şekilde görülmektedir; biri mavi gömlek, biri beyaz gömlek, biri koyu renkli üst giyim."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük, yeşil renkli bir üretim makinesi, rulo veya yükü işleyen bir yapıdır."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük, beyaz renkli bir rulo veya yük, makineye yerleştirilmektedir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda yüksek bir raf veya yapı, malzemelerin depolandığı yerdir."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "low",
+      "notes_tr": "Mavi bir konteynerde sıvı veya madde olabilecek bir içeriğin olduğu tahmin edilmektedir."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "low",
+      "notes_tr": "Bazı anlarda makinenin etrafında duman veya toz benzeri bir bulut oluşmaktadır, ancak açık bir alev veya yangın yoktur."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler, büyük bir rulo veya yükü makineye yerleştirmek için birlikte çalışmaktadır.",
+    "Bir işçi mavi gömlek giyerek makinenin yanında dururken, diğerleri yükü itmek veya çekmek için hareket eder.",
+    "Yükün yerleştirilmesi sırasında toz veya duman oluşmaktadır.",
+    "İşçiler, yükün yerleştirilmesi sırasında koordineli hareketler yapmaktadır.",
+    "Bazı anlarda işçilerin hızlı hareketleri ve yükün sallanması gözlemlenmektedir."
+  ],
+  "confidence_overall": 0.85,
+  "inference": {
+    "latency_ms": 16080.666599911638,
+    "tokens_generated": 991
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir endüstriyel üretim tesisi içinde, birkaç işçi büyük bir makineye yakın çalışmaktadır. İşçiler, büyük bir rulo veya yükü makineye yerleştirmek veya onarmak için birlikte çalışırken, biri mavi gömlek, diğeri beyaz gömlek giymektedir. İş yerinde çeşitli malzemeler, kablolar ve makineler yer almaktadır. İşçilerin bazıları makineye yakın, bazıları ise hareket halindedir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçilerin en az üçü net bir şekilde görülmektedir; biri mavi gömlek, biri beyaz gömlek, biri koyu renkli üst giyim.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, yeşil renkli bir üretim makinesi, rulo veya yükü işleyen bir yapıdır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, beyaz renkli bir rulo veya yük, makineye yerleştirilmektedir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda yüksek bir raf veya yapı, malzemelerin depolandığı yerdir.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Mavi bir konteynerde sıvı veya madde olabilecek bir içeriğin olduğu tahmin edilmektedir.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Bazı anlarda makinenin etrafında duman veya toz benzeri bir bulut oluşmaktadır, ancak açık bir alev veya yangın yoktur.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, büyük bir rulo veya yükü makineye yerleştirmek için birlikte çalışmaktadır.\",\n    \"Bir işçi mavi gömlek giyerek makinenin yanında dururken, diğerleri yükü itmek veya çekmek için hareket eder.\",\n    \"Yükün yerleştirilmesi sırasında toz veya duman oluşmaktadır.\",\n    \"İşçiler, yükün yerleştirilmesi sırasında koordineli hareketler yapmaktadır.\",\n    \"Bazı anlarda işçilerin hızlı hareketleri ve yükün sallanması gözlemlenmektedir.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, büyük bir yükü manuel olarak hareket ettirirken, yükün sallanması ve kontrolsüz hareketi nedeniyle yaralanma riski mevcuttur. Özellikle 00:15-00:25 ve 00:35-00:45 arası yükün sallanması ve işçilerin hızlı hareketleri, yüksek riskli bir durum oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 15.0\n    },\n    {\n      \"description_tr\": \"Makinenin etrafında kablolar ve malzemelerin yere serilmesi, işçilerin düşme veya kayma riskini artırır. Özellikle 00:00-00:60 arası kabloların yere yayıldığı alan, geçiş zorluğu ve potansiyel düşme tehlikesi sunar.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 0.0\n    },\n    {\n      \"description_tr\": \"İşçilerin bazıları koruyucu ekipman (örneğin, kask, eldiven) kullanmadığı gözlemlenmektedir. Bu, özellikle yüksek enerjili makineleme sırasında ciddi yaralanmaları artırabilir.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.75,\n      \"timestamp_sec\": 5.0\n    }\n  ],\n  \"confidence_overall\": 0.85\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçiler, büyük bir yükü manuel olarak hareket ettirirken, yükün sallanması ve kontrolsüz hareketi nedeniyle yaralanma riski mevcuttur. Özellikle 00:15-00:25 ve 00:35-00:45 arası yükün sallanması ve işçilerin hızlı hareketleri, yüksek riskli bir durum oluşturur.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 15.0
+    },
+    {
+      "description_tr": "Makinenin etrafında kablolar ve malzemelerin yere serilmesi, işçilerin düşme veya kayma riskini artırır. Özellikle 00:00-00:60 arası kabloların yere yayıldığı alan, geçiş zorluğu ve potansiyel düşme tehlikesi sunar.",
+      "severity": "medium",
+      "confidence": 0.8,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 0.0
+    },
+    {
+      "description_tr": "İşçilerin bazıları koruyucu ekipman (örneğin, kask, eldiven) kullanmadığı gözlemlenmektedir. Bu, özellikle yüksek enerjili makineleme sırasında ciddi yaralanmaları artırabilir.",
+      "severity": "medium",
+      "confidence": 0.75,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 5.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçiler, büyük bir yükü manuel olarak hareket ettirirken, yükün sallanması ve kontrolsüz hareketi nedeniyle yaralanma riski mevcuttur. Özellikle 00:15-00:25 ve 00:35-00:45 arası yükün sallanması ve işçilerin hızlı hareketleri, yüksek riskli bir durum oluşturur.",
+    "Makinenin etrafında kablolar ve malzemelerin yere serilmesi, işçilerin düşme veya kayma riskini artırır. Özellikle 00:00-00:60 arası kabloların yere yayıldığı alan, geçiş zorluğu ve potansiyel düşme tehlikesi sunar.",
+    "İşçilerin bazıları koruyucu ekipman (örneğin, kask, eldiven) kullanmadığı gözlemlenmektedir. Bu, özellikle yüksek enerjili makineleme sırasında ciddi yaralanmaları artırabilir."
+  ],
+  "computed_confidence": 0.5913,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 60.0,
+  "created_at": "2026-08-24T11:03:28.924909+00:00"
+}

@@ -56,27 +56,70 @@ def init_db():
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     """)
+    # Görev atamaları — süpervizörün belirli bir olayı belirli bir ekibe
+    # yönlendirmesi. Saha ekranı ARTIK yalnızca kendisine atanan olayları
+    # gösterir; eskiden her uyarı tüm rollere gidiyordu (target_roles sabiti).
+    #
+    # Atama, olayın karar çıktısındaki alanlarını (ajan özeti, risk, olay anı,
+    # önerilen aksiyonlar) kopyalayarak taşır. Kopyalamanın nedeni: saha ekibi
+    # ekranının analiz dosyasına bağımlı olmadan çalışması ve atama anındaki
+    # bilginin sonradan değişmemesi (denetim izi).
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS assignments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            analysis_slug TEXT NOT NULL,
+            camera_id TEXT,
+            role TEXT NOT NULL,
+            status TEXT NOT NULL DEFAULT 'atandi',
+            risk TEXT,
+            headline TEXT,
+            summary TEXT,
+            reasoning TEXT,
+            event_type TEXT,
+            event_seconds REAL DEFAULT 0,
+            event_timestamp TEXT,
+            actions_json TEXT,
+            video_file TEXT,
+            note TEXT,
+            assigned_by TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            acknowledged_at DATETIME,
+            resolved_at DATETIME
+        )
+    """)
+    cursor.execute(
+        "CREATE INDEX IF NOT EXISTS idx_assignments_role_status "
+        "ON assignments (role, status)"
+    )
     conn.commit()
     conn.close()
 
 
-def seed_cameras():
-    """Cameras tablosu boşsa 9 adet pseudolive kamerası ekle."""
+def seed_cameras(count: int = 9):
+    """Duvardaki kamera sayısı kadar kamera kaydı oluşturur (varsa günceller).
+
+    Kamera sayısı analiz kütüphanesinin boyutuna göre değişebildiği için sabit
+    9 yerine parametre alır; fazladan kalan kayıtlar silinir ki arayüzde
+    oynatacak videosu olmayan kamera görünmesin.
+
+    Args:
+        count: Oluşturulacak kamera sayısı.
+    """
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) as c FROM cameras")
-    row = cursor.fetchone()
-    if row and row["c"] > 0:
-        conn.close()
-        return
-    rows = [
-        (f"cam-{i:02d}", f"Kamera {i:02d}", "pseudolive", "aktif")
-        for i in range(1, 10)
-    ]
-    cursor.executemany(
-        "INSERT INTO cameras (id, name, source, status) VALUES (?, ?, ?, ?)",
-        rows,
-    )
+    wanted = {f"cam-{i:02d}" for i in range(1, count + 1)}
+
+    for cam_id in sorted(wanted):
+        cursor.execute(
+            "INSERT OR IGNORE INTO cameras (id, name, source, status) VALUES (?, ?, ?, ?)",
+            (cam_id, f"Kamera {cam_id.split('-')[1]}", "pseudolive", "aktif"),
+        )
+
+    cursor.execute("SELECT id FROM cameras WHERE source = 'pseudolive'")
+    for row in cursor.fetchall():
+        if row["id"] not in wanted:
+            cursor.execute("DELETE FROM cameras WHERE id = ?", (row["id"],))
+
     conn.commit()
     conn.close()
 
@@ -272,4 +315,212 @@ def _row_to_field_alert(row: sqlite3.Row) -> dict:
         "risk_segment": json.loads(row["risk_segment_json"] or "{}"),
         "target_roles": json.loads(row["target_roles_json"] or "[]"),
         "created_at": row["created_at"],
+    }
+
+
+# ---------------------------------------------------------------------------
+# Görev atamaları (assignments)
+# ---------------------------------------------------------------------------
+# Akış: süpervizör bir olayı bir ekibe atar -> atama kaydı oluşur ->
+# ilgili rolün saha ekranı yalnızca kendi atamalarını çeker -> ekip
+# "gördüm" / "tamamlandı" işaretler ve bu durum kalıcı olur.
+
+#: Atamanın yaşam döngüsü. Arayüzdeki durum etiketleriyle birebir aynıdır.
+ASSIGNMENT_STATUSES = ("atandi", "goruldu", "tamamlandi")
+
+
+def create_assignment(
+    analysis_slug: str,
+    role: str,
+    camera_id: str = "",
+    risk: str = "",
+    headline: str = "",
+    summary: str = "",
+    reasoning: str = "",
+    event_type: str = "",
+    event_seconds: float = 0.0,
+    event_timestamp: str = "",
+    actions: Optional[List[str]] = None,
+    video_file: str = "",
+    note: str = "",
+    assigned_by: str = "supervisor",
+) -> dict:
+    """Bir olayı belirli bir ekibe atar ve kaydı döner.
+
+    Olayın karar çıktısındaki alanları atamaya kopyalanır; böylece saha ekranı
+    analiz dosyasını okumak zorunda kalmaz ve atama anındaki bilgi sabit kalır.
+
+    Args:
+        analysis_slug: İlgili analizin kimliği (``data/library/analyses``).
+        role: Atanan ekip rolü (örn. ``"sağlık"``).
+        camera_id: Olayın görüldüğü kamera.
+        risk: Karar çıktısındaki risk seviyesi.
+        headline: Kısa kart başlığı.
+        summary: Karar ajanının yazdığı olay özeti.
+        reasoning: Ajanın gerekçesi (saha ekibi isterse ayrıntıyı görür).
+        event_type: Olay tipi (örn. ``"person_fall"``).
+        event_seconds: Olayın videodaki mutlak saniyesi; klip bu ana konumlanır.
+        event_timestamp: Aynı anın ``MM:SS`` biçimi.
+        actions: Önerilen aksiyonlar.
+        video_file: Videonun repo-göreli yolu.
+        note: Süpervizörün eklediği serbest not.
+        assigned_by: Atamayı yapan.
+
+    Returns:
+        Oluşturulan atama kaydı.
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        INSERT INTO assignments (
+            analysis_slug, camera_id, role, status, risk, headline, summary,
+            reasoning, event_type, event_seconds, event_timestamp,
+            actions_json, video_file, note, assigned_by
+        ) VALUES (?, ?, ?, 'atandi', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            analysis_slug, camera_id, role, risk, headline, summary,
+            reasoning, event_type, float(event_seconds or 0.0), event_timestamp,
+            json.dumps(actions or [], ensure_ascii=False), video_file, note, assigned_by,
+        ),
+    )
+    conn.commit()
+    assignment_id = cursor.lastrowid
+    cursor.execute("SELECT * FROM assignments WHERE id = ?", (assignment_id,))
+    row = cursor.fetchone()
+    conn.close()
+    return _row_to_assignment(row)
+
+
+def get_assignments(
+    role: Optional[str] = None,
+    status: Optional[str] = None,
+    analysis_slug: Optional[str] = None,
+    limit: int = 100,
+) -> List[dict]:
+    """Atamaları filtreleyerek en yeniden eskiye sıralar.
+
+    Args:
+        role: Verilirse yalnızca bu rolün atamaları döner. Saha ekranı bunu
+            kullanır; rol verilmezse (süpervizör görünümü) tümü döner.
+        status: ``atandi`` / ``goruldu`` / ``tamamlandi`` filtresi.
+        analysis_slug: Belirli bir analize ait atamalar.
+        limit: Azami kayıt sayısı.
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+    query = "SELECT * FROM assignments WHERE 1=1"
+    params: list = []
+    if role:
+        query += " AND role = ?"
+        params.append(role)
+    if status:
+        query += " AND status = ?"
+        params.append(status)
+    if analysis_slug:
+        query += " AND analysis_slug = ?"
+        params.append(analysis_slug)
+    query += " ORDER BY datetime(created_at) DESC, id DESC LIMIT ?"
+    params.append(limit)
+    cursor.execute(query, params)
+    rows = cursor.fetchall()
+    conn.close()
+    return [_row_to_assignment(r) for r in rows]
+
+
+def get_assignment(assignment_id: int) -> Optional[dict]:
+    """Tek bir atamayı döner; yoksa ``None``."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM assignments WHERE id = ?", (assignment_id,))
+    row = cursor.fetchone()
+    conn.close()
+    return _row_to_assignment(row) if row else None
+
+
+def update_assignment_status(assignment_id: int, status: str) -> Optional[dict]:
+    """Atamanın durumunu ilerletir ve ilgili zaman damgasını yazar.
+
+    Saha ekibinin "gördüm" / "tamamlandı" işaretlemesi kalıcı olsun diye
+    veritabanına yazılır; eskiden aksiyonlar yalnızca ekranda bir bildirim
+    gösterip kayboluyordu.
+
+    Args:
+        assignment_id: Atama kimliği.
+        status: :data:`ASSIGNMENT_STATUSES` içinden bir değer.
+
+    Returns:
+        Güncellenmiş kayıt; atama yoksa ``None``.
+
+    Raises:
+        ValueError: Geçersiz durum değeri verilirse.
+    """
+    if status not in ASSIGNMENT_STATUSES:
+        raise ValueError(
+            f"Geçersiz atama durumu: {status!r}. "
+            f"Geçerli değerler: {', '.join(ASSIGNMENT_STATUSES)}"
+        )
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    if status == "goruldu":
+        cursor.execute(
+            "UPDATE assignments SET status = ?, "
+            "acknowledged_at = COALESCE(acknowledged_at, CURRENT_TIMESTAMP) "
+            "WHERE id = ?",
+            (status, assignment_id),
+        )
+    elif status == "tamamlandi":
+        cursor.execute(
+            "UPDATE assignments SET status = ?, "
+            "acknowledged_at = COALESCE(acknowledged_at, CURRENT_TIMESTAMP), "
+            "resolved_at = CURRENT_TIMESTAMP WHERE id = ?",
+            (status, assignment_id),
+        )
+    else:
+        cursor.execute(
+            "UPDATE assignments SET status = ? WHERE id = ?",
+            (status, assignment_id),
+        )
+    conn.commit()
+    cursor.execute("SELECT * FROM assignments WHERE id = ?", (assignment_id,))
+    row = cursor.fetchone()
+    conn.close()
+    return _row_to_assignment(row) if row else None
+
+
+def get_assignment_counts() -> Dict[str, int]:
+    """Rol/durum bazında atama sayılarını döner (süpervizör özet paneli için)."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT status, COUNT(*) AS c FROM assignments GROUP BY status")
+    by_status = {r["status"]: r["c"] for r in cursor.fetchall()}
+    cursor.execute("SELECT role, COUNT(*) AS c FROM assignments GROUP BY role")
+    by_role = {r["role"]: r["c"] for r in cursor.fetchall()}
+    conn.close()
+    return {"by_status": by_status, "by_role": by_role}
+
+
+def _row_to_assignment(row: sqlite3.Row) -> dict:
+    return {
+        "id": row["id"],
+        "analysis_slug": row["analysis_slug"],
+        "camera_id": row["camera_id"],
+        "role": row["role"],
+        "status": row["status"],
+        "risk": row["risk"],
+        "headline": row["headline"],
+        "summary": row["summary"],
+        "reasoning": row["reasoning"],
+        "event_type": row["event_type"],
+        "event_seconds": row["event_seconds"],
+        "event_timestamp": row["event_timestamp"],
+        "actions": json.loads(row["actions_json"] or "[]"),
+        "video_file": row["video_file"],
+        "note": row["note"],
+        "assigned_by": row["assigned_by"],
+        "created_at": row["created_at"],
+        "acknowledged_at": row["acknowledged_at"],
+        "resolved_at": row["resolved_at"],
     }

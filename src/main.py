@@ -247,10 +247,16 @@ def main(args=None) -> None:
         vlm_interpretation = None
         try:
             import sys
-            project_root = str(Path(__file__).resolve().parent.parent)
-            if project_root not in sys.path:
-                sys.path.insert(0, project_root)
-            from Kanal_B.pipeline import run_channel_b
+
+            # Kanal_B modülleri birbirini paket öneki olmadan içe aktarır
+            # (`from vlm_backend import ...`), bu yüzden Kanal_B dizininin
+            # KENDİSİ sys.path'te olmalıdır — yalnızca proje kökü yetmez.
+            # test_akis.py de aynı deseni kullanır.
+            project_root = Path(__file__).resolve().parent.parent
+            for entry in (str(project_root), str(project_root / "Kanal_B")):
+                if entry not in sys.path:
+                    sys.path.insert(0, entry)
+            from pipeline import run_channel_b  # Kanal_B/pipeline.py
 
             vlm_interpretation = run_channel_b(
                 args.video,

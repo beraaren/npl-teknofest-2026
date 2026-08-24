@@ -2,10 +2,12 @@
 
 §2.3.3 tasarımına uygun:
   - event.detected sinyali gelince tetiklenir
-  - select_critical_frames ile kritik kareler seçilir
-  - run_channel_b çağrılır; başarısız olursa interpret_frames fallback
+  - Kanal B, videoyu EVREN'in video modeline (alias "vlm") BÜTÜN olarak gönderir;
+    60 saniyeyi aşan videolar 720p/60sn segmentlere bölünüp sırayla incelenir ve
+    segmentler arası bağlam metin tabanlı hafızayla taşınır (bkz. Kanal_B/pipeline.py)
+  - Video yolu yoksa (eski mesajlar) kritik karelerden grid üretilip fallback çalışır
   - Kanal B bağımsızlığı: RAG/sahne grafi VERİLMEZ (birleştirme decision'da)
-  - GPU kullanan tek servis — run_in_executor ile non-blocking
+  - Ağ/GPU bekleyen tek servis — run_in_executor ile non-blocking
 """
 import asyncio
 import json
@@ -25,11 +27,36 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Metrik sayaçları
-_metrics = {"vlm_calls": 0, "vlm_errors": 0, "fallback_used": 0, "dlq_count": 0}
+_metrics = {
+    "vlm_calls": 0,
+    "vlm_errors": 0,
+    "video_mode": 0,
+    "frame_fallback": 0,
+    "dlq_count": 0,
+}
 
-# Job başına frame bilgisi: {job_id: {"paths": [], "indices": [], "fps": float}}
-# perception-service ile aynı frame yollarına erişilir (paylaşılan disk)
-_job_frames: dict = {}
+# Aynı job için Kanal B'yi bir kez çalıştır: event.detected job başına birden
+# fazla kez gelir (her olay sinyali için), ama Kanal B tüm videoyu analiz eder.
+# Bu küme olmadan aynı video her sinyalde yeniden analiz edilir ve hem süre hem
+# sistem yükü gereksiz katlanır.
+_analyzed_jobs: set[str] = set()
+
+
+def _ensure_kanal_b_on_path() -> str:
+    """Proje kökünü ve ``Kanal_B/`` dizinini ``sys.path``e ekler.
+
+    ``Kanal_B`` modülleri birbirini paket öneki olmadan içe aktarır
+    (``from contracts import ...``); bu, ``Kanal_B/`` dizininin doğrudan
+    ``sys.path``te olmasını gerektirir. test_akis.py de aynı deseni kullanır.
+    """
+    import sys
+
+    root = str(Path(__file__).resolve().parent.parent.parent)
+    kanal_b = str(Path(root) / "Kanal_B")
+    for entry in (root, kanal_b):
+        if entry not in sys.path:
+            sys.path.insert(0, entry)
+    return root
 
 
 def _load_frames_from_paths(frame_paths: list[str]) -> list:
@@ -45,129 +72,121 @@ def _load_frames_from_paths(frame_paths: list[str]) -> list:
     return frames
 
 
-def _run_vlm_sync(frame_paths: list[str], sampled_indices: list[int],
-                  event_signals: list[dict], fps: float, job_id: str = "") -> dict:
+def _run_video_mode_sync(video_path: str, job_id: str) -> dict:
+    """Kanal B'yi video modunda çalıştırır (birincil yol).
+
+    Uzun videolar :func:`Kanal_B.pipeline.run_channel_b` içinde otomatik olarak
+    segmentlenir; bu servis segment yönetimiyle ilgilenmez.
+
+    Args:
+        video_path: Kaynak video dosyası.
+        job_id: İzlenebilirlik kimliği; çıktı klasörü adı olarak da kullanılır.
+
+    Returns:
+        S8 sözleşmesine uygun yorum sözlüğü.
     """
-    Senkron GPU işlevi — run_in_executor içinde çalıştırılır.
-    1. select_critical_frames ile kritik kareler seçilir.
-    2. Kanal B pipeline / backend infer öncelikli olarak çalıştırılır.
-    3. Başarısız olursa DecisionAgent.interpret_frames fallback olarak devreye girer.
+    _ensure_kanal_b_on_path()
+    from pipeline import run_channel_b  # Kanal_B/pipeline.py
+
+    out_dir = os.path.join("data", "channel_b", job_id)
+    return run_channel_b(video_path, video_id=job_id, output_dir=out_dir)
+
+
+def _run_frame_fallback_sync(
+    frame_paths: list[str],
+    sampled_indices: list[int],
+    event_signals: list[dict],
+    fps: float,
+    job_id: str,
+) -> dict:
+    """Video yolu yokken kritik karelerden yorum üretir (yedek yol).
+
+    Kareler tek bir grid görüntüsünde birleştirilip görüntü destekli modele
+    gönderilir; birleştirme ve sağlayıcı görüntü kısıtı
+    :mod:`src.models.vlm_backend` içinde şeffaf biçimde ele alınır.
     """
-    import sys
-    _bera_root = str(Path(__file__).resolve().parent.parent.parent)
-    if _bera_root not in sys.path:
-        sys.path.insert(0, _bera_root)
+    root = _ensure_kanal_b_on_path()
+
+    from src.config import load_config
+    from src.preprocessing.critical_frames import select_critical_frames
+    from src.reasoning.decision_agent import DecisionAgent
+    from src.reasoning.memory import ShortTermMemory
+    from src.reasoning.mock_tools import MockToolRegistry
+    from src.reasoning.rag_layer import RAGLayer
+
+    cfg_path = os.environ.get("TEKNOFEST_CONFIG", str(Path(root) / "config.yaml"))
+    cfg = load_config(cfg_path)
+
+    frames_rgb = _load_frames_from_paths(frame_paths)
+    if not frames_rgb:
+        return {
+            "scene_summary_tr": "Kare yüklenemedi.",
+            "confidence_overall": 0.0,
+            "risk_flags_tr": [],
+            "risk_events": [],
+            "notable_frames": [],
+        }
+
+    max_count = cfg.preprocessing.critical_frame_count
+    critical_frames, critical_indices = select_critical_frames(
+        frames_rgb, sampled_indices, event_signals, fps, max_count=max_count
+    )
+    if not critical_frames:
+        critical_frames = frames_rgb[:max_count]
+        critical_indices = sampled_indices[:max_count]
+
+    agent = DecisionAgent(
+        cfg.decision_agent, cfg.vlm,
+        RAGLayer(), ShortTermMemory(), MockToolRegistry(),
+    )
+    out = agent.interpret_frames(critical_frames)
+    out["notable_frames"] = critical_indices
+    return out
+
+
+def _run_vlm_sync(
+    video_path: str,
+    frame_paths: list[str],
+    sampled_indices: list[int],
+    event_signals: list[dict],
+    fps: float,
+    job_id: str,
+) -> dict:
+    """Kanal B'yi çalıştırır: video modu birincil, kare/grid modu yedek.
+
+    Pipeline asla sessizce ölmez; her iki yol da başarısız olursa hata metnini
+    taşıyan bir yorum döner ve karar ajanı tek kaynakla çalıştığını bilir.
+    """
+    if video_path and os.path.exists(video_path):
+        try:
+            result = _run_video_mode_sync(video_path, job_id)
+            _metrics["video_mode"] += 1
+            logger.info(
+                f"Kanal B video modunda tamamlandı (job={job_id}, "
+                f"segment={result.get('segment_count', 1)})"
+            )
+            return result
+        except Exception as exc:
+            logger.warning(
+                f"Kanal B video modu başarısız ({exc}); kare/grid yoluna düşülüyor",
+                exc_info=True,
+            )
+    else:
+        logger.info("Video yolu yok; Kanal B kare/grid yolunda çalışacak.")
 
     try:
-        import cv2
-        from src.preprocessing.critical_frames import select_critical_frames
-        cfg_path = os.environ.get("TEKNOFEST_CONFIG", str(Path(_bera_root) / "config.yaml"))
-
-        frames_rgb = _load_frames_from_paths(frame_paths)
-        if not frames_rgb:
-            return {
-                "scene_summary_tr": "Kare yüklenemedi.",
-                "confidence_overall": 0.0,
-                "risk_flags_tr": [],
-                "notable_frames": [],
-            }
-
-        max_count = 4  # config'den okunabilir
-        critical_frames, critical_indices = select_critical_frames(
-            frames_rgb, sampled_indices, event_signals, fps, max_count=max_count
+        result = _run_frame_fallback_sync(
+            frame_paths, sampled_indices, event_signals, fps, job_id
         )
-        if not critical_frames:
-            critical_frames = frames_rgb[:max_count]
-            critical_indices = sampled_indices[:max_count]
-
-        # 1. ÖNCELİK: Kanal B Backend + Grid Paketi ile infer
-        try:
-            sys.path.insert(0, str(Path(_bera_root) / "Kanal_B"))
-            from Kanal_B.backend import build_backend, _load_vlm_config
-            from Kanal_B.contracts import (
-                VLMFramePacket, FrameMeta, FrameQualityMetrics,
-                GridLayout, EnhancementInfo
-            )
-
-            vlm_cfg = _load_vlm_config()
-            backend = build_backend(vlm_cfg)
-
-            # Grid görüntüsünü oluştur ve diske yaz
-            grid_cols = min(4, len(critical_frames))
-            grid_rows = (len(critical_frames) + grid_cols - 1) // grid_cols
-            cell_w, cell_h = 384, 384
-            cells = [cv2.resize(f, (cell_w, cell_h), interpolation=cv2.INTER_AREA) for f in critical_frames]
-            while len(cells) < grid_rows * grid_cols:
-                cells.append(np.zeros((cell_h, cell_w, 3), dtype=np.uint8))
-            
-            row_blocks = [np.hstack(cells[r * grid_cols:(r + 1) * grid_cols]) for r in range(grid_rows)]
-            grid_img = np.vstack(row_blocks)
-
-            out_dir = os.path.join("data", "frames", job_id or "vlm_out")
-            os.makedirs(out_dir, exist_ok=True)
-            grid_path = os.path.join(out_dir, f"vlm_grid_{job_id}.jpg")
-            cv2.imwrite(grid_path, cv2.cvtColor(grid_img, cv2.COLOR_RGB2BGR), [cv2.IMWRITE_JPEG_QUALITY, 90])
-
-            frame_metas = [
-                FrameMeta(
-                    frame_index=idx,
-                    timestamp_sec=float(idx) / max(fps, 1.0),
-                    grid_position=i,
-                    selection_reason="scene_change",
-                    quality=FrameQualityMetrics(laplacian_var=100.0, ssim_diff=0.5, brightness_mean=120.0),
-                )
-                for i, idx in enumerate(critical_indices)
-            ]
-
-            packet = VLMFramePacket(
-                video_id=job_id,
-                source_start_sec=frame_metas[0].timestamp_sec if frame_metas else 0.0,
-                source_end_sec=frame_metas[-1].timestamp_sec if frame_metas else 0.0,
-                frames=frame_metas,
-                grid_layout=GridLayout(rows=grid_rows, cols=grid_cols, cell_size=(cell_w, cell_h)),
-                enhancement=EnhancementInfo(clahe_applied=False, clip_limit=2.5, tile_grid_size=(8, 8)),
-                grid_image_path=grid_path,
-            )
-
-            interpretation = backend.infer(packet)
-            res = interpretation.to_dict()
-            res["notable_frames"] = critical_indices
-
-            # risk_flags_tr uyumluluğunu sağla
-            if not res.get("risk_flags_tr") and res.get("risk_events"):
-                res["risk_flags_tr"] = [
-                    r.get("description_tr", "")
-                    for r in res["risk_events"]
-                    if isinstance(r, dict) and r.get("description_tr")
-                ]
-
-            logger.info("VLM interpretation generated via Kanal_B backend successfully.")
-            return res
-
-        except Exception as kb_err:
-            logger.warning(f"Kanal_B infer başarısız ({kb_err}), DecisionAgent.interpret_frames fallback'e geçiliyor")
-            _metrics["fallback_used"] += 1
-            from src.config import load_config
-            from src.reasoning.decision_agent import DecisionAgent
-            from src.reasoning.rag_layer import RAGLayer
-            from src.reasoning.memory import ShortTermMemory
-            from src.reasoning.mock_tools import MockToolRegistry
-
-            cfg = load_config(cfg_path)
-            rag = RAGLayer()
-            memory = ShortTermMemory()
-            tools = MockToolRegistry()
-            agent = DecisionAgent(cfg.decision_agent, cfg.vlm, rag, memory, tools)
-            out = agent.interpret_frames(critical_frames)
-            out["notable_frames"] = critical_indices
-            return out
-
+        _metrics["frame_fallback"] += 1
+        return result
     except Exception as exc:
         logger.error(f"VLM pipeline hatası: {exc}", exc_info=True)
         return {
             "scene_summary_tr": f"VLM yorumu başarısız: {exc}",
             "confidence_overall": 0.0,
             "risk_flags_tr": [],
+            "risk_events": [],
             "notable_frames": [],
         }
 
@@ -175,27 +194,37 @@ def _run_vlm_sync(frame_paths: list[str], sampled_indices: list[int],
 async def process_event(event_data: dict, redis_client):
     """Tek bir EventDetected mesajını işler → VLM yorumu üretir."""
     event = EventDetected(**event_data)
+
+    # Aynı job için Kanal B'yi tekrar çalıştırma (video analizi olay başına değil,
+    # video başına yapılır).
+    if event.job_id in _analyzed_jobs:
+        logger.info(f"Job {event.job_id} için Kanal B zaten çalıştı, atlanıyor.")
+        return
+    _analyzed_jobs.add(event.job_id)
+
     logger.info(f"VLM interpreting {event.event_type} for job {event.job_id}")
 
-    # Job'a ait frame yollarını bul (ingest servisinin yazdığı dizin)
     frames_dir = os.path.join("data", "frames", event.job_id)
     if os.path.exists(frames_dir):
-        frame_paths = sorted([
+        frame_paths = sorted(
             str(Path(frames_dir) / f)
             for f in os.listdir(frames_dir)
             if f.endswith(".jpg") and not f.startswith("vlm_grid")
-        ])
+        )
     else:
         frame_paths = []
 
-    if not frame_paths:
-        logger.warning(f"Frames not found for job {event.job_id}, emitting empty VLM result")
-        result = {"scene_summary_tr": "Kare bulunamadı.", "confidence_overall": 0.0, "risk_flags_tr": [], "notable_frames": []}
+    if not event.video_path and not frame_paths:
+        logger.warning(f"Job {event.job_id}: ne video ne kare bulundu")
+        result = {
+            "scene_summary_tr": "Kaynak bulunamadı.",
+            "confidence_overall": 0.0,
+            "risk_flags_tr": [],
+            "risk_events": [],
+            "notable_frames": [],
+        }
         critical_indices = []
     else:
-        sampled_indices = list(range(len(frame_paths)))
-        event_signals = [event_data]
-
         cfg = load_app_config()
         fps = cfg.preprocessing.channel_a_fps if cfg else 12.0
 
@@ -203,14 +232,24 @@ async def process_event(event_data: dict, redis_client):
         result = await loop.run_in_executor(
             None,
             _run_vlm_sync,
+            event.video_path,
             frame_paths,
-            sampled_indices,
-            event_signals,
+            list(range(len(frame_paths))),
+            [event_data],
             fps,
             event.job_id,
         )
-        critical_indices = result.get("notable_frames", [])
+        critical_indices = result.get("notable_frames", []) or []
         _metrics["vlm_calls"] += 1
+
+    # risk_flags_tr uyumluluğu: yeni üreticiler risk_events doldurur, eski
+    # tüketiciler düz metin listesi okur.
+    if not result.get("risk_flags_tr") and result.get("risk_events"):
+        result["risk_flags_tr"] = [
+            r.get("description_tr", "")
+            for r in result["risk_events"]
+            if isinstance(r, dict) and r.get("description_tr")
+        ]
 
     vlm_msg = VlmInterpreted(
         job_id=event.job_id,
@@ -297,4 +336,3 @@ app.include_router(
 @app.get("/api/v1/metrics")
 async def get_metrics():
     return _metrics
-

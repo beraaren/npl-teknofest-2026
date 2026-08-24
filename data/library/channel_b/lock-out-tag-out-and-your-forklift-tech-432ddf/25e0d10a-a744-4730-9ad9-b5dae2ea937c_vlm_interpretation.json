@@ -1,0 +1,59 @@
+{
+  "packet_id": "25e0d10a-a744-4730-9ad9-b5dae2ea937c",
+  "video_id": "lock-out-tag-out-and-your-forklift-tech-432ddf",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir iş yerinde, sarı renkli bir forkliftin yanında bir işçi, forkliftin ön tekerleğinin yanında diz çökmüş durumda. İşçi, forkliftin altına doğru eğilerek bir işlem yapıyor gibi görünüyor. Arka planda beyaz ve kırmızı renkli bir Bobcat makinesi duruyor. İşçi, forkliftin yanında kalkıp duruşunu değiştiriyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Kırmızı güvenlik yeleği giymiş, forkliftin yanında diz çökmüş ve ardından kalkan bir işçi."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Sarı renkli forklift, ön tekerleğinin yanında işçi var."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Arka planda beyaz ve kırmızı renkli Bobcat makinesi, muhtemelen bir yükleyici veya kompakt yükleyici."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Sağ tarafta metal bir raf veya yapı parçası görünüyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi forkliftin ön tekerleğinin yanında diz çökmüş durumda.",
+    "İşçi forkliftin altına eğilerek bir işlem yapıyor gibi görünüyor.",
+    "İşçi kalkarak forkliftin yanına doğru hareket ediyor.",
+    "İşçi forkliftin yanına doğru yürüyor."
+  ],
+  "confidence_overall": 0.85,
+  "inference": {
+    "latency_ms": 9027.831300045364,
+    "tokens_generated": 539
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir iş yerinde, sarı renkli bir forkliftin yanında bir işçi, forkliftin ön tekerleğinin yanında diz çökmüş durumda. İşçi, forkliftin altına doğru eğilerek bir işlem yapıyor gibi görünüyor. Arka planda beyaz ve kırmızı renkli bir Bobcat makinesi duruyor. İşçi, forkliftin yanında kalkıp duruşunu değiştiriyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kırmızı güvenlik yeleği giymiş, forkliftin yanında diz çökmüş ve ardından kalkan bir işçi.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli forklift, ön tekerleğinin yanında işçi var.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Arka planda beyaz ve kırmızı renkli Bobcat makinesi, muhtemelen bir yükleyici veya kompakt yükleyici.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sağ tarafta metal bir raf veya yapı parçası görünüyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi forkliftin ön tekerleğinin yanında diz çökmüş durumda.\",\n    \"İşçi forkliftin altına eğilerek bir işlem yapıyor gibi görünüyor.\",\n    \"İşçi kalkarak forkliftin yanına doğru hareket ediyor.\",\n    \"İşçi forkliftin yanına doğru yürüyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, forkliftin altına eğilerek ve diz çökmüş şekilde çalışırken, forkliftin ani hareketi veya diğer bir makinenin hareketi durumunda sıkışma veya ezilme riski taşıyor. Bu, yüksek riskli bir durumdur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 2.0\n    }\n  ],\n  \"confidence_overall\": 0.85\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, forkliftin altına eğilerek ve diz çökmüş şekilde çalışırken, forkliftin ani hareketi veya diğer bir makinenin hareketi durumunda sıkışma veya ezilme riski taşıyor. Bu, yüksek riskli bir durumdur.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 2.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, forkliftin altına eğilerek ve diz çökmüş şekilde çalışırken, forkliftin ani hareketi veya diğer bir makinenin hareketi durumunda sıkışma veya ezilme riski taşıyor. Bu, yüksek riskli bir durumdur."
+  ],
+  "computed_confidence": 0.6525,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 9.0,
+  "created_at": "2026-08-24T10:40:46.899641+00:00"
+}

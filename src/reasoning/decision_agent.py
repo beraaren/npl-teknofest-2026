@@ -16,14 +16,13 @@ import numpy as np
 from numpy.typing import NDArray
 
 from ..config import DecisionAgentConfig, VLMConfig
-try:
-    from ..models.vlm_backend import VLMBackend, create_backend
-except (ImportError, ModuleNotFoundError):
-    try:
-        from Kanal_B.backend import VLMBackendBase as VLMBackend, build_backend as create_backend  # type: ignore
-    except (ImportError, ModuleNotFoundError):
-        VLMBackend = Any  # type: ignore
-        create_backend = None  # type: ignore
+# Doğrudan içe aktarım bilinçlidir. Burada eskiden bir try/except zinciri vardı
+# ve son dalda `create_backend = None` atanıyordu; modül bulunamadığında hata
+# içe aktarma anında değil, ilk çağrıda "'NoneType' object is not callable"
+# olarak ortaya çıkıyordu. Bu, mikroservis tarafında sessizce yutulup "risk:
+# Düşük" üreten bir arızaya dönüşmüştü. Eksik bağımlılık artık hemen ve
+# anlaşılır biçimde bildirilir.
+from ..models.vlm_backend import VLMBackend, create_backend
 from ..utils.logger import get_logger
 from .memory import ShortTermMemory
 from .mock_tools import MockToolRegistry

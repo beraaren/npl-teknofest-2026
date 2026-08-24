@@ -410,3 +410,343 @@ def build_vlm_frame_packet(video_path: str, video_id: str, output_dir: str) -> V
         grid_image_path=grid_path,
         packet_id=packet_id,
     )
+
+
+# ===========================================================================
+# VİDEO MODU ÖN İŞLEME — sahne sınırı bulma + 720p/60sn segment üretimi
+# ===========================================================================
+#
+# NEDEN İKİNCİ BİR ÖN İŞLEME YOLU?
+#   Yukarıdaki grid yolu (build_vlm_frame_packet) videoyu 8 kareye indirger.
+#   Bu, görüntü-only modeller için gerekliydi. Buna karşılık TEKNOFEST EVREN
+#   servisinde video analizine özelleşmiş bir model (alias "vlm") bulunur ve
+#   videoyu doğrudan kabul eder (2.0 fps örnekleme, 520 kareye kadar). Videoyu
+#   bütün olarak göndermek, 8 karelik mozaikten belirgin şekilde daha iyi
+#   zamansal bağlam sağlar.
+#
+# İKİ SERT KISIT:
+#   1. Çözünürlük: 720p. Kodlayıcının piksel bütçesi videonun TAMAMI için tek
+#      bir toplamdır; 720p yükleme 77 saniyeden sonra orantılı olarak
+#      küçültülür. Yani 720p üstüne çıkmak kazanç sağlamaz.
+#   2. Süre: segment başına en fazla 60 saniye. Daha uzun videolar segmentlere
+#      bölünüp SIRAYLA incelenir; segmentler arası bağlam metin tabanlı
+#      hafızayla (contracts.VideoAnalysisMemory) taşınır. Böylece bağlam
+#      penceresi segment sayısıyla büyümez.
+
+from fractions import Fraction
+
+import av
+
+from contracts import format_mmss
+
+# Sahne değişimi eşiği: 1-SSIM bu değeri aşarsa kesim adayı sayılır.
+SCENE_SSIM_THRESHOLD = _CFG.get("scene_ssim_threshold", 0.30)
+# Bir segment en az bu kadar uzun olmalı (çok kısa segment bağlamsız kalır).
+SCENE_MIN_SEGMENT_SEC = _CFG.get("scene_min_segment_sec", 15.0)
+# Segment üst sınırı — EVREN video kısıtı (720p için 60 sn).
+SCENE_MAX_SEGMENT_SEC = _CFG.get("scene_max_segment_sec", 60.0)
+# SSIM her kaç karede bir hesaplanır (hız/hassasiyet dengesi).
+SCENE_DETECT_STRIDE = _CFG.get("scene_detect_stride", 5)
+# Segment klipleri bu yüksekliğe indirilir (720p kısıtı).
+VLM_MAX_HEIGHT = _CFG.get("vlm_max_height", 720)
+# x264 kalite/hız ayarı — kalite ile dosya boyutu dengesi.
+VLM_CLIP_CRF = _CFG.get("vlm_clip_crf", 23)
+VLM_CLIP_PRESET = _CFG.get("vlm_clip_preset", "veryfast")
+
+
+@dataclass
+class VideoClip:
+    """VLM'e gönderilmeye hazır tek bir video parçası.
+
+    ``reencoded=False`` ise dosya özgün videonun kendisidir (kısıtlara zaten
+    uyduğu için yeniden kodlanmamıştır); bu durumda dosya **silinmemelidir**.
+    """
+    path: str                  # gönderilecek mp4 dosyasının yolu
+    start_sec: float           # tam videodaki mutlak başlangıç
+    end_sec: float             # tam videodaki mutlak bitiş
+    index: int = 0             # segment sırası (0'dan başlar)
+    reencoded: bool = False    # geçici dosya mı (True ise temizlenebilir)
+
+    @property
+    def duration_sec(self) -> float:
+        """Klip süresi (saniye)."""
+        return max(0.0, self.end_sec - self.start_sec)
+
+    @property
+    def time_label(self) -> str:
+        """İnsan okunur ``MM:SS-MM:SS`` etiketi."""
+        return f"{format_mmss(self.start_sec)}-{format_mmss(self.end_sec)}"
+
+
+def probe_video(video_path: str) -> dict:
+    """Videonun temel özelliklerini okur (kod çözmeden, container meta verisinden).
+
+    Args:
+        video_path: İncelenecek video dosyası.
+
+    Returns:
+        ``width``, ``height``, ``fps``, ``duration_sec`` anahtarlı sözlük.
+        Süre meta veriden okunamazsa kare sayısı/fps ile tahmin edilir.
+    """
+    with av.open(video_path) as container:
+        stream = container.streams.video[0]
+        fps = float(stream.average_rate) if stream.average_rate else 25.0
+
+        duration = 0.0
+        if stream.duration and stream.time_base:
+            duration = float(stream.duration * stream.time_base)
+        elif container.duration:
+            duration = float(container.duration) / av.time_base
+        if not duration and stream.frames and fps:
+            duration = stream.frames / fps
+
+        return {
+            "width": int(stream.codec_context.width),
+            "height": int(stream.codec_context.height),
+            "fps": fps,
+            "duration_sec": float(duration),
+        }
+
+
+def detect_scene_boundaries(
+    video_path: str,
+    ssim_threshold: float | None = None,
+    min_segment_sec: float | None = None,
+    max_segment_sec: float | None = None,
+    stride: int | None = None,
+) -> list[tuple[float, float]]:
+    """Videoyu sahne değişimlerinden yararlanarak segment aralıklarına böler.
+
+    Kesim noktaları rastgele değil, görüntünün gerçekten değiştiği anlardır;
+    böylece bir olay iki segmentin ortasından bölünme olasılığı azalır. Ancak
+    sahne değişimi beklenirken segmentin sonsuza uzamasına izin verilmez:
+    ``max_segment_sec`` sert bir tavandır (EVREN'in video kısıtı).
+
+    Args:
+        video_path: Bölünecek video.
+        ssim_threshold: ``1-SSIM`` bu değeri aşarsa sahne değişimi sayılır.
+            ``None`` ise config değeri kullanılır.
+        min_segment_sec: Bir segmentin asgari süresi; bu süreden önce gelen
+            sahne değişimleri kesim için kullanılmaz.
+        max_segment_sec: Segment üst sınırı; sahne değişimi bulunmasa da bu
+            sürede kesilir.
+        stride: SSIM'in kaç karede bir hesaplanacağı.
+
+    Returns:
+        ``(start_sec, end_sec)`` ikilileri; boşluksuz ve sıralı olarak videonun
+        tamamını kaplar. Video zaten sınırın altındaysa tek elemanlı liste.
+    """
+    ssim_threshold = SCENE_SSIM_THRESHOLD if ssim_threshold is None else ssim_threshold
+    min_segment_sec = SCENE_MIN_SEGMENT_SEC if min_segment_sec is None else min_segment_sec
+    max_segment_sec = SCENE_MAX_SEGMENT_SEC if max_segment_sec is None else max_segment_sec
+    stride = SCENE_DETECT_STRIDE if stride is None else stride
+
+    duration = probe_video(video_path)["duration_sec"]
+    if duration <= 0:
+        raise ValueError(f"Video süresi belirlenemedi: {video_path}")
+
+    # Tek segmente sığıyorsa video hiç taranmaz (gereksiz iş yapılmaz).
+    if duration <= max_segment_sec:
+        return [(0.0, duration)]
+
+    # Sahne değişimi anlarını topla.
+    changes: list[float] = []
+    prev_gray = None
+    for frame in read_video_stream(video_path):
+        if frame.frame_index % stride != 0:
+            continue
+        gray = _to_gray_small(frame.rgb)
+        if prev_gray is not None:
+            if float(1.0 - ssim(prev_gray, gray)) >= ssim_threshold:
+                changes.append(frame.timestamp_sec)
+        prev_gray = gray
+
+    # Zaman eksenini yürüyerek segmentleri kur.
+    segments: list[tuple[float, float]] = []
+    start = 0.0
+    cursor = 0
+    while start < duration - 1e-6:
+        hard_end = min(start + max_segment_sec, duration)
+
+        # min_segment_sec'ten önceki değişimleri atla (çok kısa segment olmasın).
+        while cursor < len(changes) and changes[cursor] <= start + min_segment_sec:
+            cursor += 1
+
+        if cursor < len(changes) and changes[cursor] < hard_end:
+            end = changes[cursor]
+            cursor += 1
+        else:
+            end = hard_end
+
+        segments.append((start, end))
+        start = end
+
+    # Çok kısa kalan son segmenti öncekine kat — ama YALNIZCA üst sınır
+    # aşılmıyorsa; 60 sn kısıtı pazarlık konusu değildir.
+    if len(segments) >= 2:
+        last_start, last_end = segments[-1]
+        if (last_end - last_start) < min_segment_sec:
+            prev_start, _ = segments[-2]
+            if (last_end - prev_start) <= max_segment_sec:
+                segments[-2] = (prev_start, last_end)
+                segments.pop()
+
+    return segments
+
+
+def extract_video_segment(
+    video_path: str,
+    start_sec: float,
+    end_sec: float,
+    out_path: str,
+    max_height: int | None = None,
+) -> str:
+    """Videonun bir aralığını kesip 720p'ye indirerek yeni bir mp4 yazar.
+
+    Yeniden kodlama gerekir çünkü hem kırpma hem ölçekleme yapılır; akış
+    kopyalama (remux) yalnızca anahtar kare sınırlarında kesebildiği için
+    istenen başlangıç anını tutturamaz.
+
+    Args:
+        video_path: Kaynak video.
+        start_sec: Kesimin başlangıcı (saniye).
+        end_sec: Kesimin bitişi (saniye).
+        out_path: Yazılacak mp4 dosyası.
+        max_height: Hedef azami yükseklik; ``None`` ise config değeri (720).
+
+    Returns:
+        Yazılan dosyanın yolu (``out_path``).
+
+    Raises:
+        ValueError: Aralıkta hiç kare bulunamazsa.
+    """
+    max_height = VLM_MAX_HEIGHT if max_height is None else max_height
+    os.makedirs(os.path.dirname(os.path.abspath(out_path)), exist_ok=True)
+
+    with av.open(video_path) as inp:
+        istream = inp.streams.video[0]
+        istream.thread_type = "AUTO"
+
+        in_w = int(istream.codec_context.width)
+        in_h = int(istream.codec_context.height)
+        rate = istream.average_rate or Fraction(25, 1)
+        time_base = float(istream.time_base) if istream.time_base else 1.0
+
+        # 720p'ye indir; yuv420p çift boyut gerektirdiği için aşağı yuvarla.
+        scale = min(1.0, max_height / in_h) if in_h else 1.0
+        out_w = max(2, (int(in_w * scale) // 2) * 2)
+        out_h = max(2, (int(in_h * scale) // 2) * 2)
+
+        # Başlangıca yaklaş (anahtar kareye), kalan farkı kare atlayarak kapat.
+        if start_sec > 0 and time_base:
+            try:
+                inp.seek(int(start_sec / time_base), stream=istream)
+            except av.AVError:
+                inp.seek(0)
+
+        out = av.open(out_path, mode="w")
+        try:
+            ostream = out.add_stream("libx264", rate=rate)
+            ostream.width = out_w
+            ostream.height = out_h
+            ostream.pix_fmt = "yuv420p"
+            ostream.options = {"crf": str(VLM_CLIP_CRF), "preset": VLM_CLIP_PRESET}
+            ostream.time_base = Fraction(1, 90000)
+
+            written = 0
+            for frame in inp.decode(istream):
+                if frame.pts is None:
+                    continue
+                t = float(frame.pts) * time_base
+                if t < start_sec - 1e-3:
+                    continue
+                if t >= end_sec:
+                    break
+
+                new_frame = frame.reformat(width=out_w, height=out_h, format="yuv420p")
+                # Zaman damgasını segment başlangıcına göre sıfırla; klip kendi
+                # içinde 0'dan başlar, mutlak zaman prompt'ta ayrıca bildirilir.
+                new_frame.pts = int(round((t - start_sec) / float(ostream.time_base)))
+                new_frame.time_base = ostream.time_base
+
+                for packet in ostream.encode(new_frame):
+                    out.mux(packet)
+                written += 1
+
+            for packet in ostream.encode():  # kodlayıcıyı boşalt
+                out.mux(packet)
+        finally:
+            out.close()
+
+    if written == 0:
+        raise ValueError(
+            f"{start_sec:.1f}-{end_sec:.1f} sn aralığında kare bulunamadı: {video_path}"
+        )
+    return out_path
+
+
+def prepare_video_segments(
+    video_path: str,
+    output_dir: str,
+    max_segment_sec: float | None = None,
+    max_height: int | None = None,
+    ssim_threshold: float | None = None,
+    min_segment_sec: float | None = None,
+) -> list[VideoClip]:
+    """Videoyu EVREN ``vlm`` modeline gönderilmeye hazır kliplere dönüştürür.
+
+    Karar mantığı:
+
+    * Video hem süre hem çözünürlük kısıtına **zaten uyuyorsa** yeniden
+      kodlanmaz; özgün dosya olduğu gibi kullanılır. Bu hem zaman kazandırır
+      hem de ön ek önbelleği (prefix cache) açısından önemlidir: baytlar
+      değişmediği sürece aynı video üzerinden sorulan takip soruları
+      önbellekten yararlanır.
+    * Aksi hâlde video :func:`detect_scene_boundaries` ile segmentlere bölünür
+      ve her segment 720p'ye indirilerek ayrı bir mp4 olarak yazılır.
+
+    Args:
+        video_path: Kaynak video.
+        output_dir: Segment kliplerinin yazılacağı klasör.
+        max_segment_sec: Segment süre tavanı (varsayılan 60).
+        max_height: Çözünürlük tavanı (varsayılan 720).
+        ssim_threshold: Sahne değişimi eşiği.
+        min_segment_sec: Segment asgari süresi.
+
+    Returns:
+        Zaman sırasında :class:`VideoClip` listesi. Tek parça yeterliyse tek
+        elemanlı ve ``reencoded=False`` olur.
+    """
+    max_segment_sec = SCENE_MAX_SEGMENT_SEC if max_segment_sec is None else max_segment_sec
+    max_height = VLM_MAX_HEIGHT if max_height is None else max_height
+
+    info = probe_video(video_path)
+    duration = info["duration_sec"]
+    if duration <= 0:
+        raise ValueError(f"Video süresi belirlenemedi: {video_path}")
+
+    fits_duration = duration <= max_segment_sec
+    fits_resolution = info["height"] <= max_height
+    if fits_duration and fits_resolution:
+        return [VideoClip(
+            path=video_path, start_sec=0.0, end_sec=duration, index=0, reencoded=False
+        )]
+
+    ranges = detect_scene_boundaries(
+        video_path,
+        ssim_threshold=ssim_threshold,
+        min_segment_sec=min_segment_sec,
+        max_segment_sec=max_segment_sec,
+    )
+
+    os.makedirs(output_dir, exist_ok=True)
+    stem = os.path.splitext(os.path.basename(video_path))[0]
+
+    clips: list[VideoClip] = []
+    for idx, (start, end) in enumerate(ranges):
+        out_path = os.path.join(output_dir, f"{stem}_seg{idx:03d}.mp4")
+        extract_video_segment(video_path, start, end, out_path, max_height=max_height)
+        clips.append(VideoClip(
+            path=out_path, start_sec=start, end_sec=end, index=idx, reencoded=True
+        ))
+    return clips

@@ -216,9 +216,22 @@ async function sendChatMessage(content) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ suggestion_id: currentSuggestion.oneri_id, messages: currentSuggestion.messages }),
     });
-    if (!res.ok) throw new Error(res.statusText);
+    if (!res.ok) {
+      // Sunucu hatayı `detail` alanında açıklıyor; durum metni yerine onu göster.
+      let detail = res.statusText;
+      try {
+        const body = await res.json();
+        detail = body.detail || detail;
+      } catch { /* gövde JSON değil */ }
+      throw new Error(detail);
+    }
     const data = await res.json();
-    currentSuggestion.messages.push({ role: 'assistant', content: data.response || 'Yanıt yok.' });
+    // DİKKAT: uç nokta yanıtı `assistant` alanında döndürür. Burada `response`
+    // okunuyordu ve bu yüzden başarılı yanıtlarda bile "Yanıt yok." yazıyordu.
+    currentSuggestion.messages.push({
+      role: 'assistant',
+      content: data.assistant || 'Yanıt boş döndü.',
+    });
     renderChatMessages();
   } catch (err) {
     currentSuggestion.messages.push({ role: 'assistant', content: 'Hata: ' + err.message });

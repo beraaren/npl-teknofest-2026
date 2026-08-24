@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Süpervizör Ekranı | Video Risk Analizi</title>
+  <title>Süpervizör Ekranı | İSG Video Analizi</title>
   <link rel="stylesheet" href="styles.css" />
   <script type="module" src="index.js"></script>
 </head>
@@ -15,24 +15,27 @@
       <a href="saha.html">Saha Ekibi</a>
       <a href="admin.html">Admin</a>
     </nav>
+    <span id="library-status" class="meta">Kütüphane yükleniyor…</span>
   </header>
+
   <div class="app with-sidebar">
     <main class="main">
       <section id="camera-grid" class="camera-grid"></section>
+      <div id="grid-empty" class="empty-state" hidden>
+        Analiz kütüphanesi boş. Önce şunu çalıştırın:
+        <code>python scripts/analyze_video_library.py</code>
+      </div>
     </main>
+
     <aside class="sidebar">
       <h2>🔔 Bildirimler</h2>
       <div id="notifications-list" class="notifications-list">
-        <div class="empty-state">Henüz bildirim yok.</div>
-      </div>
-      <div class="actions-panel">
-        <h3>⚡ Eylemler</h3>
-        <p id="selected-camera" class="meta">Kamera seçilmedi.</p>
-        <div id="actions-list" class="actions-list"></div>
+        <div class="empty-state">Uyarı bekleniyor…</div>
       </div>
     </aside>
   </div>
 
+  <!-- Kamera detay + atama penceresi -->
   <div id="modal" class="modal-overlay">
     <div class="modal">
       <div class="modal-header">
@@ -40,17 +43,42 @@
         <button class="close-drawer" id="modal-close">×</button>
       </div>
       <div class="modal-body">
-        <video id="modal-video" autoplay muted loop controls></video>
-        <div style="margin-top:1rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
+        <video id="modal-video" autoplay muted controls playsinline></video>
+
+        <div class="modal-meta-row">
           <span id="modal-risk" class="risk-badge">—</span>
-          <span id="modal-progress" class="meta">İlerleme: —</span>
+          <span id="modal-confidence" class="meta">Güven: —</span>
+          <span id="modal-progress" class="meta">—</span>
         </div>
-        <h3 style="margin:1rem 0 0.5rem;">Son Özet</h3>
-        <p id="modal-summary" class="meta">Henüz özet yok.</p>
-        <h3 style="margin:1rem 0 0.5rem;">Son Olaylar</h3>
-        <ul id="modal-events"></ul>
-        <h3 style="margin:1rem 0 0.5rem;">Eylemler</h3>
+
+        <h3>🧠 Ajan Olay Özeti</h3>
+        <p id="modal-summary" class="summary-box">Özet bekleniyor…</p>
+
+        <details id="modal-reasoning-wrap">
+          <summary class="meta">Ajanın gerekçesi</summary>
+          <p id="modal-reasoning" class="meta"></p>
+        </details>
+
+        <h3>⏱ Olay Zaman Çizelgesi</h3>
+        <ul id="modal-events" class="event-timeline"></ul>
+
+        <h3>⚡ Aksiyonlar</h3>
         <div id="modal-actions" class="actions-list"></div>
+
+        <h3>👷 Saha Ekibine Ata</h3>
+        <div class="assign-panel">
+          <label class="meta">Ekip
+            <select id="assign-role"></select>
+          </label>
+          <label class="meta">Olay
+            <select id="assign-event"></select>
+          </label>
+          <label class="meta">Not (opsiyonel)
+            <input id="assign-note" type="text" placeholder="Örn: İlk yardım çantasıyla gidin" />
+          </label>
+          <button class="btn btn-danger" id="assign-btn">Görevi Ata</button>
+        </div>
+        <div id="assign-existing" class="meta"></div>
       </div>
     </div>
   </div>

@@ -2,6 +2,7 @@
 from __future__ import annotations
 import base64
 import json
+import os
 import re
 import time
 from abc import ABC, abstractmethod
@@ -11,7 +12,7 @@ import requests
 # S1b ve S8 sözleşme yapıları
 from contracts import (
     VLMInterpretation, DetectedEntity, InferenceMetrics, VLMFramePacket,
-    RiskEvent,
+    RiskEvent, format_mmss,
 )
 
 
@@ -517,6 +518,26 @@ def build_backend(config: dict) -> VLMBackendBase:
     """
     backend = config["backend"]
 
+    if backend == "server":
+        # TEKNOFEST EVREN (veya herhangi bir OpenAI-uyumlu servis).
+        # Anahtar yapılandırmaya yazılmaz; ortam değişkeninden okunur.
+        api_key = os.environ.get(config.get("api_key_env", "EVREN_API_KEY"), "").strip()
+        if not api_key:
+            print(
+                f"[backend] UYARI: '{config.get('api_key_env', 'EVREN_API_KEY')}' "
+                f"ortam değişkeni boş; istek kimlik doğrulaması olmadan gidecek."
+            )
+        return ServerBackend(
+            base_url=config["base_url"],
+            model_name=config["model_name"],
+            video_model=config.get("video_model"),
+            api_key=api_key or None,
+            max_tokens=config.get("max_tokens", 65536),
+            temperature=config.get("temperature", 0.15),
+            timeout_sec=config.get("timeout_sec", 1800),
+            enable_thinking=config.get("enable_thinking", False),
+        )
+
     if backend == "vllm":
         # S5: temperature config'den geçiyor (config.yaml: vllm.temperature: 0.15)
         # [#5]: timeout_sec config'den geçiyor (config.yaml: vllm.timeout_sec: 120)
@@ -540,4 +561,406 @@ def build_backend(config: dict) -> VLMBackendBase:
             config.get("max_tokens", 512),
         )
 
-    raise ValueError(f"Bilinmeyen backend: {backend!r} — 'vllm', 'llama.cpp' veya 'transformers' olmalı")
+    raise ValueError(
+        f"Bilinmeyen backend: {backend!r} — 'server', 'vllm', 'llama.cpp' "
+        f"veya 'transformers' olmalı"
+    )
+
+
+# ===========================================================================
+# EVREN SERVER BACKEND — video destekli, OpenAI-uyumlu harici çıkarım servisi
+# ===========================================================================
+
+# EVREN gövde sınırı 256 MB; base64 kodlaması boyutu ~1/3 artırdığı için ham
+# dosya sınırı pratikte ~190 MB'a karşılık gelir.
+_RAW_VIDEO_LIMIT_BYTES = int(256 * 1024 * 1024 / 1.34)
+
+
+def build_video_system_prompt(
+    clip_start_sec: float,
+    clip_end_sec: float,
+    memory_context: str = "",
+    is_segment: bool = False,
+) -> str:
+    """Video modu için S8 şemasını isteyen prompt'u üretir.
+
+    Üç şeyi açıkça bildirmek zorundayız:
+
+    1. **Mutlak zaman ekseni.** Klip uzun bir kaydın parçası olabilir. Model
+       klibin kendi ``0:00``ını videonun başı sanırsa tüm zaman damgaları
+       kayar. Ölçümde model 10 saniyelik bir klipte ``00:00:55:08`` gibi
+       tutarsız damgalar üretebildiği için zaman, saniye cinsinden **sayı**
+       olarak istenir (metin biçim yerine) ve aralık açıkça verilir.
+    2. **Önceki segmentlerin bağlamı.** Metin hafıza (bkz.
+       :class:`contracts.VideoAnalysisMemory`) prompt'a eklenir; böylece süregelen
+       durumlar tekrar "yeni olay" sayılmaz.
+    3. **Genel terim kullanımı.** Spesifik sınıf adları (forklift, palet)
+       bilinçli olarak istenmez; onları algı katmanı (YOLO) sağlar. Kanal B'nin
+       değeri bağımsız ve önyargısız görsel yorum olmasıdır.
+
+    Args:
+        clip_start_sec: Klibin tam videodaki mutlak başlangıcı.
+        clip_end_sec: Klibin tam videodaki mutlak bitişi.
+        memory_context: Önceki segmentlerden taşınan metin hafıza (boş olabilir).
+        is_segment: Klip, daha uzun bir videonun parçası mı.
+
+    Returns:
+        Modele gönderilecek tam prompt metni.
+    """
+    start_label = format_mmss(clip_start_sec)
+    end_label = format_mmss(clip_end_sec)
+
+    if is_segment:
+        time_rules = (
+            f"IMPORTANT — ABSOLUTE TIME AXIS: This clip is a SEGMENT of a longer "
+            f"recording. The clip's own 00:00 corresponds to {start_label} "
+            f"({clip_start_sec:.1f} seconds) of the FULL video. The segment covers "
+            f"{start_label}-{end_label} of the full video.\n"
+            f"Every timestamp you report in \"timestamp_sec\" MUST be in ABSOLUTE "
+            f"full-video seconds, i.e. a number between {clip_start_sec:.1f} and "
+            f"{clip_end_sec:.1f}. Do NOT report time relative to the clip start.\n\n"
+        )
+    else:
+        time_rules = (
+            f"The clip covers the whole video, {start_label}-{end_label} "
+            f"(0.0 to {clip_end_sec:.1f} seconds).\n"
+            f"Report \"timestamp_sec\" as a number of seconds between 0.0 and "
+            f"{clip_end_sec:.1f}.\n\n"
+        )
+
+    memory_block = f"{memory_context}\n\n" if memory_context.strip() else ""
+
+    return (
+        "You are an occupational health and safety (OHS) video analyst. You are "
+        "given a video clip from a work site or surveillance camera. Interpret the "
+        "scene with your own eyes, INDEPENDENTLY of any object detector or rule "
+        "engine.\n\n"
+        + time_rules
+        + memory_block
+        + "OBJECT NAMING: Use GENERAL terms for what you see: 'person', 'vehicle', "
+        "'machine', 'load', 'rack/structure', 'liquid/substance', 'smoke or flame'. "
+        "Do not guess specific equipment model names. If a vehicle's type is clearly "
+        "visible you may name it, but state your uncertainty in notes_tr.\n\n"
+        "Produce output matching ONLY the following JSON schema, with no other text:\n"
+        "{\n"
+        '  "scene_summary_tr": "1-3 sentence summary of the scene, in Turkish",\n'
+        '  "detected_entities": [{"label": "general object label", '
+        '"confidence_hint": "low|medium|high", "notes_tr": "short note in Turkish"}],\n'
+        '  "detected_actions_tr": ["observed actions, in Turkish"],\n'
+        '  "risk_events": [\n'
+        '    {\n'
+        '      "description_tr": "risk description, in Turkish",\n'
+        '      "severity": "low|medium|high|critical",\n'
+        '      "confidence": 0.85,\n'
+        f'      "timestamp_sec": {clip_start_sec:.1f}\n'
+        '    }\n'
+        '  ],\n'
+        '  "confidence_overall": 0.0\n'
+        "}\n"
+        "risk_events RULES: return an empty list [] if there is no risk. "
+        "severity: low=low priority, medium=needs attention, high=significant risk, "
+        "critical=human health in immediate danger. "
+        "confidence: your risk-specific confidence (0.0-1.0). "
+        "timestamp_sec: the absolute second in the full video when the risk is visible."
+    )
+
+
+class ServerBackend(VLMBackendBase):
+    """OpenAI-uyumlu harici çıkarım servisi (TEKNOFEST EVREN) — video + grid.
+
+    Bu backend iki modu da destekler:
+
+    * :meth:`infer` (tabandan gelir) — grid JPEG'i görüntü olarak gönderir.
+      EVREN'de görüntü kabul eden modeller ``llm-fast``/``llm-large``dır.
+    * :meth:`infer_video` — videoyu doğrudan gönderir. EVREN'de video
+      analizine özelleşmiş alias ``vlm``dir ve **görüntü kabul etmez**; bu
+      yüzden iki mod için iki ayrı model adı tutulur.
+
+    Ön ek önbelleği (prefix cache): video baytları birebir aynı kaldığı sürece
+    aynı klip üzerinden sorulan takip soruları önbellekten yararlanır. Bu
+    nedenle base64 kodlaması :meth:`encode_video` ile bir kez yapılıp
+    :meth:`infer_video`'ya ``video_b64`` olarak geçirilebilir.
+    """
+
+    backend_name = "server"
+
+    def __init__(
+        self,
+        base_url: str,
+        model_name: str,
+        video_model: str | None = None,
+        api_key: str | None = None,
+        max_tokens: int = 65536,
+        temperature: float = 0.15,
+        timeout_sec: int = 1800,
+        enable_thinking: bool | None = False,
+    ):
+        self.base_url = base_url.rstrip("/")
+        self.model_name = model_name          # görüntü/metin modeli
+        self.video_model = video_model or model_name
+        self.api_key = api_key
+        self.max_tokens = max_tokens
+        self.temperature = temperature
+        self.timeout_sec = timeout_sec
+        # Akıl yürütme kapalı: açıkken üretim token'ı dalgalanıp bütçeyi taşırıyor
+        # ve ayrıştırıcı izi sildiği için yanıt HTTP 200 ile boş dönebiliyor.
+        self.enable_thinking = enable_thinking
+
+    # -- HTTP ------------------------------------------------------------
+
+    def _headers(self) -> dict:
+        headers = {"Content-Type": "application/json"}
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
+        return headers
+
+    def _post(self, model: str, content: list, max_tokens: int | None = None) -> tuple[str, int]:
+        """``/chat/completions`` çağrısı yapar; (metin, token) döner."""
+        payload = {
+            "model": model,
+            "messages": [{"role": "user", "content": content}],
+            "max_tokens": self.max_tokens if max_tokens is None else max_tokens,
+            "temperature": self.temperature,
+        }
+        if self.enable_thinking is not None:
+            payload["chat_template_kwargs"] = {"enable_thinking": self.enable_thinking}
+
+        resp = requests.post(
+            f"{self.base_url}/chat/completions",
+            headers=self._headers(), json=payload, timeout=self.timeout_sec,
+        )
+        if resp.status_code != 200:
+            raise RuntimeError(
+                f"Çıkarım servisi HTTP {resp.status_code}: {resp.text[:400]}"
+            )
+        data = resp.json()
+        choice = data["choices"][0]
+        text = choice["message"].get("content") or ""
+        tokens = int(data.get("usage", {}).get("completion_tokens", 0))
+
+        if not text.strip():
+            raise RuntimeError(
+                f"Model boş içerik döndürdü (finish_reason="
+                f"{choice.get('finish_reason')!r}, max_tokens={payload['max_tokens']}). "
+                f"Akıl yürütme açıksa token bütçesi izi tarafından tükenmiş olabilir."
+            )
+        return text, tokens
+
+    # -- Grid modu (taban sınıfın infer() akışı bunu çağırır) -------------
+
+    def _raw_infer(self, image_path: str, prompt: str) -> tuple[str, int]:
+        """Grid JPEG'ini görüntü olarak gönderir (görüntü destekli modelle)."""
+        b64 = _encode_jpeg_b64(image_path)
+        content = [
+            {"type": "text", "text": prompt},
+            {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64}"}},
+        ]
+        return self._post(self.model_name, content)
+
+    # -- Video modu ------------------------------------------------------
+
+    @staticmethod
+    def encode_video(video_path: str) -> str:
+        """Videoyu base64'e çevirir ve gövde sınırını denetler.
+
+        Aynı klip üzerinden birden fazla soru sorulacaksa bu metot bir kez
+        çağrılıp sonuç tekrar kullanılmalıdır; yeniden kodlama baytları
+        değiştirmese de gereksiz iştir, farklı baytlar ise ön ek önbelleğini
+        kaçırır.
+
+        Raises:
+            FileNotFoundError: Dosya yoksa.
+            RuntimeError: Ham dosya gövde sınırını aşarsa.
+        """
+        if not os.path.exists(video_path):
+            raise FileNotFoundError(f"Video bulunamadı: {video_path}")
+        raw = open(video_path, "rb").read()
+        if len(raw) > _RAW_VIDEO_LIMIT_BYTES:
+            raise RuntimeError(
+                f"{os.path.basename(video_path)} {len(raw)/1e6:.1f} MB — base64 "
+                f"sonrası gövde sınırını aşar. Klip daha kısa segmentlere bölünmeli."
+            )
+        return base64.b64encode(raw).decode("utf-8")
+
+    def infer_video(
+        self,
+        video_path: str,
+        video_id: str,
+        clip_start_sec: float = 0.0,
+        clip_end_sec: float = 0.0,
+        memory_context: str = "",
+        is_segment: bool = False,
+        video_b64: str | None = None,
+        packet_id: str | None = None,
+    ) -> VLMInterpretation:
+        """Videoyu doğrudan modele gönderip S8 yorumunu üretir.
+
+        Args:
+            video_path: Gönderilecek mp4.
+            video_id: İzlenebilirlik kimliği.
+            clip_start_sec: Klibin tam videodaki mutlak başlangıcı.
+            clip_end_sec: Klibin tam videodaki mutlak bitişi.
+            memory_context: Önceki segmentlerin metin hafızası.
+            is_segment: Klip daha uzun bir videonun parçası mı.
+            video_b64: Önceden kodlanmış base64 içerik (ön ek önbelleği için).
+            packet_id: S1b bağlantısı yoksa üretilecek kimlik.
+
+        Returns:
+            :class:`contracts.VLMInterpretation` — S8 paketi.
+        """
+        import uuid
+
+        b64 = video_b64 if video_b64 is not None else self.encode_video(video_path)
+        prompt = build_video_system_prompt(
+            clip_start_sec, clip_end_sec, memory_context, is_segment
+        )
+        content = [
+            {"type": "text", "text": prompt},
+            {"type": "video_url", "video_url": {"url": f"data:video/mp4;base64,{b64}"}},
+        ]
+
+        t0 = time.perf_counter()
+        raw_text, tokens = self._post(self.video_model, content)
+        latency_ms = (time.perf_counter() - t0) * 1000
+
+        parse_ok = True
+        reasoning = ""
+        try:
+            reasoning, parsed = _extract_reasoning_and_json(raw_text)
+        except ValueError:
+            parse_ok = False
+            parsed = {
+                "scene_summary_tr": "Model çıktısı ayrıştırılamadı.",
+                "detected_entities": [],
+                "detected_actions_tr": [],
+                "risk_events": [],
+                "confidence_overall": 0.0,
+            }
+
+        entities = [
+            DetectedEntity(
+                label=e.get("label", ""),
+                confidence_hint=e.get("confidence_hint", "low"),
+                notes_tr=e.get("notes_tr", ""),
+            )
+            for e in parsed.get("detected_entities", [])
+            if isinstance(e, dict)
+        ]
+
+        risk_events = [
+            RiskEvent(
+                description_tr=r.get("description_tr", ""),
+                severity=r.get("severity", "low"),
+                confidence=float(r.get("confidence", 0.5)),
+                supporting_frame_count=int(r.get("supporting_frame_count", 1)),
+                supporting_frame_positions=r.get("supporting_frame_positions", []) or [],
+                timestamp_sec=_clamp_timestamp(
+                    r.get("timestamp_sec"), clip_start_sec, clip_end_sec
+                ),
+            )
+            for r in parsed.get("risk_events", [])
+            if isinstance(r, dict)
+        ]
+
+        return VLMInterpretation(
+            packet_id=packet_id or str(uuid.uuid4()),
+            video_id=video_id,
+            model_name=self.video_model,
+            model_backend=self.backend_name,
+            scene_summary_tr=parsed.get("scene_summary_tr", ""),
+            detected_entities=entities,
+            detected_actions_tr=parsed.get("detected_actions_tr", []),
+            risk_events=risk_events,
+            confidence_overall=float(parsed.get("confidence_overall", 0.0) or 0.0),
+            computed_confidence=_compute_confidence(parsed, parse_ok),
+            inference=InferenceMetrics(latency_ms=latency_ms, tokens_generated=tokens),
+            raw_model_output=raw_text,
+            reasoning_trace=reasoning,
+            segment_start_sec=clip_start_sec,
+            segment_end_sec=clip_end_sec,
+        )
+
+    def ask_followup(
+        self,
+        question: str,
+        video_b64: str,
+        history: list | None = None,
+        max_tokens: int = 1024,
+    ) -> str:
+        """Aynı video üzerinden takip sorusu sorar (ön ek önbelleği isabet eder).
+
+        Video baytları değişmediği için bu çağrı soğuk çağrıya göre belirgin
+        şekilde hızlıdır. ``history`` verilirse konuşma büyütülerek gönderilir.
+
+        Args:
+            question: Sorulacak soru.
+            video_b64: :meth:`encode_video` ile bir kez üretilmiş içerik.
+            history: Önceki ``{"role", "content"}`` mesajları.
+            max_tokens: Bu çağrı için token bütçesi.
+
+        Returns:
+            Modelin metin yanıtı.
+        """
+        messages = list(history) if history else [{
+            "role": "user",
+            "content": [
+                {"type": "text", "text": "Bu videoyu inceleyeceğiz."},
+                {"type": "video_url", "video_url": {"url": f"data:video/mp4;base64,{video_b64}"}},
+            ],
+        }]
+        messages.append({"role": "user", "content": question})
+
+        payload = {
+            "model": self.video_model,
+            "messages": messages,
+            "max_tokens": max_tokens,
+            "temperature": self.temperature,
+        }
+        if self.enable_thinking is not None:
+            payload["chat_template_kwargs"] = {"enable_thinking": self.enable_thinking}
+
+        resp = requests.post(
+            f"{self.base_url}/chat/completions",
+            headers=self._headers(), json=payload, timeout=self.timeout_sec,
+        )
+        resp.raise_for_status()
+        return resp.json()["choices"][0]["message"].get("content") or ""
+
+
+def _clamp_timestamp(
+    value: object, start_sec: float, end_sec: float
+) -> float | None:
+    """Modelin verdiği zaman damgasını klip aralığına oturtur.
+
+    Ölçümde model, 10 saniyelik bir klipte ``00:00:55:08`` gibi aralık dışı
+    damgalar üretebiliyor. Böyle bir değeri olduğu gibi kabul etmek, olayları
+    videonun yanlış anına yerleştirir. Bu yüzden:
+
+    * Sayıya çevrilemeyen değer ``None`` olur (zaman bilinmiyor sayılır).
+    * Aralık dışı değer en yakın sınıra çekilir.
+    * Klip göreli verilmişse (0 ile süre arasında) mutlak eksene taşınır.
+
+    Args:
+        value: Modelin ``timestamp_sec`` alanı.
+        start_sec: Klibin mutlak başlangıcı.
+        end_sec: Klibin mutlak bitişi.
+
+    Returns:
+        Aralığa oturtulmuş mutlak saniye veya ``None``.
+    """
+    if value is None:
+        return None
+    try:
+        ts = float(value)
+    except (TypeError, ValueError):
+        return None
+
+    duration = max(0.0, end_sec - start_sec)
+
+    # Model klip göreli (0..süre) yanıt verdiyse mutlak eksene taşı.
+    if start_sec > 0 and 0.0 <= ts <= duration + 1e-6:
+        ts = start_sec + ts
+
+    if end_sec > start_sec:
+        ts = min(max(ts, start_sec), end_sec)
+    return ts

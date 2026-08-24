@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import os
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional
@@ -12,9 +13,10 @@ from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 
 from src.config import load_config
+from src.reasoning.mock_tools import MockToolRegistry
 from src.reasoning.rag_layer import RAGLayer
 
-from .. import store
+from .. import library, roles, store
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["ops"])
@@ -22,6 +24,22 @@ router = APIRouter(tags=["ops"])
 # RAGLayer sadece yaml + (opsiyonel) sentence-transformers bağımlılığı taşır;
 # yokluğunda TF-IDF fallback devreye girer.
 rag_layer = RAGLayer()
+
+# Aksiyon butonlarının gerçekten çalıştırdığı araç kataloğu. Arayüzdeki
+# butonlar eskiden yalnızca bir bildirim gösteriyordu; artık bu kayıt üzerinden
+# gerçek (simüle) çalıştırma yapılır ve sonuç denetim izine yazılır.
+tool_registry = MockToolRegistry()
+
+
+def _server_config():
+    """``config.vlm.server`` bloğunu döner (her istekte yeniden okunmaz)."""
+    global _SERVER_CONFIG
+    if _SERVER_CONFIG is None:
+        _SERVER_CONFIG = load_config().vlm.server
+    return _SERVER_CONFIG
+
+
+_SERVER_CONFIG = None
 
 
 class RiskSegment(BaseModel):
@@ -38,6 +56,38 @@ class FieldAlertCreate(BaseModel):
     actions: List[str] = Field(default_factory=list)
     risk_segment: RiskSegment
     target_roles: List[str] = Field(default_factory=list)
+
+
+class AssignmentCreate(BaseModel):
+    """Süpervizörün bir olayı bir ekibe atama isteği.
+
+    Ekranda gösterilecek alanlar (özet, risk, olay anı, aksiyonlar) sunucu
+    tarafında analiz dosyasından okunur; istemcinin bunları göndermesi
+    gerekmez ve gönderse de güvenilmez. Böylece saha ekibinin gördüğü metin,
+    süpervizörün gördüğü metinle **aynı kaynaktan** gelir.
+    """
+    analysis_slug: str
+    role: str
+    camera_id: str = ""
+    # Hangi olaya atama yapıldığı; verilmezse en kritik olay seçilir.
+    event_index: Optional[int] = None
+    note: str = ""
+    assigned_by: str = "supervisor"
+
+
+class AssignmentStatusUpdate(BaseModel):
+    status: Literal["atandi", "goruldu", "tamamlandi"]
+
+
+class ToolExecuteRequest(BaseModel):
+    """Arayüzdeki bir aksiyon butonunun tetiklediği araç çalıştırma isteği."""
+    tool_name: str
+    params: Dict[str, Any] = Field(default_factory=dict)
+    camera_id: str = ""
+    analysis_slug: str = ""
+    job_id: str = ""
+    # Denetim izi için: aksiyonu hangi ekran tetikledi.
+    triggered_by: Literal["supervisor", "field", "system"] = "supervisor"
 
 
 class SuggestionQuery(BaseModel):
@@ -98,6 +148,192 @@ async def list_field_alerts(
     return store.get_field_alerts(role=role, limit=limit)
 
 
+@router.post("/assignments", status_code=201)
+async def create_assignment_endpoint(body: AssignmentCreate, request: Request):
+    """Bir olayı belirli bir ekibe atar ve o ekibin ekranına düşürür.
+
+    Gösterilecek metinler (ajan özeti, risk, olay anı, önerilen aksiyonlar)
+    **sunucuda** analiz dosyasından okunur. İstemci bunları göndermez; böylece
+    saha ekibinin gördüğü özet, süpervizörün gördüğüyle aynı kaynaktan gelir ve
+    ekranlar arasında sapma olmaz.
+
+    Raises:
+        HTTPException: Analiz bulunamazsa 404.
+    """
+    analysis = library.get(body.analysis_slug)
+    if analysis is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Analiz bulunamadı: {body.analysis_slug}. "
+                   f"Kütüphanede {library.count()} analiz var.",
+        )
+
+    # Rol adı kanonik yazıma çevrilir; aksi hâlde "sağlık" ile "saglik" ayrı
+    # kayıtlar oluşturur ve saha ekibi kendi görevini göremez.
+    role = roles.normalize_role(body.role)
+    if not role:
+        raise HTTPException(status_code=400, detail="Rol belirtilmedi.")
+
+    event = library.pick_event(analysis, body.event_index)
+
+    row = store.create_assignment(
+        analysis_slug=body.analysis_slug,
+        role=role,
+        camera_id=body.camera_id,
+        risk=str(analysis.get("risk") or ""),
+        headline=str(analysis.get("headline") or ""),
+        # Karar ajanının yazdığı olay özeti — iki ekranda da aynı metin.
+        summary=str(analysis.get("summary") or ""),
+        reasoning=str(analysis.get("reasoning") or ""),
+        event_type=str(event.get("event_type") or ""),
+        event_seconds=float(event.get("seconds") or 0.0),
+        event_timestamp=str(event.get("timestamp") or ""),
+        actions=list(analysis.get("actions") or []),
+        video_file=str(analysis.get("video_file") or ""),
+        note=body.note,
+        assigned_by=body.assigned_by,
+    )
+
+    broadcast_fn = _get_broadcast_fn(request)
+    await broadcast_fn({"stream": "assignment.created", "data": row})
+
+    logger.info(
+        f"Atama oluşturuldu: #{row['id']} {body.role} <- {body.analysis_slug} "
+        f"({row['event_type']} @ {row['event_timestamp']})"
+    )
+    return row
+
+
+@router.get("/assignments")
+async def list_assignments(
+    role: Optional[str] = Query(default=None, description="Saha ekranı kendi rolünü verir"),
+    status: Optional[str] = Query(default=None),
+    analysis_slug: Optional[str] = Query(default=None),
+    limit: int = Query(default=100, ge=1, le=500),
+):
+    """Atamaları listeler.
+
+    Saha ekranı ``role`` ile çağırır ve **yalnızca kendisine atananları** alır;
+    rol verilmezse (süpervizör görünümü) tüm atamalar döner.
+    """
+    return store.get_assignments(
+        role=roles.normalize_role(role) or None,
+        status=status,
+        analysis_slug=analysis_slug,
+        limit=limit,
+    )
+
+
+@router.get("/roles")
+async def list_roles():
+    """Saha ekibi rollerini ve görünen etiketlerini döner.
+
+    Arayüz rol seçicisini bu listeden kurar; böylece istemci ile sunucu aynı
+    kanonik rol kimliklerini kullanır.
+    """
+    return roles.all_roles()
+
+
+@router.get("/assignments/counts")
+async def assignment_counts():
+    """Rol ve durum bazında atama sayıları (süpervizör özet paneli)."""
+    return store.get_assignment_counts()
+
+
+@router.patch("/assignments/{assignment_id}")
+async def update_assignment(
+    assignment_id: int, body: AssignmentStatusUpdate, request: Request
+):
+    """Atamanın durumunu ilerletir (``goruldu`` / ``tamamlandi``).
+
+    Saha ekibinin işaretlemesi veritabanına yazılır ve yayınlanır; böylece
+    süpervizör ekranı da durumu görür. Eskiden bu tür etkileşimler yalnızca
+    ekranda geçici bir bildirim gösteriyordu.
+
+    Raises:
+        HTTPException: Atama yoksa 404, durum geçersizse 400.
+    """
+    try:
+        row = store.update_assignment_status(assignment_id, body.status)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+    if row is None:
+        raise HTTPException(status_code=404, detail=f"Atama bulunamadı: {assignment_id}")
+
+    broadcast_fn = _get_broadcast_fn(request)
+    await broadcast_fn({"stream": "assignment.updated", "data": row})
+    return row
+
+
+@router.get("/tools")
+async def list_tools():
+    """Çalıştırılabilir araç kataloğunu döner.
+
+    Arayüz, aksiyon butonlarını bu listeye göre üretir; katalogda olmayan bir
+    araç adı gönderilmesi engellenir.
+    """
+    return [
+        {
+            "tool_name": name,
+            "description": tool.get("description", ""),
+            "params": tool.get("params", {}),
+            "enabled": tool_registry.is_enabled(name),
+        }
+        for name, tool in (tool_registry.tools or {}).items()
+    ]
+
+
+@router.post("/tools/execute")
+async def execute_tool(body: ToolExecuteRequest, request: Request):
+    """Bir aracı gerçekten çalıştırır, denetim izine yazar ve yayınlar.
+
+    Arayüzdeki aksiyon butonları eskiden yalnızca ekranda bir bildirim
+    gösteriyordu; hiçbir şey çalışmıyordu. Bu uç nokta aracı
+    :class:`~src.reasoning.mock_tools.MockToolRegistry` üzerinden çalıştırır,
+    sonucu ``events`` tablosuna kaydeder ve ``tool.executed`` akışına yayınlar
+    ki süpervizör ve saha ekranları aynı sonucu görsün.
+
+    Raises:
+        HTTPException: Araç katalogda yoksa 404, devre dışıysa 409.
+    """
+    catalog = tool_registry.tools or {}
+    if body.tool_name not in catalog:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Araç katalogda yok: {body.tool_name}. "
+                   f"Geçerli araçlar: {', '.join(catalog)}",
+        )
+    if not tool_registry.is_enabled(body.tool_name):
+        raise HTTPException(status_code=409, detail=f"Araç devre dışı: {body.tool_name}")
+
+    result = tool_registry.execute(body.tool_name, body.params)
+
+    payload = {
+        "job_id": body.job_id or body.camera_id or "manuel",
+        "camera_id": body.camera_id,
+        "analysis_slug": body.analysis_slug,
+        "tool_name": body.tool_name,
+        "params": body.params,
+        "status": result.get("status", "unknown"),
+        "mock_result": result.get("mock_result", result.get("message", "")),
+        "triggered_by": body.triggered_by,
+        "created_at": datetime.now().isoformat(),
+    }
+
+    if payload["job_id"]:
+        store.save_event(payload["job_id"], "tool.executed", payload)
+
+    broadcast_fn = _get_broadcast_fn(request)
+    await broadcast_fn({"stream": "tool.executed", "data": payload})
+
+    logger.info(
+        f"Araç çalıştırıldı: {body.tool_name} "
+        f"(kamera={body.camera_id or '-'}, tetikleyen={body.triggered_by})"
+    )
+    return payload
+
+
 @router.post("/suggestions/query")
 async def query_suggestions(body: SuggestionQuery):
     """RAGLayer öneri eşleştirmesi yapar."""
@@ -117,25 +353,45 @@ async def chat_with_suggestion(body: ChatRequest):
 
     system_prompt = _build_chat_system_prompt(suggestion)
 
-    config = load_config()
-    base_url = config.vlm.server.base_url
-    model_name = config.vlm.server.model_name
+    cfg = _server_config()
+    base_url = cfg.base_url.rstrip("/")
+    model_name = cfg.model_name
 
     messages = [
         {"role": "system", "content": system_prompt},
         *[{"role": m.role, "content": m.content} for m in body.messages],
     ]
 
+    payload: Dict[str, Any] = {
+        "model": model_name,
+        "messages": messages,
+        "temperature": 0.2,
+        "max_tokens": 1200,
+    }
+    # Akıl yürütme kapalı: açıkken ayrıştırıcı düşünme izini sildiği için yanıt
+    # HTTP 200 ile boş dönebiliyor (bkz. src/models/vlm_backend.py notu).
+    if cfg.enable_thinking is not None:
+        payload["chat_template_kwargs"] = {"enable_thinking": cfg.enable_thinking}
+
+    # Anahtar yapılandırmada değil ortam değişkenindedir (.env).
+    headers = {"Content-Type": "application/json"}
+    api_key = os.environ.get(cfg.api_key_env, "").strip()
+    if api_key:
+        headers["Authorization"] = f"Bearer {api_key}"
+    else:
+        logger.warning(
+            f"'{cfg.api_key_env}' tanımlı değil; chat isteği kimlik doğrulaması "
+            f"olmadan gidecek ve servis 401 döndürebilir."
+        )
+
     try:
-        async with httpx.AsyncClient(timeout=60.0) as client:
+        async with httpx.AsyncClient(timeout=float(cfg.timeout_sec)) as client:
+            # DİKKAT: base_url zaten "/v1" ile biter. Buraya bir kez daha "/v1"
+            # eklenmesi ".../v1/v1/chat/completions" üretip 404'e yol açıyordu.
             resp = await client.post(
-                f"{base_url}/v1/chat/completions",
-                json={
-                    "model": model_name,
-                    "messages": messages,
-                    "temperature": 0.2,
-                    "max_tokens": 1200,
-                },
+                f"{base_url}/chat/completions",
+                headers=headers,
+                json=payload,
             )
             resp.raise_for_status()
             data = resp.json()

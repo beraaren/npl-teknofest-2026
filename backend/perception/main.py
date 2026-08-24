@@ -109,6 +109,9 @@ async def handle_chunk(chunk_data: dict, redis_client):
                 timestamp=sig.get("timestamp", "00:00"),
                 confidence=float(sig.get("confidence", 0.5)),
                 description=sig.get("description", ""),
+                # Kanal B'nin videoyu bütün olarak analiz edebilmesi için
+                # kaynak yolu zincirin devamına taşı.
+                video_path=chunk.video_path,
             )
             await redis_helper.publish_message(redis_client, "event.detected", event)
             _metrics["events_detected"] += 1

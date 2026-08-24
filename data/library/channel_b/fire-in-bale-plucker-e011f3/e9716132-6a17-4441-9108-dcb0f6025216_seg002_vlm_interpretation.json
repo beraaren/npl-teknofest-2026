@@ -1,0 +1,58 @@
+{
+  "packet_id": "e9716132-6a17-4441-9108-dcb0f6025216",
+  "video_id": "fire-in-bale-plucker-e011f3",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Üretim tesisindeki yangın, yoğun dumanla kaplı bir alanda devam etmektedir. Alevler hâlâ yer yer parlıyor ancak genel olarak söndürülmüş gibi görünmektedir. Makine ve yüklerin bulunduğu alan, duman nedeniyle net olarak görülemez.",
+  "detected_entities": [
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Alevlerin küçük parçaları hâlâ duman içinde parlıyor; yoğun duman alanı kaplamaktadır."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "low",
+      "notes_tr": "Duman nedeniyle makine detayları net olarak seçilememektedir, ancak yapısal silüetler mevcuttur."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "low",
+      "notes_tr": "Duman içinde belirsiz şekiller, muhtemelen yüklerdir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "low",
+      "notes_tr": "Yüksek kısımda metalik bir yapı silüeti görülebilmektedir, ancak net değildir."
+    }
+  ],
+  "detected_actions_tr": [
+    "Yangın sonrası dumanın yoğunlaşması",
+    "Alevlerin azalması ve yer yer parlaması",
+    "Alanın görsel olarak belirsiz hâle gelmesi"
+  ],
+  "confidence_overall": 0.85,
+  "inference": {
+    "latency_ms": 6030.532500008121,
+    "tokens_generated": 472
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Üretim tesisindeki yangın, yoğun dumanla kaplı bir alanda devam etmektedir. Alevler hâlâ yer yer parlıyor ancak genel olarak söndürülmüş gibi görünmektedir. Makine ve yüklerin bulunduğu alan, duman nedeniyle net olarak görülemez.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Alevlerin küçük parçaları hâlâ duman içinde parlıyor; yoğun duman alanı kaplamaktadır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Duman nedeniyle makine detayları net olarak seçilememektedir, ancak yapısal silüetler mevcuttur.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Duman içinde belirsiz şekiller, muhtemelen yüklerdir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Yüksek kısımda metalik bir yapı silüeti görülebilmektedir, ancak net değildir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Yangın sonrası dumanın yoğunlaşması\",\n    \"Alevlerin azalması ve yer yer parlaması\",\n    \"Alanın görsel olarak belirsiz hâle gelmesi\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yangın sonrası hâlâ mevcut olan alevler ve yoğun duman, çalışanların solunum sağlığına ciddi tehdit oluşturuyor. Duman, görüşü engelleyerek acil müdahaleyi zorlaştırıyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 120.0\n    }\n  ],\n  \"confidence_overall\": 0.85\n}",
+  "risk_events": [
+    {
+      "description_tr": "Yangın sonrası hâlâ mevcut olan alevler ve yoğun duman, çalışanların solunum sağlığına ciddi tehdit oluşturuyor. Duman, görüşü engelleyerek acil müdahaleyi zorlaştırıyor.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Yangın sonrası hâlâ mevcut olan alevler ve yoğun duman, çalışanların solunum sağlığına ciddi tehdit oluşturuyor. Duman, görüşü engelleyerek acil müdahaleyi zorlaştırıyor."
+  ],
+  "computed_confidence": 0.72,
+  "reasoning_trace": "",
+  "segment_start_sec": 120.0,
+  "segment_end_sec": 127.08,
+  "created_at": "2026-08-24T10:50:16.869528+00:00"
+}

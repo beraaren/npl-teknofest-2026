@@ -33,7 +33,11 @@ video_ile_test/*
 *.onnx
 *.pt
 *.pth
-models/
+# NOT: "models/" (eğik çizgi olmadan) git'te HER derinlikteki models klasörünü
+# dışlar; bu yüzden kaynak kodu olan src/models/ de sessizce izlenmiyordu ve
+# src/models/vlm_backend.py hiçbir commit'e girememişti. Baştaki "/" deseni
+# yalnızca depo kökündeki model ağırlığı klasörüne sabitler.
+/models/
 checkpoints/
 gpucore.*
 
@@ -50,3 +54,7 @@ gpucore.*
 # Sistem dosyaları
 .DS_Store
 Thumbs.db
+
+# Kaynak videolar (telif / boyut nedeniyle commit edilmez)
+Videos/
+videos/

@@ -1,0 +1,1130 @@
+{
+  "packet_id": "db711c92-fa21-43dd-a297-5ff15214238f",
+  "video_id": "industrial-worker-makes-one-mistake-on-t-60f439",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "İki işçi, bir atölye ortamında büyük bir torna makinesi gibi görünen bir makine üzerinde çalışmaktadır. İşçiler, makinenin hareketli parçalarına yakın olarak el ile müdahale ederken, koruyucu ekipman kullanmadıkları gözlemlenmektedir. İşçilerin biri makineden uzaklaşırken, diğeri makineye devam eden işleme odaklanmaktadır.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İki işçi, makine etrafında hareket ediyor. Koruyucu ekipman kullanmadıkları görülmektedir."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük, torna benzeri bir makine, hareketli parçaları ile işçilere yakın konumda."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Makine üzerinde işlenen metal parça, muhtemelen bir yük."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda, malzeme depolama için kullanılan raf veya yapılar."
+    }
+  ],
+  "detected_actions_tr": [
+    "İki işçi, makine üzerinde işleme yaparken el ile müdahale ediyor.",
+    "Bir işçi makineden uzaklaşıyor, diğer işçi makineye devam ediyor.",
+    "Makinenin hareketli parçalarına el ile dokunuluyor.",
+    "İşçiler koruyucu ekipman kullanmıyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 144199.06280003488,
+    "tokens_generated": 11708
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"İki işçi, bir atölye ortamında büyük bir torna makinesi gibi görünen bir makine üzerinde çalışmaktadır. İşçiler, makinenin hareketli parçalarına yakın olarak el ile müdahale ederken, koruyucu ekipman kullanmadıkları gözlemlenmektedir. İşçilerin biri makineden uzaklaşırken, diğeri makineye devam eden işleme odaklanmaktadır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki işçi, makine etrafında hareket ediyor. Koruyucu ekipman kullanmadıkları görülmektedir.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, torna benzeri bir makine, hareketli parçaları ile işçilere yakın konumda.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makine üzerinde işlenen metal parça, muhtemelen bir yük.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda, malzeme depolama için kullanılan raf veya yapılar.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İki işçi, makine üzerinde işleme yaparken el ile müdahale ediyor.\",\n    \"Bir işçi makineden uzaklaşıyor, diğer işçi makineye devam ediyor.\",\n    \"Makinenin hareketli parçalarına el ile dokunuluyor.\",\n    \"İşçiler koruyucu ekipman kullanmıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 300.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 300.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 301.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 301.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 302.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 302.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 303.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 303.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 304.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 304.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 305.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 305.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 306.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 306.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 307.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 307.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 308.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 308.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 309.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 309.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 310.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 310.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 311.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 311.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 312.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 312.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 313.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 313.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 314.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 314.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 315.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 315.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 316.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 316.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 317.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 317.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 318.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 318.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 319.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 319.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 320.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 320.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 321.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 321.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 322.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 322.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 323.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 323.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 324.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 324.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 325.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 325.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 326.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 326.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 327.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 327.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 328.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 328.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 329.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 329.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 330.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 330.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 331.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 331.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 332.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 332.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 333.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 333.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 334.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 334.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 335.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 335.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 336.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 336.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 337.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 337.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 338.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 338.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 339.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 339.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 340.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 340.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 341.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 341.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 342.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 342.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 343.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 343.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 344.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 344.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 345.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 345.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 346.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 346.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 347.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 347.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 348.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 348.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 349.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 349.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 350.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 350.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 351.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 351.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 352.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 352.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 353.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 353.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 354.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 354.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 355.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 355.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 356.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 356.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 357.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 357.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 358.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 358.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 359.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 359.0\n    }\n  ],\n  \"confidence_overall\": 0.90\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 300.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 300.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 301.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 301.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 302.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 302.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 303.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 303.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 304.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 304.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 305.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 305.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 306.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 306.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 307.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 307.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 308.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 308.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 309.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 309.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 310.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 310.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 311.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 311.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 312.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 312.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 313.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 313.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 314.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 314.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 315.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 315.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 316.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 316.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 317.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 317.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 318.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 318.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 319.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 319.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 320.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 320.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 321.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 321.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 322.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 322.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 323.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 323.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 324.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 324.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 325.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 325.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 326.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 326.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 327.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 327.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 328.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 328.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 329.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 329.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 330.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 330.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 331.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 331.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 332.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 332.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 333.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 333.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 334.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 334.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 335.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 335.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 336.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 336.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 337.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 337.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 338.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 338.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 339.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 339.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 340.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 340.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 341.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 341.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 342.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 342.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 343.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 343.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 344.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 344.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 345.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 345.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 346.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 346.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 347.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 347.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 348.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 348.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 349.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 349.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 350.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 350.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 351.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 351.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 352.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 352.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 353.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 353.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 354.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 354.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 355.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 355.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 356.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 356.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 357.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 357.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 358.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 358.0
+    },
+    {
+      "description_tr": "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 359.0
+    },
+    {
+      "description_tr": "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 359.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir.",
+    "İşçi, makinenin dönen parçasına eliyle dokunuyor. Bu, makine çalışırken elin sıkışması veya kesilmesi gibi ciddi yaralanmaları tetikleyebilir.",
+    "İşçiler, makineye yakın çalışırken el koruması veya diğer koruyucu ekipmanlar kullanmadıkları gözlemleniyor. Bu, makineye yakın çalışırken el veya kol yaralanmalarına neden olabilir."
+  ],
+  "computed_confidence": 0.7056,
+  "reasoning_trace": "",
+  "segment_start_sec": 300.0,
+  "segment_end_sec": 360.0,
+  "created_at": "2026-08-24T10:59:15.243745+00:00"
+}

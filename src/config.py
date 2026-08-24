@@ -98,11 +98,50 @@ class TransformersConfig(BaseModel):
 
 
 class ServerConfig(BaseModel):
-    """OpenAI-uyumlu harici sunucu (llama-server / vllm serve) — Kanal_B ile aynı sözleşme."""
+    """OpenAI-uyumlu harici çıkarım sunucusu.
+
+    Üç farklı sağlayıcıyı aynı sözleşmeyle kapsar: TEKNOFEST EVREN servisi,
+    yerel ``llama-server`` ve ``vllm serve``. Sağlayıcıya özgü kısıtlar
+    (görüntü sayısı, zaman aşımı) burada tanımlanır; backend bunları okuyup
+    isteği kısıta uyacak şekilde şekillendirir.
+    """
+
     base_url: str = "http://localhost:8080"
-    model_name: str = "llava-v1.6-mistral-7b"
+    # Görüntü ve metin isteklerinin gideceği model. EVREN'de görüntü kabul eden
+    # modeller yalnızca llm-fast ve llm-large'dır ("vlm" görüntüyü reddeder).
+    model_name: str = "llm-large"
+    # Video (video_url) isteklerinin gideceği model. EVREN'de video analizine
+    # özelleşmiş alias "vlm"dir; llm-fast/llm-large da video kabul eder.
+    video_model: str = "vlm"
+    # API anahtarı doğrudan yapılandırmaya YAZILMAZ; bu ortam değişkeninden
+    # okunur (bkz. .env). Böylece anahtar sürüm kontrolüne girmez.
+    api_key_env: str = "EVREN_API_KEY"
+    # EVREN yığınındaki her katman 1800 sn kullanır. Daha kısa bir istemci
+    # zaman aşımı, sunucu isteği işlemeye devam ederken bağlantıyı koparır ve
+    # sonuç görüntülenemez (dokümantasyon §hata 06).
+    timeout_sec: int = 1800
+    # Sağlayıcının istek başına kabul ettiği azami görüntü sayısı. EVREN'de
+    # bu değer 2'dir; üçüncü görüntü HTTP 400 döndürür. Backend, kare sayısı
+    # bu sınırı aşarsa kareleri tek bir grid görüntüsünde birleştirir.
+    max_images_per_request: int = 2
+    # Grid birleştirmede kullanılacak sütun sayısı (satır sayısı otomatik).
+    grid_columns: int = 4
+    # Akıl yürütme (thinking) modu. ``None`` ise parametre hiç gönderilmez
+    # (bu uzantıyı desteklemeyen sağlayıcılar için); ``True``/``False`` ise
+    # ``chat_template_kwargs.enable_thinking`` olarak iletilir.
+    #
+    # Varsayılan False'tur, çünkü ölçüm bunu gerektirir: açıkken llm-large'ın
+    # skoru 0,900'den 0,580'e DÜŞER ve token maliyeti 17,2 katına çıkar. Daha
+    # önemlisi ayrıştırıcı düşünme izini sildiği için, iz token bütçesini
+    # tüketirse yanıt HTTP 200 ile birlikte BOŞ döner. Ölçümde kapalıyken
+    # üretim 347-373 token arasında kararlıyken, açıkken 627-1321 arasında
+    # dalgalanıp bütçeyi taşırabiliyordu.
+    enable_thinking: bool | None = False
     temperature: float = 0.15
-    max_tokens: int = 800
+    # Üst sınırdır, rezervasyon değildir. Bağlam penceresi (262144) prompt ile
+    # paylaşıldığından tavana kadar çıkılmaz: 60 sn 720p video ~54k prompt
+    # token üretir, 54k + 65k = 119k güvenli marj bırakır.
+    max_tokens: int = 65536
 
 
 class VLMConfig(BaseModel):
@@ -174,8 +213,35 @@ class AppConfig(BaseModel):
         return v or {}
 
 
+def _load_dotenv_once() -> None:
+    """Depo kökündeki ``.env`` dosyasını ortam değişkenlerine yükler.
+
+    API anahtarları yapılandırma dosyasında değil ``.env``de tutulduğu için
+    (bkz. :class:`ServerConfig.api_key_env`), yapılandırma okunurken bu dosyanın
+    da yüklenmesi gerekir. Zaten tanımlı olan ortam değişkenleri
+    ``override=False`` ile korunur; böylece Docker/CI tarafından verilen
+    değerler dosya tarafından ezilmez.
+
+    ``python-dotenv`` kurulu değilse sessizce atlanır: bu durumda anahtarın
+    ortamda elle tanımlanmış olması gerekir.
+    """
+    try:
+        from dotenv import load_dotenv
+    except ImportError:
+        return
+    env_path = Path(__file__).resolve().parent.parent / ".env"
+    if env_path.exists():
+        load_dotenv(env_path, override=False)
+
+
 def load_config(path: str | Path | None = None) -> AppConfig:
-    """config.yaml'yi yükler; yoksa varsayılanları döner."""
+    """config.yaml'yi yükler; yoksa varsayılanları döner.
+
+    Yapılandırmayla birlikte depo kökündeki ``.env`` dosyası da ortama
+    yüklenir; API anahtarları oradan okunur.
+    """
+    _load_dotenv_once()
+
     if path is None:
         path = os.environ.get("TEKNOFEST_CONFIG", "config.yaml")
     path = Path(path)

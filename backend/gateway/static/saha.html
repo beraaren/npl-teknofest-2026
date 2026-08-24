@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Saha Ekibi | Video Risk Analizi</title>
+  <title>Saha Ekibi | İSG Video Analizi</title>
   <link rel="stylesheet" href="styles.css" />
   <script type="module" src="saha.js"></script>
 </head>
@@ -15,16 +15,27 @@
       <a href="saha.html" class="active">Saha Ekibi</a>
       <a href="admin.html">Admin</a>
     </nav>
+    <span id="role-status" class="meta">Ekip seçin</span>
   </header>
+
   <main class="main">
-    <div class="role-selector" id="role-selector">
-      <button class="btn active" data-role="">Tümü</button>
-      <button class="btn btn-secondary" data-role="temizlik">Temizlik Görevlisi</button>
-      <button class="btn btn-secondary" data-role="sağlık">Sağlık Ekibi</button>
-      <button class="btn btn-secondary" data-role="teknisyen">Teknisyen</button>
+    <div class="role-selector" id="role-selector"></div>
+
+    <div class="filter-row">
+      <label class="meta">Durum
+        <select id="status-filter">
+          <option value="">Tümü</option>
+          <option value="atandi" selected>Bekleyen</option>
+          <option value="goruldu">Görülen</option>
+          <option value="tamamlandi">Tamamlanan</option>
+        </select>
+      </label>
+      <button class="btn btn-secondary" id="refresh-btn">Yenile</button>
     </div>
-    <div id="alarms-container"></div>
+
+    <div id="assignments-container"></div>
   </main>
+
   <div id="toast" class="toast"></div>
 </body>
 </html>

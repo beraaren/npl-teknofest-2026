@@ -70,14 +70,25 @@ def main():
     mmproj_repo = "mradermacher/TimeLens-7B-GGUF"
     mmproj_file = "TimeLens-7B.mmproj-f16.gguf"
     
-    # Download model weights from Hugging Face
-    print("📥 Downloading TimeLens-7B GGUF model...")
-    model_path = hf_hub_download(repo_id=model_repo, filename=model_file)
-    print(f"✅ Model downloaded to: {model_path}")
+    # Check local models directory first
+    local_model = os.path.join("models", model_file)
+    local_mmproj = os.path.join("models", mmproj_file)
+
+    if os.path.exists(local_model):
+        model_path = local_model
+        print(f"✅ Local model found: {model_path}")
+    else:
+        print("📥 Downloading TimeLens-7B GGUF model...")
+        model_path = hf_hub_download(repo_id=model_repo, filename=model_file)
+        print(f"✅ Model downloaded to: {model_path}")
     
-    print("📥 Downloading TimeLens-7B mmproj (vision projector)...")
-    mmproj_path = hf_hub_download(repo_id=mmproj_repo, filename=mmproj_file)
-    print(f"✅ mmproj downloaded to: {mmproj_path}")
+    if os.path.exists(local_mmproj):
+        mmproj_path = local_mmproj
+        print(f"✅ Local mmproj found: {mmproj_path}")
+    else:
+        print("📥 Downloading TimeLens-7B mmproj (vision projector)...")
+        mmproj_path = hf_hub_download(repo_id=mmproj_repo, filename=mmproj_file)
+        print(f"✅ mmproj downloaded to: {mmproj_path}")
     
     # Initialize the Vulkan-enabled chat handler
     print("🚀 Initializing Vulkan Qwen25VLChatHandler...")

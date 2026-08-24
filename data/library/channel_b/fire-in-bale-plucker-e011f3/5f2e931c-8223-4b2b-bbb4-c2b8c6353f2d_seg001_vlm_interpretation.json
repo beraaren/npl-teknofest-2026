@@ -1,0 +1,58 @@
+{
+  "packet_id": "5f2e931c-8223-4b2b-bbb4-c2b8c6353f2d",
+  "video_id": "fire-in-bale-plucker-e011f3",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Üretim tesisinde, bir makinenin etrafında ve üzerindeki beyaz, pamuk benzeri maddeye alevler sıçramış ve yangın oluşmuştur. Yangın hızla yayılmış, yoğun duman oluşumu meydana gelmiştir. Zamanla alevler azalmış ve alan dumanla kaplanmıştır.",
+  "detected_entities": [
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Makine, taşımada yer alan beyaz maddeyi kesen bir yapıdır."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Taşımada yer alan beyaz, pamuk benzeri madde."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Alevler ve duman, yangının yayıldığını ve yoğunlaştığını göstermektedir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda yer alan metal raf veya yapılar."
+    }
+  ],
+  "detected_actions_tr": [
+    "Makinenin etrafında ve üzerindeki maddeye alevler sıçramıştır.",
+    "Yangın hızla yayılmış ve duman oluşumu artmıştır.",
+    "Alevler zamanla azalmış, alan dumanla kaplanmıştır."
+  ],
+  "confidence_overall": 0.95,
+  "inference": {
+    "latency_ms": 9485.833600047044,
+    "tokens_generated": 475
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Üretim tesisinde, bir makinenin etrafında ve üzerindeki beyaz, pamuk benzeri maddeye alevler sıçramış ve yangın oluşmuştur. Yangın hızla yayılmış, yoğun duman oluşumu meydana gelmiştir. Zamanla alevler azalmış ve alan dumanla kaplanmıştır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makine, taşımada yer alan beyaz maddeyi kesen bir yapıdır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Taşımada yer alan beyaz, pamuk benzeri madde.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Alevler ve duman, yangının yayıldığını ve yoğunlaştığını göstermektedir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda yer alan metal raf veya yapılar.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Makinenin etrafında ve üzerindeki maddeye alevler sıçramıştır.\",\n    \"Yangın hızla yayılmış ve duman oluşumu artmıştır.\",\n    \"Alevler zamanla azalmış, alan dumanla kaplanmıştır.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinenin etrafında ve üzerindeki pamuk benzeri maddeye alevler sıçramış, yangın oluşmuştur. Yangın hızla yayılmış ve yoğun duman oluşumu meydana gelmiştir. Bu durum, çalışanların sağlığı ve tesisin güvenliği açısından acil bir tehlike oluşturur.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 60.0\n    }\n  ],\n  \"confidence_overall\": 0.95\n}",
+  "risk_events": [
+    {
+      "description_tr": "Makinenin etrafında ve üzerindeki pamuk benzeri maddeye alevler sıçramış, yangın oluşmuştur. Yangın hızla yayılmış ve yoğun duman oluşumu meydana gelmiştir. Bu durum, çalışanların sağlığı ve tesisin güvenliği açısından acil bir tehlike oluşturur.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Makinenin etrafında ve üzerindeki pamuk benzeri maddeye alevler sıçramış, yangın oluşmuştur. Yangın hızla yayılmış ve yoğun duman oluşumu meydana gelmiştir. Bu durum, çalışanların sağlığı ve tesisin güvenliği açısından acil bir tehlike oluşturur."
+  ],
+  "computed_confidence": 0.785,
+  "reasoning_trace": "",
+  "segment_start_sec": 60.0,
+  "segment_end_sec": 120.0,
+  "created_at": "2026-08-24T10:50:10.811870+00:00"
+}

@@ -1,0 +1,67 @@
+{
+  "packet_id": "6bc41fde-81b5-47b7-9a7f-fa4e6f203839",
+  "video_id": "daily-safety-failsthis-is-why-you-wear-s-71027c",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir depo veya üretim alanındaki güvenlik kamerası görüntüsünde, birkaç kişi büyük ahşap konteynerleri veya rafları taşımak için birlikte çalışmaktadır. Alanın sağ tarafında bir forklift durmaktadır. İşçiler, konteynerleri yerinden oynatmak ve taşımak için fiziksel çaba sarf etmektedir.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "En az üç kişi göze çarpmaktadır; iki kişi konteyneri itmek için birlikte çalışırken, bir kişi forkliftin yanında durmaktadır."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük ahşap konteynerler veya raflar, işçiler tarafından taşınmaktadır."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Sağ tarafta duran forklift, muhtemelen bir yük taşıma makinesidir. Tipi net olmasa da, işlevi açıkça görülmektedir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Arka planda yüksek raf sistemleri ve depolama alanları mevcuttur."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler, büyük ahşap konteynerleri birlikte iterek hareket ettiriyor.",
+    "Bir kişi forkliftin yanında duruyor ve etrafı izliyor.",
+    "Konteynerler, belirlenen bir alanda sıralanıyor veya yeniden konumlandırılıyor."
+  ],
+  "confidence_overall": 0.85,
+  "inference": {
+    "latency_ms": 10857.367899967358,
+    "tokens_generated": 626
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir depo veya üretim alanındaki güvenlik kamerası görüntüsünde, birkaç kişi büyük ahşap konteynerleri veya rafları taşımak için birlikte çalışmaktadır. Alanın sağ tarafında bir forklift durmaktadır. İşçiler, konteynerleri yerinden oynatmak ve taşımak için fiziksel çaba sarf etmektedir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az üç kişi göze çarpmaktadır; iki kişi konteyneri itmek için birlikte çalışırken, bir kişi forkliftin yanında durmaktadır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük ahşap konteynerler veya raflar, işçiler tarafından taşınmaktadır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sağ tarafta duran forklift, muhtemelen bir yük taşıma makinesidir. Tipi net olmasa da, işlevi açıkça görülmektedir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Arka planda yüksek raf sistemleri ve depolama alanları mevcuttur.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, büyük ahşap konteynerleri birlikte iterek hareket ettiriyor.\",\n    \"Bir kişi forkliftin yanında duruyor ve etrafı izliyor.\",\n    \"Konteynerler, belirlenen bir alanda sıralanıyor veya yeniden konumlandırılıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, ağır yükleri birlikte iterken uygun koruyucu ekipman (örneğin, eldiven, ayakkabı) kullanmadıkları gözlemlenmektedir. Bu, fiziksel yaralanma riskini artırır.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 15.0\n    },\n    {\n      \"description_tr\": \"Bir işçi, konteyneri iterken dengesini kaybederek düşme tehlikesiyle karşı karşıya kalıyor. 29.0 saniyede, bir işçi yere düşer veya kayar gibi görünmektedir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 29.0\n    }\n  ],\n  \"confidence_overall\": 0.85\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçiler, ağır yükleri birlikte iterken uygun koruyucu ekipman (örneğin, eldiven, ayakkabı) kullanmadıkları gözlemlenmektedir. Bu, fiziksel yaralanma riskini artırır.",
+      "severity": "medium",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 15.0
+    },
+    {
+      "description_tr": "Bir işçi, konteyneri iterken dengesini kaybederek düşme tehlikesiyle karşı karşıya kalıyor. 29.0 saniyede, bir işçi yere düşer veya kayar gibi görünmektedir.",
+      "severity": "high",
+      "confidence": 0.8,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 29.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçiler, ağır yükleri birlikte iterken uygun koruyucu ekipman (örneğin, eldiven, ayakkabı) kullanmadıkları gözlemlenmektedir. Bu, fiziksel yaralanma riskini artırır.",
+    "Bir işçi, konteyneri iterken dengesini kaybederek düşme tehlikesiyle karşı karşıya kalıyor. 29.0 saniyede, bir işçi yere düşer veya kayar gibi görünmektedir."
+  ],
+  "computed_confidence": 0.6038,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 32.36566666666667,
+  "created_at": "2026-08-24T10:45:13.333561+00:00"
+}

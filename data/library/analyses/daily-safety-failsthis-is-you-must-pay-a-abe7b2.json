@@ -1,0 +1,527 @@
+{
+  "slug": "daily-safety-failsthis-is-you-must-pay-a-abe7b2",
+  "video_file": "videos/Daily Safety Fails🤯This is You Must Pay Attention🤯- PLEASE Stay Safe Today.mp4",
+  "video_name": "Daily Safety Fails🤯This is You Must Pay Attention🤯- PLEASE Stay Safe Today",
+  "analyzed_at": "2026-08-24T10:45:57.753355+00:00",
+  "analysis_seconds": 31.6,
+  "video": {
+    "duration_sec": 19.33,
+    "fps": 30.0,
+    "width": 640,
+    "height": 352
+  },
+  "summary": "Sanayi üretim alanında, 00:07'de bir makineden ani patlama ve alevler çıkmasıyla kritik bir yangın olayı yaşanmıştır. Personel ve forklift sürücüsü tehlikeden kaçmaya çalışırken, olayın devamında (00:00-00:19) birden fazla personelin (insan_2, insan_7, insan_8) baret ve yelek gibi temel KKD'leri eksik olduğu tespit edilmiştir. Ayrıca 00:17'de forklift ile personel arasında tehlikeli yakınlık kaydedilmiştir.",
+  "headline": "Yangın / duman (00:07)",
+  "risk": "Yüksek",
+  "confidence": 0.92,
+  "reasoning": "VLM kanalı, 00:07'de makineden çıkan alev ve dumanı %95 güvenle tespit etmiş ve bu durumu 'kritik' olarak işaretlemiştir. Geometrik kural motoru (YOLO) yangın veya dumanı doğrudan algılayamaz (sınıflar arasında yoktur), bu nedenle VLM'nin bu tekil ama yüksek güvenilirlikli tespiti yangın olayı için kesin kanıttır. RAG kataloğunda 'forklift_tip_over' veya 'person_fall' gibi yüksek skorlu desenler eşleşse de, mevcut kanıtlar (VLM) bir yangın/patlama senaryosunu işaret etmektedir. Bu nedenle, RAG'deki 'forklift_tip_over' senaryosuna göre değil, VLM'nin tespit ettiği 'fire_smoke' (yangın/duman) riskine göre hareket edilmelidir. Yangın riski, insan hayatını doğrudan tehdit ettiği için en üst önceliklidir. KKD eksiklikleri (00:00, 00:17, 00:19) ve tehlikeli yakınlık (00:17) ek risk faktörleridir ancak yangın olayının şiddeti ön plandadır. Tehlikeli yakınlık algısının güveni (0.354) düşüktür ancak VLM'nin forkliftin geri çekildiğini doğrulaması, çarpışma riskinin anlık olarak azaldığını gösterir; yine de yangın nedeniyle bölge tamamen kapatılmalıdır.",
+  "actions": [
+    "Acil durum ekibini ve sağlık personelini derhal çağır.",
+    "Olay bölgesini güvenlik şeridi ile izole et.",
+    "Forklift operasyonlarını bölgede durdur.",
+    "Yaya trafiğini alternatif güzergaha yönlendir.",
+    "Riskli alanı güvenlik şeridiyle kapat.",
+    "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
+  ],
+  "events": [
+    {
+      "time": "00:07",
+      "event": "Makineden ani patlama ve alevler çıkması, duman yayılması.",
+      "event_type": "fire_smoke",
+      "confidence": 0.95
+    },
+    {
+      "time": "00:00",
+      "event": "Personel insan_2'nin baret ve yelek eksikliği.",
+      "event_type": "ppe_missing",
+      "confidence": 0.7
+    },
+    {
+      "time": "00:17",
+      "event": "Personel insan_7'nin baret ve yelek eksikliği.",
+      "event_type": "ppe_missing",
+      "confidence": 0.7
+    },
+    {
+      "time": "00:17",
+      "event": "Forklift (arac_1) ile personel (insan_7) arasında tehlikeli yakınlık (~65 piksel).",
+      "event_type": "dangerous_proximity",
+      "confidence": 0.354
+    },
+    {
+      "time": "00:19",
+      "event": "Personel insan_8'in baret ve yelek eksikliği.",
+      "event_type": "ppe_missing",
+      "confidence": 0.7
+    }
+  ],
+  "triggered_mock_tools": [
+    {
+      "tool_name": "call_health_team",
+      "params": {
+        "location": "Üretim Alanı - Makine Bölümü",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "secure_area",
+      "params": {
+        "location": "Üretim Alanı - Makine Bölümü",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "sound_alarm",
+      "params": {
+        "location": "Tüm Tesis",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "trigger_fire_suppression",
+      "params": {
+        "location": "Makine Bölümü",
+        "urgency": "Yüksek"
+      }
+    }
+  ],
+  "tool_execution_results": [
+    {
+      "status": "success",
+      "tool": "call_health_team",
+      "params": {
+        "location": "Üretim Alanı - Makine Bölümü",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "call_health_team başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "secure_area",
+      "params": {
+        "location": "Üretim Alanı - Makine Bölümü",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "secure_area başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "sound_alarm",
+      "params": {
+        "location": "Tüm Tesis",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "sound_alarm başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "trigger_fire_suppression",
+      "params": {
+        "location": "Makine Bölümü",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "trigger_fire_suppression başarıyla simüle edildi."
+    }
+  ],
+  "metadata": {
+    "vlm_backend": "server",
+    "channel_b_mode": "video",
+    "segment_count": 1,
+    "failed_segments": [],
+    "channel_a_fps": 15.0,
+    "total_frames": 290,
+    "sampled_indices": [
+      0,
+      64,
+      128,
+      192,
+      256,
+      320,
+      384,
+      448,
+      512,
+      578
+    ],
+    "geometric_signals": [
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:00",
+        "description": "Personel insan_2 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:17",
+        "description": "Personel insan_7 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          7
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "dangerous_proximity",
+        "timestamp": "00:17",
+        "description": "arac ve insan arasında tehlikeli yakınlık (~65 piksel).",
+        "confidence": 0.354,
+        "involved_track_ids": [
+          1,
+          7
+        ],
+        "metadata": {
+          "estimated_distance_pixels": 64.63451090555264,
+          "effective_limit_pixels": 100
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:19",
+        "description": "Personel insan_8 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          8
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      }
+    ],
+    "vlm_interpretation": {
+      "packet_id": "4cc47556-d314-49bc-b400-ffb211337887",
+      "video_id": "daily-safety-failsthis-is-you-must-pay-a-abe7b2",
+      "model_name": "vlm",
+      "model_backend": "server",
+      "scene_summary_tr": "Sanayi bir üretim alanında, bir personel makineye yakın bir alanda çalışırken, bir forklift makinenin hemen yanında duruyor. 00:07'de makineden ani bir patlama ve alevler çıkıyor, personel kaçmaya başlıyor. Forklift sürücüsü de durumu fark ederek geri çekiliyor. Patlamadan sonra duman ve parçalar yerde yayılıyor.",
+      "detected_entities": [
+        {
+          "label": "person",
+          "confidence_hint": "high",
+          "notes_tr": "Makineye yakın bir alanda çalışan bir kişi, patlamadan sonra kaçıyor."
+        },
+        {
+          "label": "vehicle",
+          "confidence_hint": "high",
+          "notes_tr": "Sarı renkli forklift, makinenin hemen yanında duruyor ve patlamadan sonra geri çekiliyor."
+        },
+        {
+          "label": "machine",
+          "confidence_hint": "high",
+          "notes_tr": "Büyük boyutlu, krem renkli ve yeşil detaylı üretim makinesi, patlama noktasıdır."
+        },
+        {
+          "label": "smoke or flame",
+          "confidence_hint": "high",
+          "notes_tr": "00:07'den itibaren makineden alevler ve duman çıkıyor, patlama sonrası yerde parçalar dağılıyor."
+        },
+        {
+          "label": "rack/structure",
+          "confidence_hint": "medium",
+          "notes_tr": "Makine etrafında metal raf ve koruma bariyerleri var."
+        }
+      ],
+      "detected_actions_tr": [
+        "Personel makineye yakın bir alanda çalışırken",
+        "Forklift makinenin yanında duruyor",
+        "Makineden ani alev ve duman çıkıyor",
+        "Personel kaçmaya başlıyor",
+        "Forklift geri çekiliyor",
+        "Duman ve parçalar yerde yayılıyor"
+      ],
+      "confidence_overall": 0.9,
+      "inference": {
+        "latency_ms": 11745.743899955414,
+        "tokens_generated": 569
+      },
+      "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi bir üretim alanında, bir personel makineye yakın bir alanda çalışırken, bir forklift makinenin hemen yanında duruyor. 00:07'de makineden ani bir patlama ve alevler çıkıyor, personel kaçmaya başlıyor. Forklift sürücüsü de durumu fark ederek geri çekiliyor. Patlamadan sonra duman ve parçalar yerde yayılıyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makineye yakın bir alanda çalışan bir kişi, patlamadan sonra kaçıyor.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli forklift, makinenin hemen yanında duruyor ve patlamadan sonra geri çekiliyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük boyutlu, krem renkli ve yeşil detaylı üretim makinesi, patlama noktasıdır.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:07'den itibaren makineden alevler ve duman çıkıyor, patlama sonrası yerde parçalar dağılıyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makine etrafında metal raf ve koruma bariyerleri var.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Personel makineye yakın bir alanda çalışırken\",\n    \"Forklift makinenin yanında duruyor\",\n    \"Makineden ani alev ve duman çıkıyor\",\n    \"Personel kaçmaya başlıyor\",\n    \"Forklift geri çekiliyor\",\n    \"Duman ve parçalar yerde yayılıyor\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makineden ani patlama ve alevler çıkıyor; personel ve forklift sürücüsü hemen tehlikeye maruz kalıyor. Bu, ciddi yaralanma veya ölüm riski taşır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 7.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+      "risk_events": [
+        {
+          "description_tr": "Makineden ani patlama ve alevler çıkıyor; personel ve forklift sürücüsü hemen tehlikeye maruz kalıyor. Bu, ciddi yaralanma veya ölüm riski taşır.",
+          "severity": "critical",
+          "confidence": 0.95,
+          "supporting_frame_count": 1,
+          "supporting_frame_positions": [],
+          "timestamp_sec": 7.0
+        }
+      ],
+      "risk_flags_tr": [
+        "Makineden ani patlama ve alevler çıkıyor; personel ve forklift sürücüsü hemen tehlikeye maruz kalıyor. Bu, ciddi yaralanma veya ölüm riski taşır."
+      ],
+      "computed_confidence": 0.76,
+      "reasoning_trace": "",
+      "segment_start_sec": 0.0,
+      "segment_end_sec": 19.333333333333332,
+      "created_at": "2026-08-24T10:45:47.191226+00:00"
+    },
+    "rag_context": {
+      "risk_level": "Yüksek",
+      "risk_score": 95,
+      "actions": [
+        "Forklift operatörünün durumunu kontrol et, ilk yardım sağla.",
+        "Forklifti ve çevresini yangın/sızıntı riskine karşı kontrol et.",
+        "Forklift operasyonlarını bölgede durdur.",
+        "Yaralıyı hareket ettirmeden sağlık ekibini bekle.",
+        "Düşme nedenini (kaygan zemin, engel, yükseklik) tespit et.",
+        "Çevredeki personeli bölgeden uzaklaştır.",
+        "Forklift operatörünü acil olarak durdur.",
+        "Yaya trafiğini alternatif güzergaha yönlendir.",
+        "Çarpışmaya karışan personelin durumunu kontrol et.",
+        "Vinci acil durdur ve operatörle telsiz iletişimi kur.",
+        "Yük altındaki personeli sesli sirenle uyar.",
+        "Riskli alanı güvenlik şeridiyle kapat.",
+        "Acil durum ekibini ve sağlık personelini derhal çağır.",
+        "Olay bölgesini güvenlik şeridi ile izole et.",
+        "Güvenlik kameralarını ve kayıtları sakla, yetkililere bildir.",
+        "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
+      ],
+      "matched_patterns": [
+        {
+          "pattern": "forklift_tip_over",
+          "description": "Forkliftin yan yatması, devrilmesi veya tekerleklerinin yerden kesilmesi.",
+          "risk_score": 95,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Yakıt sızıntısı ve yangın",
+            "Sürücü travması",
+            "Operasyon durması"
+          ],
+          "similarity": 0.238
+        },
+        {
+          "pattern": "person_fall",
+          "description": "Personelin ani düşüşü veya zemine çökmesi.",
+          "risk_score": 90,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Ciddi yaralanma",
+            "Kanama",
+            "Bilinç kaybı"
+          ],
+          "similarity": 0.114,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "gathering",
+          "description": "Üç veya daha fazla personelin tehlikeli bölgede toplanması.",
+          "risk_score": 50,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Toplu kaza riski",
+            "Tahliye güçlüğü",
+            "İş verimi kaybı"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "immobile_person",
+          "description": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
+          "risk_score": 70,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Hayati tehlike",
+            "Tıbbi müdahale gecikmesi"
+          ],
+          "similarity": 0.105,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "ppe_missing",
+          "description": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği.",
+          "risk_score": 45,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Kafa travması",
+            "Görünmezlik kaynaklı ezilme"
+          ],
+          "similarity": 0.16,
+          "matched_signal": {
+            "event_type": "ppe_missing",
+            "timestamp": "00:19",
+            "description": "Personel insan_8 eksik KKD: baret, yelek.",
+            "confidence": 0.7,
+            "involved_track_ids": [
+              8
+            ],
+            "metadata": {
+              "missing_ppe": [
+                "baret",
+                "yelek"
+              ]
+            }
+          }
+        },
+        {
+          "pattern": "dangerous_proximity",
+          "description": "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski.",
+          "risk_score": 80,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Çarpışma",
+            "Ezilme",
+            "Ölümcül kaza"
+          ],
+          "similarity": 0.468,
+          "matched_signal": {
+            "event_type": "dangerous_proximity",
+            "timestamp": "00:17",
+            "description": "arac ve insan arasında tehlikeli yakınlık (~65 piksel).",
+            "confidence": 0.354,
+            "involved_track_ids": [
+              1,
+              7
+            ],
+            "metadata": {
+              "estimated_distance_pixels": 64.63451090555264,
+              "effective_limit_pixels": 100
+            }
+          }
+        },
+        {
+          "pattern": "unauthorized_access",
+          "description": "Yetkisiz personelin tehlikeli veya kısıtlı alana girişi.",
+          "risk_score": 65,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Sabotaj",
+            "Eğitimsiz personel kazası"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "running_in_facility",
+          "description": "Tesis içinde koşan personel (çarpışma/kayma riski).",
+          "risk_score": 60,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Kör noktada forkliftle çarpışma",
+            "Kayma ve düşme",
+            "Panik yaratma"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "overhead_hazard",
+          "description": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük).",
+          "risk_score": 85,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Kafa travması",
+            "Ölümcül ezilme"
+          ],
+          "similarity": 0.131
+        },
+        {
+          "pattern": "fatigue_detection",
+          "description": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski).",
+          "risk_score": 50,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "İş kazası potansiyeli artışı",
+            "Bayılma öncülü"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "restricted_time_access",
+          "description": "Mesai saatleri dışında veya izinsiz zamanda bölgede yaya tespiti.",
+          "risk_score": 65,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Hırsızlık/Sabotaj",
+            "Yalnız çalışma kazası"
+          ],
+          "similarity": 0.129,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        }
+      ]
+    },
+    "event_timestamps": [
+      {
+        "seconds": 0,
+        "timestamp": "00:00",
+        "event_type": "ppe_missing",
+        "event": "Personel insan_2'nin baret ve yelek eksikliği.",
+        "confidence": 0.7,
+        "severity": "high",
+        "vlm_detail": ""
+      },
+      {
+        "seconds": 7,
+        "timestamp": "00:07",
+        "event_type": "fire_smoke",
+        "event": "Makineden ani patlama ve alevler çıkması, duman yayılması.",
+        "confidence": 0.95,
+        "severity": "critical",
+        "vlm_detail": "Makineden ani patlama ve alevler çıkıyor; personel ve forklift sürücüsü hemen tehlikeye maruz kalıyor. Bu, ciddi yaralanma veya ölüm riski taşır."
+      },
+      {
+        "seconds": 17,
+        "timestamp": "00:17",
+        "event_type": "ppe_missing",
+        "event": "Personel insan_7'nin baret ve yelek eksikliği.",
+        "confidence": 0.7,
+        "severity": "high",
+        "vlm_detail": ""
+      },
+      {
+        "seconds": 17,
+        "timestamp": "00:17",
+        "event_type": "dangerous_proximity",
+        "event": "Forklift (arac_1) ile personel (insan_7) arasında tehlikeli yakınlık (~65 piksel).",
+        "confidence": 0.354,
+        "severity": "high",
+        "vlm_detail": ""
+      },
+      {
+        "seconds": 18.83,
+        "timestamp": "00:19",
+        "event_type": "ppe_missing",
+        "event": "Personel insan_8'in baret ve yelek eksikliği.",
+        "confidence": 0.7,
+        "severity": "high",
+        "vlm_detail": ""
+      }
+    ]
+  }
+}

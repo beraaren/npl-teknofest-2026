@@ -473,3 +473,214 @@ header h1 {
 @media (max-width: 600px) {
   .camera-grid { grid-template-columns: 1fr; }
 }
+
+/* =========================================================================
+   Sözde-canlı arayüz eklemeleri — gerçek analiz verisi için yeni bileşenler
+   ========================================================================= */
+
+/* Başlık çubuğundaki kütüphane/rol durumu */
+header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
+
+/* Kamera hücresi: o an tetiklenen uyarı satırı */
+.cell-event {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  background: rgba(15, 23, 42, 0.75);
+  border-top: 1px solid rgba(148, 163, 184, 0.15);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cell-event-active {
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.16);
+  font-weight: 600;
+}
+
+.camera-label .label-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- Bildirim kartları: şiddet renkli, zaman damgalı --- */
+.notification-card {
+  border-left: 3px solid rgba(148, 163, 184, 0.4);
+}
+.notification-card.severity-high { border-left-color: #ef4444; }
+.notification-card.severity-medium { border-left-color: #f59e0b; }
+.notification-card.severity-low { border-left-color: #22c55e; }
+
+.notif-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+.notif-severity {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+}
+.notif-severity.high { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+.notif-severity.medium { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+.notif-severity.low { background: rgba(34, 197, 94, 0.2); color: #86efac; }
+.notif-clock { font-size: 0.7rem; opacity: 0.6; font-variant-numeric: tabular-nums; }
+.notif-title { font-size: 0.85rem; font-weight: 600; }
+
+/* --- Ajan olay özeti kutusu (iki ekranda da aynı metin) --- */
+.summary-box {
+  margin: 0.35rem 0 0.75rem;
+  padding: 0.7rem 0.85rem;
+  background: rgba(56, 189, 248, 0.07);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-left: 3px solid #38bdf8;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.note-box {
+  margin: 0.35rem 0 0.75rem;
+  padding: 0.6rem 0.8rem;
+  background: rgba(245, 158, 11, 0.09);
+  border: 1px dashed rgba(245, 158, 11, 0.4);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.modal-meta-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 0.85rem;
+}
+
+.modal-body h3 { margin: 1.1rem 0 0.4rem; font-size: 0.95rem; }
+.modal-body h4 { margin: 0.9rem 0 0.35rem; font-size: 0.88rem; }
+
+/* --- Olay zaman çizelgesi --- */
+.event-timeline { list-style: none; margin: 0; padding: 0; }
+.timeline-item {
+  display: grid;
+  grid-template-columns: 3.4rem 9rem 4.2rem 1fr;
+  gap: 0.55rem;
+  align-items: center;
+  padding: 0.45rem 0.5rem;
+  border-radius: 5px;
+  border-left: 3px solid rgba(148, 163, 184, 0.35);
+  background: rgba(148, 163, 184, 0.05);
+  margin-bottom: 0.3rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.15s;
+}
+.timeline-item:hover { background: rgba(56, 189, 248, 0.12); }
+.timeline-item.severity-high { border-left-color: #ef4444; }
+.timeline-item.severity-medium { border-left-color: #f59e0b; }
+.timeline-item.severity-low { border-left-color: #22c55e; }
+.timeline-time { font-variant-numeric: tabular-nums; font-weight: 700; color: #e2e8f0; }
+.timeline-type { color: #cbd5e1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.timeline-sev { font-size: 0.62rem; font-weight: 700; padding: 0.08rem 0.3rem; border-radius: 3px; text-align: center; }
+.timeline-sev.high { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+.timeline-sev.medium { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+.timeline-sev.low { background: rgba(34, 197, 94, 0.2); color: #86efac; }
+.timeline-item .meta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* --- Aksiyon listesi (operatör talimatları) --- */
+.action-advice {
+  margin: 0.4rem 0 0;
+  padding-left: 1.2rem;
+  font-size: 0.83rem;
+  line-height: 1.55;
+  color: #cbd5e1;
+}
+.action-advice li { margin-bottom: 0.2rem; }
+
+.btn-done { opacity: 0.75; border-color: rgba(34, 197, 94, 0.5); }
+
+/* --- Atama paneli --- */
+.assign-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.6rem;
+  align-items: end;
+  padding: 0.8rem;
+  background: rgba(148, 163, 184, 0.06);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 7px;
+}
+.assign-panel label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.76rem; }
+.assign-panel select,
+.assign-panel input {
+  padding: 0.45rem 0.55rem;
+  border-radius: 5px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 0.82rem;
+  font-family: inherit;
+}
+.assign-panel .btn { height: 2.2rem; }
+#assign-existing { margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
+
+/* --- Durum rozetleri --- */
+.status-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(148, 163, 184, 0.18);
+  color: #cbd5e1;
+}
+.status-badge.status-atandi { background: rgba(239, 68, 68, 0.18); color: #fca5a5; }
+.status-badge.status-goruldu { background: rgba(245, 158, 11, 0.18); color: #fcd34d; }
+.status-badge.status-tamamlandi { background: rgba(34, 197, 94, 0.18); color: #86efac; }
+
+/* --- Saha ekibi görev kartları --- */
+.filter-row {
+  display: flex;
+  gap: 0.8rem;
+  align-items: end;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.filter-row label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.76rem; }
+.filter-row select {
+  padding: 0.4rem 0.55rem;
+  border-radius: 5px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: #0f172a;
+  color: #e2e8f0;
+  font-family: inherit;
+}
+
+.alarm-card .card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+}
+.alarm-card .card-head h3 { margin: 0.5rem 0; }
+.card-facts { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-bottom: 0.6rem; }
+.clip-hint { margin-top: 0.3rem; opacity: 0.7; }
+.card-buttons { margin-top: 0.6rem; flex-wrap: wrap; }
+
+.alarm-card.status-goruldu { border-color: rgba(245, 158, 11, 0.45); }
+.alarm-card.status-tamamlandi { border-color: rgba(34, 197, 94, 0.4); opacity: 0.82; }
+.alarm-card.status-tamamlandi .alarm-banner { background: rgba(34, 197, 94, 0.2); color: #86efac; }
+.alarm-card.status-goruldu .alarm-banner { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+
+.toast-error { background: #7f1d1d !important; color: #fecaca !important; }
+
+.empty-state code {
+  background: rgba(148, 163, 184, 0.15);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+}

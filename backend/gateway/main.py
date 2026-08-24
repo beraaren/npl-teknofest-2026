@@ -22,7 +22,7 @@ from fastapi.staticfiles import StaticFiles
 from .routers import cameras, analyses, pseudolive, ops
 from ..common.health import create_health_router
 from ..common import redis as redis_helper
-from . import store
+from . import library, store
 from .replay import ReplayEngine
 
 logging.basicConfig(level=logging.INFO)
@@ -157,12 +157,27 @@ async def redis_listener():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     store.init_db()
-    store.seed_cameras()
+
+    # Analizler önceden üretilir; kütüphane burada bir kez okunur. Çalışma
+    # anında model çağrısı yapılmaz — kamera duvarı kaydedilmiş sonuçları
+    # canlı gibi oynatır.
+    library.ensure_loaded()
+    if library.count() == 0:
+        logger.warning(
+            "Analiz kütüphanesi BOŞ — kamera duvarı boş görünecek. "
+            "Önce şunu çalıştırın: python scripts/analyze_video_library.py"
+        )
+    else:
+        logger.info(f"Analiz kütüphanesi: {library.count()} video hazır")
 
     replay_engine = ReplayEngine(
         broadcast_fn=manager.broadcast,
         save_event_fn=store.save_event,
     )
+    # Kamera kayıtları duvardaki gerçek kamera sayısıyla hizalanır; kütüphane
+    # küçükse fazladan kamera oluşturulmaz.
+    store.seed_cameras(count=len(replay_engine.cameras))
+
     await replay_engine.start()
     app.state.replay_engine = replay_engine
     app.state.broadcast_fn = manager.broadcast

@@ -1,0 +1,87 @@
+{
+  "packet_id": "6033eab7-1222-4a2b-be8c-672bc6a6916a",
+  "video_id": "18-cctv-footage-of-man-caught-on-a-paper-03a4c6",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Endüstriyel bir üretim tesisi içinde, birkaç işçi büyük bir makineye yakın bir platformda bir yükü yerleştirmeye çalışırken görülüyor. İşçiler, yükü manuel olarak hareket ettirirken koordinasyon gerektiren bir işlem yapıyor. Zeminde kablolar ve malzemeler serpiştirilmiş, çevrede diğer makinalar ve malzeme yığınları mevcut.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "En az 6 işçi görülüyor; bazıları platformda, bazıları zeminde hareket ediyor."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük bir endüstriyel makine, yükün yerleştirildiği platforma yakın."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük, koyu renkli bir yük (muhtemelen rulo veya malzeme yığını) işçiler tarafından taşınıyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Yükün arkasında ve sağda yüksek metal raflar ve yapılar mevcut."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "medium",
+      "notes_tr": "Mavi bir konteynerde sıvı veya malzeme olduğu tahmin ediliyor; belirsiz."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "low",
+      "notes_tr": "Herhangi bir duman veya alev gözlemlenmemiş; ancak sağ tarafta küçük bir kıvılcım veya toz bulutu olası."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler, büyük bir yükü platformda bir makineye yerleştirmeye çalışıyor.",
+    "İşçiler, yükü manuel olarak iterek ve çekerek hareket ettiriyor.",
+    "Zemindeki kabloların etrafında dikkatli hareket eden işçiler var.",
+    "Yakın bir işçi, mavi konteynerin yanında bir işlem yapıyor (muhtemelen temizlik veya bakım)."
+  ],
+  "confidence_overall": 0.82,
+  "inference": {
+    "latency_ms": 13154.715100070462,
+    "tokens_generated": 913
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Endüstriyel bir üretim tesisi içinde, birkaç işçi büyük bir makineye yakın bir platformda bir yükü yerleştirmeye çalışırken görülüyor. İşçiler, yükü manuel olarak hareket ettirirken koordinasyon gerektiren bir işlem yapıyor. Zeminde kablolar ve malzemeler serpiştirilmiş, çevrede diğer makinalar ve malzeme yığınları mevcut.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az 6 işçi görülüyor; bazıları platformda, bazıları zeminde hareket ediyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük bir endüstriyel makine, yükün yerleştirildiği platforma yakın.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, koyu renkli bir yük (muhtemelen rulo veya malzeme yığını) işçiler tarafından taşınıyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yükün arkasında ve sağda yüksek metal raflar ve yapılar mevcut.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Mavi bir konteynerde sıvı veya malzeme olduğu tahmin ediliyor; belirsiz.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Herhangi bir duman veya alev gözlemlenmemiş; ancak sağ tarafta küçük bir kıvılcım veya toz bulutu olası.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, büyük bir yükü platformda bir makineye yerleştirmeye çalışıyor.\",\n    \"İşçiler, yükü manuel olarak iterek ve çekerek hareket ettiriyor.\",\n    \"Zemindeki kabloların etrafında dikkatli hareket eden işçiler var.\",\n    \"Yakın bir işçi, mavi konteynerin yanında bir işlem yapıyor (muhtemelen temizlik veya bakım).\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, büyük bir yükü manuel olarak hareket ettirirken, yükün sallanması ve kontrolsüz hareketi nedeniyle yaralanma riski mevcut. Özellikle 00:15-00:25 ve 00:35-00:45 arası yükün sallanması ve işçilerin hızlı hareketleri, yüksek riskli bir durum oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 60.0\n    },\n    {\n      \"description_tr\": \"Makinenin etrafında kablolar ve malzemelerin yere serilmesi, işçilerin düşme veya kayma riskini artırır. Özellikle 00:00-00:60 arası kabloların yere yayıldığı alan, geçiş zorluğu ve potansiyel düşme tehlikesi sunar.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 60.0\n    },\n    {\n      \"description_tr\": \"İşçilerin bazıları koruyucu ekipman (örneğin, kask, eldiven) kullanmadığı gözlemlenmektedir. Bu, özellikle yüksek enerjili makineleme sırasında ciddi yaralanmaları artırabilir.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.75,\n      \"timestamp_sec\": 60.0\n    }\n  ],\n  \"confidence_overall\": 0.82\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçiler, büyük bir yükü manuel olarak hareket ettirirken, yükün sallanması ve kontrolsüz hareketi nedeniyle yaralanma riski mevcut. Özellikle 00:15-00:25 ve 00:35-00:45 arası yükün sallanması ve işçilerin hızlı hareketleri, yüksek riskli bir durum oluşturur.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 60.0
+    },
+    {
+      "description_tr": "Makinenin etrafında kablolar ve malzemelerin yere serilmesi, işçilerin düşme veya kayma riskini artırır. Özellikle 00:00-00:60 arası kabloların yere yayıldığı alan, geçiş zorluğu ve potansiyel düşme tehlikesi sunar.",
+      "severity": "medium",
+      "confidence": 0.8,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 60.0
+    },
+    {
+      "description_tr": "İşçilerin bazıları koruyucu ekipman (örneğin, kask, eldiven) kullanmadığı gözlemlenmektedir. Bu, özellikle yüksek enerjili makineleme sırasında ciddi yaralanmaları artırabilir.",
+      "severity": "medium",
+      "confidence": 0.75,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 60.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçiler, büyük bir yükü manuel olarak hareket ettirirken, yükün sallanması ve kontrolsüz hareketi nedeniyle yaralanma riski mevcut. Özellikle 00:15-00:25 ve 00:35-00:45 arası yükün sallanması ve işçilerin hızlı hareketleri, yüksek riskli bir durum oluşturur.",
+    "Makinenin etrafında kablolar ve malzemelerin yere serilmesi, işçilerin düşme veya kayma riskini artırır. Özellikle 00:00-00:60 arası kabloların yere yayıldığı alan, geçiş zorluğu ve potansiyel düşme tehlikesi sunar.",
+    "İşçilerin bazıları koruyucu ekipman (örneğin, kask, eldiven) kullanmadığı gözlemlenmektedir. Bu, özellikle yüksek enerjili makineleme sırasında ciddi yaralanmaları artırabilir."
+  ],
+  "computed_confidence": 0.5763,
+  "reasoning_trace": "",
+  "segment_start_sec": 60.0,
+  "segment_end_sec": 88.68,
+  "created_at": "2026-08-24T11:03:42.092016+00:00"
+}

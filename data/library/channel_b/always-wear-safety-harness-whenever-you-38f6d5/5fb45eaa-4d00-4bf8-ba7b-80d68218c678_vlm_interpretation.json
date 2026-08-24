@@ -1,0 +1,74 @@
+{
+  "packet_id": "5fb45eaa-4d00-4bf8-ba7b-80d68218c678",
+  "video_id": "always-wear-safety-harness-whenever-you-38f6d5",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Yapı sitesinde, bir kırık kolu (boom) ile çalışan bir iş makinesi (muhtemelen bir kırık kolu veya kule vinç) göze çarpmaktadır. İş makinesi, yüksek bir yapıya doğru uzanırken, bir kişi makinenin kovasında çalışmaktadır. Yolun üzerinde birkaç işçi ve bir kişi yürüyor. Video ilerledikçe, makine ani bir şekilde devriliyor ve kovada olan kişi havaya fırlıyor. Devrilen makine, yolun ortasına düşer ve çevredeki kişiler panikle kaçmaya başlar.",
+  "detected_entities": [
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Kırmızı ve siyah renkli, uzun kolu olan bir kırık kolu veya kule vinç benzeri makine. Kovanın içinde bir kişi çalışmaktadır."
+    },
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Kovanın içinde çalışan bir işçi ve yol üzerinde yürüyen birkaç işçi. Kovanın içindeki işçi, devrilen makineyle birlikte havaya fırlar."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "medium",
+      "notes_tr": "Makinenin alt kısmında yer alan, muhtemelen bir kamyon veya vinç tabanı. Ancak tam olarak belirlenememektedir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Yapı sitesindeki betonarme yapı ve iskeleler."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "low",
+      "notes_tr": "Kovanın içindeki kişi, makinenin yükü olarak değerlendirilebilir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İş makinesi yüksek bir yapıya doğru uzanıyor.",
+    "Kovanın içindeki işçi çalışırken, makine ani bir şekilde devriliyor.",
+    "İşçi havaya fırlıyor ve düşüyor.",
+    "Yol üzerindeki kişiler panikle kaçıyor.",
+    "Devrilen makine yolun ortasına düşüyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 15057.854100014083,
+    "tokens_generated": 722
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Yapı sitesinde, bir kırık kolu (boom) ile çalışan bir iş makinesi (muhtemelen bir kırık kolu veya kule vinç) göze çarpmaktadır. İş makinesi, yüksek bir yapıya doğru uzanırken, bir kişi makinenin kovasında çalışmaktadır. Yolun üzerinde birkaç işçi ve bir kişi yürüyor. Video ilerledikçe, makine ani bir şekilde devriliyor ve kovada olan kişi havaya fırlıyor. Devrilen makine, yolun ortasına düşer ve çevredeki kişiler panikle kaçmaya başlar.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kırmızı ve siyah renkli, uzun kolu olan bir kırık kolu veya kule vinç benzeri makine. Kovanın içinde bir kişi çalışmaktadır.\"\n    },\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kovanın içinde çalışan bir işçi ve yol üzerinde yürüyen birkaç işçi. Kovanın içindeki işçi, devrilen makineyle birlikte havaya fırlar.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinenin alt kısmında yer alan, muhtemelen bir kamyon veya vinç tabanı. Ancak tam olarak belirlenememektedir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yapı sitesindeki betonarme yapı ve iskeleler.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Kovanın içindeki kişi, makinenin yükü olarak değerlendirilebilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İş makinesi yüksek bir yapıya doğru uzanıyor.\",\n    \"Kovanın içindeki işçi çalışırken, makine ani bir şekilde devriliyor.\",\n    \"İşçi havaya fırlıyor ve düşüyor.\",\n    \"Yol üzerindeki kişiler panikle kaçıyor.\",\n    \"Devrilen makine yolun ortasına düşüyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İş makinesi ani bir şekilde devriliyor ve kovanın içindeki işçi havaya fırlıyor. Bu, ciddi yaralanma veya ölüm riski taşımaktadır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 45.0\n    },\n    {\n      \"description_tr\": \"Devrilen makine yolun ortasına düşerek, çevredeki kişilerin ve potansiyel geçişlerin tehlikede olduğunu gösteriyor. Bu, diğer işçilerin ve geçici kişilerin yaralanma riskini artırıyor.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 48.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "İş makinesi ani bir şekilde devriliyor ve kovanın içindeki işçi havaya fırlıyor. Bu, ciddi yaralanma veya ölüm riski taşımaktadır.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 45.0
+    },
+    {
+      "description_tr": "Devrilen makine yolun ortasına düşerek, çevredeki kişilerin ve potansiyel geçişlerin tehlikede olduğunu gösteriyor. Bu, diğer işçilerin ve geçici kişilerin yaralanma riskini artırıyor.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 48.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İş makinesi ani bir şekilde devriliyor ve kovanın içindeki işçi havaya fırlıyor. Bu, ciddi yaralanma veya ölüm riski taşımaktadır.",
+    "Devrilen makine yolun ortasına düşerek, çevredeki kişilerin ve potansiyel geçişlerin tehlikede olduğunu gösteriyor. Bu, diğer işçilerin ve geçici kişilerin yaralanma riskini artırıyor."
+  ],
+  "computed_confidence": 0.7188,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 52.6,
+  "created_at": "2026-08-24T10:43:44.621348+00:00"
+}

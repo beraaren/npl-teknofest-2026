@@ -128,6 +128,9 @@ async def process_video(job_id: str, camera_id: str, video_path: str, fps_overri
                 frame_indices=chunk_indices,
                 fps=effective_fps,
                 is_last=is_last,
+                # Kanal B videoyu bütün olarak analiz ettiği için kaynak yol
+                # zincirde taşınır (kareler videoyu geri üretemez).
+                video_path=video_path,
             )
             await redis_helper.publish_message(client, "frame.chunk", chunk)
             logger.info(

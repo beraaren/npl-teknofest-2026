@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -66,13 +67,41 @@ def main() -> None:
     print(f"🎲 Seçilen video: {args.video}")
 
     if args.backend == "server":
+        # Sağlık kontrolü yapılandırmadan okunur; sabit bir yerel adrese
+        # bakılmaz. Sağlayıcı artık TEKNOFEST EVREN (uzak, TLS, bearer token)
+        # olduğu için eski 127.0.0.1:8080 denetimi her koşulda başarısızdı.
+        import urllib.error
         import urllib.request
+
+        from src.config import load_config as _load_config
+
+        _cfg = _load_config(args.config)
+        _srv = _cfg.vlm.server
+        _key = os.environ.get(_srv.api_key_env, "").strip()
+        _req = urllib.request.Request(f"{_srv.base_url.rstrip('/')}/models")
+        if _key:
+            _req.add_header("Authorization", f"Bearer {_key}")
         try:
-            urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=3)
-        except Exception:
+            with urllib.request.urlopen(_req, timeout=10) as _resp:
+                _models = [m.get("id") for m in json.load(_resp).get("data", [])]
+            print(f"✅ Çıkarım servisi erişilebilir: {_srv.base_url}")
+            print(f"   modeller: {', '.join(m for m in _models if m)}")
+            for _name, _label in ((_srv.model_name, "görüntü/metin"), (_srv.video_model, "video")):
+                if _name not in _models:
+                    print(
+                        f"   ⚠ '{_name}' ({_label}) sunucu listesinde yok; "
+                        f"istek sessizce başka bir modele yönlendirilebilir."
+                    )
+        except urllib.error.HTTPError as _e:
             raise SystemExit(
-                "❌ VLM sunucusu ayakta değil (127.0.0.1:8080).\n"
-                "   Önce başlat:  ./start_vlm_server.sh --bg"
+                f"❌ Çıkarım servisi HTTP {_e.code} döndürdü ({_srv.base_url}).\n"
+                f"   '{_srv.api_key_env}' anahtarı geçerli mi? (.env dosyasını kontrol et)"
+            )
+        except Exception as _e:
+            raise SystemExit(
+                f"❌ Çıkarım servisine ulaşılamadı: {_srv.base_url}\n"
+                f"   Hata: {_e}\n"
+                f"   İnternet bağlantısını ve '{_srv.api_key_env}' değerini kontrol et."
             )
 
     import numpy as np

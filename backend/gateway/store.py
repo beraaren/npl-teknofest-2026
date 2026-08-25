@@ -91,8 +91,36 @@ def init_db():
         "CREATE INDEX IF NOT EXISTS idx_assignments_role_status "
         "ON assignments (role, status)"
     )
+    # RLHF / DPO Human-in-the-Loop geri bildirim tablosu
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS feedbacks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            analysis_slug TEXT NOT NULL,
+            camera_id TEXT,
+            feedback_type TEXT NOT NULL,
+            original_risk TEXT,
+            original_summary TEXT,
+            original_output_json TEXT NOT NULL,
+            corrected_risk TEXT,
+            corrected_summary TEXT,
+            corrected_actions_json TEXT,
+            corrected_output_json TEXT NOT NULL,
+            prompt_context_json TEXT,
+            supervisor_notes TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    cursor.execute(
+        "CREATE INDEX IF NOT EXISTS idx_feedbacks_slug "
+        "ON feedbacks (analysis_slug)"
+    )
+    cursor.execute(
+        "CREATE INDEX IF NOT EXISTS idx_feedbacks_type "
+        "ON feedbacks (feedback_type)"
+    )
     conn.commit()
     conn.close()
+
 
 
 def seed_cameras(count: int = 9):
@@ -531,3 +559,229 @@ def _row_to_assignment(row: sqlite3.Row) -> dict:
         "acknowledged_at": row["acknowledged_at"],
         "resolved_at": row["resolved_at"],
     }
+
+
+# ---------------------------------------------------------------------------
+# RLHF / DPO Human-in-the-Loop Geri Bildirim Havuzu
+# ---------------------------------------------------------------------------
+
+FEEDBACK_TYPES = (
+    "correct",         # Model kararı doğru onaylandı
+    "false_positive",  # Yanlış alarm (olay yok veya zararsız)
+    "wrong_risk",      # Hatalı risk seviyesi
+    "wrong_event",     # Hatalı olay / nesne tespiti
+    "wrong_action",    # Önerilen aksiyonlar uygun değil
+    "other",           # Diğer düzeltme
+)
+
+
+def create_feedback(
+    analysis_slug: str,
+    camera_id: str = "",
+    feedback_type: str = "correct",
+    original_risk: str = "",
+    original_summary: str = "",
+    original_output: Optional[Dict[str, Any]] = None,
+    corrected_risk: str = "",
+    corrected_summary: str = "",
+    corrected_actions: Optional[List[str]] = None,
+    corrected_output: Optional[Dict[str, Any]] = None,
+    prompt_context: Optional[Dict[str, Any]] = None,
+    supervisor_notes: str = "",
+) -> dict:
+    """Süpervizörün analiz kararı üzerine yaptığı değerlendirmeyi/düzeltmeyi kaydeder.
+
+    Args:
+        analysis_slug: Analizin slug kimliği.
+        camera_id: İlgili kamera kimliği.
+        feedback_type: Geri bildirim türü (:data:`FEEDBACK_TYPES`).
+        original_risk: Modelin ürettiği ilk risk seviyesi.
+        original_summary: Modelin ürettiği ilk özet.
+        original_output: Modelin ürettiği tüm JSON kararı (Rejected adayı).
+        corrected_risk: Süpervizörün düzelttiği/onayladığı risk seviyesi.
+        corrected_summary: Süpervizörün düzelttiği özet.
+        corrected_actions: Süpervizörün düzelttiği aksiyon listesi.
+        corrected_output: Düzeltilmiş tam karar JSON'u (Chosen adayı).
+        prompt_context: Modele verilen kanıt paketi ve prompt bağlamı.
+        supervisor_notes: Süpervizörün serbest metin notu.
+    """
+    if feedback_type not in FEEDBACK_TYPES:
+        feedback_type = "other"
+
+    orig_out = original_output or {}
+    corr_out = corrected_output or {}
+    # Eğer düzeltilmiş çıktı verilmemişse temel alanlarla tamamla
+    if not corr_out:
+        corr_out = {
+            "risk": corrected_risk or original_risk,
+            "summary": corrected_summary or original_summary,
+            "actions": corrected_actions if corrected_actions is not None else orig_out.get("actions", []),
+            "events": orig_out.get("events", []),
+            "reasoning": supervisor_notes or orig_out.get("reasoning", ""),
+        }
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        INSERT INTO feedbacks (
+            analysis_slug, camera_id, feedback_type,
+            original_risk, original_summary, original_output_json,
+            corrected_risk, corrected_summary, corrected_actions_json,
+            corrected_output_json, prompt_context_json, supervisor_notes
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            analysis_slug,
+            camera_id,
+            feedback_type,
+            original_risk,
+            original_summary,
+            json.dumps(orig_out, ensure_ascii=False),
+            corrected_risk or original_risk,
+            corrected_summary or original_summary,
+            json.dumps(corrected_actions if corrected_actions is not None else [], ensure_ascii=False),
+            json.dumps(corr_out, ensure_ascii=False),
+            json.dumps(prompt_context or {}, ensure_ascii=False),
+            supervisor_notes,
+        ),
+    )
+    feedback_id = cursor.lastrowid
+    conn.commit()
+    cursor.execute("SELECT * FROM feedbacks WHERE id = ?", (feedback_id,))
+    row = cursor.fetchone()
+    conn.close()
+    return _row_to_feedback(row)
+
+
+def get_feedbacks(
+    analysis_slug: Optional[str] = None,
+    feedback_type: Optional[str] = None,
+    limit: int = 100,
+) -> List[dict]:
+    """Kaydedilmiş geri bildirimleri en yeniden eskiye listeler."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    query = "SELECT * FROM feedbacks WHERE 1=1"
+    params: list = []
+    if analysis_slug:
+        query += " AND analysis_slug = ?"
+        params.append(analysis_slug)
+    if feedback_type:
+        query += " AND feedback_type = ?"
+        params.append(feedback_type)
+    query += " ORDER BY datetime(created_at) DESC, id DESC LIMIT ?"
+    params.append(limit)
+    cursor.execute(query, params)
+    rows = cursor.fetchall()
+    conn.close()
+    return [_row_to_feedback(r) for r in rows]
+
+
+def get_feedback_by_slug(analysis_slug: str) -> Optional[dict]:
+    """Slug'a ait en son geri bildirimi döner; yoksa None."""
+    rows = get_feedbacks(analysis_slug=analysis_slug, limit=1)
+    return rows[0] if rows else None
+
+
+def get_feedback_stats() -> Dict[str, Any]:
+    """RLHF / DPO havuzu istatistiklerini hesaplar."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) AS total FROM feedbacks")
+    total = cursor.fetchone()["total"]
+
+    cursor.execute("SELECT feedback_type, COUNT(*) AS c FROM feedbacks GROUP BY feedback_type")
+    by_type = {r["feedback_type"]: r["c"] for r in cursor.fetchall()}
+
+    correct_count = by_type.get("correct", 0)
+    correction_count = total - correct_count
+    accuracy_rate = (correct_count / total * 100.0) if total > 0 else 100.0
+
+    conn.close()
+    return {
+        "total": total,
+        "correct_count": correct_count,
+        "correction_count": correction_count,
+        "accuracy_rate": round(accuracy_rate, 1),
+        "by_type": by_type,
+    }
+
+
+def export_dpo_dataset_records(only_corrections: bool = False) -> List[Dict[str, Any]]:
+    """DPO (Direct Preference Optimization) formatında veri çiftleri üretir.
+
+    Format:
+        {
+            "prompt": "<Görsel / Geometrik Kanıtlar ve RAG Bağlamı>",
+            "chosen": "<Süpervizörün Onayladığı/Düzelttiği Doğru Yanıt>",
+            "rejected": "<Modelin Ürettiği İlk Hatalı Yanıt>",
+            "metadata": { "slug": ..., "type": ... }
+        }
+    """
+    feedbacks = get_feedbacks(limit=5000)
+    records = []
+    for f in feedbacks:
+        fb_type = f["feedback_type"]
+        if only_corrections and fb_type == "correct":
+            continue
+
+        prompt_data = f.get("prompt_context") or {}
+        prompt_str = (
+            prompt_data.get("prompt_text")
+            or json.dumps(prompt_data, ensure_ascii=False, indent=2)
+            if prompt_data else f"İSG Video Analizi: {f['analysis_slug']}"
+        )
+
+        chosen_str = json.dumps(f.get("corrected_output") or {
+            "risk": f.get("corrected_risk"),
+            "summary": f.get("corrected_summary"),
+            "actions": f.get("corrected_actions"),
+        }, ensure_ascii=False)
+
+        rejected_str = json.dumps(f.get("original_output") or {
+            "risk": f.get("original_risk"),
+            "summary": f.get("original_summary"),
+        }, ensure_ascii=False)
+
+        records.append({
+            "prompt": prompt_str,
+            "chosen": chosen_str,
+            "rejected": rejected_str,
+            "metadata": {
+                "id": f["id"],
+                "analysis_slug": f["analysis_slug"],
+                "camera_id": f["camera_id"],
+                "feedback_type": fb_type,
+                "notes": f.get("supervisor_notes", ""),
+                "created_at": f["created_at"],
+            }
+        })
+    return records
+
+
+def export_dpo_dataset_jsonl(only_corrections: bool = False) -> str:
+    """Tüm DPO kayıtlarını satır satır JSONL formatında metin olarak döner."""
+    records = export_dpo_dataset_records(only_corrections=only_corrections)
+    lines = [json.dumps(r, ensure_ascii=False) for r in records]
+    return "\n".join(lines)
+
+
+def _row_to_feedback(row: sqlite3.Row) -> dict:
+    return {
+        "id": row["id"],
+        "analysis_slug": row["analysis_slug"],
+        "camera_id": row["camera_id"],
+        "feedback_type": row["feedback_type"],
+        "original_risk": row["original_risk"],
+        "original_summary": row["original_summary"],
+        "original_output": json.loads(row["original_output_json"] or "{}"),
+        "corrected_risk": row["corrected_risk"],
+        "corrected_summary": row["corrected_summary"],
+        "corrected_actions": json.loads(row["corrected_actions_json"] or "[]"),
+        "corrected_output": json.loads(row["corrected_output_json"] or "{}"),
+        "prompt_context": json.loads(row["prompt_context_json"] or "{}"),
+        "supervisor_notes": row["supervisor_notes"],
+        "created_at": row["created_at"],
+    }
+

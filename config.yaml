@@ -281,6 +281,13 @@ decision_agent:
     requires a higher risk, do not hesitate to deviate and explain the reason
     for the deviation in reasoning.
 
+    For the 'summary' field: Write a highly descriptive, fluent, and professional
+    Turkish summary of the scene and the events. Explain the context clearly 
+    so that a supervisor reading it can easily understand the situation without 
+    seeing the video. Avoid robotic or fragmented sentences; use a natural 
+    and comprehensive narrative style. Describe what happened, who was involved, 
+    and the overall environment in detail.
+
     When naming objects, use the perception layer's class names (insan,
     forklift, palet, baret, yelek); describe your own visual observations in
     general terms. Write timestamps in "MM:SS" format.

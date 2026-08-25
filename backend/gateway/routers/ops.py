@@ -9,7 +9,8 @@ from typing import Any, Dict, List, Literal, Optional
 
 import httpx
 import yaml
-from fastapi import APIRouter, HTTPException, Query, Request
+from fastapi import APIRouter, HTTPException, Query, Request, Response
+from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel, Field
 
 from src.config import load_config
@@ -90,6 +91,24 @@ class ToolExecuteRequest(BaseModel):
     triggered_by: Literal["supervisor", "field", "system"] = "supervisor"
 
 
+class FeedbackCreate(BaseModel):
+    """Süpervizörün RLHF / DPO model kararı değerlendirme/düzeltme isteği."""
+    analysis_slug: str
+    camera_id: str = ""
+    feedback_type: Literal[
+        "correct", "false_positive", "wrong_risk", "wrong_event", "wrong_action", "other"
+    ] = "correct"
+    original_risk: str = ""
+    original_summary: str = ""
+    original_output: Dict[str, Any] = Field(default_factory=dict)
+    corrected_risk: str = ""
+    corrected_summary: str = ""
+    corrected_actions: List[str] = Field(default_factory=list)
+    corrected_output: Dict[str, Any] = Field(default_factory=dict)
+    prompt_context: Dict[str, Any] = Field(default_factory=dict)
+    supervisor_notes: str = ""
+
+
 class SuggestionQuery(BaseModel):
     event_types: List[str] = Field(default_factory=list)
     query_text: str = ""
@@ -103,6 +122,7 @@ class ChatMessage(BaseModel):
 class ChatRequest(BaseModel):
     suggestion_id: str
     messages: List[ChatMessage]
+
 
 
 def _get_broadcast_fn(request: Request):
@@ -481,3 +501,69 @@ def _build_chat_system_prompt(suggestion: Dict[str, Any]) -> str:
     ])
 
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# RLHF / DPO Geri Bildirim Endpoint'leri
+# ---------------------------------------------------------------------------
+
+@router.post("/feedback")
+async def submit_feedback(body: FeedbackCreate, request: Request):
+    """Süpervizörün model kararı değerlendirmesini kaydeder ve WebSocket'e bildirir."""
+    row = store.create_feedback(
+        analysis_slug=body.analysis_slug,
+        camera_id=body.camera_id,
+        feedback_type=body.feedback_type,
+        original_risk=body.original_risk,
+        original_summary=body.original_summary,
+        original_output=body.original_output,
+        corrected_risk=body.corrected_risk,
+        corrected_summary=body.corrected_summary,
+        corrected_actions=body.corrected_actions,
+        corrected_output=body.corrected_output,
+        prompt_context=body.prompt_context,
+        supervisor_notes=body.supervisor_notes,
+    )
+    broadcast_fn = _get_broadcast_fn(request)
+    await broadcast_fn({"stream": "feedback.created", "data": row})
+    return row
+
+
+@router.get("/feedback")
+async def list_feedback(
+    analysis_slug: Optional[str] = Query(default=None, description="Analiz slug filtresi"),
+    feedback_type: Optional[str] = Query(default=None, description="Geri bildirim türü filtresi"),
+    limit: int = Query(default=100, ge=1, le=500),
+):
+    """Kaydedilen geri bildirimleri döner."""
+    return store.get_feedbacks(
+        analysis_slug=analysis_slug,
+        feedback_type=feedback_type,
+        limit=limit,
+    )
+
+
+@router.get("/feedback/stats")
+async def feedback_stats():
+    """RLHF havuzu özet istatistiklerini (toplam, doğruluk oranı, yanlış alarmlar) döner."""
+    return store.get_feedback_stats()
+
+
+@router.get("/feedback/export")
+async def export_feedback_dataset(
+    only_corrections: bool = Query(
+        default=False,
+        description="Yalnızca düzeltilmiş tercih çiftlerini dışa aktar",
+    ),
+):
+    """Tüm DPO (Direct Preference Optimization) veri setini JSONL olarak indirir."""
+    content = store.export_dpo_dataset_jsonl(only_corrections=only_corrections)
+    return Response(
+        content=content,
+        media_type="application/x-jsonlines",
+        headers={
+            "Content-Disposition": "attachment; filename=dpo_dataset.jsonl",
+            "Content-Type": "application/x-jsonlines; charset=utf-8",
+        },
+    )
+

@@ -4,6 +4,9 @@ const kpiEvents = document.getElementById('kpi-events');
 const kpiDecisions = document.getElementById('kpi-decisions');
 const kpiTools = document.getElementById('kpi-tools');
 const kpiNotifications = document.getElementById('kpi-notifications');
+const kpiFeedbacks = document.getElementById('kpi-feedbacks');
+const kpiAccuracy = document.getElementById('kpi-accuracy');
+const feedbacksBody = document.getElementById('feedbacks-body');
 const eventsBody = document.getElementById('events-body');
 const riskChart = document.getElementById('risk-chart');
 const suggestBtn = document.getElementById('suggest-btn');
@@ -23,7 +26,7 @@ let currentSuggestion = null;
 
 function escapeHtml(text) {
   const div = document.createElement('div');
-  div.textContent = text;
+  div.textContent = text == null ? '' : String(text);
   return div.innerHTML;
 }
 
@@ -36,6 +39,56 @@ function showToast(message) {
 
 function formatTime(date = new Date()) {
   return date.toLocaleTimeString('tr-TR');
+}
+
+async function loadFeedbackData() {
+  try {
+    const [statsRes, listRes] = await Promise.all([
+      fetch('/api/v1/feedback/stats'),
+      fetch('/api/v1/feedback?limit=25'),
+    ]);
+
+    if (statsRes.ok && kpiFeedbacks && kpiAccuracy) {
+      const stats = await statsRes.json();
+      kpiFeedbacks.textContent = stats.total ?? 0;
+      kpiAccuracy.textContent = stats.total > 0 ? `%${stats.accuracy_rate}` : '%100';
+    }
+
+    if (listRes.ok && feedbacksBody) {
+      const items = await listRes.json();
+      renderFeedbacksTable(items);
+    }
+  } catch (err) {
+    console.error('Geri bildirim verileri yüklenemedi:', err);
+  }
+}
+
+function renderFeedbacksTable(items) {
+  if (!feedbacksBody) return;
+  if (!items || !items.length) {
+    feedbacksBody.innerHTML = '<tr><td colspan="6" class="empty-state">Henüz geri bildirim kaydı yok.</td></tr>';
+    return;
+  }
+
+  const typeLabels = {
+    correct: '<span class="status-badge status-tamamlandi">✔ Doğrulandı</span>',
+    false_positive: '<span class="status-badge status-atandi">✖ Yanlış Alarm</span>',
+    wrong_risk: '<span class="status-badge status-goruldu">⚠ Hatalı Risk</span>',
+    wrong_event: '<span class="status-badge status-goruldu">⚠ Hatalı Olay</span>',
+    wrong_action: '<span class="status-badge status-goruldu">⚠ Hatalı Aksiyon</span>',
+    other: '<span class="status-badge">Diğer Düzeltme</span>',
+  };
+
+  feedbacksBody.innerHTML = items.map((f) => `
+    <tr>
+      <td>${escapeHtml(f.created_at ? new Date(f.created_at).toLocaleTimeString('tr-TR') : '-')}</td>
+      <td><strong>${escapeHtml(f.analysis_slug || '-')}</strong> <span class="meta">(${escapeHtml(f.camera_id || '-')})</span></td>
+      <td>${typeLabels[f.feedback_type] || escapeHtml(f.feedback_type)}</td>
+      <td><span class="risk-badge ${(f.original_risk || '').toLowerCase() === 'yüksek' ? 'high' : (f.original_risk || '').toLowerCase() === 'orta' ? 'medium' : 'low'}">${escapeHtml(f.original_risk || '-')}</span></td>
+      <td><span class="risk-badge ${(f.corrected_risk || '').toLowerCase() === 'yüksek' ? 'high' : (f.corrected_risk || '').toLowerCase() === 'orta' ? 'medium' : 'low'}">${escapeHtml(f.corrected_risk || '-')}</span></td>
+      <td>${escapeHtml(f.supervisor_notes || f.corrected_summary || '-')}</td>
+    </tr>
+  `).join('');
 }
 
 async function loadMetrics() {
@@ -52,6 +105,7 @@ async function loadMetrics() {
     console.error('Metrikler yüklenemedi:', err);
   }
 }
+
 
 function drawRiskChart(distribution) {
   const canvas = riskChart;
@@ -243,14 +297,22 @@ function handleWsMessage(msg) {
   const { stream, data } = msg || {};
   if (stream === 'event.detected' || stream === 'decision.final') {
     addEvent(stream, data || {});
+  } else if (stream === 'feedback.created') {
+    loadFeedbackData();
+    showToast('🎯 Yeni RLHF geri bildirimi kaydedildi.');
   }
 }
 
 function init() {
   loadMetrics();
-  setInterval(loadMetrics, 5000);
+  loadFeedbackData();
+  setInterval(() => {
+    loadMetrics();
+    loadFeedbackData();
+  }, 5000);
 
-  const ws = new WsClient(`ws://${location.host}/ws`);
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  const ws = new WsClient(`${proto}://${location.host}/ws`);
   ws.connect();
   ws.onMessage(handleWsMessage);
 

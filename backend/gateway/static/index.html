@@ -65,6 +65,50 @@
         <h3>⚡ Aksiyonlar</h3>
         <div id="modal-actions" class="actions-list"></div>
 
+        <!-- RLHF / Human-in-the-Loop Geri Bildirim Paneli -->
+        <div class="feedback-section" id="feedback-section">
+          <div class="feedback-header">
+            <h3>🎯 Model Değerlendirmesi (RLHF / HitL)</h3>
+            <span id="feedback-badge" class="fb-badge pending">Değerlendirilmedi</span>
+          </div>
+          
+          <div class="feedback-quick-actions" id="fb-quick-actions">
+            <button class="btn-success-light" id="fb-btn-correct">✔ Karar Doğru</button>
+            <button class="btn-warning-light" id="fb-btn-toggle-edit">✏ Düzelt / Yanlış Alarm</button>
+          </div>
+
+          <div id="fb-edit-panel" class="fb-edit-panel" hidden>
+            <div class="fb-grid">
+              <label class="meta">Değerlendirme Türü
+                <select id="fb-type">
+                  <option value="false_positive">Yanlış Alarm (False Positive)</option>
+                  <option value="wrong_risk">Hatalı Risk Seviyesi</option>
+                  <option value="wrong_event">Hatalı Olay / Nesne Tespiti</option>
+                  <option value="wrong_action">Önerilen Aksiyonlar Uygun Değil</option>
+                  <option value="other">Diğer / Özel Düzeltme</option>
+                </select>
+              </label>
+              <label class="meta">Doğru Risk Seviyesi
+                <select id="fb-correct-risk">
+                  <option value="Düşük">Düşük</option>
+                  <option value="Orta">Orta</option>
+                  <option value="Yüksek">Yüksek</option>
+                </select>
+              </label>
+            </div>
+            <label class="meta">Düzeltilmiş Özet / Olay Açıklaması
+              <textarea id="fb-correct-summary" rows="2" class="fb-textarea" placeholder="Doğru olay özeti..."></textarea>
+            </label>
+            <label class="meta">Süpervizör Notu / Gerekçe (DPO Tercih Kaydı İçin)
+              <input id="fb-notes" type="text" placeholder="Örn: Personel yaya yolundaydı, tehlike yok." />
+            </label>
+            <div class="fb-actions-row">
+              <button class="btn btn-primary" id="fb-btn-submit-correction" style="background:#0284c7;color:#fff;">💾 DPO / RLHF Havuzuna Kaydet</button>
+              <button class="btn btn-secondary" id="fb-btn-cancel-edit">İptal</button>
+            </div>
+          </div>
+        </div>
+
         <h3>👷 Saha Ekibine Ata</h3>
         <div class="assign-panel">
           <label class="meta">Ekip

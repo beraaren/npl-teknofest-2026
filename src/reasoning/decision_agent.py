@@ -223,7 +223,7 @@ class DecisionAgent:
             "\nKanıtları düşünce akışıyla değerlendir, çelişkileri çöz ve SADECE "
             "aşağıdaki JSON şemasına uygun Türkçe yanıt ver. Açıklama ekleme:\n"
             '{\n'
-            '  "summary": "Videonun genel özeti",\n'
+            '  "summary": "Olayın nerede geçtiğini, kimlerin dahil olduğunu ve tam olarak ne yaşandığını anlatan, akıcı, açıklayıcı ve detaylı Türkçe özet",\n'
             '  "events": [\n'
             '    {"time": "MM:SS", "event": "olay açıklaması", "event_type": "forklift_tip_over|person_fall|gathering|immobile_person|ppe_missing|dangerous_proximity|fire_smoke|leakage|...", "confidence": 0.0-1.0}\n'
             '  ],\n'

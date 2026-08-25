@@ -44,13 +44,25 @@ const el = {
   assignNote: document.getElementById('assign-note'),
   assignBtn: document.getElementById('assign-btn'),
   assignExisting: document.getElementById('assign-existing'),
+  feedbackBadge: document.getElementById('feedback-badge'),
+  fbBtnCorrect: document.getElementById('fb-btn-correct'),
+  fbBtnToggleEdit: document.getElementById('fb-btn-toggle-edit'),
+  fbEditPanel: document.getElementById('fb-edit-panel'),
+  fbType: document.getElementById('fb-type'),
+  fbCorrectRisk: document.getElementById('fb-correct-risk'),
+  fbCorrectSummary: document.getElementById('fb-correct-summary'),
+  fbNotes: document.getElementById('fb-notes'),
+  fbBtnSubmitCorrection: document.getElementById('fb-btn-submit-correction'),
+  fbBtnCancelEdit: document.getElementById('fb-btn-cancel-edit'),
   toast: document.getElementById('toast'),
 };
 
 /** camera_id -> sunucudan gelen son durum. */
 const cameras = new Map();
 let openCameraId = null;
+let currentAnalysis = null;
 let toastTimer = null;
+
 
 // ---------------------------------------------------------------------------
 // Yardımcılar
@@ -272,6 +284,7 @@ async function openModal(cameraId) {
     const data = await api(`/pseudolive/cameras/${cameraId}`);
     renderModal(cameraId, data.active, data.analysis);
     await refreshAssignmentsFor(data.analysis?.slug);
+    await refreshFeedbackFor(data.analysis?.slug);
   } catch (err) {
     el.modalSummary.textContent = `Detay alınamadı: ${err.message}`;
   }
@@ -280,6 +293,7 @@ async function openModal(cameraId) {
 function renderModal(cameraId, active, analysis) {
   if (!analysis) return;
 
+  currentAnalysis = analysis;
   el.modalTitle.textContent = `${active.camera_label} · ${analysis.video_name || ''}`;
 
   const cls = riskClass(analysis.risk);
@@ -292,6 +306,12 @@ function renderModal(cameraId, active, analysis) {
   // Ajanın yazdığı olay özeti — saha ekibi de aynı metni görür.
   el.modalSummary.textContent = analysis.summary || 'Özet üretilmedi.';
   el.modalReasoning.textContent = analysis.reasoning || 'Gerekçe kaydı yok.';
+
+  // Geri bildirim formu alanlarını varsayılana hazırla
+  el.fbCorrectRisk.value = analysis.risk || 'Düşük';
+  el.fbCorrectSummary.value = analysis.summary || '';
+  el.fbNotes.value = '';
+  el.fbEditPanel.hidden = true;
 
   if (el.modalVideo.dataset.camera !== cameraId) {
     el.modalVideo.dataset.camera = cameraId;
@@ -359,6 +379,83 @@ function renderModal(cameraId, active, analysis) {
   el.assignBtn.dataset.camera = cameraId;
   el.assignBtn.disabled = !analysis.slug;
 }
+
+// ---------------------------------------------------------------------------
+// RLHF / DPO Geri Bildirim İşleyicileri
+// ---------------------------------------------------------------------------
+
+function updateFeedbackUI(feedback) {
+  if (!feedback) {
+    el.feedbackBadge.className = 'fb-badge pending';
+    el.feedbackBadge.textContent = 'Değerlendirilmedi';
+    return;
+  }
+  if (feedback.feedback_type === 'correct') {
+    el.feedbackBadge.className = 'fb-badge correct';
+    el.feedbackBadge.textContent = '✔ Karar Doğrulandı';
+  } else {
+    el.feedbackBadge.className = 'fb-badge corrected';
+    const typeMap = {
+      false_positive: 'Yanlış Alarm',
+      wrong_risk: 'Hatalı Risk',
+      wrong_event: 'Hatalı Olay',
+      wrong_action: 'Hatalı Aksiyon',
+      other: 'Düzeltildi',
+    };
+    el.feedbackBadge.textContent = `⚠️ ${typeMap[feedback.feedback_type] || 'Düzeltildi'}`;
+  }
+}
+
+async function refreshFeedbackFor(slug) {
+  if (!slug) {
+    updateFeedbackUI(null);
+    return;
+  }
+  try {
+    const rows = await api(`/feedback?analysis_slug=${encodeURIComponent(slug)}&limit=1`);
+    updateFeedbackUI(rows.length ? rows[0] : null);
+  } catch {
+    updateFeedbackUI(null);
+  }
+}
+
+async function submitFeedback(feedbackType, isCorrection = false) {
+  if (!currentAnalysis || !openCameraId) {
+    showToast('Analiz veya kamera seçili değil', true);
+    return;
+  }
+
+  try {
+    const payload = {
+      analysis_slug: currentAnalysis.slug,
+      camera_id: openCameraId,
+      feedback_type: feedbackType,
+      original_risk: currentAnalysis.risk || '',
+      original_summary: currentAnalysis.summary || '',
+      original_output: currentAnalysis,
+      corrected_risk: isCorrection ? el.fbCorrectRisk.value : (currentAnalysis.risk || ''),
+      corrected_summary: isCorrection ? el.fbCorrectSummary.value.trim() : (currentAnalysis.summary || ''),
+      supervisor_notes: isCorrection ? el.fbNotes.value.trim() : 'Süpervizör tarafından doğrulandı.',
+      prompt_context: {
+        camera_label: currentAnalysis.camera_label || openCameraId,
+        video_name: currentAnalysis.video_name || '',
+        geometric_signals: currentAnalysis.metadata?.geometric_signals || [],
+      },
+    };
+
+    const res = await api('/feedback', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+
+    updateFeedbackUI(res);
+    el.fbEditPanel.hidden = true;
+    showToast(isCorrection ? '🎯 Düzeltme DPO havuzuna kaydedildi' : '✔ Karar DPO havuzunda doğrulandı');
+  } catch (err) {
+    showToast(`Geri bildirim kaydedilemedi: ${err.message}`, true);
+  }
+}
+
 
 async function executeTool(btn, call, cameraId, slug) {
   const original = btn.textContent;
@@ -509,6 +606,20 @@ async function init() {
   ws.onMessage(handleWsMessage);
 
   el.assignBtn.addEventListener('click', submitAssignment);
+
+  // RLHF / DPO Geri Bildirim Butonları
+  el.fbBtnCorrect?.addEventListener('click', () => submitFeedback('correct', false));
+  el.fbBtnToggleEdit?.addEventListener('click', () => {
+    el.fbEditPanel.hidden = !el.fbEditPanel.hidden;
+  });
+  el.fbBtnCancelEdit?.addEventListener('click', () => {
+    el.fbEditPanel.hidden = true;
+  });
+  el.fbBtnSubmitCorrection?.addEventListener('click', () => {
+    const fbType = el.fbType.value || 'other';
+    submitFeedback(fbType, true);
+  });
+
   document.getElementById('modal-close').addEventListener('click', closeModal);
   el.modal.addEventListener('click', (e) => {
     if (e.target === el.modal) closeModal();

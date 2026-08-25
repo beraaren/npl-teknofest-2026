@@ -27,7 +27,24 @@
         <div class="kpi-card"><div class="value" id="kpi-decisions">—</div><div class="label">Alınan Karar</div></div>
         <div class="kpi-card"><div class="value" id="kpi-tools">—</div><div class="label">Çalıştırılan Araç</div></div>
         <div class="kpi-card"><div class="value" id="kpi-notifications">—</div><div class="label">Gönderilen Bildirim</div></div>
+        <div class="kpi-card"><div class="value" id="kpi-feedbacks" style="color:#38bdf8;">—</div><div class="label">RLHF Geri Bildirimi</div></div>
+        <div class="kpi-card"><div class="value" id="kpi-accuracy" style="color:#22c55e;">—</div><div class="label">Model Doğruluk Oranı</div></div>
       </section>
+
+      <!-- RLHF / DPO Veri Seti ve Geri Bildirim Havuzu -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin:1.5rem 0 0.5rem;flex-wrap:wrap;gap:0.5rem;">
+        <h2 style="margin:0;">🎯 RLHF & DPO Geri Bildirim Havuzu</h2>
+        <div style="display:flex;gap:0.5rem;">
+          <a href="/api/v1/feedback/export" class="btn-dpo-export" download="dpo_dataset.jsonl">📥 DPO Veri Setini İndir (.jsonl)</a>
+          <a href="/api/v1/feedback/export?only_corrections=true" class="btn-dpo-export" style="background:#334155;" download="dpo_corrections.jsonl">📥 Sadece Düzeltmeleri İndir</a>
+        </div>
+      </div>
+      <table class="events-table">
+        <thead>
+          <tr><th>Zaman</th><th>Analiz / Kamera</th><th>Geri Bildirim Türü</th><th>İlk Risk</th><th>Düzeltilen Risk</th><th>Süpervizör Notu</th></tr>
+        </thead>
+        <tbody id="feedbacks-body"><tr><td colspan="6" class="empty-state">Henüz geri bildirim kaydı yok.</td></tr></tbody>
+      </table>
 
       <h2 style="margin:1rem 0 0.5rem;">Son Olaylar</h2>
       <table class="events-table">
@@ -41,6 +58,7 @@
       <div class="chart-wrap">
         <canvas id="risk-chart"></canvas>
       </div>
+
     </main>
 
     <aside class="sidebar" style="width:360px;">

@@ -111,6 +111,15 @@ def _run_decision_sync(events: list[dict], vlm_interpretations: list[dict]) -> d
             generate_fn=retry_fn,
             rag_risk_level=rag_risk_level,
         )
+        # Guardrail başarısız olduğunda ÖZET BOŞ DÖNMEZ; yapılandırılmış
+        # null_response metnini ("Bilmiyorum") döndürür. Bu yüzden çağıran
+        # taraftaki 'if not summary' kontrolü null yanıtları hiç yakalayamıyor
+        # ve başarılı karar olarak sayıyordu. Tespiti burada, yapılandırılmış
+        # değerle karşılaştırarak yapıp sonuca işaretliyoruz.
+        result["null_response"] = (
+            str(result.get("summary", "")).strip()
+            == str(cfg.output.guardrail.null_response).strip()
+        )
         return result
 
     except Exception as exc:
@@ -124,6 +133,9 @@ def _run_decision_sync(events: list[dict], vlm_interpretations: list[dict]) -> d
             "reasoning": f"Sistem hatası: {exc}",
             "confidence": 0.0,
             "triggered_mock_tools": [],
+            # Hat çöktüğünde de bu bir null yanıttır; metriklerde başarılı
+            # karar olarak sayılmamalı.
+            "null_response": True,
         }
 
 
@@ -157,8 +169,14 @@ async def maybe_decide(job_id: str, camera_id: str, redis_client):
     loop = asyncio.get_event_loop()
     result = await loop.run_in_executor(None, _run_decision_sync, events, vlm)
 
-    if not result.get("summary"):
+    # 'null_response' bayrağı _run_decision_sync tarafından set edilir; boş
+    # özet kontrolü yeterli değildi (null yanıtın özeti "Bilmiyorum"dur).
+    if result.get("null_response") or not result.get("summary"):
         _metrics["null_responses"] += 1
+        logger.warning(
+            f"Job {job_id}: null yanıt üretildi (guardrail şemayı doğrulayamadı "
+            f"veya hat hata verdi) — risk={result.get('risk')!r}"
+        )
     else:
         _metrics["decisions_made"] += 1
 

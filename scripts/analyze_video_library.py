@@ -51,6 +51,18 @@ for _entry in (str(REPO_ROOT), str(REPO_ROOT / "Kanal_B")):
     if _entry not in sys.path:
         sys.path.insert(0, _entry)
 
+# .env dosyasını burada, en başta yükle. Script bir IDE'nin "Çalıştır" (Run)
+# düğmesiyle başlatıldığında terminale önceden EVREN_API_KEY export edilmiş
+# olmayabilir; src.config.load_config() de .env'i yükler ama bu yalnızca ilk
+# video işlenirken (analyze_video() içinde) çağrılır. Anahtarın script'in en
+# başından itibaren hazır olması için burada da bir kez denenir.
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv(REPO_ROOT / ".env", override=False)
+except ImportError:
+    pass
+
 VIDEO_EXTENSIONS = {".mp4", ".avi", ".mov", ".mkv", ".webm"}
 
 # Karar ajanının olay tipinden kart başlığı üretmek için kullanılan sözlük.

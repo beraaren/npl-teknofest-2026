@@ -75,7 +75,11 @@ def main(args=None) -> None:
     logger = get_logger("main", config.project.log_dir)
     logger.info(f"{config.project.name} v{config.project.version} başlatıldı.")
     logger.info(f"Girdi video: {args.video}")
-    logger.info(f"Seçilen backend: {args.backend or config.vlm.backend}")
+    # NOT: Burada 'config.vlm.backend' okunuyordu; VLMConfig'de böyle bir alan
+    # yok, doğrusu 'default_backend'. Hata yalnızca --backend VERİLMEDİĞİNDE
+    # ortaya çıkıyordu: 'or' kısa devre yaptığı için --backend verildiğinde sağ
+    # taraf hiç değerlendirilmiyor ve AttributeError gizleniyordu.
+    logger.info(f"Seçilen backend: {args.backend or config.vlm.default_backend}")
     logger.info(f"Seçilen detector: {args.detector or config.perception.detector_backend}")
 
     metrics = MetricsCollector(config.metrics.output_json)
@@ -292,7 +296,8 @@ def main(args=None) -> None:
             "Guardrail çıktısı: "
             f"risk={final_output.get('risk')}, "
             f"confidence={final_output.get('confidence')}, "
-            f"confidence_word={final_output.get('confidence_word')}, "
+            # 'confidence_word' alanı AnalysisOutput şemasında yok; her zaman
+            # None basıyordu, bu yüzden log satırından çıkarıldı.
             f"summary={final_output.get('summary')}, "
             f"actions={final_output.get('actions', [])}"
         )

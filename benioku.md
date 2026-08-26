@@ -62,8 +62,9 @@ gördüklerini genel terimlerle betimler; çelişkiyi Karar Ajanı çözer ve
   **Geçicidir; İSG sahnelerinde anlamlı tespit üretmez** — eğitilmiş YOLO
   gelince `detector_backend: "ultralytics"`e dönülecek.
 - `tracker.py` — `ObjectTracker.track()` Ultralytics `model.track()` çağırır
-  (ByteTrack). `TrackedObject`: `history`, `speed`, `is_stationary`,
-  `disappeared` (5 kare tolerans).
+  (ByteTrack). `TrackedObject`: `history`, `speed`, `displacement()`,
+  `disappeared` (5 kare tolerans). Hareketsizlik kontrolü `displacement()`
+  ile ölçeğe (`scale_ema`) oranlı yapılır — bkz. `events/state_machine.py`.
 - `observer_agent.py` — `ObserverAgent.observe_video(frames, fps,
   sampled_indices)` → kare başına observation dict:
   `{frame_idx, timestamp, detections[], tracks[], scene_graph{}}`.

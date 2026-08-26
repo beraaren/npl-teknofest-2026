@@ -1,6 +1,12 @@
+import asyncio
 import redis.asyncio as redis
 import json
 import logging
+
+#: Tüketici döngüsü hata aldığında beklenecek süre (saniye). Bu bekleme
+#: olmadan, Redis erişilemez olduğunda `while True` döngüsü hatayı anında
+#: tekrar alıp sonsuz hızda dönerek CPU'yu %100'e çıkarır.
+CONSUME_ERROR_BACKOFF_SEC = 1.0
 
 logger = logging.getLogger(__name__)
 
@@ -74,8 +80,14 @@ async def consume_stream(
                             logger.error(f"DLQ write error: {dlq_err}")
                         # Bozuk mesajı ACK'le (pending'de bırakma)
                         await ack_message(client, stream_name, group_name, msg_id)
+        except asyncio.CancelledError:
+            # Servis kapanışında görev iptal edilir; bunu hata sayıp yeniden
+            # denemek kapanışı engeller.
+            raise
         except Exception as e:
             logger.error(f"Error consuming from {stream_name}: {e}")
+            # Geri çekilme (backoff): Redis düştüğünde busy-loop'u önler.
+            await asyncio.sleep(CONSUME_ERROR_BACKOFF_SEC)
 
 async def ack_message(client: redis.Redis, stream_name: str, group_name: str, message_id: str):
     """Acknowledges a processed message."""

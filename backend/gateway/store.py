@@ -42,20 +42,6 @@ def init_db():
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     """)
-    # Saha uyarıları (field alerts) — UI'dan gelen manuel/otomatik uyarılar
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS field_alerts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            camera_id TEXT,
-            risk TEXT,
-            headline TEXT,
-            summary TEXT,
-            actions_json TEXT,
-            risk_segment_json TEXT,
-            target_roles_json TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
     # Görev atamaları — süpervizörün belirli bir olayı belirli bir ekibe
     # yönlendirmesi. Saha ekranı ARTIK yalnızca kendisine atanan olayları
     # gösterir; eskiden her uyarı tüm rollere gidiyordu (target_roles sabiti).
@@ -266,84 +252,6 @@ def get_events_by_job(job_id: str) -> List[dict]:
         {"stream": r["stream"], "data": json.loads(r["payload_json"]), "created_at": r["created_at"]}
         for r in rows
     ]
-
-
-# Field alerts
-
-def create_field_alert(
-    camera_id: str,
-    risk: str,
-    headline: str,
-    summary: str,
-    actions: List[str],
-    risk_segment: Dict[str, Any],
-    target_roles: List[str],
-) -> dict:
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        """
-        INSERT INTO field_alerts (
-            camera_id, risk, headline, summary,
-            actions_json, risk_segment_json, target_roles_json
-        ) VALUES (?, ?, ?, ?, ?, ?, ?)
-        """,
-        (
-            camera_id,
-            risk,
-            headline,
-            summary,
-            json.dumps(actions, ensure_ascii=False),
-            json.dumps(risk_segment, ensure_ascii=False),
-            json.dumps(target_roles, ensure_ascii=False),
-        ),
-    )
-    conn.commit()
-    alert_id = cursor.lastrowid
-    cursor.execute("SELECT * FROM field_alerts WHERE id = ?", (alert_id,))
-    row = cursor.fetchone()
-    conn.close()
-    return _row_to_field_alert(row)
-
-
-def get_field_alerts(role: Optional[str] = None, limit: int = 100) -> List[dict]:
-    """Saha uyarılarını created_at DESC sıralar.
-
-    role verilirse; target_roles boş olanlar veya role içerenler döner.
-    """
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT * FROM field_alerts ORDER BY created_at DESC LIMIT ?",
-        (limit,),
-    )
-    rows = cursor.fetchall()
-    conn.close()
-
-    alerts = [_row_to_field_alert(r) for r in rows]
-    if not role:
-        return alerts
-
-    filtered = []
-    for alert in alerts:
-        target_roles = alert.get("target_roles") or []
-        if not target_roles or role in target_roles:
-            filtered.append(alert)
-    return filtered
-
-
-def _row_to_field_alert(row: sqlite3.Row) -> dict:
-    return {
-        "id": row["id"],
-        "camera_id": row["camera_id"],
-        "risk": row["risk"],
-        "headline": row["headline"],
-        "summary": row["summary"],
-        "actions": json.loads(row["actions_json"] or "[]"),
-        "risk_segment": json.loads(row["risk_segment_json"] or "{}"),
-        "target_roles": json.loads(row["target_roles_json"] or "[]"),
-        "created_at": row["created_at"],
-    }
 
 
 # ---------------------------------------------------------------------------

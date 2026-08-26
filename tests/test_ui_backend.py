@@ -42,40 +42,6 @@ def test_rag_layer_get_suggestion():
     assert rag.get_suggestion("olmayan_id") is None
 
 
-def test_store_field_alerts(tmp_path):
-    """field_alerts CRUD döngüsü çalışır."""
-    # Her test izole DB kullansın
-    original_db = store.DB_PATH
-    db_path = tmp_path / "test_gateway.db"
-    store.DB_PATH = str(db_path)
-    try:
-        store.init_db()
-        row = store.create_field_alert(
-            camera_id="cam-01",
-            risk="Yüksek",
-            headline="Düşme alarmı",
-            summary="Test summary",
-            actions=["Aksiyon A"],
-            risk_segment={"start_sec": 2, "end_sec": 6, "event_type": "person_fall"},
-            target_roles=["sağlık"],
-        )
-        assert row["id"] >= 1
-        assert row["camera_id"] == "cam-01"
-
-        all_alerts = store.get_field_alerts()
-        assert len(all_alerts) == 1
-
-        # rol filtresi doğru çalışmalı
-        filtered = store.get_field_alerts(role="sağlık")
-        assert len(filtered) == 1
-        assert filtered[0]["target_roles"] == ["sağlık"]
-
-        filtered_no_match = store.get_field_alerts(role="teknisyen")
-        assert len(filtered_no_match) == 0
-    finally:
-        store.DB_PATH = original_db
-
-
 def test_store_feedback_crud(tmp_path):
     """RLHF feedback CRUD ve istatistik döngüsü çalışır."""
     original_db = store.DB_PATH

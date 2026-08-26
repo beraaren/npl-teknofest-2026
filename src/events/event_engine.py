@@ -188,10 +188,15 @@ class EventEngine:
                     track_id=tid,
                 )
             else:
+                # Eşleşen detection yok: track özetinden asgari bir Detection
+                # kur. `frame_idx` gözlemin kendisinden alınır; sabit 0
+                # bırakılırsa olay zaman damgaları kare 120'de bile 00:00
+                # görünür.
                 det = Detection(
                     class_name=t["class"],
                     confidence=1.0,
                     bbox=(0.0, 0.0, 0.0, 0.0),
+                    frame_idx=observation.get("frame_idx", 0),
                     track_id=tid,
                 )
 

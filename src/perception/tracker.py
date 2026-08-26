@@ -147,36 +147,6 @@ class TrackedObject:
         c2 = self.history[-1].center
         return (c2[0] - c1[0], c2[1] - c1[1])
 
-    @property
-    def is_stationary(self, threshold_pixels: float = 15.0, window: int = 5) -> bool:
-        """Son ``window`` karede merkezin ``threshold_pixels`` içinde kalıp kalmadığı.
-
-        Not: Bu, `src/events/state_machine.py` içindeki hareketsizlik
-        kuralının **kullanmadığı**, daha basit ve eski bir sabit-eşik
-        kontrolüdür. Güncel kural motoru, kameraya uzaklıktan bağımsız
-        çalışmak için bu property'yi değil, :meth:`displacement` ile
-        ölçeğe (``scale_ema``) oranlı bir pencere hesabı kullanır. Bu
-        property geriye dönük uyumluluk / basit kontroller için tutulur.
-
-        Args:
-            threshold_pixels: Durağan sayılmak için izin verilen maksimum
-                sapma (piksel).
-            window: Kaç son karenin değerlendirileceği.
-
-        Returns:
-            Pencere içindeki tüm merkezler ilk merkeze göre eşik içinde
-            kalıyorsa ``True``. Geçmiş 2 kayıttan azsa ``False``.
-        """
-        recent = self.history[-window:]
-        if len(recent) < 2:
-            return False
-        first = recent[0].center
-        return all(
-            abs(d.center[0] - first[0]) < threshold_pixels
-            and abs(d.center[1] - first[1]) < threshold_pixels
-            for d in recent[1:]
-        )
-
     def to_dict(self) -> dict[str, Any]:
         """Track durumunu gözlem (observation) çıktısı için özetler.
 

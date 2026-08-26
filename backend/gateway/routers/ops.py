@@ -43,22 +43,6 @@ def _server_config():
 _SERVER_CONFIG = None
 
 
-class RiskSegment(BaseModel):
-    start_sec: int
-    end_sec: int
-    event_type: str
-
-
-class FieldAlertCreate(BaseModel):
-    camera_id: str
-    risk: Literal["Düşük", "Orta", "Yüksek"]
-    headline: str
-    summary: str
-    actions: List[str] = Field(default_factory=list)
-    risk_segment: RiskSegment
-    target_roles: List[str] = Field(default_factory=list)
-
-
 class AssignmentCreate(BaseModel):
     """Süpervizörün bir olayı bir ekibe atama isteği.
 
@@ -127,45 +111,6 @@ class ChatRequest(BaseModel):
 
 def _get_broadcast_fn(request: Request):
     return request.app.state.broadcast_fn
-
-
-@router.post("/field-alerts")
-async def create_field_alert_endpoint(body: FieldAlertCreate, request: Request):
-    """Yeni saha uyarısı oluşturur, DB'ye kaydeder ve WebSocket'e yayınlar."""
-    risk_segment_dict = body.risk_segment.model_dump()
-    row = store.create_field_alert(
-        camera_id=body.camera_id,
-        risk=body.risk,
-        headline=body.headline,
-        summary=body.summary,
-        actions=body.actions,
-        risk_segment=risk_segment_dict,
-        target_roles=body.target_roles,
-    )
-
-    payload = {
-        "id": row["id"],
-        "camera_id": row["camera_id"],
-        "risk": row["risk"],
-        "headline": row["headline"],
-        "summary": row["summary"],
-        "actions": row["actions"],
-        "risk_segment": row["risk_segment"],
-        "target_roles": row["target_roles"],
-        "created_at": row["created_at"],
-    }
-    broadcast_fn = _get_broadcast_fn(request)
-    await broadcast_fn({"stream": "field.alert", "data": payload})
-    return row
-
-
-@router.get("/field-alerts")
-async def list_field_alerts(
-    role: Optional[str] = Query(default=None),
-    limit: int = Query(default=100, ge=1, le=1000),
-):
-    """Saha uyarılarını listeler; role ile filtreler."""
-    return store.get_field_alerts(role=role, limit=limit)
 
 
 @router.post("/assignments", status_code=201)

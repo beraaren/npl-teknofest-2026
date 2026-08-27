@@ -20,6 +20,13 @@ def test_event_window_uses_timestamp_sec_and_duration():
     assert end == 15.0
 
 
+def test_event_window_positive_short_duration_has_three_second_minimum():
+    stamp = {"timestamp_sec": 10.0, "duration": 0.25, "seconds": 10.0}
+    start, end = _event_window(stamp)
+    assert start == 10.0
+    assert end == 13.0
+
+
 def test_event_window_zero_duration_is_zero_width():
     stamp = {"timestamp_sec": 44.0, "duration": 0.0, "seconds": 44.0}
     start, end = _event_window(stamp)

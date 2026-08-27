@@ -172,8 +172,19 @@ class DecisionAgent:
         raw = backend.generate(images or [], prompt, temperature=temperature, max_tokens=max_tokens)
         self.logger.debug(f"Karar ajanı çıktısı:\n{raw}")
 
-        def retry_fn(temp: float) -> str:
-            return backend.generate(images or [], prompt, temperature=temp, max_tokens=max_tokens)
+        def retry_fn(temp: float, validation_error: str = "") -> str:
+            """Şema/semantik hatası sonrası yalnız çıktı onarımı için yeniden üretir."""
+            retry_prompt = prompt
+            if validation_error:
+                retry_prompt += (
+                    "\n\n--- ÖNCEKİ ÇIKTI REDDEDİLDİ: JSON ONARIMI ZORUNLU ---\n"
+                    f"Doğrulama hatası: {validation_error[:2000]}\n"
+                    "Önceki yanıtı açıklama eklemeden baştan, eksiksiz tek JSON nesnesi olarak üret. "
+                    "Yüksek/kritik her result için boş olmayan hazard_mechanism ve "
+                    "evidence.agreement alanında corroborated veya single_source kullan. "
+                    "triggered_mock_tools yalnız [{\"tool_name\": \"...\", \"params\": {}}] biçiminde olmalı."
+                )
+            return backend.generate(images or [], retry_prompt, temperature=temp, max_tokens=max_tokens)
 
         return {
             "raw_text": raw,

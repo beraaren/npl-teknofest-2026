@@ -1,0 +1,84 @@
+{
+  "packet_id": "c81e8c98-700d-4422-9de1-4917934ca514",
+  "video_id": "fire-accident-in-power-loom-unit-c1c92d",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir tekstil atölyesinde, yangın sonrası dumanlı bir ortamda bir işçi kırmızı bir yangın söndürücü ile makineye müdahale eder. İşçi, yangın söndürücüyü kullanarak makinenin alt kısmına doğrudan müdahale ederken, duman yoğunluğu artar. Daha sonra başka bir işçi, koyu renkli bir kıyafetle ve başörtüsüyle sahneye girer ve yangın bölgesindeki makineye yaklaşır.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İlk işçi beyaz tank top ve kısa pantolon giymiş, ikinci işçi koyu renkli kıyafet ve başörtüsüyle görünmektedir."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Dokuma makinesi, büyük boyutlu ve metalik yapıya sahip, hareketli parçaları olan bir makinedir."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Makinenin alt kısmından yoğun duman yükseliyor; alevlerin izleri hâlâ mevcuttur."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda çeşitli malzemelerin bulunduğu raf ve yapılar görülmektedir."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "low",
+      "notes_tr": "Yangın söndürücüden çıkan maddi bir sıvı veya toz belirsizdir, ancak dumanla karışmıştır."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, kırmızı bir yangın söndürücü ile makineye yaklaşır.",
+    "İşçi, yangın söndürücüyü makinenin alt kısmına doğrudan yöneltir.",
+    "İşçi, yangın söndürücüyü kullanırken duman yoğunluğu artar.",
+    "İşçi, yangın söndürücüyü bırakır ve sahneyi terk eder.",
+    "İkinci işçi, başörtülü ve koyu kıyafetli olarak sahneye girer.",
+    "İkinci işçi, yangın bölgesindeki makineye yaklaşır ve kontrol eder."
+  ],
+  "confidence_overall": 0.92,
+  "inference": {
+    "latency_ms": 14720.87250000186,
+    "tokens_generated": 882
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, yangın sonrası dumanlı bir ortamda bir işçi kırmızı bir yangın söndürücü ile makineye müdahale eder. İşçi, yangın söndürücüyü kullanarak makinenin alt kısmına doğrudan müdahale ederken, duman yoğunluğu artar. Daha sonra başka bir işçi, koyu renkli bir kıyafetle ve başörtüsüyle sahneye girer ve yangın bölgesindeki makineye yaklaşır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İlk işçi beyaz tank top ve kısa pantolon giymiş, ikinci işçi koyu renkli kıyafet ve başörtüsüyle görünmektedir.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Dokuma makinesi, büyük boyutlu ve metalik yapıya sahip, hareketli parçaları olan bir makinedir.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin alt kısmından yoğun duman yükseliyor; alevlerin izleri hâlâ mevcuttur.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda çeşitli malzemelerin bulunduğu raf ve yapılar görülmektedir.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Yangın söndürücüden çıkan maddi bir sıvı veya toz belirsizdir, ancak dumanla karışmıştır.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, kırmızı bir yangın söndürücü ile makineye yaklaşır.\",\n    \"İşçi, yangın söndürücüyü makinenin alt kısmına doğrudan yöneltir.\",\n    \"İşçi, yangın söndürücüyü kullanırken duman yoğunluğu artar.\",\n    \"İşçi, yangın söndürücüyü bırakır ve sahneyi terk eder.\",\n    \"İkinci işçi, başörtülü ve koyu kıyafetli olarak sahneye girer.\",\n    \"İkinci işçi, yangın bölgesindeki makineye yaklaşır ve kontrol eder.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, yangın söndürücüyü kullanırken dumanlı ve potansiyel olarak yanıcı bir ortama doğrudan girmiştir. Bu, solunum yolu yaralanması ve yanık riski doğurur.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 110.4\n    },\n    {\n      \"description_tr\": \"İkinci işçi, yangın bölgesindeki makineye yaklaşırken, duman ve potansiyel olarak sıcak yüzeylerle temas etme riski taşımaktadır. Bu, ciddi yaralanma veya zehirlenme riski doğurabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 120.0\n    },\n    {\n      \"description_tr\": \"Yangın söndürücü, makinenin alt kısmına doğrudan uygulanırken, yanıcı maddelerin etkisine maruz kalabilir. Bu, yangının yeniden başlaması veya patlama riski doğurabilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 115.0\n    }\n  ],\n  \"confidence_overall\": 0.92\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, yangın söndürücüyü kullanırken dumanlı ve potansiyel olarak yanıcı bir ortama doğrudan girmiştir. Bu, solunum yolu yaralanması ve yanık riski doğurur.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 110.4
+    },
+    {
+      "description_tr": "İkinci işçi, yangın bölgesindeki makineye yaklaşırken, duman ve potansiyel olarak sıcak yüzeylerle temas etme riski taşımaktadır. Bu, ciddi yaralanma veya zehirlenme riski doğurabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    },
+    {
+      "description_tr": "Yangın söndürücü, makinenin alt kısmına doğrudan uygulanırken, yanıcı maddelerin etkisine maruz kalabilir. Bu, yangının yeniden başlaması veya patlama riski doğurabilir.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 115.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, yangın söndürücüyü kullanırken dumanlı ve potansiyel olarak yanıcı bir ortama doğrudan girmiştir. Bu, solunum yolu yaralanması ve yanık riski doğurur.",
+    "İkinci işçi, yangın bölgesindeki makineye yaklaşırken, duman ve potansiyel olarak sıcak yüzeylerle temas etme riski taşımaktadır. Bu, ciddi yaralanma veya zehirlenme riski doğurabilir.",
+    "Yangın söndürücü, makinenin alt kısmına doğrudan uygulanırken, yanıcı maddelerin etkisine maruz kalabilir. Bu, yangının yeniden başlaması veya patlama riski doğurabilir."
+  ],
+  "computed_confidence": 0.7268,
+  "reasoning_trace": "",
+  "segment_start_sec": 108.4,
+  "segment_end_sec": 144.96,
+  "created_at": "2026-08-27T18:53:17.917182+00:00"
+}

@@ -1,0 +1,78 @@
+{
+  "packet_id": "b4b0f606-ffb4-451e-8cca-de15ac112077",
+  "video_id": "industrial-worker-makes-one-mistake-on-t-60f439",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "İki işçi, bir torna makinesi başında çalışmaktadır. İşçiler, makineye malzeme yerleştirirken ve ayarlamalar yaparken eldiven ve gözlük gibi koruyucu ekipmanlar kullanmaktadır. İşletme alanı dar ve düzenli olmayan bir atölye ortamına sahiptir.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İki işçi, makine başında çalışırken görülmektedir. Her ikisi de koruyucu ekipmanlar kullanmaktadır."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Torna makinesi, işçilere yakın bir mesafede çalıştırılmaktadır. Makinenin hareketli parçaları net bir şekilde görülmektedir."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Makineye yerleştirilen uzun metal malzeme, işçilere yakın bir mesafede tutulmaktadır."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda, malzeme depolama için kullanılan raf veya yapılar görülmektedir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, torna makinesine malzeme yerleştiriyor.",
+    "İşçi, makine üzerinde ayarlamalar yapıyor.",
+    "İşçi, eldivenli ellerle makine parçalarına dokunuyor.",
+    "İkinci işçi, makineye yaklaşarak yardımcı oluyor.",
+    "İşçiler, makine çalışırken yakın mesafede kalıyor."
+  ],
+  "confidence_overall": 0.82,
+  "inference": {
+    "latency_ms": 11138.496100000339,
+    "tokens_generated": 722
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"İki işçi, bir torna makinesi başında çalışmaktadır. İşçiler, makineye malzeme yerleştirirken ve ayarlamalar yaparken eldiven ve gözlük gibi koruyucu ekipmanlar kullanmaktadır. İşletme alanı dar ve düzenli olmayan bir atölye ortamına sahiptir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki işçi, makine başında çalışırken görülmektedir. Her ikisi de koruyucu ekipmanlar kullanmaktadır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Torna makinesi, işçilere yakın bir mesafede çalıştırılmaktadır. Makinenin hareketli parçaları net bir şekilde görülmektedir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makineye yerleştirilen uzun metal malzeme, işçilere yakın bir mesafede tutulmaktadır.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda, malzeme depolama için kullanılan raf veya yapılar görülmektedir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, torna makinesine malzeme yerleştiriyor.\",\n    \"İşçi, makine üzerinde ayarlamalar yapıyor.\",\n    \"İşçi, eldivenli ellerle makine parçalarına dokunuyor.\",\n    \"İkinci işçi, makineye yaklaşarak yardımcı oluyor.\",\n    \"İşçiler, makine çalışırken yakın mesafede kalıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, makine çalışırken eldivenli ellerle doğrudan makine parçalarına dokunuyor. Bu, makinenin hareket halindeyken elin sıkışma veya kesilme riskini artırır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 122.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin hareket halindeyken yakın mesafede çalışırken, koruyucu ekipmanların yeterli olup olmadığına dair şüpheler var. Özellikle eldivenlerin makine ile temas halindeyken güvenliği sağlayıp sağlamadığı belirsizdir.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.75,\n      \"timestamp_sec\": 125.0\n    },\n    {\n      \"description_tr\": \"İkinci işçi, makine çalışırken makineye yaklaşarak yardımcı oluyor. Bu, makinenin hareketli parçalarına yakın mesafede kalma riskini artırır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 130.0\n    }\n  ],\n  \"confidence_overall\": 0.82\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, makine çalışırken eldivenli ellerle doğrudan makine parçalarına dokunuyor. Bu, makinenin hareket halindeyken elin sıkışma veya kesilme riskini artırır.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 122.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin hareket halindeyken yakın mesafede çalışırken, koruyucu ekipmanların yeterli olup olmadığına dair şüpheler var. Özellikle eldivenlerin makine ile temas halindeyken güvenliği sağlayıp sağlamadığı belirsizdir.",
+      "severity": "medium",
+      "confidence": 0.75,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 125.0
+    },
+    {
+      "description_tr": "İkinci işçi, makine çalışırken makineye yaklaşarak yardımcı oluyor. Bu, makinenin hareketli parçalarına yakın mesafede kalma riskini artırır.",
+      "severity": "high",
+      "confidence": 0.8,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 130.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, makine çalışırken eldivenli ellerle doğrudan makine parçalarına dokunuyor. Bu, makinenin hareket halindeyken elin sıkışma veya kesilme riskini artırır.",
+    "İşçiler, makinenin hareket halindeyken yakın mesafede çalışırken, koruyucu ekipmanların yeterli olup olmadığına dair şüpheler var. Özellikle eldivenlerin makine ile temas halindeyken güvenliği sağlayıp sağlamadığı belirsizdir.",
+    "İkinci işçi, makine çalışırken makineye yaklaşarak yardımcı oluyor. Bu, makinenin hareketli parçalarına yakın mesafede kalma riskini artırır."
+  ],
+  "computed_confidence": 0.5962,
+  "reasoning_trace": "",
+  "segment_start_sec": 120.0,
+  "segment_end_sec": 180.0,
+  "created_at": "2026-08-27T18:56:53.363742+00:00"
+}

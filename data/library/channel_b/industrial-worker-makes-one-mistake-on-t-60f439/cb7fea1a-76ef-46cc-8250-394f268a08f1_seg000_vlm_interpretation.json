@@ -1,0 +1,68 @@
+{
+  "packet_id": "cb7fea1a-76ef-46cc-8250-394f268a08f1",
+  "video_id": "industrial-worker-makes-one-mistake-on-t-60f439",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "İki işçi, bir tür torna makinesi başında çalışmaktadır. İşçiler, makineye malzeme yerleştirirken ve ayarlamalar yaparken eldiven ve gözlük gibi koruyucu ekipmanlar kullanmaktadır. İşletme alanı dar ve düzenli olmayan bir atölye ortamına sahiptir.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İki işçi, biri makineye yakın, diğeri daha geride yer alır. Her ikisi de koruyucu gözlük ve eldiven takmaktadır."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Torna makinesi benzeri büyük bir endüstriyel makine, ortada yer alır. Kolları ve kavramaları net bir şekilde görülebilir."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "İşçiler, makineye yerleştirdikleri metalik bir parça veya malzemeyle çalışmaktadır."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Sol tarafta, dikey olarak dizilmiş metal çubuklar veya borular görülmektedir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler, torna makinesine malzeme yerleştirir.",
+    "Makineye eldivenli ellerle dokunarak ayarlamalar yapar.",
+    "Bir işçi, makinenin koluyla ilgilenirken diğer işçi malzeme hazırlar.",
+    "İşçiler, makinenin çalışmasını izlerken birbirleriyle koordinasyon sağlar."
+  ],
+  "confidence_overall": 0.85,
+  "inference": {
+    "latency_ms": 10959.624500006612,
+    "tokens_generated": 649
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"İki işçi, bir tür torna makinesi başında çalışmaktadır. İşçiler, makineye malzeme yerleştirirken ve ayarlamalar yaparken eldiven ve gözlük gibi koruyucu ekipmanlar kullanmaktadır. İşletme alanı dar ve düzenli olmayan bir atölye ortamına sahiptir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki işçi, biri makineye yakın, diğeri daha geride yer alır. Her ikisi de koruyucu gözlük ve eldiven takmaktadır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Torna makinesi benzeri büyük bir endüstriyel makine, ortada yer alır. Kolları ve kavramaları net bir şekilde görülebilir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"İşçiler, makineye yerleştirdikleri metalik bir parça veya malzemeyle çalışmaktadır.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sol tarafta, dikey olarak dizilmiş metal çubuklar veya borular görülmektedir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, torna makinesine malzeme yerleştirir.\",\n    \"Makineye eldivenli ellerle dokunarak ayarlamalar yapar.\",\n    \"Bir işçi, makinenin koluyla ilgilenirken diğer işçi malzeme hazırlar.\",\n    \"İşçiler, makinenin çalışmasını izlerken birbirleriyle koordinasyon sağlar.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, makine çalışırken eldivenli ellerle doğrudan makine parçalarına dokunuyor. Bu, makinenin hareket halindeyken elin sıkışma veya kesilme riskini artırır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 10.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin hareket halindeyken yakın mesafede çalışırken, koruyucu ekipmanların yeterli olup olmadığına dair şüpheler var. Özellikle eldivenlerin makine ile temas halindeyken güvenliği sağlayıp sağlamadığı belirsizdir.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.75,\n      \"timestamp_sec\": 30.0\n    }\n  ],\n  \"confidence_overall\": 0.85\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçiler, makine çalışırken eldivenli ellerle doğrudan makine parçalarına dokunuyor. Bu, makinenin hareket halindeyken elin sıkışma veya kesilme riskini artırır.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 10.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin hareket halindeyken yakın mesafede çalışırken, koruyucu ekipmanların yeterli olup olmadığına dair şüpheler var. Özellikle eldivenlerin makine ile temas halindeyken güvenliği sağlayıp sağlamadığı belirsizdir.",
+      "severity": "medium",
+      "confidence": 0.75,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 30.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçiler, makine çalışırken eldivenli ellerle doğrudan makine parçalarına dokunuyor. Bu, makinenin hareket halindeyken elin sıkışma veya kesilme riskini artırır.",
+    "İşçiler, makinenin hareket halindeyken yakın mesafede çalışırken, koruyucu ekipmanların yeterli olup olmadığına dair şüpheler var. Özellikle eldivenlerin makine ile temas halindeyken güvenliği sağlayıp sağlamadığı belirsizdir."
+  ],
+  "computed_confidence": 0.6019,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 60.0,
+  "created_at": "2026-08-27T18:56:32.331970+00:00"
+}

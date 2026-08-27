@@ -1,0 +1,64 @@
+{
+  "packet_id": "8838d9c7-3622-454a-92c9-10c16f213bb0",
+  "video_id": "kaos-and-the-hands-of-fate-machine-shop-a34463",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir endüstriyel üretim tesisi içinde, uzun bir metal çubuk veya silindir, bir makine üzerinde yerleştirilmiş durumda. Bir işçi, makinenin yakınında yürüyor ve ardından bir patlama veya yüksek basınçlı sıvı sızıntısı meydana gelir. Bu olay, geniş bir alana yayılan yoğun bir sis veya sıvı bulutu oluşturur. İşçi, olaydan hemen sonra kaçar.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İşçi, koyu renkli kıyafetler içinde, makinenin yakınında yürüyor ve olaydan sonra kaçıyor."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Uzun, mavi ve kırmızı renkli büyük bir endüstriyel makine, muhtemelen bir torna veya pres."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Uzun metal çubuk veya silindir, makinenin üzerinde sabitlenmiş durumda."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "high",
+      "notes_tr": "Patlamadan sonra yoğun bir sıvı veya sis bulutu yayılıyor; yüksek basınçlı sıvı sızıntısı veya buhar oluşumu olabilir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda, malzeme depolama için kullanılan raf veya yapılar görülebilir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, makinenin yakınında yürüyor.",
+    "Makinede ani bir patlama veya sıvı sızıntısı meydana geliyor.",
+    "Sıvı veya sis, geniş bir alana yayılıyor.",
+    "İşçi, olaydan kaçıyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 10583.772300000419,
+    "tokens_generated": 628
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir endüstriyel üretim tesisi içinde, uzun bir metal çubuk veya silindir, bir makine üzerinde yerleştirilmiş durumda. Bir işçi, makinenin yakınında yürüyor ve ardından bir patlama veya yüksek basınçlı sıvı sızıntısı meydana gelir. Bu olay, geniş bir alana yayılan yoğun bir sis veya sıvı bulutu oluşturur. İşçi, olaydan hemen sonra kaçar.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, koyu renkli kıyafetler içinde, makinenin yakınında yürüyor ve olaydan sonra kaçıyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun, mavi ve kırmızı renkli büyük bir endüstriyel makine, muhtemelen bir torna veya pres.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun metal çubuk veya silindir, makinenin üzerinde sabitlenmiş durumda.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Patlamadan sonra yoğun bir sıvı veya sis bulutu yayılıyor; yüksek basınçlı sıvı sızıntısı veya buhar oluşumu olabilir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda, malzeme depolama için kullanılan raf veya yapılar görülebilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, makinenin yakınında yürüyor.\",\n    \"Makinede ani bir patlama veya sıvı sızıntısı meydana geliyor.\",\n    \"Sıvı veya sis, geniş bir alana yayılıyor.\",\n    \"İşçi, olaydan kaçıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinede ani bir patlama veya yüksek basınçlı sıvı sızıntısı meydana gelmiş, bu da geniş bir alana yayılan yoğun bir sis veya sıvı bulutu oluşturmuştur. İşçi, olaydan hemen sonra kaçmıştır, ancak bu tür bir olay, çevredeki diğer çalışanları ve ekipmanları ciddi şekilde tehdit edebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 9.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Makinede ani bir patlama veya yüksek basınçlı sıvı sızıntısı meydana gelmiş, bu da geniş bir alana yayılan yoğun bir sis veya sıvı bulutu oluşturmuştur. İşçi, olaydan hemen sonra kaçmıştır, ancak bu tür bir olay, çevredeki diğer çalışanları ve ekipmanları ciddi şekilde tehdit edebilir.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 9.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Makinede ani bir patlama veya yüksek basınçlı sıvı sızıntısı meydana gelmiş, bu da geniş bir alana yayılan yoğun bir sis veya sıvı bulutu oluşturmuştur. İşçi, olaydan hemen sonra kaçmıştır, ancak bu tür bir olay, çevredeki diğer çalışanları ve ekipmanları ciddi şekilde tehdit edebilir."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 15.815815815815816,
+  "created_at": "2026-08-27T18:59:44.688728+00:00"
+}

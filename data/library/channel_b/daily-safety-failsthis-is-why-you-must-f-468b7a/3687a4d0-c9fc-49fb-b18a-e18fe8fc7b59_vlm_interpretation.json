@@ -1,0 +1,64 @@
+{
+  "packet_id": "3687a4d0-c9fc-49fb-b18a-e18fe8fc7b59",
+  "video_id": "daily-safety-failsthis-is-why-you-must-f-468b7a",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir metal işleme fabrikasının iç mekanında, işçiler metal levhaların arasında hareket ederken, bir kumandalı taşımada (veya kran) metal levhaları taşıyor. 00:12'den itibaren bir metal levha düşer ve toz bulutu oluşturur. İşçiler bu olaya tepki gösterir ve durumu kontrol altına almaya çalışır.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Birden fazla işçi, bazıları kask takıyor, bazıları hareket halinde."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Sarı renkli, kumandalı bir taşımada (veya kran) metal levhaları hareket ettiriyor."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Yığın halindeki metal levhalar, bazıları taşınırken, bazıları yerde duruyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Metal levhaların yığıldığı ahşap destekler ve raf yapıları."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "00:12'den itibaren metal levha düşerken oluşan toz bulutu."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler metal levhaların arasında yürüyor.",
+    "Bir kumandalı taşımada metal levhaları hareket ettiriyor.",
+    "Bir metal levha düşer ve toz bulutu oluşturur.",
+    "İşçiler düşen levhaya tepki verir ve durumu kontrol altına almaya çalışır."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 14595.219499999075,
+    "tokens_generated": 568
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir metal işleme fabrikasının iç mekanında, işçiler metal levhaların arasında hareket ederken, bir kumandalı taşımada (veya kran) metal levhaları taşıyor. 00:12'den itibaren bir metal levha düşer ve toz bulutu oluşturur. İşçiler bu olaya tepki gösterir ve durumu kontrol altına almaya çalışır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Birden fazla işçi, bazıları kask takıyor, bazıları hareket halinde.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli, kumandalı bir taşımada (veya kran) metal levhaları hareket ettiriyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yığın halindeki metal levhalar, bazıları taşınırken, bazıları yerde duruyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Metal levhaların yığıldığı ahşap destekler ve raf yapıları.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:12'den itibaren metal levha düşerken oluşan toz bulutu.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler metal levhaların arasında yürüyor.\",\n    \"Bir kumandalı taşımada metal levhaları hareket ettiriyor.\",\n    \"Bir metal levha düşer ve toz bulutu oluşturur.\",\n    \"İşçiler düşen levhaya tepki verir ve durumu kontrol altına almaya çalışır.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"00:12'de bir metal levha düşer ve toz bulutu oluşturur; bu, yakın çevredeki işçiler için solunum yolu tehlikesi ve fiziksel yaralanma riski oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 12.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "00:12'de bir metal levha düşer ve toz bulutu oluşturur; bu, yakın çevredeki işçiler için solunum yolu tehlikesi ve fiziksel yaralanma riski oluşturur.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 12.0
+    }
+  ],
+  "risk_flags_tr": [
+    "00:12'de bir metal levha düşer ve toz bulutu oluşturur; bu, yakın çevredeki işçiler için solunum yolu tehlikesi ve fiziksel yaralanma riski oluşturur."
+  ],
+  "computed_confidence": 0.6775,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 21.77175,
+  "created_at": "2026-08-27T18:49:46.559453+00:00"
+}

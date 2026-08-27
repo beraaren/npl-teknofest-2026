@@ -2,44 +2,512 @@
   "slug": "hpdc-die-casting-machine-accident-hydrau-2e9058",
   "video_file": "videos/HPDC Die casting machine accident (Hydraulic core hose connection removed).mp4",
   "video_name": "HPDC Die casting machine accident (Hydraulic core hose connection removed)",
-  "analyzed_at": "2026-08-27T18:09:46.326995+00:00",
-  "analysis_seconds": 226.1,
+  "analyzed_at": "2026-08-27T18:55:25.834283+00:00",
+  "analysis_seconds": 39.5,
   "video": {
     "duration_sec": 35.43,
     "fps": 30.0,
     "width": 640,
     "height": 352
   },
-  "summary": "Bilmiyorum",
-  "headline": "Olağan operasyon",
-  "risk": "Düşük",
-  "overall_risk": "unknown",
-  "scene_context": {},
+  "summary": "Fabrika ortamında, 00:09'da bir makinede ani alev ve duman patlaması gerçekleşmiştir. Bu kritik olay sonrası personel panikle kaçmış, ancak daha sonra bazı çalışanlar tehlikeli bölgeye geri dönerek toplanmaya başlamıştır. Görüntü analizi, 00:26-00:35 aralığında çok sayıda personelin (en fazla 8 kişi) tehlikeli bölgede toplandığını ve bazı bireylerin KKD (baret/yelek) eksikliği ile hareket ettiğini doğrulamaktadır. Ayrıca, panik anında düşme hareketi ve hareketsizlik tespit edilmiştir. Olayın doğası gereği (yangın/patlama) ve personelin tehlikeli alanda toplanması riski 'Kritik' seviyededir.",
+  "headline": "Makinede ani alev ve duman patlaması ile devam eden yangın/duman tehli…",
+  "risk": "Yüksek",
+  "overall_risk": "critical",
+  "scene_context": {
+    "environment": {
+      "type": "fabrika",
+      "description": "Endüstriyel üretim alanı, makine hatları ve depolama rafları içeren kapalı alan. 00:09'dan itibaren bir makineden alev ve duman çıkışı gözlemlenmektedir.",
+      "visible_entities": {
+        "insan": 2754,
+        "baret": 33,
+        "yelek": 6
+      },
+      "visual_entities": [
+        "person",
+        "machine",
+        "rack/structure",
+        "smoke or flame",
+        "load"
+      ]
+    },
+    "activities": [
+      {
+        "activity": "Makine başında çalışma",
+        "time_range": {
+          "start_sec": 0.0,
+          "end_sec": 9.0
+        },
+        "participants": [],
+        "operational_state": "normal"
+      },
+      {
+        "activity": "Ani alev ve duman patlaması",
+        "time_range": {
+          "start_sec": 9.0,
+          "end_sec": 9.0
+        },
+        "participants": [],
+        "operational_state": "acil"
+      },
+      {
+        "activity": "Panik kaçış ve müdahale girişimi",
+        "time_range": {
+          "start_sec": 9.0,
+          "end_sec": 35.0
+        },
+        "participants": [],
+        "operational_state": "kaotik"
+      }
+    ],
+    "zones": [
+      {
+        "id": "tehlikeli_bolge",
+        "purpose": "makine_operasyonu",
+        "active_operations": [
+          "yangin",
+          "duman_yayilimi"
+        ],
+        "access_constraints": "acil_durum_yasagi"
+      }
+    ],
+    "context_uncertainties": [
+      "Patlamanın tam kaynağı (elektrik, hidrolik, kimyasal) görsel olarak netleşmemiştir.",
+      "Dumanın toksik olup olmadığı belirsizdir."
+    ]
+  },
   "results": [
     {
-      "result_id": "null-response",
-      "result_type": "uncertain_observation",
-      "time": "00:00",
-      "event": "Karar üretilemedi.",
-      "event_type": "unknown",
-      "severity": "unknown",
-      "uncertain": true,
-      "uncertainty_reason": "Model çıktısı şemaya uymadı.",
+      "result_id": "result-1",
+      "result_type": "incident",
+      "time": "00:09",
+      "end_time": "00:35",
+      "timestamp_sec": 9.0,
+      "duration": 26.0,
+      "event": "Makinede ani alev ve duman patlaması ile devam eden yangın/duman tehlikesi",
+      "event_type": "fire_explosion",
+      "subjects": [],
+      "zone": "tehlikeli_bolge",
+      "hazard_mechanism": "Makineden çıkan alev ve dumanın personel üzerinde yanık, zehirlenme veya panik kaynaklı yaralanma riski oluşturması.",
+      "severity": "critical",
       "evidence": {
-        "agreement": "insufficient"
-      }
+        "geometric": {
+          "supports": false,
+          "observations": [],
+          "limitations": [
+            "Alev/dumanın geometrik sınırları net değildir."
+          ]
+        },
+        "visual": {
+          "supports": true,
+          "observations": [
+            "00:09'da makineden alev ve yoğun duman çıkışı.",
+            "Personelin panikle kaçışı.",
+            "Dumanın devam etmesi."
+          ],
+          "limitations": [
+            "Dumanın kaynağı tam olarak izole edilememiştir."
+          ]
+        },
+        "rag": {
+          "supports": true,
+          "observations": [
+            "Yangın ve patlama hipotezi ile uyumlu."
+          ],
+          "limitations": [
+            "RAG sadece hipotezdir, görsel kanıtla doğrulanmıştır."
+          ]
+        },
+        "agreement": "corroborated",
+        "resolution": "VLM görsel yorumu ve sahne bağlamı, kritik bir yangın/patlama olayını doğrulamaktadır."
+      },
+      "uncertain": false,
+      "uncertainty_reason": "",
+      "confidence": 0.95
+    },
+    {
+      "result_id": "result-2",
+      "result_type": "incident",
+      "time": "00:16",
+      "end_time": "00:35",
+      "timestamp_sec": 16.0,
+      "duration": 19.0,
+      "event": "Tehlikeli bölgede personel toplanması (Gathering)",
+      "event_type": "gathering",
+      "subjects": [
+        "21",
+        "22",
+        "26",
+        "47",
+        "71",
+        "83",
+        "95",
+        "110",
+        "114",
+        "116",
+        "121",
+        "123"
+      ],
+      "zone": "tehlikeli_bolge",
+      "hazard_mechanism": "Yangın/duman tehlikesi altında çok sayıda personelin aynı alanda toplanması; toplu yaralanma, tahliye güçlüğü ve panik riski.",
+      "severity": "critical",
+      "evidence": {
+        "geometric": {
+          "supports": true,
+          "observations": [
+            "00:16-00:35 arası 3 ila 8 personel arası grupların sürekli olarak aynı bölgede tespit edilmesi.",
+            "Track ID'lerin (21, 22, 26, 47, 71, 83, 95, 110, 114, 116, 121, 123) yakınlık ilişkileri."
+          ],
+          "limitations": [
+            "Bazı track ID'lerde geçici kayıp yaşanmıştır."
+          ]
+        },
+        "visual": {
+          "supports": true,
+          "observations": [
+            "Personellerin olay yerine koşup etrafta toplanması.",
+            "Müdahale girişimi gibi görünen hareketler."
+          ],
+          "limitations": [
+            "Kişilerin niyeti (müdahale mi, izleme mi) tam net değildir."
+          ]
+        },
+        "rag": {
+          "supports": true,
+          "observations": [
+            "Gathering hipotezi ile uyumlu."
+          ],
+          "limitations": [
+            "RAG tek başına kanıt değildir."
+          ]
+        },
+        "agreement": "corroborated",
+        "resolution": "Geometrik toplanma verileri ve görsel gözlemler, tehlikeli bölgede kalabalıklaşmayı doğrulamaktadır."
+      },
+      "uncertain": false,
+      "uncertainty_reason": "",
+      "confidence": 0.9
+    },
+    {
+      "result_id": "result-3",
+      "result_type": "incident",
+      "time": "00:29",
+      "end_time": "00:29",
+      "timestamp_sec": 29.0,
+      "duration": 1.0,
+      "event": "Personel düşmesi (Track 71)",
+      "event_type": "person_fall",
+      "subjects": [
+        "71"
+      ],
+      "zone": "tehlikeli_bolge",
+      "hazard_mechanism": "Panik anında düşme sonucu travma, kırık veya bilinç kaybı riski.",
+      "severity": "high",
+      "evidence": {
+        "geometric": {
+          "supports": true,
+          "observations": [
+            "Track 71'de dikey düşüş (drop_ratio: 0.52) ve ani hız değişimi."
+          ],
+          "limitations": [
+            "Düşüşün zemine çarpıp çarpmadığı net değildir."
+          ]
+        },
+        "visual": {
+          "supports": true,
+          "observations": [
+            "Panik anında dengesini kaybeden personel."
+          ],
+          "limitations": [
+            "Düşüşün tam sonucu (yaralanma) görsel olarak teyit edilememiştir."
+          ]
+        },
+        "rag": {
+          "supports": true,
+          "observations": [
+            "Düşme hipotezi ile uyumlu."
+          ],
+          "limitations": [
+            "RAG tek başına kanıt değildir."
+          ]
+        },
+        "agreement": "corroborated",
+        "resolution": "Geometrik düşüş verisi ve görsel bağlam (panik) düşmeyi doğrulamaktadır."
+      },
+      "uncertain": false,
+      "uncertainty_reason": "",
+      "confidence": 0.85
+    },
+    {
+      "result_id": "result-4",
+      "result_type": "contextual_finding",
+      "time": "00:00",
+      "end_time": "00:35",
+      "timestamp_sec": 0.0,
+      "duration": 35.0,
+      "event": "Genel KKD Eksikliği (Baret/Yelek)",
+      "event_type": "ppe_missing",
+      "subjects": [
+        "1",
+        "2",
+        "3",
+        "5",
+        "6",
+        "7",
+        "10",
+        "13",
+        "16",
+        "17",
+        "18",
+        "20",
+        "21",
+        "22",
+        "24",
+        "26",
+        "29",
+        "32",
+        "33",
+        "34",
+        "39",
+        "42",
+        "45",
+        "46",
+        "47",
+        "49",
+        "50",
+        "53",
+        "54",
+        "55",
+        "57",
+        "63",
+        "64",
+        "67",
+        "68",
+        "69",
+        "71",
+        "73",
+        "74",
+        "81",
+        "82",
+        "83",
+        "85",
+        "87",
+        "88",
+        "92",
+        "95",
+        "96",
+        "98",
+        "102",
+        "103",
+        "105",
+        "107",
+        "108",
+        "110",
+        "114",
+        "116",
+        "121",
+        "123"
+      ],
+      "zone": "fabrika_genel",
+      "hazard_mechanism": "KKD eksikliği nedeniyle kafa travması, ezilme veya yangın kaynaklı yaralanma riskinin artması.",
+      "severity": "medium",
+      "evidence": {
+        "geometric": {
+          "supports": true,
+          "observations": [
+            "Çok sayıda personel için baret ve yelek tespit edilememesi."
+          ],
+          "limitations": [
+            "Bazı durumlarda KKD'nin varlığı ancak algılanamaması (görünüm) mümkündür."
+          ]
+        },
+        "visual": {
+          "supports": true,
+          "observations": [
+            "VLM notlarında 'bazılarında kask var' ifadesi, çoğunlukta eksiklik olduğunu ima eder."
+          ],
+          "limitations": [
+            "Tüm personelin KKD durumu tek tek doğrulanamamıştır."
+          ]
+        },
+        "rag": {
+          "supports": true,
+          "observations": [
+            "PPE eksikliği hipotezi ile uyumlu."
+          ],
+          "limitations": [
+            "RAG tek başına kanıt değildir."
+          ]
+        },
+        "agreement": "corroborated",
+        "resolution": "Geometrik tespitler ve görsel gözlemler, genel KKD eksikliği durumunu desteklemektedir."
+      },
+      "uncertain": false,
+      "uncertainty_reason": "",
+      "confidence": 0.8
+    },
+    {
+      "result_id": "result-5",
+      "result_type": "incident",
+      "time": "00:26",
+      "end_time": "00:26",
+      "timestamp_sec": 26.0,
+      "duration": 3.0,
+      "event": "Personel Hareketsizliği (Track 22)",
+      "event_type": "immobile_person",
+      "subjects": [
+        "22"
+      ],
+      "zone": "tehlikeli_bolge",
+      "hazard_mechanism": "Hareketsizlik nedeniyle bayılma, yaralanma veya duman zehirlenmesi riski.",
+      "severity": "high",
+      "evidence": {
+        "geometric": {
+          "supports": true,
+          "observations": [
+            "Track 22'nin 3 saniye boyunca sabit kalması."
+          ],
+          "limitations": [
+            "Hareketsizliğin nedeni (yaralanma mı, beklemesi mi) belirsizdir."
+          ]
+        },
+        "visual": {
+          "supports": true,
+          "observations": [
+            "Panik ortamında hareketsiz kalan personel."
+          ],
+          "limitations": [
+            "Personelin bilincinin durumu görsel olarak anlaşılamamıştır."
+          ]
+        },
+        "rag": {
+          "supports": true,
+          "observations": [
+            "Hareketsizlik hipotezi ile uyumlu."
+          ],
+          "limitations": [
+            "RAG tek başına kanıt değildir."
+          ]
+        },
+        "agreement": "corroborated",
+        "resolution": "Geometrik hareketsizlik verisi ve bağlam (acil durum) ciddi bir durum işaret etmektedir."
+      },
+      "uncertain": false,
+      "uncertainty_reason": "",
+      "confidence": 0.75
     }
   ],
-  "uncertain": true,
-  "uncertainty_reason": "Model çıktısı şemaya uymadı.",
+  "uncertain": false,
+  "uncertainty_reason": "",
   "confidence": 0.0,
-  "reasoning": "Model çıktısı şemaya uymadı.",
+  "reasoning": "Görsel kanıtlar (VLM) 00:09'da kritik bir alev/duman olayını doğrulamaktadır. Geometrik veriler, bu olay sonrası personelin tehlikeli bölgede toplanmasını (gathering), düşme (person_fall) ve hareketsizlik (immobile_person) durumlarını desteklemektedir. KKD eksikliği (ppe_missing) ise genel bir güvenlik ihlali olarak tespit edilmiştir. Tüm kanallar (geometrik, görsel, RAG) bu sonuçlarda uyumludur. Olayın doğası (yangın/patlama) ve personelin tehlikeli alanda kalması nedeniyle risk seviyesi 'Kritik' olarak belirlenmiştir.",
   "actions": [
-    "İnsan gözetiminde tekrar analiz yap."
+    "sound_alarm",
+    "secure_area",
+    "call_health_team",
+    "notify_supervisor",
+    "record_incident"
   ],
-  "events": [],
-  "triggered_mock_tools": [],
-  "tool_execution_results": [],
+  "events": [
+    {
+      "time": "00:09",
+      "event": "Makinede ani alev ve duman patlaması ile devam eden yangın/duman tehlikesi",
+      "event_type": "fire_explosion",
+      "confidence": 0.95,
+      "timestamp_sec": 9.0,
+      "duration": 26.0,
+      "end_time": "00:35",
+      "result_id": "result-1",
+      "severity": "critical"
+    },
+    {
+      "time": "00:16",
+      "event": "Tehlikeli bölgede personel toplanması (Gathering)",
+      "event_type": "gathering",
+      "confidence": 0.9,
+      "timestamp_sec": 16.0,
+      "duration": 19.0,
+      "end_time": "00:35",
+      "result_id": "result-2",
+      "severity": "critical"
+    },
+    {
+      "time": "00:29",
+      "event": "Personel düşmesi (Track 71)",
+      "event_type": "person_fall",
+      "confidence": 0.85,
+      "timestamp_sec": 29.0,
+      "duration": 1.0,
+      "end_time": "00:29",
+      "result_id": "result-3",
+      "severity": "high"
+    },
+    {
+      "time": "00:26",
+      "event": "Personel Hareketsizliği (Track 22)",
+      "event_type": "immobile_person",
+      "confidence": 0.75,
+      "timestamp_sec": 26.0,
+      "duration": 3.0,
+      "end_time": "00:26",
+      "result_id": "result-5",
+      "severity": "high"
+    }
+  ],
+  "triggered_mock_tools": [
+    {
+      "tool_name": "sound_alarm",
+      "params": {}
+    },
+    {
+      "tool_name": "secure_area",
+      "params": {}
+    },
+    {
+      "tool_name": "call_health_team",
+      "params": {}
+    },
+    {
+      "tool_name": "notify_supervisor",
+      "params": {}
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {}
+    }
+  ],
+  "tool_execution_results": [
+    {
+      "status": "success",
+      "tool": "sound_alarm",
+      "params": {},
+      "mock_result": "sound_alarm başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "secure_area",
+      "params": {},
+      "mock_result": "secure_area başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "call_health_team",
+      "params": {},
+      "mock_result": "call_health_team başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "notify_supervisor",
+      "params": {},
+      "mock_result": "notify_supervisor başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "record_incident",
+      "params": {},
+      "mock_result": "record_incident başarıyla simüle edildi."
+    }
+  ],
   "metadata": {
     "vlm_backend": "server",
     "channel_b_mode": "video",
@@ -2478,87 +2946,70 @@
       }
     ],
     "vlm_interpretation": {
-      "packet_id": "93ffab10-5937-49c7-a8bf-6c47a2fd05bb",
+      "packet_id": "c6e28076-7f73-4064-9f7b-e1908f925563",
       "video_id": "hpdc-die-casting-machine-accident-hydrau-2e9058",
       "model_name": "vlm",
       "model_backend": "server",
-      "scene_summary_tr": "Sanayi bir üretim alanında, işçiler makineye yakın çalışırken, 00:09'da bir makinede ani bir alev ve duman patlaması meydana gelir. İşçiler panikle kaçar ve ardından yangın söndürme çabaları başlar. Olay yerine diğer çalışanlar ve muhtemelen güvenlik ekipleri akın eder.",
+      "scene_summary_tr": "Fabrika ortamında çalışan kişiler, makine başında görev yapıyor. 00:09'da bir makinede ani bir alev ve duman patlaması meydana gelir. Personel panikle kaçar ve diğer çalışanlar olay yerine koşar. Duman ve alev hâlâ devam ederken, bazı çalışanlar müdahale etmeye çalışır.",
       "detected_entities": [
         {
           "label": "person",
           "confidence_hint": "high",
-          "notes_tr": "Birden fazla işçi, bazıları mavi ve siyah üniformalı, bazıları kask takıyor. Olay sonrası yoğun bir kalabalık oluşur."
+          "notes_tr": "Birden fazla işçi, bazıları mavi, bazıları koyu renkli kıyafetler giymiş, bazılarında kask var."
         },
         {
           "label": "machine",
           "confidence_hint": "high",
-          "notes_tr": "Büyük boyutlu, metalik yapıda üretim makineleri. Patlama, sağ taraftaki bir makinede meydana gelir."
+          "notes_tr": "Çeşitli büyük endüstriyel makineler, bazıları metal işleme veya pres tipi görünümde."
+        },
+        {
+          "label": "rack/structure",
+          "confidence_hint": "high",
+          "notes_tr": "Yüksek raf ve depolama yapıları, bazılarında malzeme yerleştirilmiş."
         },
         {
           "label": "smoke or flame",
           "confidence_hint": "high",
-          "notes_tr": "00:09'da ani alev ve yoğun duman çıkışı. Alevler birkaç saniye boyunca devam eder, ardından duman yoğunlaşır."
-        },
-        {
-          "label": "rack/structure",
-          "confidence_hint": "medium",
-          "notes_tr": "Makinelere yakın metal raf ve yapılar, muhtemelen malzeme depolama için kullanılıyor."
+          "notes_tr": "00:09'dan itibaren bir makineden alev ve yoğun duman çıkışı gözlemleniyor."
         },
         {
           "label": "load",
           "confidence_hint": "medium",
-          "notes_tr": "Ön planda plastikle kaplı ve ahşap paletler üzerindeki yükler, muhtemelen ürün veya malzeme."
+          "notes_tr": "Karton kutular ve plastik kaplı yükler, ön planda yer alıyor."
         }
       ],
       "detected_actions_tr": [
-        "İşçiler makineye yakın çalışırken",
+        "İşçiler makine başında çalışırken",
         "Ani alev ve duman patlaması",
         "İşçiler panikle kaçış",
-        "Yangın söndürme çabaları",
-        "Olay yerine çalışanların akın etmesi"
+        "Diğer çalışanlar olay yerine koşma",
+        "Duman ve alevin devam etmesi",
+        "İşçilerin müdahale etmeye çalışması"
       ],
-      "confidence_overall": 0.92,
+      "confidence_overall": 0.9,
       "inference": {
-        "latency_ms": 14385.5853999994,
-        "tokens_generated": 747
+        "latency_ms": 10607.879000002868,
+        "tokens_generated": 569
       },
-      "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi bir üretim alanında, işçiler makineye yakın çalışırken, 00:09'da bir makinede ani bir alev ve duman patlaması meydana gelir. İşçiler panikle kaçar ve ardından yangın söndürme çabaları başlar. Olay yerine diğer çalışanlar ve muhtemelen güvenlik ekipleri akın eder.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Birden fazla işçi, bazıları mavi ve siyah üniformalı, bazıları kask takıyor. Olay sonrası yoğun bir kalabalık oluşur.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük boyutlu, metalik yapıda üretim makineleri. Patlama, sağ taraftaki bir makinede meydana gelir.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:09'da ani alev ve yoğun duman çıkışı. Alevler birkaç saniye boyunca devam eder, ardından duman yoğunlaşır.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinelere yakın metal raf ve yapılar, muhtemelen malzeme depolama için kullanılıyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Ön planda plastikle kaplı ve ahşap paletler üzerindeki yükler, muhtemelen ürün veya malzeme.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler makineye yakın çalışırken\",\n    \"Ani alev ve duman patlaması\",\n    \"İşçiler panikle kaçış\",\n    \"Yangın söndürme çabaları\",\n    \"Olay yerine çalışanların akın etmesi\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinede ani alev ve duman patlaması, çalışanların hemen kaçmasına neden olur. Bu, yangın, patlama veya elektriksel arıza gibi ciddi bir tehlikeyi gösterir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 9.0\n    },\n    {\n      \"description_tr\": \"Patlamadan sonra duman yoğunluğu artar ve hava kalitesi tehlikeli seviyeye düşer. Bu, solunum yollarına zarar verebilir ve görsel engel olur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 10.0\n    },\n    {\n      \"description_tr\": \"İşçilerin panikle kaçışı, diğer çalışanlara veya makinelerle çarpışma riski oluşturur. Bu, ikinci bir kazaya yol açabilir.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 11.0\n    }\n  ],\n  \"confidence_overall\": 0.92\n}",
+      "raw_model_output": "{\n  \"scene_summary_tr\": \"Fabrika ortamında çalışan kişiler, makine başında görev yapıyor. 00:09'da bir makinede ani bir alev ve duman patlaması meydana gelir. Personel panikle kaçar ve diğer çalışanlar olay yerine koşar. Duman ve alev hâlâ devam ederken, bazı çalışanlar müdahale etmeye çalışır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Birden fazla işçi, bazıları mavi, bazıları koyu renkli kıyafetler giymiş, bazılarında kask var.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çeşitli büyük endüstriyel makineler, bazıları metal işleme veya pres tipi görünümde.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yüksek raf ve depolama yapıları, bazılarında malzeme yerleştirilmiş.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:09'dan itibaren bir makineden alev ve yoğun duman çıkışı gözlemleniyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Karton kutular ve plastik kaplı yükler, ön planda yer alıyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler makine başında çalışırken\",\n    \"Ani alev ve duman patlaması\",\n    \"İşçiler panikle kaçış\",\n    \"Diğer çalışanlar olay yerine koşma\",\n    \"Duman ve alevin devam etmesi\",\n    \"İşçilerin müdahale etmeye çalışması\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Bir makinede ani alev ve duman patlaması meydana geldi. Bu, yangın, patlama veya kimyasal sızıntı gibi ciddi bir tehlikeyi işaret edebilir. İşçilerin panikle kaçması, durumun acil olduğunu gösterir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 9.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
       "risk_events": [
         {
-          "description_tr": "Makinede ani alev ve duman patlaması, çalışanların hemen kaçmasına neden olur. Bu, yangın, patlama veya elektriksel arıza gibi ciddi bir tehlikeyi gösterir.",
+          "description_tr": "Bir makinede ani alev ve duman patlaması meydana geldi. Bu, yangın, patlama veya kimyasal sızıntı gibi ciddi bir tehlikeyi işaret edebilir. İşçilerin panikle kaçması, durumun acil olduğunu gösterir.",
           "severity": "critical",
           "confidence": 0.95,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
           "timestamp_sec": 9.0
-        },
-        {
-          "description_tr": "Patlamadan sonra duman yoğunluğu artar ve hava kalitesi tehlikeli seviyeye düşer. Bu, solunum yollarına zarar verebilir ve görsel engel olur.",
-          "severity": "high",
-          "confidence": 0.9,
-          "supporting_frame_count": 1,
-          "supporting_frame_positions": [],
-          "timestamp_sec": 10.0
-        },
-        {
-          "description_tr": "İşçilerin panikle kaçışı, diğer çalışanlara veya makinelerle çarpışma riski oluşturur. Bu, ikinci bir kazaya yol açabilir.",
-          "severity": "medium",
-          "confidence": 0.85,
-          "supporting_frame_count": 1,
-          "supporting_frame_positions": [],
-          "timestamp_sec": 11.0
         }
       ],
       "risk_flags_tr": [
-        "Makinede ani alev ve duman patlaması, çalışanların hemen kaçmasına neden olur. Bu, yangın, patlama veya elektriksel arıza gibi ciddi bir tehlikeyi gösterir.",
-        "Patlamadan sonra duman yoğunluğu artar ve hava kalitesi tehlikeli seviyeye düşer. Bu, solunum yollarına zarar verebilir ve görsel engel olur.",
-        "İşçilerin panikle kaçışı, diğer çalışanlara veya makinelerle çarpışma riski oluşturur. Bu, ikinci bir kazaya yol açabilir."
+        "Bir makinede ani alev ve duman patlaması meydana geldi. Bu, yangın, patlama veya kimyasal sızıntı gibi ciddi bir tehlikeyi işaret edebilir. İşçilerin panikle kaçması, durumun acil olduğunu gösterir."
       ],
-      "computed_confidence": 0.69,
+      "computed_confidence": 0.76,
       "reasoning_trace": "",
       "segment_start_sec": 0.0,
       "segment_end_sec": 35.43333333333333,
-      "created_at": "2026-08-27T18:06:14.673593+00:00"
+      "created_at": "2026-08-27T18:54:56.945000+00:00"
     },
     "rag_context": {
       "hypotheses": [
@@ -3290,6 +3741,71 @@
         }
       ]
     },
-    "event_timestamps": []
+    "event_timestamps": [
+      {
+        "result_id": "result-1",
+        "result_type": "incident",
+        "seconds": 9.0,
+        "timestamp": "00:09",
+        "end_time": "00:35",
+        "timestamp_sec": 9.0,
+        "duration": 26.0,
+        "event_type": "fire_explosion",
+        "event": "Makinede ani alev ve duman patlaması ile devam eden yangın/duman tehlikesi",
+        "hazard_mechanism": "Makineden çıkan alev ve dumanın personel üzerinde yanık, zehirlenme veya panik kaynaklı yaralanma riski oluşturması.",
+        "confidence": 0.95,
+        "severity": "critical",
+        "evidence_agreement": "corroborated",
+        "uncertain": false
+      },
+      {
+        "result_id": "result-2",
+        "result_type": "incident",
+        "seconds": 16.0,
+        "timestamp": "00:16",
+        "end_time": "00:35",
+        "timestamp_sec": 16.0,
+        "duration": 19.0,
+        "event_type": "gathering",
+        "event": "Tehlikeli bölgede personel toplanması (Gathering)",
+        "hazard_mechanism": "Yangın/duman tehlikesi altında çok sayıda personelin aynı alanda toplanması; toplu yaralanma, tahliye güçlüğü ve panik riski.",
+        "confidence": 0.9,
+        "severity": "critical",
+        "evidence_agreement": "corroborated",
+        "uncertain": false
+      },
+      {
+        "result_id": "result-5",
+        "result_type": "incident",
+        "seconds": 26.0,
+        "timestamp": "00:26",
+        "end_time": "00:26",
+        "timestamp_sec": 26.0,
+        "duration": 3.0,
+        "event_type": "immobile_person",
+        "event": "Personel Hareketsizliği (Track 22)",
+        "hazard_mechanism": "Hareketsizlik nedeniyle bayılma, yaralanma veya duman zehirlenmesi riski.",
+        "confidence": 0.75,
+        "severity": "high",
+        "evidence_agreement": "corroborated",
+        "uncertain": false
+      },
+      {
+        "result_id": "result-3",
+        "result_type": "incident",
+        "seconds": 29.0,
+        "timestamp": "00:29",
+        "end_time": "00:29",
+        "timestamp_sec": 29.0,
+        "duration": 1.0,
+        "event_type": "person_fall",
+        "event": "Personel düşmesi (Track 71)",
+        "hazard_mechanism": "Panik anında düşme sonucu travma, kırık veya bilinç kaybı riski.",
+        "confidence": 0.85,
+        "severity": "high",
+        "evidence_agreement": "corroborated",
+        "uncertain": false
+      }
+    ]
   }
 }

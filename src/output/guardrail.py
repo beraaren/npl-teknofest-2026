@@ -1,6 +1,7 @@
 """Karar çıktısı doğrulama, geriye uyum ve kanıt tutarlılığı."""
 from __future__ import annotations
 
+import inspect
 import json
 import re
 from typing import Any, Callable, Dict
@@ -24,7 +25,7 @@ class OutputGuardrail:
     def validate(
         self,
         raw_text: str,
-        generate_fn: Callable[[float], str],
+        generate_fn: Callable[..., str],
         rag_risk_level: str | None = None,
     ) -> Dict[str, Any]:
         """Yanıtı doğrular.
@@ -34,7 +35,11 @@ class OutputGuardrail:
         """
         last_error = None
         for attempt, temperature in enumerate(self.config.temperatures[: self.config.max_retries]):
-            text = raw_text if attempt == 0 else generate_fn(temperature)
+            text = (
+                raw_text
+                if attempt == 0
+                else self._retry_text(generate_fn, temperature, str(last_error))
+            )
             try:
                 parsed = self._normalize(self._extract_json(text))
                 output = AnalysisOutput(**parsed)
@@ -47,6 +52,29 @@ class OutputGuardrail:
 
         self.logger.error("Tüm retry'ler başarısız. Son hata: %s", last_error)
         return self._null_response()
+
+    @staticmethod
+    def _retry_text(
+        generate_fn: Callable[..., str], temperature: float, validation_error: str
+    ) -> str:
+        """Yeni retry sözleşmesini kullanır, tek-parametreli eski callback'leri korur."""
+        try:
+            parameters = tuple(inspect.signature(generate_fn).parameters.values())
+            accepts_error = any(
+                parameter.kind is inspect.Parameter.VAR_POSITIONAL
+                for parameter in parameters
+            ) or len([
+                parameter for parameter in parameters
+                if parameter.kind in {
+                    inspect.Parameter.POSITIONAL_ONLY,
+                    inspect.Parameter.POSITIONAL_OR_KEYWORD,
+                }
+            ]) >= 2
+        except (TypeError, ValueError):
+            accepts_error = False
+        if accepts_error:
+            return generate_fn(temperature, validation_error)
+        return generate_fn(temperature)
 
     @staticmethod
     def _extract_json(text: str) -> Dict[str, Any]:
@@ -170,6 +198,8 @@ class OutputGuardrail:
         # Şemayı ve aşağı akıştaki araç yürütücüsünü korumak için bu eski biçimi
         # Pydantic doğrulamasından önce kanonik çağrı nesnesine dönüştür.
         tool_calls = parsed["triggered_mock_tools"]
+        if isinstance(tool_calls, str):
+            tool_calls = [tool_calls]
         if isinstance(tool_calls, list):
             parsed["triggered_mock_tools"] = [
                 {"tool_name": tool_call, "params": {}}

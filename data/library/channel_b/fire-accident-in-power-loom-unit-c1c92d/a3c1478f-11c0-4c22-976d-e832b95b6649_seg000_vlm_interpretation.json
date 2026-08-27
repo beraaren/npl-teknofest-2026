@@ -1,0 +1,68 @@
+{
+  "packet_id": "a3c1478f-11c0-4c22-976d-e832b95b6649",
+  "video_id": "fire-accident-in-power-loom-unit-c1c92d",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir tekstil atölyesinde, birkaç dokuma makinesi çalışırken, bir işçi makinelere yaklaşarak kontrol ve müdahale yapmaktadır. İşçi, makineye yakın bir mesafede hareket ederken, güvenlik ekipmanı takmamıştır.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Bir erkek işçi, beyaz gömlek ve kısa etek giymiş, ayakkabı takmamış durumda makineye yaklaşmaktadır."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Çok sayıda eski model dokuma makinesi, yeşil renkli, hareket halindedir. Makinelerin bazılarında büyük rulo ve kumaşlar görülmektedir."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Makinelerin yanında ve sağ tarafta kumaş, kâğıt veya benzeri malzemelerin yığıldığı alanlar mevcuttur."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Makinelerin üzerinde ve yanlarında kablolar, borular ve destek yapıları yer almaktadır."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, atölyenin derinliklerinden yaklaşarak bir dokuma makinesine doğru yürür.",
+    "İşçi, makinenin üzerindeki bir kolu veya mekanizmayı eliyle hareket ettirir.",
+    "İşçi, makinenin çalışmasını izlerken durur.",
+    "Makineler, kumaş üretimi için sürekli olarak hareket halindedir."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 13307.702899997821,
+    "tokens_generated": 666
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, birkaç dokuma makinesi çalışırken, bir işçi makinelere yaklaşarak kontrol ve müdahale yapmaktadır. İşçi, makineye yakın bir mesafede hareket ederken, güvenlik ekipmanı takmamıştır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Bir erkek işçi, beyaz gömlek ve kısa etek giymiş, ayakkabı takmamış durumda makineye yaklaşmaktadır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çok sayıda eski model dokuma makinesi, yeşil renkli, hareket halindedir. Makinelerin bazılarında büyük rulo ve kumaşlar görülmektedir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinelerin yanında ve sağ tarafta kumaş, kâğıt veya benzeri malzemelerin yığıldığı alanlar mevcuttur.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinelerin üzerinde ve yanlarında kablolar, borular ve destek yapıları yer almaktadır.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, atölyenin derinliklerinden yaklaşarak bir dokuma makinesine doğru yürür.\",\n    \"İşçi, makinenin üzerindeki bir kolu veya mekanizmayı eliyle hareket ettirir.\",\n    \"İşçi, makinenin çalışmasını izlerken durur.\",\n    \"Makineler, kumaş üretimi için sürekli olarak hareket halindedir.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, hareket halindeki dokuma makinesine yakın mesafede çalışırken, güvenlik ayakkabısı veya koruyucu eldiven gibi kişisel koruyucu ekipman (PPE) kullanmamaktadır. Bu, makine parçalarına temas halinde ciddi yaralanma riski oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 40.0\n    },\n    {\n      \"description_tr\": \"İşçi, makinenin hareketli parçalarına eliyle müdahale ederken, makinenin durdurulmadığı veya emniyet mekanizmalarının aktif olmadığı gözlemlenmektedir. Bu, kesilme veya sıkışma riski doğurur.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 42.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, hareket halindeki dokuma makinesine yakın mesafede çalışırken, güvenlik ayakkabısı veya koruyucu eldiven gibi kişisel koruyucu ekipman (PPE) kullanmamaktadır. Bu, makine parçalarına temas halinde ciddi yaralanma riski oluşturur.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 40.0
+    },
+    {
+      "description_tr": "İşçi, makinenin hareketli parçalarına eliyle müdahale ederken, makinenin durdurulmadığı veya emniyet mekanizmalarının aktif olmadığı gözlemlenmektedir. Bu, kesilme veya sıkışma riski doğurur.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 42.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, hareket halindeki dokuma makinesine yakın mesafede çalışırken, güvenlik ayakkabısı veya koruyucu eldiven gibi kişisel koruyucu ekipman (PPE) kullanmamaktadır. Bu, makine parçalarına temas halinde ciddi yaralanma riski oluşturur.",
+    "İşçi, makinenin hareketli parçalarına eliyle müdahale ederken, makinenin durdurulmadığı veya emniyet mekanizmalarının aktif olmadığı gözlemlenmektedir. Bu, kesilme veya sıkışma riski doğurur."
+  ],
+  "computed_confidence": 0.7037,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 48.4,
+  "created_at": "2026-08-27T18:52:49.146100+00:00"
+}

@@ -1,0 +1,65 @@
+{
+  "packet_id": "d5e4b397-925f-442b-a24c-e86b6d197ea1",
+  "video_id": "always-wear-safety-harness-whenever-you-38f6d5",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Inşaat alanında, bir kırık kolu (boom) ile çalışan bir yükseklikte çalışma makinesi (kuleli kırık kolu) göze çarpmaktadır. Makine, bir bina inşaatının yanında yer alırken, çevrede asfaltlanmış bir yol, işçiler ve bazı inşaat malzemeleri bulunmaktadır. Video süresince makine devrildiğinde bir kişi kurtulurken, başka bir kişi de makinenin altında kalmaktadır.",
+  "detected_entities": [
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Kırmızı ve siyah renkli, yükseklikte çalışma için kullanılan bir kırık kolu (boom) makinesi. Bu, muhtemelen bir kuleli kırık kolu (boom lift) olabilir."
+    },
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İşçi kıyafetleri giymiş birkaç kişi görülüyor. Birisi turuncu güvenlik yeleği giymiş, diğerleri koyu renk kıyafetlerde."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Yapıya ait betonarme yapılar ve iskeleler mevcut."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "medium",
+      "notes_tr": "Makinenin alt kısmında bir araç gövdesi görünür ancak tam olarak tanımlanamaz. Bu, kırık kolu makinesinin tabanı olabilir."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "low",
+      "notes_tr": "Makinenin kolu üzerinde bir yük taşıdığı kesin değildir, ancak kabinde bir kişi olduğu için yük olabilir."
+    }
+  ],
+  "detected_actions_tr": [
+    "Makine yükseklikte çalışırken devrilir.",
+    "İşçiler asfaltlı yolda yürüyor.",
+    "Bir kişi makinenin devrilmesinden hemen önce kabinde olup, kurtulur.",
+    "Bir kişi makinenin devrilmesinden sonra kabinin altında kalır.",
+    "İşçiler olay yerine doğru koşar."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 14220.106500004476,
+    "tokens_generated": 650
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Inşaat alanında, bir kırık kolu (boom) ile çalışan bir yükseklikte çalışma makinesi (kuleli kırık kolu) göze çarpmaktadır. Makine, bir bina inşaatının yanında yer alırken, çevrede asfaltlanmış bir yol, işçiler ve bazı inşaat malzemeleri bulunmaktadır. Video süresince makine devrildiğinde bir kişi kurtulurken, başka bir kişi de makinenin altında kalmaktadır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kırmızı ve siyah renkli, yükseklikte çalışma için kullanılan bir kırık kolu (boom) makinesi. Bu, muhtemelen bir kuleli kırık kolu (boom lift) olabilir.\"\n    },\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi kıyafetleri giymiş birkaç kişi görülüyor. Birisi turuncu güvenlik yeleği giymiş, diğerleri koyu renk kıyafetlerde.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yapıya ait betonarme yapılar ve iskeleler mevcut.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinenin alt kısmında bir araç gövdesi görünür ancak tam olarak tanımlanamaz. Bu, kırık kolu makinesinin tabanı olabilir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Makinenin kolu üzerinde bir yük taşıdığı kesin değildir, ancak kabinde bir kişi olduğu için yük olabilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Makine yükseklikte çalışırken devrilir.\",\n    \"İşçiler asfaltlı yolda yürüyor.\",\n    \"Bir kişi makinenin devrilmesinden hemen önce kabinde olup, kurtulur.\",\n    \"Bir kişi makinenin devrilmesinden sonra kabinin altında kalır.\",\n    \"İşçiler olay yerine doğru koşar.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yükseklikte çalışma makinesi (kuleli kırık kolu) devrilir ve bir işçi kabinin altında kalır. Bu, ciddi yaralanma veya ölüm riski taşır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 46.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Yükseklikte çalışma makinesi (kuleli kırık kolu) devrilir ve bir işçi kabinin altında kalır. Bu, ciddi yaralanma veya ölüm riski taşır.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 46.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Yükseklikte çalışma makinesi (kuleli kırık kolu) devrilir ve bir işçi kabinin altında kalır. Bu, ciddi yaralanma veya ölüm riski taşır."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 52.6,
+  "created_at": "2026-08-27T18:48:56.396254+00:00"
+}

@@ -2,44 +2,322 @@
   "slug": "daily-safety-failsthis-is-you-must-pay-a-abe7b2",
   "video_file": "videos/Daily Safety Fails🤯This is You Must Pay Attention🤯- PLEASE Stay Safe Today.mp4",
   "video_name": "Daily Safety Fails🤯This is You Must Pay Attention🤯- PLEASE Stay Safe Today",
-  "analyzed_at": "2026-08-27T18:00:19.955023+00:00",
-  "analysis_seconds": 115.2,
+  "analyzed_at": "2026-08-27T18:52:13.516378+00:00",
+  "analysis_seconds": 33.4,
   "video": {
     "duration_sec": 19.33,
     "fps": 30.0,
     "width": 640,
     "height": 352
   },
-  "summary": "Bilmiyorum",
-  "headline": "Olağan operasyon",
-  "risk": "Düşük",
-  "overall_risk": "unknown",
-  "scene_context": {},
+  "summary": "Sanayi üretim alanında, bir makineden 00:08 civarında ani bir patlama ve alevler çıktığı, personelin kaçışa geçtiği ve bir forkliftin olay yerinde bulunduğu görsel olarak doğrulanmıştır. Bu kritik olay bağlamında, tespit edilen KKD eksiklikleri (baret, yelek) ve araç-insan yakınlığı, patlama riski altında ek yaralanma potansiyeli taşıyan bağlamsal bulgular olarak değerlendirilmiştir. Patlamanın kendisi bir 'olay' (incident) olarak sınıflandırılmış, diğer tespitler ise mevcut tehlike ortamında riski artıran 'bağlamsal bulgular' (contextual_finding) olarak raporlanmıştır. Görüntü kalitesi ve iz süreleri nedeniyle bazı geometrik ölçümler belirsizdir.",
+  "headline": "Makineden ani patlama ve alev çıkışı, personelin kaçışa geçmesi",
+  "risk": "Yüksek",
+  "overall_risk": "critical",
+  "scene_context": {
+    "environment": {
+      "type": "inferred",
+      "description": "Sanayi bir üretim alanı. Makine, forklift ve personel içeren bir çalışma sahası. Patlama sonrası duman ve alevler mevcuttur.",
+      "visible_entities": {
+        "arac": 212,
+        "insan": 18
+      },
+      "visual_entities": [
+        "person",
+        "vehicle",
+        "machine",
+        "smoke or flame",
+        "rack/structure"
+      ],
+      "visibility_limits": []
+    },
+    "activities": [
+      {
+        "activity": "Makineden ani patlama ve alev çıkışı",
+        "time_range": {
+          "start_sec": 8.0,
+          "end_sec": 8.0
+        },
+        "participants": [],
+        "operational_state": "critical_failure",
+        "evidence": [
+          "visual"
+        ]
+      },
+      {
+        "activity": "Personelin kaçış hareketi",
+        "time_range": {
+          "start_sec": 8.0,
+          "end_sec": 19.0
+        },
+        "participants": [],
+        "operational_state": "evacuation",
+        "evidence": [
+          "visual"
+        ]
+      },
+      {
+        "activity": "Forkliftin patlama bölgesinde beklemesi",
+        "time_range": {
+          "start_sec": 8.0,
+          "end_sec": 19.0
+        },
+        "participants": [],
+        "operational_state": "stationary_near_hazard",
+        "evidence": [
+          "visual"
+        ]
+      }
+    ],
+    "zones": [
+      {
+        "id": "production_zone",
+        "purpose": "manufacturing",
+        "active_operations": [
+          "machine_operation",
+          "forklift_activity"
+        ],
+        "access_constraints": "restricted_due_to_incident"
+      }
+    ],
+    "context_uncertainties": [
+      "Patlamanın tam nedeni ve yayılımı görüntüde net değildir.",
+      "Personellerin tam KKD durumları (özellikle uzak mesafedekiler) düşük çözünürlük nedeniyle %100 doğrulanamamıştır."
+    ]
+  },
   "results": [
     {
-      "result_id": "null-response",
-      "result_type": "uncertain_observation",
-      "time": "00:00",
-      "event": "Karar üretilemedi.",
-      "event_type": "unknown",
-      "severity": "unknown",
-      "uncertain": true,
-      "uncertainty_reason": "Model çıktısı şemaya uymadı.",
+      "result_id": "result-1",
+      "result_type": "incident",
+      "time": "00:08",
+      "end_time": "00:08",
+      "timestamp_sec": 8.0,
+      "duration": 0.0,
+      "event": "Makineden ani patlama ve alev çıkışı, personelin kaçışa geçmesi",
+      "event_type": "fire_explosion",
+      "subjects": [
+        "insan",
+        "machine",
+        "vehicle"
+      ],
+      "zone": "production_zone",
+      "hazard_mechanism": "Makineden kaynaklanan ani patlama ve alevler; personel ve forklift için doğrudan yanık, travma ve ezilme riski oluşturmuştur. Kaçış hareketi panik ve çarpışma riskini artırmıştır.",
+      "severity": "critical",
       "evidence": {
-        "agreement": "insufficient"
-      }
+        "geometric": {
+          "supports": false,
+          "observations": [],
+          "limitations": [
+            "Patlama fiziksel boyutları ölçülemez."
+          ]
+        },
+        "visual": {
+          "supports": true,
+          "observations": [
+            "VLM: Makineden ani patlama, alevler ve duman tespit edildi.",
+            "VLM: Personel kaçış hareketi sergiledi.",
+            "VLM: Forklift olay yerinde."
+          ],
+          "limitations": [
+            "Patlamanın şiddeti ve yayılım alanı tam olarak ölçülemedi."
+          ]
+        },
+        "rag": {
+          "supports": false,
+          "observations": [],
+          "limitations": [
+            "RAG bu spesifik patlama senaryosunu önceden tahmin etmemiştir."
+          ]
+        },
+        "agreement": "corroborated",
+        "resolution": "Görsel kanıtlar (VLM) patlama ve kaçış eylemini yüksek güvenle doğrulamaktadır. Geometrik veriler bu tür ani olaylar için yetersizdir ancak görsel kanıt yeterlidir."
+      },
+      "uncertain": false,
+      "uncertainty_reason": "",
+      "confidence": 0.95
+    },
+    {
+      "result_id": "result-2",
+      "result_type": "contextual_finding",
+      "time": "00:00",
+      "end_time": "00:19",
+      "timestamp_sec": 0.0,
+      "duration": 19.0,
+      "event": "Personellerde KKD (baret, yelek) eksikliği",
+      "event_type": "ppe_missing",
+      "subjects": [
+        "insan_2",
+        "insan_7",
+        "insan_8"
+      ],
+      "zone": "production_zone",
+      "hazard_mechanism": "Patlama ve parçacık yayılımı durumunda kafa travması ve görünmezlik kaynaklı ezilme riski. KKD eksikliği, patlama sonucu oluşabilecek yaralanmaların şiddetini artırır.",
+      "severity": "high",
+      "evidence": {
+        "geometric": {
+          "supports": true,
+          "observations": [
+            "Track 2, 7, 8 üzerinde baret/yelek tespiti yapılamadı."
+          ],
+          "limitations": [
+            "Uzak mesafedeki personellerde tespit güveni düşüktür (0.7)."
+          ]
+        },
+        "visual": {
+          "supports": true,
+          "observations": [
+            "Personellerin baş ve gövde bölgelerinde koruyucu ekipman görünmemektedir."
+          ],
+          "limitations": [
+            "Görüntü kalitesi ve açı nedeniyle bazı KKD'ler gizlenmiş olabilir."
+          ]
+        },
+        "rag": {
+          "supports": true,
+          "observations": [
+            "RAG hipotezi 'ppe_missing' ile uyumlu."
+          ],
+          "limitations": [
+            "RAG tek başına kanıt değildir."
+          ]
+        },
+        "agreement": "corroborated",
+        "resolution": "Geometrik ve görsel kanıtlar KKD eksikliğini desteklemektedir. RAG hipotezi bu durumu doğrular niteliktedir."
+      },
+      "uncertain": false,
+      "uncertainty_reason": "",
+      "confidence": 0.75
+    },
+    {
+      "result_id": "result-3",
+      "result_type": "contextual_finding",
+      "time": "00:17",
+      "end_time": "00:17",
+      "timestamp_sec": 17.0,
+      "duration": 0.0,
+      "event": "Forklift ve personel arasında tehlikeli yakınlık",
+      "event_type": "dangerous_proximity",
+      "subjects": [
+        "arac_1",
+        "insan_7"
+      ],
+      "zone": "production_zone",
+      "hazard_mechanism": "Patlama sonrası panik ortamında forklift ile personel arasındaki mesafenin azalması; çarpışma ve ezilme riski. Patlama nedeniyle dikkat dağılması riski artmıştır.",
+      "severity": "medium",
+      "evidence": {
+        "geometric": {
+          "supports": true,
+          "observations": [
+            "Araç ve insan merkezi arası mesafe ~65 piksel (güvenli sınırın altında)."
+          ],
+          "limitations": [
+            "Piksel bazlı mesafe tahmini derinlik bilgisini tam yansıtmaz (güven: 0.354)."
+          ]
+        },
+        "visual": {
+          "supports": true,
+          "observations": [
+            "Forklift ve personelin aynı alanda, yakın mesafede olduğu görülmektedir."
+          ],
+          "limitations": [
+            "Hareket yönleri ve niyet tam olarak anlaşılamamıştır."
+          ]
+        },
+        "rag": {
+          "supports": true,
+          "observations": [
+            "RAG hipotezi 'dangerous_proximity' ile uyumlu."
+          ],
+          "limitations": [
+            "Mesafe ölçümü belirsizdir."
+          ]
+        },
+        "agreement": "single_source",
+        "resolution": "Geometrik veri mesafeyi gösterse de güven skoru düşüktür. Görsel kanıt yakınlığı destekler ancak kesin çarpışma riski için derinlik bilgisi eksiktir. Patlama bağlamında risk artmıştır."
+      },
+      "uncertain": false,
+      "uncertainty_reason": "",
+      "confidence": 0.65
     }
   ],
-  "uncertain": true,
-  "uncertainty_reason": "Model çıktısı şemaya uymadı.",
+  "uncertain": false,
+  "uncertainty_reason": "",
   "confidence": 0.0,
-  "reasoning": "Model çıktısı şemaya uymadı.",
+  "reasoning": "Görsel kanıtlar (VLM) 00:08'de gerçekleşen kritik bir patlama olayını ve personelin kaçışını net bir şekilde doğrulamaktadır. Bu olay, 'incident' olarak sınıflandırılmış ve 'critical' seviyede risk taşımaktadır. KKD eksiklikleri (result-2) ve araç-insan yakınlığı (result-3), patlama gibi ani bir tehlike anında yaralanma riskini artıran bağlamsal bulgulardır. RAG hipotezleri bu bulguları desteklemektedir ancak tek başına kanıt değildir. Geometrik verilerdeki düşük güven skorları (özellikle mesafe ölçümü) ve görüntü kalitesi sınırlamaları dikkate alınarak, patlama olayı dışındaki bulgular için 'contextual_finding' tipi kullanılmıştır. Tüm kanıtlar birleştiğinde, sahada acil müdahale gerektiren kritik bir durum mevcuttur.",
   "actions": [
-    "İnsan gözetiminde tekrar analiz yap."
+    "sound_alarm",
+    "secure_area",
+    "call_health_team",
+    "record_incident",
+    "notify_supervisor"
   ],
-  "events": [],
-  "triggered_mock_tools": [],
-  "tool_execution_results": [],
+  "events": [
+    {
+      "time": "00:08",
+      "event": "Makineden ani patlama ve alev çıkışı, personelin kaçışa geçmesi",
+      "event_type": "fire_explosion",
+      "confidence": 0.95,
+      "timestamp_sec": 8.0,
+      "duration": 0.0,
+      "end_time": "00:08",
+      "result_id": "result-1",
+      "severity": "critical"
+    }
+  ],
+  "triggered_mock_tools": [
+    {
+      "tool_name": "sound_alarm",
+      "params": {}
+    },
+    {
+      "tool_name": "secure_area",
+      "params": {}
+    },
+    {
+      "tool_name": "call_health_team",
+      "params": {}
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {}
+    },
+    {
+      "tool_name": "notify_supervisor",
+      "params": {}
+    }
+  ],
+  "tool_execution_results": [
+    {
+      "status": "success",
+      "tool": "sound_alarm",
+      "params": {},
+      "mock_result": "sound_alarm başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "secure_area",
+      "params": {},
+      "mock_result": "secure_area başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "call_health_team",
+      "params": {},
+      "mock_result": "call_health_team başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "record_incident",
+      "params": {},
+      "mock_result": "record_incident başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "notify_supervisor",
+      "params": {},
+      "mock_result": "notify_supervisor başarıyla simüle edildi."
+    }
+  ],
   "metadata": {
     "vlm_backend": "server",
     "channel_b_mode": "video",
@@ -121,11 +399,11 @@
       }
     ],
     "vlm_interpretation": {
-      "packet_id": "31a5cf9f-2da5-4d4f-99f6-0438c6d06996",
+      "packet_id": "c50f1fc3-a9e0-44bb-9bdf-829edaead2d0",
       "video_id": "daily-safety-failsthis-is-you-must-pay-a-abe7b2",
       "model_name": "vlm",
       "model_backend": "server",
-      "scene_summary_tr": "Sanayi bir üretim tesisi içinde, bir personel makineye yakın bir alanda çalışırken, bir forklift makinenin hemen yanında duruyor. 00:07'de makineden ani bir patlama ve alevler çıkıyor, personel kaçmaya başlıyor. Forklift sürücüsü durumu fark ederek geri çekiliyor. Patlamadan sonra duman ve parçalar yerde yayılıyor.",
+      "scene_summary_tr": "Sanayi bir üretim alanında, bir personel makineye yakın bir alanda çalışırken, yanındaki bir makineden ani bir patlama ve alevler çıkıyor. Patlamadan sonra personel kaçmaya başlıyor ve yerde parçalar dağılıyor. Aynı anda, bir forklift makinenin hemen yanında duruyor ve patlamadan etkileniyor.",
       "detected_entities": [
         {
           "label": "person",
@@ -135,56 +413,55 @@
         {
           "label": "vehicle",
           "confidence_hint": "high",
-          "notes_tr": "Sarı renkli forklift, makinenin hemen yanında duruyor ve patlamadan sonra geri çekiliyor."
+          "notes_tr": "Sarı renkli forklift, patlama sırasında makinenin hemen yanında duruyor. Tipi forklift olarak net görünüyor."
         },
         {
           "label": "machine",
           "confidence_hint": "high",
-          "notes_tr": "Büyük, krem renkli ve yeşil yapılarla çevrili üretim makinesi, patlama noktasıdır."
+          "notes_tr": "Patlama meydana gelen büyük, krem renkli makine. Üretim hattının bir parçası gibi görünüyor."
         },
         {
           "label": "smoke or flame",
           "confidence_hint": "high",
-          "notes_tr": "00:07'den itibaren makineden alevler ve duman çıkıyor."
+          "notes_tr": "Patlamadan sonra alevler ve duman yükseliyor. Yerde parçalar dağılıyor."
         },
         {
           "label": "rack/structure",
           "confidence_hint": "medium",
-          "notes_tr": "Sarı korkuluklar ve metal yapılar, üretim hattının bir parçası."
+          "notes_tr": "Sarı korkuluklar ve üretim hattı yapıları, iş yerinin düzenli bir yapısını gösteriyor."
         }
       ],
       "detected_actions_tr": [
         "Personel makineye yakın bir alanda çalışırken",
-        "Forklift makinenin yanında duruyor",
         "Makineden ani bir patlama ve alevler çıkıyor",
         "Personel kaçmaya başlıyor",
-        "Forklift geri çekiliyor",
-        "Duman ve parçalar yerde yayılıyor"
+        "Forklift makinenin yanında duruyor ve patlamadan etkileniyor",
+        "Yerde parçalar dağılıyor ve duman yükseliyor"
       ],
       "confidence_overall": 0.9,
       "inference": {
-        "latency_ms": 9780.287800000224,
-        "tokens_generated": 555
+        "latency_ms": 10090.258700001868,
+        "tokens_generated": 566
       },
-      "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi bir üretim tesisi içinde, bir personel makineye yakın bir alanda çalışırken, bir forklift makinenin hemen yanında duruyor. 00:07'de makineden ani bir patlama ve alevler çıkıyor, personel kaçmaya başlıyor. Forklift sürücüsü durumu fark ederek geri çekiliyor. Patlamadan sonra duman ve parçalar yerde yayılıyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makineye yakın bir alanda çalışan bir kişi, patlamadan sonra kaçıyor.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli forklift, makinenin hemen yanında duruyor ve patlamadan sonra geri çekiliyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, krem renkli ve yeşil yapılarla çevrili üretim makinesi, patlama noktasıdır.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:07'den itibaren makineden alevler ve duman çıkıyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sarı korkuluklar ve metal yapılar, üretim hattının bir parçası.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Personel makineye yakın bir alanda çalışırken\",\n    \"Forklift makinenin yanında duruyor\",\n    \"Makineden ani bir patlama ve alevler çıkıyor\",\n    \"Personel kaçmaya başlıyor\",\n    \"Forklift geri çekiliyor\",\n    \"Duman ve parçalar yerde yayılıyor\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makineden ani bir patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 7.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+      "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi bir üretim alanında, bir personel makineye yakın bir alanda çalışırken, yanındaki bir makineden ani bir patlama ve alevler çıkıyor. Patlamadan sonra personel kaçmaya başlıyor ve yerde parçalar dağılıyor. Aynı anda, bir forklift makinenin hemen yanında duruyor ve patlamadan etkileniyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makineye yakın bir alanda çalışan bir kişi, patlamadan sonra kaçıyor.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli forklift, patlama sırasında makinenin hemen yanında duruyor. Tipi forklift olarak net görünüyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Patlama meydana gelen büyük, krem renkli makine. Üretim hattının bir parçası gibi görünüyor.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Patlamadan sonra alevler ve duman yükseliyor. Yerde parçalar dağılıyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sarı korkuluklar ve üretim hattı yapıları, iş yerinin düzenli bir yapısını gösteriyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Personel makineye yakın bir alanda çalışırken\",\n    \"Makineden ani bir patlama ve alevler çıkıyor\",\n    \"Personel kaçmaya başlıyor\",\n    \"Forklift makinenin yanında duruyor ve patlamadan etkileniyor\",\n    \"Yerde parçalar dağılıyor ve duman yükseliyor\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makineden ani bir patlama meydana gelmiş, alevler ve duman çıkarken personel hemen kaçmaya başlamış. Bu, ciddi yaralanma veya ölüm riski taşımaktadır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 8.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
       "risk_events": [
         {
-          "description_tr": "Makineden ani bir patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşır.",
+          "description_tr": "Makineden ani bir patlama meydana gelmiş, alevler ve duman çıkarken personel hemen kaçmaya başlamış. Bu, ciddi yaralanma veya ölüm riski taşımaktadır.",
           "severity": "critical",
           "confidence": 0.95,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
-          "timestamp_sec": 7.0
+          "timestamp_sec": 8.0
         }
       ],
       "risk_flags_tr": [
-        "Makineden ani bir patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşır."
+        "Makineden ani bir patlama meydana gelmiş, alevler ve duman çıkarken personel hemen kaçmaya başlamış. Bu, ciddi yaralanma veya ölüm riski taşımaktadır."
       ],
       "computed_confidence": 0.76,
       "reasoning_trace": "",
       "segment_start_sec": 0.0,
       "segment_end_sec": 19.333333333333332,
-      "created_at": "2026-08-27T17:58:34.610834+00:00"
+      "created_at": "2026-08-27T18:51:50.265819+00:00"
     },
     "rag_context": {
       "hypotheses": [
@@ -822,6 +1099,23 @@
         }
       ]
     },
-    "event_timestamps": []
+    "event_timestamps": [
+      {
+        "result_id": "result-1",
+        "result_type": "incident",
+        "seconds": 8.0,
+        "timestamp": "00:08",
+        "end_time": "00:08",
+        "timestamp_sec": 8.0,
+        "duration": 0.0,
+        "event_type": "fire_explosion",
+        "event": "Makineden ani patlama ve alev çıkışı, personelin kaçışa geçmesi",
+        "hazard_mechanism": "Makineden kaynaklanan ani patlama ve alevler; personel ve forklift için doğrudan yanık, travma ve ezilme riski oluşturmuştur. Kaçış hareketi panik ve çarpışma riskini artırmıştır.",
+        "confidence": 0.95,
+        "severity": "critical",
+        "evidence_agreement": "corroborated",
+        "uncertain": false
+      }
+    ]
   }
 }

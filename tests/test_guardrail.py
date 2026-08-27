@@ -81,6 +81,37 @@ def test_guardrail_normalizes_string_mock_tool_calls():
     ]
 
 
+def test_guardrail_accepts_canonical_high_result_and_top_level_tool_string():
+    raw = '''
+    {
+        "summary": "Hareketli makine ile yaya arasında ezilme riski var.",
+        "results": [{
+            "result_id": "result-1",
+            "result_type": "incident",
+            "time": "00:10",
+            "timestamp_sec": 10,
+            "event": "Yaya, hareketli makinenin çalışma alanında.",
+            "event_type": "dangerous_proximity",
+            "hazard_mechanism": "Makinenin çarpması veya ezmesi",
+            "severity": "high",
+            "evidence": {"agreement": "corroborated"}
+        }],
+        "risk": "Yüksek",
+        "overall_risk": "high",
+        "actions": ["Makineyi durdur ve alanı ayır."],
+        "reasoning": "Geometrik ve görsel kanıtlar aynı tehlikeyi destekliyor.",
+        "triggered_mock_tools": "secure_area"
+    }
+    '''
+    guardrail = OutputGuardrail(GuardrailConfig())
+    result = guardrail.validate(raw, lambda t: raw)
+
+    assert result["summary"] != "Bilmiyorum"
+    assert result["overall_risk"] == "high"
+    assert result["results"][0]["severity"] == "high"
+    assert result["triggered_mock_tools"] == [{"tool_name": "secure_area", "params": {}}]
+
+
 def test_normalize_time_variants():
     assert OutputGuardrail._normalize_time("0:01-0:04") == "00:01"
     assert OutputGuardrail._normalize_time("12:34") == "12:34"

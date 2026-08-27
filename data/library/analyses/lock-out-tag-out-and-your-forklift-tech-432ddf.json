@@ -2,44 +2,186 @@
   "slug": "lock-out-tag-out-and-your-forklift-tech-432ddf",
   "video_file": "videos/Lock Out_Tag Out and Your Forklift Tech.mp4",
   "video_name": "Lock Out_Tag Out and Your Forklift Tech",
-  "analyzed_at": "2026-08-27T18:20:36.466722+00:00",
-  "analysis_seconds": 80.7,
+  "analyzed_at": "2026-08-27T19:01:46.342308+00:00",
+  "analysis_seconds": 25.7,
   "video": {
     "duration_sec": 9.0,
     "fps": 25.0,
     "width": 512,
     "height": 288
   },
-  "summary": "Bilmiyorum",
-  "headline": "Olağan operasyon",
-  "risk": "Düşük",
+  "summary": "Görüntüde, sarı bir forkliftin ön tekerleği yanında diz çökmüş ve ardından kalkan bir işçi gözlemlenmiştir. Arka planda hareketsiz bir Bobcat makinesi bulunmaktadır. VLM (Görsel Dil Modeli), işçinin kırmızı güvenlik yeleği giydiğini ve forkliftin hareketsiz olduğunu rapor etmiştir. Ancak, aday gözlem verileri (00:07) aynı işçi için baret ve yelek eksikliği bildirmektedir. Bu iki kaynak (VLM ve Aday Gözlem) çelişmektedir. VLM'nin 'yelek var' tespiti ile adayın 'yelek yok' tespiti çakışmamaktadır. Ayrıca, forkliftin operasyonel durumu (motoru kapalı mı, frenli mi) ve işçinin tam olarak ne yaptığı (bakım mı, temizlik mi) belirsizdir. Bu belirsizlikler nedeniyle, KKD eksikliği ve tehlikeli yakınlık riski kesin olarak doğrulanamamıştır.",
+  "headline": "Orta riskli durum",
+  "risk": "Orta",
   "overall_risk": "unknown",
-  "scene_context": {},
+  "scene_context": {
+    "environment": {
+      "type": "inferred",
+      "description": "Bir iş yerinde, sarı bir forkliftin yanında bir işçi, forkliftin ön tekerleğinin yanında diz çökmüş durumda. İşçi, forkliftin altına doğru eğilerek bir işlem yapıyor gibi görünüyor. Arka planda beyaz ve kırmızı renkli bir Bobcat makinesi duruyor. İşçi, forkliftin ön tekerleğinin yanında kalkıp ayakta durmaya başlıyor.",
+      "visible_entities": {
+        "arac": 187,
+        "baret": 18,
+        "insan": 8
+      },
+      "visual_entities": [
+        "person",
+        "machine",
+        "rack/structure"
+      ],
+      "visibility_limits": []
+    },
+    "activities": [
+      {
+        "activity": "İşçi forkliftin ön tekerleğinin yanında diz çökmüş durumda.",
+        "time_range": {
+          "start_sec": 0.0,
+          "end_sec": 0.0
+        },
+        "participants": [],
+        "operational_state": "unknown",
+        "evidence": [
+          "visual"
+        ]
+      },
+      {
+        "activity": "İşçi forkliftin altına eğilerek bir işlem yapıyor gibi görünüyor.",
+        "time_range": {
+          "start_sec": 0.0,
+          "end_sec": 0.0
+        },
+        "participants": [],
+        "operational_state": "unknown",
+        "evidence": [
+          "visual"
+        ]
+      },
+      {
+        "activity": "İşçi kalkarak ayakta durmaya başlıyor.",
+        "time_range": {
+          "start_sec": 0.0,
+          "end_sec": 0.0
+        },
+        "participants": [],
+        "operational_state": "unknown",
+        "evidence": [
+          "visual"
+        ]
+      },
+      {
+        "activity": "Forklift hareketsiz duruyor.",
+        "time_range": {
+          "start_sec": 0.0,
+          "end_sec": 0.0
+        },
+        "participants": [],
+        "operational_state": "unknown",
+        "evidence": [
+          "visual"
+        ]
+      }
+    ],
+    "zones": [
+      {
+        "id": "unknown",
+        "purpose": "unknown",
+        "active_operations": [],
+        "access_constraints": "unknown"
+      }
+    ],
+    "context_uncertainties": [
+      "Forkliftin operasyonel durumu (motor kapalı/frenli) belirsiz.",
+      "İşçinin KKD durumu (VLM ve aday gözlem çelişkili).",
+      "İşçinin tam olarak yaptığı işlem belirsiz."
+    ]
+  },
   "results": [
     {
-      "result_id": "null-response",
+      "result_id": "result-1",
       "result_type": "uncertain_observation",
       "time": "00:00",
-      "event": "Karar üretilemedi.",
-      "event_type": "unknown",
+      "end_time": "00:09",
+      "timestamp_sec": 0.0,
+      "duration": 9.0,
+      "event": "Forklift ön tekerleği yanında işçi varlığı ve potansiyel KKD eksikliği",
+      "event_type": "ppe_missing_and_proximity",
+      "subjects": [
+        "insan"
+      ],
+      "zone": "unknown",
+      "hazard_mechanism": "Forkliftin beklenmedik hareketi veya düşen parçalar nedeniyle ezilme/kafa travması riski; KKD eksikliği durumunda risk artışı.",
       "severity": "unknown",
-      "uncertain": true,
-      "uncertainty_reason": "Model çıktısı şemaya uymadı.",
       "evidence": {
-        "agreement": "insufficient"
-      }
+        "geometric": {
+          "supports": false,
+          "observations": [
+            "İnsan ve araç arasında mesafe çok az, ancak araç hareketi tespit edilmedi."
+          ],
+          "limitations": [
+            "Araç hareketi veya fren durumu belirsiz.",
+            "KKD tespiti için yeterli çözünürlük veya açı yok."
+          ]
+        },
+        "visual": {
+          "supports": true,
+          "observations": [
+            "İşçi forkliftin yanında diz çökmüş ve kalkıyor.",
+            "VLM işçinin kırmızı yelek giydiğini rapor etti."
+          ],
+          "limitations": [
+            "Baret varlığı net değil.",
+            "VLM'nin yelek tespiti ile aday gözlemin 'yelek yok' raporu çelişiyor."
+          ]
+        },
+        "rag": {
+          "supports": false,
+          "observations": [
+            "RAG, KKD eksikliği hipotezini destekliyor ancak kanıt sağlamıyor."
+          ],
+          "limitations": [
+            "RAG hipotezleri tek başına kanıt değildir."
+          ]
+        },
+        "agreement": "conflicting",
+        "resolution": "VLM modeli işçinin yelek giydiğini belirtirken, aday gözlem verileri (00:07) yelek ve baret eksikliği bildirmektedir. Bu çelişki nedeniyle KKD durumu doğrulanamamıştır. Ayrıca, forkliftin hareketsiz olduğu gözlemlenmiş olsa da, operasyonel güvenlik prosedürleri (LOTO vb.) uygulanıp uygulanmadığı belirsizdir."
+      },
+      "uncertain": true,
+      "uncertainty_reason": "KKD durumu (VLM ve aday gözlem çelişkisi) ve forkliftin operasyonel güvenlik durumu (motor/fren) belirsizdir.",
+      "confidence": 0.4
     }
   ],
   "uncertain": true,
-  "uncertainty_reason": "Model çıktısı şemaya uymadı.",
+  "uncertainty_reason": "KKD tespiti çelişkili ve forklift operasyonel durumu belirsiz.",
   "confidence": 0.0,
-  "reasoning": "Model çıktısı şemaya uymadı.",
+  "reasoning": "VLM, işçinin yelek giydiğini ve forkliftin hareketsiz olduğunu rapor ederken, aday gözlem verileri KKD eksikliği bildirmektedir. Bu çelişki, 'ppe_missing' olayının doğrulanmasını engeller. Forkliftin hareketsiz olması, 'dangerous_proximity' riskini azaltsa da, işçinin forkliftin altına eğilmesi ve operasyonel durumun (fren, motor) belirsizliği, potansiyel bir tehlikeyi işaret eder. Ancak, kesin bir tehlike mekanizması (hareket eden araç, düşen yük vb.) kanıtlanamadığı için olay 'uncertain_observation' olarak sınıflandırılmıştır. Risk seviyesi, belirsizlik nedeniyle 'unknown' olarak belirlenmiştir.",
   "actions": [
-    "İnsan gözetiminde tekrar analiz yap."
+    "notify_supervisor",
+    "record_incident"
   ],
   "events": [],
-  "triggered_mock_tools": [],
-  "tool_execution_results": [],
+  "triggered_mock_tools": [
+    {
+      "tool_name": "notify_supervisor",
+      "params": {}
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {}
+    }
+  ],
+  "tool_execution_results": [
+    {
+      "status": "success",
+      "tool": "notify_supervisor",
+      "params": {},
+      "mock_result": "notify_supervisor başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "record_incident",
+      "params": {},
+      "mock_result": "record_incident başarıyla simüle edildi."
+    }
+  ],
   "metadata": {
     "vlm_backend": "server",
     "channel_b_mode": "video",
@@ -92,7 +234,7 @@
       }
     ],
     "vlm_interpretation": {
-      "packet_id": "a91427af-98ab-4123-aaee-3de21bd550b9",
+      "packet_id": "34f31c47-794f-4ba1-b2c9-323b13020769",
       "video_id": "lock-out-tag-out-and-your-forklift-tech-432ddf",
       "model_name": "vlm",
       "model_backend": "server",
@@ -101,12 +243,12 @@
         {
           "label": "person",
           "confidence_hint": "high",
-          "notes_tr": "Kırmızı güvenlik yeleği giymiş, forkliftin ön tekerleğinin yanında diz çökmüş ve sonra kalkan bir işçi."
+          "notes_tr": "Kırmızı güvenlik yeleği giymiş, forkliftin ön tekerleğinin yanında diz çökmüş ve ardından kalkan bir işçi."
         },
         {
           "label": "machine",
           "confidence_hint": "high",
-          "notes_tr": "Sarı renkli forklift, ön tekerleğinin yanında bir işçi var."
+          "notes_tr": "Sarı renkli forklift, ön tekerleğinin yanında bir işçi tarafından çalıştırılıyor gibi görünüyor."
         },
         {
           "label": "machine",
@@ -116,7 +258,7 @@
         {
           "label": "rack/structure",
           "confidence_hint": "medium",
-          "notes_tr": "Sağ tarafta metal bir raf veya yapı parçası görünüyor, belirgin bir işlevi net değil."
+          "notes_tr": "Sağ tarafta metal bir raf veya yapı parçası, üzerinde bazı nesneler duruyor."
         }
       ],
       "detected_actions_tr": [
@@ -127,13 +269,13 @@
       ],
       "confidence_overall": 0.9,
       "inference": {
-        "latency_ms": 9901.169900003879,
-        "tokens_generated": 579
+        "latency_ms": 7823.007099999813,
+        "tokens_generated": 564
       },
-      "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir iş yerinde, sarı bir forkliftin yanında bir işçi, forkliftin ön tekerleğinin yanında diz çökmüş durumda. İşçi, forkliftin altına doğru eğilerek bir işlem yapıyor gibi görünüyor. Arka planda beyaz ve kırmızı renkli bir Bobcat makinesi duruyor. İşçi, forkliftin ön tekerleğinin yanında kalkıp ayakta durmaya başlıyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kırmızı güvenlik yeleği giymiş, forkliftin ön tekerleğinin yanında diz çökmüş ve sonra kalkan bir işçi.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli forklift, ön tekerleğinin yanında bir işçi var.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Arka planda beyaz ve kırmızı renkli Bobcat makinesi, muhtemelen bir yükleyici veya kompakt yükleyici.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sağ tarafta metal bir raf veya yapı parçası görünüyor, belirgin bir işlevi net değil.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi forkliftin ön tekerleğinin yanında diz çökmüş durumda.\",\n    \"İşçi forkliftin altına eğilerek bir işlem yapıyor gibi görünüyor.\",\n    \"İşçi kalkarak ayakta durmaya başlıyor.\",\n    \"Forklift hareketsiz duruyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, forkliftin ön tekerleğinin yanında diz çökmüş ve makinenin altına eğilerek çalışırken, forkliftin beklenmedik bir şekilde hareket etmesi durumunda sıkışma veya ezilme riski mevcut. Bu, makine altında çalışma ve hareketli makine parçalarına yakın çalışma risklerini içerir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 0.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+      "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir iş yerinde, sarı bir forkliftin yanında bir işçi, forkliftin ön tekerleğinin yanında diz çökmüş durumda. İşçi, forkliftin altına doğru eğilerek bir işlem yapıyor gibi görünüyor. Arka planda beyaz ve kırmızı renkli bir Bobcat makinesi duruyor. İşçi, forkliftin ön tekerleğinin yanında kalkıp ayakta durmaya başlıyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kırmızı güvenlik yeleği giymiş, forkliftin ön tekerleğinin yanında diz çökmüş ve ardından kalkan bir işçi.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli forklift, ön tekerleğinin yanında bir işçi tarafından çalıştırılıyor gibi görünüyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Arka planda beyaz ve kırmızı renkli Bobcat makinesi, muhtemelen bir yükleyici veya kompakt yükleyici.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sağ tarafta metal bir raf veya yapı parçası, üzerinde bazı nesneler duruyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi forkliftin ön tekerleğinin yanında diz çökmüş durumda.\",\n    \"İşçi forkliftin altına eğilerek bir işlem yapıyor gibi görünüyor.\",\n    \"İşçi kalkarak ayakta durmaya başlıyor.\",\n    \"Forklift hareketsiz duruyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, forkliftin hareket halinde olabilecek ön tekerleğinin yanında diz çökmüş ve altına eğilmiş durumda. Bu, forkliftin beklenmedik bir şekilde hareket etmesi durumunda ciddi yaralanma riski oluşturur.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 0.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
       "risk_events": [
         {
-          "description_tr": "İşçi, forkliftin ön tekerleğinin yanında diz çökmüş ve makinenin altına eğilerek çalışırken, forkliftin beklenmedik bir şekilde hareket etmesi durumunda sıkışma veya ezilme riski mevcut. Bu, makine altında çalışma ve hareketli makine parçalarına yakın çalışma risklerini içerir.",
+          "description_tr": "İşçi, forkliftin hareket halinde olabilecek ön tekerleğinin yanında diz çökmüş ve altına eğilmiş durumda. Bu, forkliftin beklenmedik bir şekilde hareket etmesi durumunda ciddi yaralanma riski oluşturur.",
           "severity": "critical",
           "confidence": 0.9,
           "supporting_frame_count": 1,
@@ -142,13 +284,13 @@
         }
       ],
       "risk_flags_tr": [
-        "İşçi, forkliftin ön tekerleğinin yanında diz çökmüş ve makinenin altına eğilerek çalışırken, forkliftin beklenmedik bir şekilde hareket etmesi durumunda sıkışma veya ezilme riski mevcut. Bu, makine altında çalışma ve hareketli makine parçalarına yakın çalışma risklerini içerir."
+        "İşçi, forkliftin hareket halinde olabilecek ön tekerleğinin yanında diz çökmüş ve altına eğilmiş durumda. Bu, forkliftin beklenmedik bir şekilde hareket etmesi durumunda ciddi yaralanma riski oluşturur."
       ],
       "computed_confidence": 0.745,
       "reasoning_trace": "",
       "segment_start_sec": 0.0,
       "segment_end_sec": 9.0,
-      "created_at": "2026-08-27T18:19:25.715241+00:00"
+      "created_at": "2026-08-27T19:01:28.522246+00:00"
     },
     "rag_context": {
       "hypotheses": [

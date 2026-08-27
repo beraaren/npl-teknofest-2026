@@ -15,8 +15,8 @@ DATA = Path(__file__).resolve().parent.parent / "data"
 class FakeBackend:
     """VLMBackend yerine geçer; çağrıları kaydeder, hazır JSON döner."""
 
-    def __init__(self, response: str):
-        self.response = response
+    def __init__(self, response: str | list[str]):
+        self.responses = response if isinstance(response, list) else [response]
         self.calls = []
 
     def name(self) -> str:
@@ -24,7 +24,7 @@ class FakeBackend:
 
     def generate(self, images, prompt, temperature=0.15, max_tokens=1024) -> str:
         self.calls.append({"prompt": prompt, "temperature": temperature})
-        return self.response
+        return self.responses[min(len(self.calls) - 1, len(self.responses) - 1)]
 
 
 CANNED_DECISION = json.dumps({
@@ -102,6 +102,50 @@ def test_retry_fn_regenerates_with_lower_temperature():
     raw["retry_fn"](0.05)
     assert backend.calls[-1]["temperature"] == 0.05
     assert len(backend.calls) == 2
+
+
+def test_retry_fn_repairs_invalid_high_result_with_validation_error():
+    """Yüksek riskteki şema/semantik hatası retry promptuna taşınmalı."""
+    invalid_high = json.dumps({
+        "summary": "Makine-yaya yakınlığı.",
+        "results": [{
+            "event": "Yaya hareketli makinenin çalışma alanında.",
+            "event_type": "dangerous_proximity",
+            "severity": "high",
+            "evidence": {"agreement": "corroborated"},
+        }],
+        "risk": "Yüksek",
+        "overall_risk": "high",
+        "actions": ["Makineyi durdur."],
+        "reasoning": "r",
+        "triggered_mock_tools": [],
+    }, ensure_ascii=False)
+    repaired_high = json.dumps({
+        "summary": "Makine-yaya yakınlığında ezilme riski doğrulandı.",
+        "results": [{
+            "event": "Yaya hareketli makinenin çalışma alanında.",
+            "event_type": "dangerous_proximity",
+            "hazard_mechanism": "Makinenin çarpması veya ezmesi",
+            "severity": "high",
+            "evidence": {"agreement": "corroborated"},
+        }],
+        "risk": "Yüksek",
+        "overall_risk": "high",
+        "actions": ["Makineyi durdur."],
+        "reasoning": "Geometrik ve görsel kanıt aynı tehlikeyi destekliyor.",
+        "triggered_mock_tools": [],
+    }, ensure_ascii=False)
+    agent, backend = make_agent(response=[invalid_high, repaired_high])
+    signals, graphs, rag_ctx, vlm = sample_inputs()
+    raw = agent.decide(event_signals=signals, scene_graphs=graphs, rag_context=rag_ctx, vlm_interpretation=vlm)
+
+    out = OutputGuardrail(GuardrailConfig()).validate(raw["raw_text"], raw["retry_fn"])
+
+    assert out["summary"] != "Bilmiyorum"
+    assert out["overall_risk"] == "high"
+    assert len(backend.calls) == 2
+    assert "ÖNCEKİ ÇIKTI REDDEDİLDİ" in backend.calls[1]["prompt"]
+    assert "hazard_mechanism zorunlu" in backend.calls[1]["prompt"]
 
 
 def test_interpret_frames_parses_structured_json():

@@ -1,0 +1,64 @@
+{
+  "packet_id": "60f81ecb-61dd-4238-a4ed-70f600046ee0",
+  "video_id": "lathe-fatality-graphic-52744a",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir atölye veya üretim tesisi içinde, bir kişi makineye yakın çalışırken, diğer kişilerin de etrafında toplandığı bir sahne. 32. saniyeden itibaren birden fazla kişi atölyeye girerek, merkezdeki makineye doğru koşar ve birlikte müdahale eder. Zeminde çeşitli parçalar ve araçlar dağılmıştır.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Birden fazla kişi, bazıları mavi gömlek, bazıları gömlek olmayan üst giyimle görülüyor. 32. saniyeden sonra atölyeye giren kişilerin sayısı artar."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Merkezde büyük bir makine (muhtemelen bir torna veya benzeri) yer alıyor. Kırmızı bir tekerleği ve çeşitli kabloları var."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Sol tarafta metal raflar ve çalışma masaları, sağ tarafta da çeşitli yapılar ve kablolar görülmektedir."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Zeminde ve makinenin etrafında metal parçalar, aletler ve diğer yükler dağılmış durumda."
+    },
+    {
+      "label": "fan",
+      "confidence_hint": "high",
+      "notes_tr": "Makinenin hemen önünde büyük bir stand fanı yer alıyor ve çalışır durumda."
+    }
+  ],
+  "detected_actions_tr": [
+    "Bir kişi makineye yakın çalışırken, diğerleri etrafında toplanır.",
+    "32. saniyeden itibaren birden fazla kişi atölyeye girer ve merkezdeki makineye doğru koşar.",
+    "Kişiler birlikte makineye müdahale eder, bazıları eğilir, bazıları kollarını uzatır.",
+    "Zemindeki parçalar ve aletler hareket edilir veya taşınır."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 14415.801900002407,
+    "tokens_generated": 680
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir atölye veya üretim tesisi içinde, bir kişi makineye yakın çalışırken, diğer kişilerin de etrafında toplandığı bir sahne. 32. saniyeden itibaren birden fazla kişi atölyeye girerek, merkezdeki makineye doğru koşar ve birlikte müdahale eder. Zeminde çeşitli parçalar ve araçlar dağılmıştır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Birden fazla kişi, bazıları mavi gömlek, bazıları gömlek olmayan üst giyimle görülüyor. 32. saniyeden sonra atölyeye giren kişilerin sayısı artar.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Merkezde büyük bir makine (muhtemelen bir torna veya benzeri) yer alıyor. Kırmızı bir tekerleği ve çeşitli kabloları var.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sol tarafta metal raflar ve çalışma masaları, sağ tarafta da çeşitli yapılar ve kablolar görülmektedir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Zeminde ve makinenin etrafında metal parçalar, aletler ve diğer yükler dağılmış durumda.\"\n    },\n    {\n      \"label\": \"fan\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin hemen önünde büyük bir stand fanı yer alıyor ve çalışır durumda.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Bir kişi makineye yakın çalışırken, diğerleri etrafında toplanır.\",\n    \"32. saniyeden itibaren birden fazla kişi atölyeye girer ve merkezdeki makineye doğru koşar.\",\n    \"Kişiler birlikte makineye müdahale eder, bazıları eğilir, bazıları kollarını uzatır.\",\n    \"Zemindeki parçalar ve aletler hareket edilir veya taşınır.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"32. saniyeden itibaren birden fazla kişi atölyeye koşarak makineye müdahale etmeye başlar. Bu ani hareketler ve yoğun kalabalık, işçilerin birbirine çarpması, düşmesi veya makineye yanlış müdahale etmesi riskini artırır. Ayrıca, zemindeki parçalar kayma riski oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 32.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "32. saniyeden itibaren birden fazla kişi atölyeye koşarak makineye müdahale etmeye başlar. Bu ani hareketler ve yoğun kalabalık, işçilerin birbirine çarpması, düşmesi veya makineye yanlış müdahale etmesi riskini artırır. Ayrıca, zemindeki parçalar kayma riski oluşturur.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 32.0
+    }
+  ],
+  "risk_flags_tr": [
+    "32. saniyeden itibaren birden fazla kişi atölyeye koşarak makineye müdahale etmeye başlar. Bu ani hareketler ve yoğun kalabalık, işçilerin birbirine çarpması, düşmesi veya makineye yanlış müdahale etmesi riskini artırır. Ayrıca, zemindeki parçalar kayma riski oluşturur."
+  ],
+  "computed_confidence": 0.6775,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 55.43333333333333,
+  "created_at": "2026-08-27T19:00:25.523895+00:00"
+}

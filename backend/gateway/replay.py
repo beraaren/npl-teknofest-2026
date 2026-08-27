@@ -74,7 +74,12 @@ def _event_window(stamp: dict) -> tuple[float, float]:
     """
     start = float(stamp.get("timestamp_sec") or stamp.get("seconds") or 0.0)
     duration = float(stamp.get("duration") or 0.0)
-    return start, start + max(0.0, duration)
+    if duration <= 0.0:
+        # Süresi hiç bilinmeyen olaya görsel bir aralık uydurmayız.
+        return start, start
+    # Pozitif süreli incident, kullanıcı tarafından fark edilebilmesi için
+    # çerçevede en az üç saniye görünür kalır.
+    return start, start + max(3.0, duration)
 
 
 def active_risk_window(stamps: list[dict], position_sec: float) -> Optional[dict]:

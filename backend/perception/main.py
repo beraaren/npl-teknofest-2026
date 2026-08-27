@@ -67,10 +67,21 @@ def _run_perception_sync(frame_paths: list[str], sampled_indices: list[int], fps
             return []
 
         observations = observer.observe_video(frames_rgb, fps=fps, sampled_indices=sampled_indices)
-        for obs in observations:
-            engine.process_observation(obs)
 
-        return engine.get_signals()
+        # Her yeni sinyal oluştuğunda, o anki gözlem karesinin tespit/sahne
+        # grafiği snapshot'ını da taşıması için sinyalleri burada topluyoruz.
+        signals = []
+        for obs in observations:
+            new_sigs = engine.process_observation(obs)
+            for sig in new_sigs:
+                sig_dict = sig.to_dict()
+                sig_dict["snapshot"] = {
+                    "detections": obs.get("detections", []),
+                    "scene_graph": obs.get("scene_graph", {}),
+                }
+                signals.append(sig_dict)
+
+        return signals
 
     except Exception as exc:
         logger.error(f"Perception pipeline hatası: {exc}", exc_info=True)
@@ -112,6 +123,7 @@ async def handle_chunk(chunk_data: dict, redis_client):
                 # Kanal B'nin videoyu bütün olarak analiz edebilmesi için
                 # kaynak yolu zincirin devamına taşı.
                 video_path=chunk.video_path,
+                snapshot=sig.get("snapshot", {}),
             )
             await redis_helper.publish_message(redis_client, "event.detected", event)
             _metrics["events_detected"] += 1

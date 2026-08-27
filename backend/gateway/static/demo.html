@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canlı Demo | İSG Video Analizi</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="demo.js"></script>
+</head>
+<body>
+  <header>
+    <h1>▶ Canlı Demo</h1>
+    <nav class="nav-links">
+      <a href="index.html">Süpervizör</a>
+      <a href="saha.html">Saha Ekibi</a>
+      <a href="admin.html">Admin</a>
+      <a href="demo.html" class="active">Canlı Demo</a>
+    </nav>
+    <span id="demo-status" class="meta">Hazır</span>
+  </header>
+
+  <div class="app demo-app">
+    <main class="main">
+
+      <!-- 1. Yükleme alanı -->
+      <section class="upload-section" id="upload-section">
+        <input type="file" id="video-input" accept="video/*" hidden />
+        <div class="drop-zone" id="drop-zone">
+          <div class="drop-icon">🎬</div>
+          <div class="drop-title">Videoyu sürükleyin veya tıklayarak seçin</div>
+          <div class="drop-hint">.mp4, .avi, .mov, .webm</div>
+        </div>
+      </section>
+
+      <!-- 2. İlerleme durumu -->
+      <section class="progress-section" id="progress-section" hidden>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="progress-steps" id="progress-steps">
+          <span data-step="ingest">⏳ Video ayrıştırılıyor</span>
+          <span data-step="perception">⏳ YOLO + olay motoru</span>
+          <span data-step="vlm">⏳ Kanal B (VLM)</span>
+          <span data-step="decision">⏳ Karar ajanı</span>
+        </div>
+      </section>
+
+      <!-- 3. Video oynatıcı + overlay -->
+      <section class="video-section" id="video-section" hidden>
+        <div class="video-wrapper">
+          <video id="demo-video" controls playsinline></video>
+          <canvas id="overlay-canvas"></canvas>
+        </div>
+        <div class="video-meta" id="video-meta"></div>
+      </section>
+
+      <!-- 4. Karar ajanı özeti -->
+      <section class="decision-summary" id="decision-summary" hidden>
+        <div class="summary-head">
+          <span class="risk-badge" id="summary-risk">—</span>
+          <span class="meta" id="summary-confidence">Güven: —</span>
+        </div>
+        <p class="summary-box" id="summary-text"></p>
+        <details>
+          <summary class="meta">Ajanın gerekçesi</summary>
+          <p class="meta" id="summary-reasoning"></p>
+        </details>
+        <h3>⚡ Önerilen Aksiyonlar</h3>
+        <ul id="summary-actions" class="action-advice"></ul>
+      </section>
+
+      <!-- 5. Detay Analizi -->
+      <section class="detail-analysis" id="detail-analysis" hidden>
+        <h2>🔬 Detay Analizi</h2>
+
+        <div class="detail-tabs">
+          <button class="tab-btn active" data-tab="yolo">YOLO / ByteTrack</button>
+          <button class="tab-btn" data-tab="vlm">Kanal B (VLM)</button>
+          <button class="tab-btn" data-tab="rag">RAG Katmanı</button>
+          <button class="tab-btn" data-tab="events">Olay Motoru</button>
+        </div>
+
+        <div class="tab-content active" id="tab-yolo">
+          <h3>Nesne Tespitleri</h3>
+          <ul id="yolo-list" class="event-timeline"></ul>
+        </div>
+
+        <div class="tab-content" id="tab-vlm">
+          <h3>Kanal B Yorumu</h3>
+          <div id="vlm-summary" class="summary-box"></div>
+          <ul id="vlm-flags" class="event-timeline"></ul>
+        </div>
+
+        <div class="tab-content" id="tab-rag">
+          <h3>RAG Eşleşmeleri</h3>
+          <ul id="rag-list" class="event-timeline"></ul>
+        </div>
+
+        <div class="tab-content" id="tab-events">
+          <h3>Olay Zaman Çizelgesi</h3>
+          <ul id="event-timeline" class="event-timeline"></ul>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+</body>
+</html>

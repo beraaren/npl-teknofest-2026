@@ -1,9 +1,11 @@
 import uuid
 import logging
 import os
+import shutil
 import httpx
+from pathlib import Path
 from typing import Optional
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile
 from pydantic import BaseModel
 from .. import store
 
@@ -42,6 +44,46 @@ async def create_analysis(request: AnalysisRequest):
         raise HTTPException(status_code=503, detail=f"Ingest servisi erişilemiyor: {exc}")
 
     return {"status": "accepted", "job_id": job_id}
+
+
+@router.post("/analyses/upload", status_code=202)
+async def upload_analysis(
+    video: UploadFile = File(...),
+    camera_id: str = Form("demo_upload"),
+):
+    """
+    Kullanıcıdan video dosyası alır, diske kaydeder ve analiz pipeline'ını
+    (ingest → perception → VLM → decision) çalıştırmak için ingest servisini
+    tetikler. Demo sayfasından doğrudan kullanılır.
+    """
+    job_id = str(uuid.uuid4())
+
+    uploads_dir = Path(__file__).resolve().parent.parent.parent / "data" / "uploads"
+    uploads_dir.mkdir(parents=True, exist_ok=True)
+    safe_name = Path(video.filename or "video.mp4").name
+    video_path = uploads_dir / f"{job_id}_{safe_name}"
+
+    try:
+        with open(video_path, "wb") as buffer:
+            shutil.copyfileobj(video.file, buffer)
+    finally:
+        video.file.close()
+
+    ingest_payload = {
+        "job_id": job_id,
+        "camera_id": camera_id,
+        "video_path": str(video_path),
+        "fps": 0.0,
+    }
+    try:
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            resp = await client.post(f"{INGEST_SERVICE_URL}/api/v1/jobs", json=ingest_payload)
+            resp.raise_for_status()
+    except Exception as exc:
+        logger.error(f"Ingest servisi tetiklenemedi: {exc}")
+        raise HTTPException(status_code=503, detail=f"Ingest servisi erişilemiyor: {exc}")
+
+    return {"status": "accepted", "job_id": job_id, "video_path": str(video_path)}
 
 
 @router.get("/analyses")

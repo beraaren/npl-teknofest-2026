@@ -1,15 +1,16 @@
 import { WsClient } from './ws.js';
 import {
-  api, escapeHtml, mmss, riskClass, showToast, initToast,
+  API, api, escapeHtml, mmss, riskClass, showToast, initToast,
   SEVERITY_LABEL, SEVERITY_CLASS, runOnce,
 } from './app.js';
 
-const API = '/api/v1';
-
+/** Modal açıkken ilerleme satırı bu aralıkla tazelenir. */
+const PROGRESS_TICK_MS = 300;
+/** Kamera duvarı bu aralıkla yoklanır (risk penceresi geçişlerinin akıcı
+ * görünmesi için eski 4000ms'lik aralıktan düşürüldü). */
+const POLL_MS = 1000;
 /** Video konumu sunucudan bu kadar saniye saparsa yeniden hizalanır. */
 const DRIFT_TOLERANCE_SEC = 2.5;
-/** Modal içindeki video zamanı bu aralıkla kontrol edilir (risk penceresi). */
-const WINDOW_CHECK_MS = 300;
 
 const el = {
   grid: document.getElementById('camera-grid'),
@@ -48,74 +49,91 @@ const el = {
 };
 initToast(el.toast);
 
-/** camera_id -> sunucudan gelen son durum. */
-const cameras = new Map();
-/** Araç katalogu (assigns_role dahil), modal açılışında ve manuel panelde kullanılır. */
+/** camera_id -> sunucudan gelen son durum objesi (loadCameras tarafından yazılır). */
+const cameraState = new Map();
+/** camera_id -> son görülen cycle_index; döngü değişince kilit hafızası sıfırlanır. */
+const lastCycle = new Map();
+/**
+ * camera_id -> Set(tool_name): bu tarayıcı oturumunda o kamerada
+ * çalıştırılmış araçlar. Modal, WS mesajı geldiğinde ~500ms'lik debounce ile
+ * tazelenir (scheduleModalRefresh); bu tazeleme aksiyon bölümünü sıfırdan
+ * çiziyor. Bu Set olmadan, az önce "✓" ile kilitlenmiş bir buton her
+ * tazelemede yeniden tıklanabilir görünürdü — backend duplicate kayıt
+ * açmasa da operatör aynı butona defalarca basma hissi yaşardı.
+ */
+const executedTools = new Map();
+
 let toolCatalog = [];
 let openCameraId = null;
 let currentAnalysis = null;
-/** Modal açıkken video zamanını izleyip risk çerçevesini güncelleyen interval. */
-let modalWindowTimer = null;
+let progressTimer = null;
 
 // ---------------------------------------------------------------------------
 // Kamera duvarı
 // ---------------------------------------------------------------------------
 
-function renderCell(cameraId, active) {
+function ensureCell(cameraId) {
   let cell = document.getElementById(`cell-${cameraId}`);
-  if (!cell) {
-    cell = document.createElement('div');
-    cell.id = `cell-${cameraId}`;
-    cell.className = 'camera-cell';
-    cell.innerHTML = `
-      <video autoplay muted playsinline></video>
-      <div class="camera-label">
-        <span class="label-text"></span>
-        <span class="risk-badge">—</span>
-      </div>
-      <div class="cell-event"></div>
-    `;
-    cell.addEventListener('click', () => openModal(cameraId));
-    el.grid.appendChild(cell);
-  }
+  if (cell) return cell;
+  cell = document.createElement('div');
+  cell.id = `cell-${cameraId}`;
+  cell.className = 'camera-cell';
+  cell.innerHTML = `
+    <video autoplay muted playsinline></video>
+    <div class="camera-label">
+      <span class="label-text"></span>
+      <span class="risk-badge">—</span>
+    </div>
+    <div class="cell-event"></div>
+  `;
+  cell.addEventListener('click', () => openModal(cameraId));
+  el.grid.appendChild(cell);
+  return cell;
+}
 
+function renderCell(cameraId, active) {
+  const cell = ensureCell(cameraId);
   const video = cell.querySelector('video');
   const labelText = cell.querySelector('.label-text');
   const badge = cell.querySelector('.risk-badge');
   const eventLine = cell.querySelector('.cell-event');
 
-  const prev = cameras.get(cameraId);
-  const cycleChanged = !prev || prev.cycle_index !== active.cycle_index;
+  const prevCycle = lastCycle.get(cameraId);
+  const cycleChanged = prevCycle === undefined || prevCycle !== active.cycle_index;
+  lastCycle.set(cameraId, active.cycle_index);
 
   if (cycleChanged) {
-    // Yeni video döngüsü: kaynağı yenile ve sunucunun konumuna hizala.
+    // Yeni video döngüsü başladı: önceki videonun "çalıştırıldı" kilitleri
+    // artık anlamsız (farklı analiz, farklı olaylar) — temizle.
+    executedTools.delete(cameraId);
     video.src = `${API}/pseudolive/videos/${cameraId}?c=${active.cycle_index}`;
     video.addEventListener('loadedmetadata', () => {
-      syncVideo(video, active.position_sec);
-      video.play().catch(() => { /* otomatik oynatma engellenebilir */ });
+      syncVideoTime(video, active.position_sec);
+      video.play().catch(() => { /* otomatik oynatma tarayıcı tarafından engellenebilir */ });
     }, { once: true });
   } else {
-    syncVideo(video, active.position_sec);
+    syncVideoTime(video, active.position_sec);
   }
 
   labelText.textContent = `${active.camera_label} · ${active.video_name || ''}`;
   labelText.title = active.video_name || '';
 
-  // Genel risk rozeti: analizin tamamının verdiği karar (çerçeveden bağımsız,
-  // her zaman görünür bir özet bilgi).
-  const cls = riskClass(active.risk);
+  // Genel risk rozeti: analizin TAMAMININ verdiği nihai karar. Çerçeveden
+  // bağımsız, her zaman görünen bir özet bilgidir ("bu video genel olarak
+  // yüksek riskli" anlamına gelir).
+  const generalCls = riskClass(active.risk);
   badge.textContent = active.risk || '—';
-  badge.className = `risk-badge ${cls}`;
+  badge.className = `risk-badge ${generalCls}`;
 
   // Kamera çerçevesi: SADECE şu an oynatma konumunda aktif bir risk penceresi
-  // varsa (active_window dolu) yanar, o pencerenin riskine göre renklenir.
-  // Eskiden bu çerçeve analizin GENEL riskine bağlıydı ve video boyunca
-  // kesintisiz yanıyordu; artık backend'in ürettiği [start_sec, end_sec]
-  // aralığı dışında çerçeve nötrdür (bkz. replay.py: active_risk_window).
+  // varsa (active_window dolu) renklenir — "şu an tam bu saniyede aktif bir
+  // tehlike var" anlamına gelir. Pencere yoksa hiçbir .window-* sınıfı
+  // eklenmez, çerçeve şeffaftır. Backend bu pencereyi olayın gerçek
+  // [timestamp_sec, timestamp_sec+duration] aralığından hesaplar; süre
+  // bilinmiyorsa (duration=0) pencere hiç açılmaz.
   cell.classList.remove('window-high', 'window-medium', 'window-low');
-  const win = active.active_window;
-  if (win) {
-    cell.classList.add(`window-${riskClass(win.risk)}`);
+  if (active.active_window) {
+    cell.classList.add(`window-${riskClass(active.active_window.risk)}`);
   }
 
   const ev = active.current_event;
@@ -125,38 +143,42 @@ function renderCell(cameraId, active) {
   eventLine.className = `cell-event${ev ? ' cell-event-active' : ''}`;
 }
 
-/** Video konumunu sunucunun sanal zamanına hizalar (sapma büyükse). */
-function syncVideo(video, positionSec) {
+function removeCell(cameraId) {
+  document.getElementById(`cell-${cameraId}`)?.remove();
+  cameraState.delete(cameraId);
+  lastCycle.delete(cameraId);
+  executedTools.delete(cameraId);
+}
+
+/** Video konumunu sunucunun sanal zamanına hizalar (sapma yeterince büyükse). */
+function syncVideoTime(video, positionSec) {
   const target = Number(positionSec) || 0;
   if (!Number.isFinite(video.duration) || video.duration <= 0) return;
   if (Math.abs(video.currentTime - target) > DRIFT_TOLERANCE_SEC) {
     try {
       video.currentTime = Math.min(target, Math.max(0, video.duration - 0.2));
-    } catch { /* seek henüz mümkün değil */ }
+    } catch { /* henüz seek edilebilir değil */ }
   }
 }
 
 async function loadCameras() {
   try {
-    const data = await api('/pseudolive/cameras');
-    const active = data.filter((item) => item.active);
+    const rows = await api('/pseudolive/cameras');
+    const activeRows = rows.filter((r) => r.active);
 
-    el.gridEmpty.hidden = active.length > 0;
-    el.libraryStatus.textContent = active.length
-      ? `${active.length} kamera yayında`
+    el.gridEmpty.hidden = activeRows.length > 0;
+    el.libraryStatus.textContent = activeRows.length
+      ? `${activeRows.length} kamera yayında`
       : 'Analiz kütüphanesi boş';
 
     const seen = new Set();
-    for (const item of active) {
-      seen.add(item.camera_id);
-      renderCell(item.camera_id, item.active);
-      cameras.set(item.camera_id, item.active);
+    for (const row of activeRows) {
+      seen.add(row.camera_id);
+      cameraState.set(row.camera_id, row.active);
+      renderCell(row.camera_id, row.active);
     }
-    for (const id of [...cameras.keys()]) {
-      if (!seen.has(id)) {
-        document.getElementById(`cell-${id}`)?.remove();
-        cameras.delete(id);
-      }
+    for (const cameraId of [...cameraState.keys()]) {
+      if (!seen.has(cameraId)) removeCell(cameraId);
     }
   } catch (err) {
     el.libraryStatus.textContent = `Kameralar yüklenemedi: ${err.message}`;
@@ -164,7 +186,7 @@ async function loadCameras() {
 }
 
 // ---------------------------------------------------------------------------
-// Bildirimler
+// Bildirim akışı
 // ---------------------------------------------------------------------------
 
 function addNotification(stream, data) {
@@ -185,13 +207,12 @@ function addNotification(stream, data) {
     title = `Görev atandı: ${data.role || ''}`;
     detail = data.headline || data.event_type || '';
   } else if (stream === 'tool.executed') {
+    if (data.already_executed) return; // tekrar deneme kartı üretilmez
     title = `Araç çalıştı: ${data.tool_name || ''}`;
     detail = data.mock_result || data.status || '';
-  } else if (stream === 'decision.final') {
-    // Süpervizör paneli döngü başına ayrıca bir kart göstermez; hücre
-    // güncellemesi yeterlidir, aksi hâlde her döngüde gereksiz kart birikir.
-    return;
   } else {
+    // decision.final: döngü başına ayrı bir kart üretilmez, hücre
+    // güncellemesi yeterlidir; aksi hâlde her döngüde gereksiz kart birikir.
     return;
   }
 
@@ -207,7 +228,6 @@ function addNotification(stream, data) {
   `;
   el.notifications.prepend(card);
 
-  // Liste sınırsız büyümesin; en fazla 60 kart tutulur.
   const cards = el.notifications.querySelectorAll('.notification-card');
   if (cards.length > 60) cards[cards.length - 1].remove();
 }
@@ -218,21 +238,24 @@ function addNotification(stream, data) {
 
 async function openModal(cameraId) {
   openCameraId = cameraId;
+  currentAnalysis = null;
   el.modal.classList.add('open');
   try {
-    const data = await api(`/pseudolive/cameras/${cameraId}`);
+    const [detail, roles] = await Promise.all([
+      api(`/pseudolive/cameras/${cameraId}`),
+      loadRoleOptions(),
+    ]);
     if (!toolCatalog.length) {
       toolCatalog = await api('/tools').catch(() => []);
-      populateManualToolSelect();
+      fillManualToolSelect();
     }
-    await loadRoles();
-    renderModal(cameraId, data.active, data.analysis);
+    renderModal(cameraId, detail.active, detail.analysis);
   } catch (err) {
     showToast(`Kamera açılamadı: ${err.message}`, true);
   }
 }
 
-function populateManualToolSelect() {
+function fillManualToolSelect() {
   el.manualTool.innerHTML = toolCatalog
     .filter((t) => t.enabled)
     .map((t) => `<option value="${escapeHtml(t.tool_name)}">${escapeHtml(t.description || t.tool_name)}</option>`)
@@ -240,14 +263,16 @@ function populateManualToolSelect() {
 }
 
 function toolLabel(toolName) {
-  const tool = toolCatalog.find((t) => t.tool_name === toolName);
-  return tool?.description || toolName;
+  const found = toolCatalog.find((t) => t.tool_name === toolName);
+  return found?.description || toolName;
 }
 
 function renderModal(cameraId, active, analysis) {
   if (!analysis) return;
 
+  const isNewAnalysis = !currentAnalysis || currentAnalysis.slug !== analysis.slug;
   currentAnalysis = analysis;
+
   el.modalTitle.textContent = `${active.camera_label} · ${analysis.video_name || ''}`;
 
   const cls = riskClass(analysis.risk);
@@ -260,25 +285,43 @@ function renderModal(cameraId, active, analysis) {
   el.modalSummary.textContent = analysis.summary || 'Özet üretilmedi.';
   el.modalReasoning.textContent = analysis.reasoning || 'Gerekçe kaydı yok.';
 
-  el.fbCorrectRisk.value = analysis.risk || 'Düşük';
-  el.fbCorrectSummary.value = analysis.summary || '';
-  el.fbNotes.value = '';
-  el.fbEditPanel.hidden = true;
-  refreshFeedbackFor(analysis.slug);
-  refreshAssignmentsFor(analysis.slug);
-
+  // Video kaynağı sadece kamera fiilen değiştiğinde yeniden yüklenir; aynı
+  // kamera için tekrarlanan renderModal çağrıları (WS tazelemesi) videoyu
+  // yeniden başlatmaz.
   if (el.modalVideo.dataset.slug !== analysis.slug) {
     el.modalVideo.dataset.camera = cameraId;
     el.modalVideo.dataset.slug = analysis.slug;
     el.modalVideo.src = `${API}/library/videos/${analysis.slug}`;
     el.modalVideo.addEventListener('loadedmetadata', () => {
-      syncVideo(el.modalVideo, active.position_sec);
+      syncVideoTime(el.modalVideo, active.position_sec);
       el.modalVideo.play().catch(() => {});
     }, { once: true });
   }
 
-  // Olay zaman çizelgesi: satıra tıklayınca video o ana gider.
-  const stamps = analysis.event_timestamps || [];
+  renderTimeline(analysis.event_timestamps || []);
+  renderSuggestedActions(analysis, cameraId);
+  fillAssignEventSelect(analysis.event_timestamps || []);
+
+  el.assignBtn.dataset.slug = analysis.slug || '';
+  el.assignBtn.dataset.camera = cameraId;
+  el.assignBtn.disabled = !analysis.slug;
+
+  if (isNewAnalysis) {
+    delete el.assignBtn.dataset.locked;
+    el.assignBtn.classList.remove('btn-done');
+    el.assignBtn.textContent = 'Ekibe Ata';
+    el.fbCorrectRisk.value = analysis.risk || 'Düşük';
+    el.fbCorrectSummary.value = analysis.summary || '';
+    el.fbNotes.value = '';
+    el.fbEditPanel.hidden = true;
+    refreshFeedbackBadge(analysis.slug);
+  }
+  refreshAssignmentSummary(analysis.slug);
+
+  startProgressWatch();
+}
+
+function renderTimeline(stamps) {
   el.modalEvents.innerHTML = stamps.length
     ? stamps.map((s) => `
         <li class="timeline-item severity-${SEVERITY_CLASS[s.severity] || 'low'}" data-seconds="${s.timestamp_sec ?? s.seconds}">
@@ -299,61 +342,58 @@ function renderModal(cameraId, active, analysis) {
       } catch { /* seek mümkün değil */ }
     });
   });
+}
 
-  renderSuggestedActions(analysis, cameraId);
-
-  // Atama paneli: hangi olayın atanacağı seçilebilir.
+function fillAssignEventSelect(stamps) {
   el.assignEvent.innerHTML = stamps.length
     ? stamps.map((s, i) =>
         `<option value="${i}">${escapeHtml(s.timestamp)} · ${escapeHtml(s.event_type)} (${SEVERITY_LABEL[s.severity] || ''})</option>`
       ).join('')
     : '<option value="">Olay yok</option>';
-  el.assignBtn.dataset.slug = analysis.slug || '';
-  el.assignBtn.dataset.camera = cameraId;
-  el.assignBtn.disabled = !analysis.slug;
-  delete el.assignBtn.dataset.locked;
-  el.assignBtn.classList.remove('btn-done');
-  el.assignBtn.textContent = 'Ekibe Ata';
-
-  startModalWindowWatch();
 }
 
 /**
- * Önerilen Aksiyonlar bölümünü doldurur: ajanın tetiklediği araçlar
- * (triggered_mock_tools) + yazdığı metin talimatlar (actions). Her araç
- * butonu gerçekten /tools/execute'a gider; tekrar tıklanamaz (runOnce).
+ * Önerilen Aksiyonlar bölümü: ajanın tetiklediği araçlar
+ * (triggered_mock_tools, gerçek buton) + yazdığı metin talimatlar (actions,
+ * düz liste). Bu oturumda zaten çalıştırılmış araçlar (executedTools)
+ * doğrudan kilitli çizilir; WS tazelemesi bu kilidi silmez.
  */
 function renderSuggestedActions(analysis, cameraId) {
   const tools = analysis.triggered_mock_tools || [];
+  const locked = executedTools.get(cameraId) || new Set();
   el.suggestedActions.innerHTML = '';
-  if (tools.length) {
-    for (const call of tools) {
-      const btn = document.createElement('button');
-      btn.className = 'btn btn-secondary';
+
+  for (const call of tools) {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-secondary';
+    btn.title = JSON.stringify(call.params || {});
+    if (locked.has(call.tool_name)) {
+      btn.disabled = true;
+      btn.dataset.locked = '1';
+      btn.classList.add('btn-done');
+      btn.textContent = `✓ ${toolLabel(call.tool_name)}`;
+    } else {
       btn.textContent = toolLabel(call.tool_name);
-      btn.title = JSON.stringify(call.params || {});
-      btn.addEventListener('click', () => runTool(btn, call.tool_name, call.params || {}, cameraId, analysis.slug, 'supervisor'));
-      el.suggestedActions.appendChild(btn);
+      btn.addEventListener('click', () => executeSuggestedTool(btn, call.tool_name, call.params || {}, cameraId, analysis.slug));
     }
+    el.suggestedActions.appendChild(btn);
   }
+
   if ((analysis.actions || []).length) {
     const list = document.createElement('ul');
     list.className = 'action-advice';
     list.innerHTML = analysis.actions.map((a) => `<li>${escapeHtml(a)}</li>`).join('');
     el.suggestedActions.appendChild(list);
   }
+
   if (!tools.length && !(analysis.actions || []).length) {
     el.suggestedActions.innerHTML = '<span class="meta">Aksiyon önerisi üretilmedi.</span>';
   }
 }
 
-/** Modal açıkken video zamanını izleyip modal başlığındaki risk rozetini
- * (ve ilerleme metnini) günceller. Kamera duvarındaki çerçeve zaten
- * loadCameras() döngüsüyle tazeleniyor; burada ek olarak modal içindeki
- * "ilerleme" satırı canlı tutulur. */
-function startModalWindowWatch() {
-  stopModalWindowWatch();
-  modalWindowTimer = setInterval(() => {
+function startProgressWatch() {
+  stopProgressWatch();
+  progressTimer = setInterval(() => {
     if (!openCameraId || !el.modal.classList.contains('open') || !currentAnalysis) return;
     
     const dur = el.modalVideo.duration || 0;
@@ -368,21 +408,32 @@ function startModalWindowWatch() {
 
     el.modalProgress.textContent =
       `${mmss(currentSec)} / ${mmss(dur)} · ${firedCount}/${totalEvents} uyarı`;
-  }, WINDOW_CHECK_MS);
+  }, PROGRESS_TICK_MS);
 }
 
-function stopModalWindowWatch() {
-  if (modalWindowTimer) {
-    clearInterval(modalWindowTimer);
-    modalWindowTimer = null;
+function stopProgressWatch() {
+  if (progressTimer) {
+    clearInterval(progressTimer);
+    progressTimer = null;
   }
 }
 
+function closeModal() {
+  el.modal.classList.remove('open');
+  openCameraId = null;
+  currentAnalysis = null;
+  stopProgressWatch();
+  el.modalVideo.pause();
+  el.modalVideo.removeAttribute('src');
+  el.modalVideo.dataset.camera = '';
+  el.modalVideo.dataset.slug = '';
+}
+
 // ---------------------------------------------------------------------------
-// RLHF / DPO Geri Bildirim
+// RLHF / DPO geri bildirim
 // ---------------------------------------------------------------------------
 
-function updateFeedbackUI(feedback) {
+function renderFeedbackBadge(feedback) {
   if (!feedback) {
     el.feedbackBadge.className = 'fb-badge pending';
     el.feedbackBadge.textContent = 'Değerlendirilmedi';
@@ -391,33 +442,30 @@ function updateFeedbackUI(feedback) {
   if (feedback.feedback_type === 'correct') {
     el.feedbackBadge.className = 'fb-badge correct';
     el.feedbackBadge.textContent = '✔ Karar Doğrulandı';
-  } else {
-    el.feedbackBadge.className = 'fb-badge corrected';
-    const typeMap = {
-      false_positive: 'Yanlış Alarm',
-      wrong_risk: 'Hatalı Risk',
-      wrong_event: 'Hatalı Olay',
-      wrong_action: 'Hatalı Aksiyon',
-      other: 'Düzeltildi',
-    };
-    el.feedbackBadge.textContent = `⚠️ ${typeMap[feedback.feedback_type] || 'Düzeltildi'}`;
-  }
-}
-
-async function refreshFeedbackFor(slug) {
-  if (!slug) {
-    updateFeedbackUI(null);
     return;
   }
+  const typeMap = {
+    false_positive: 'Yanlış Alarm',
+    wrong_risk: 'Hatalı Risk',
+    wrong_event: 'Hatalı Olay',
+    wrong_action: 'Hatalı Aksiyon',
+    other: 'Düzeltildi',
+  };
+  el.feedbackBadge.className = 'fb-badge corrected';
+  el.feedbackBadge.textContent = `⚠️ ${typeMap[feedback.feedback_type] || 'Düzeltildi'}`;
+}
+
+async function refreshFeedbackBadge(slug) {
+  if (!slug) return renderFeedbackBadge(null);
   try {
     const rows = await api(`/feedback?analysis_slug=${encodeURIComponent(slug)}&limit=1`);
-    updateFeedbackUI(rows.length ? rows[0] : null);
+    renderFeedbackBadge(rows.length ? rows[0] : null);
   } catch {
-    updateFeedbackUI(null);
+    renderFeedbackBadge(null);
   }
 }
 
-async function submitFeedback(feedbackType, isCorrection = false) {
+async function submitFeedback(feedbackType, isCorrection) {
   if (!currentAnalysis || !openCameraId) {
     showToast('Analiz veya kamera seçili değil', true);
     return;
@@ -435,16 +483,13 @@ async function submitFeedback(feedbackType, isCorrection = false) {
     prompt_context: {
       camera_label: currentAnalysis.camera_label || openCameraId,
       video_name: currentAnalysis.video_name || '',
-      geometric_signals: currentAnalysis.metadata?.geometric_signals || [],
     },
   };
-  // Not: /feedback artık analiz başına UPSERT yapar (backend store.py); bu
-  // yüzden burada ek bir "tekrar gönderme" koruması gerekmez, ama arayüz
-  // tarafında da butonu geçici olarak kilitleriz ki art arda tıklamada
-  // gereksiz istek gitmesin.
+  // Backend /feedback analiz başına UPSERT yapar (bkz. store.py); ikinci bir
+  // gönderim yeni satır açmaz, mevcut kararı günceller.
   try {
     const res = await api('/feedback', { method: 'POST', body: JSON.stringify(payload) });
-    updateFeedbackUI(res);
+    renderFeedbackBadge(res);
     el.fbEditPanel.hidden = true;
     showToast(isCorrection ? '🎯 Düzeltme DPO havuzuna kaydedildi' : '✔ Karar DPO havuzunda doğrulandı');
   } catch (err) {
@@ -453,31 +498,15 @@ async function submitFeedback(feedbackType, isCorrection = false) {
 }
 
 // ---------------------------------------------------------------------------
-// Aksiyon çalıştırma (Önerilen + Manuel ortak yol)
+// Aksiyon çalıştırma
 // ---------------------------------------------------------------------------
 
-async function runTool(btn, toolName, params, cameraId, slug, triggeredBy) {
+async function executeSuggestedTool(btn, toolName, params, cameraId, slug) {
   try {
     await runOnce(btn, async () => {
-      const res = await api('/tools/execute', {
-        method: 'POST',
-        body: JSON.stringify({
-          tool_name: toolName,
-          params,
-          camera_id: cameraId,
-          analysis_slug: slug,
-          triggered_by: triggeredBy,
-        }),
-      });
-      if (res.already_executed) {
-        showToast(`${res.tool_name} zaten çalıştırılmıştı.`);
-      } else {
-        showToast(`${res.tool_name}: ${res.mock_result || res.status}`);
-        if (res.assignment) {
-          showToast(`Görev oluşturuldu: ${res.assignment.role}`);
-          refreshAssignmentsFor(slug);
-        }
-      }
+      const res = await callToolExecute(toolName, params, cameraId, slug, 'supervisor');
+      markToolExecuted(cameraId, toolName);
+      reportToolResult(res, slug);
       return { label: `✓ ${toolLabel(toolName)}` };
     });
   } catch (err) {
@@ -492,42 +521,70 @@ async function runManualAction() {
   }
   const toolName = el.manualTool.value;
   if (!toolName) return;
+  const cameraId = openCameraId;
+  const slug = currentAnalysis.slug;
   const note = el.manualNote.value.trim();
+
+  const original = el.manualRunBtn.textContent;
+  el.manualRunBtn.disabled = true;
+  el.manualRunBtn.textContent = `${original} …`;
   try {
-    await runOnce(el.manualRunBtn, async () => {
-      const res = await api('/tools/execute', {
-        method: 'POST',
-        body: JSON.stringify({
-          tool_name: toolName,
-          params: { location: openCameraId, urgency: currentAnalysis.risk || 'Orta', reason: note || (currentAnalysis.headline || '') },
-          camera_id: openCameraId,
-          analysis_slug: currentAnalysis.slug,
-          triggered_by: 'supervisor',
-        }),
-      });
-      el.manualResult.textContent = res.already_executed
-        ? `${res.tool_name} zaten çalıştırılmıştı.`
-        : `${res.tool_name}: ${res.mock_result || res.status}`;
-      if (res.assignment) {
-        showToast(`Görev oluşturuldu: ${res.assignment.role}`);
-        refreshAssignmentsFor(currentAnalysis.slug);
-      }
-      return { label: 'Çalıştırıldı ✓' };
-    });
-    // Manuel panel tekrar kullanılabilir olmalı (farklı araç seçilebilir);
-    // yalnızca bu çalıştırma anındaki tekrar tıklamayı önlüyoruz.
-    setTimeout(() => {
-      el.manualRunBtn.disabled = false;
-      el.manualRunBtn.classList.remove('btn-done');
-      el.manualRunBtn.textContent = 'Çalıştır';
-      delete el.manualRunBtn.dataset.locked;
-    }, 1500);
+    const params = {
+      location: cameraId,
+      urgency: currentAnalysis.risk || 'Orta',
+      reason: note || (currentAnalysis.headline || ''),
+    };
+    const res = await callToolExecute(toolName, params, cameraId, slug, 'supervisor');
+    el.manualResult.textContent = res.already_executed
+      ? `${res.tool_name} zaten çalıştırılmıştı.`
+      : `${res.tool_name}: ${res.mock_result || res.status}`;
+    if (res.assignment) {
+      showToast(`Görev oluşturuldu: ${res.assignment.role}`);
+      refreshAssignmentSummary(slug);
+    }
+    // Manuel panel farklı bir araçla yeniden kullanılabilir olmalı; bu
+    // yüzden kalıcı kilitlenmez, yalnızca çalıştırma anında geçici disable.
+    el.manualRunBtn.textContent = 'Çalıştırıldı ✓';
+    setTimeout(() => { el.manualRunBtn.textContent = original; }, 1200);
   } catch (err) {
     showToast(`Araç çalıştırılamadı: ${err.message}`, true);
+    el.manualRunBtn.textContent = original;
+  } finally {
+    el.manualRunBtn.disabled = false;
   }
 }
 
-async function refreshAssignmentsFor(slug) {
+function callToolExecute(toolName, params, cameraId, slug, triggeredBy) {
+  return api('/tools/execute', {
+    method: 'POST',
+    body: JSON.stringify({
+      tool_name: toolName,
+      params,
+      camera_id: cameraId,
+      analysis_slug: slug,
+      triggered_by: triggeredBy,
+    }),
+  });
+}
+
+function markToolExecuted(cameraId, toolName) {
+  if (!executedTools.has(cameraId)) executedTools.set(cameraId, new Set());
+  executedTools.get(cameraId).add(toolName);
+}
+
+function reportToolResult(res, slug) {
+  if (res.already_executed) {
+    showToast(`${res.tool_name} zaten çalıştırılmıştı.`);
+    return;
+  }
+  showToast(`${res.tool_name}: ${res.mock_result || res.status}`);
+  if (res.assignment) {
+    showToast(`Görev oluşturuldu: ${res.assignment.role}`);
+    refreshAssignmentSummary(slug);
+  }
+}
+
+async function refreshAssignmentSummary(slug) {
   if (!slug) {
     el.assignExisting.textContent = '';
     return;
@@ -562,7 +619,7 @@ async function submitAssignment() {
       showToast(row.duplicate
         ? `Bu görev zaten açık: ${row.role} · ${row.event_type}`
         : `Görev atandı: ${row.role} · ${row.event_type} @ ${row.event_timestamp}`);
-      await refreshAssignmentsFor(slug);
+      await refreshAssignmentSummary(slug);
       return { label: '✓ Atandı' };
     });
   } catch (err) {
@@ -570,36 +627,30 @@ async function submitAssignment() {
   }
 }
 
-async function loadRoles() {
+async function loadRoleOptions() {
   try {
     const rolesList = await api('/roles');
     el.assignRole.innerHTML = rolesList
       .map((r) => `<option value="${escapeHtml(r.role)}">${escapeHtml(r.label)}</option>`)
       .join('');
+    return rolesList;
   } catch {
     el.assignRole.innerHTML = '<option value="">Roller yüklenemedi</option>';
+    return [];
   }
-}
-
-function closeModal() {
-  el.modal.classList.remove('open');
-  openCameraId = null;
-  stopModalWindowWatch();
-  el.modalVideo.pause();
-  el.modalVideo.removeAttribute('src');
-  el.modalVideo.dataset.camera = '';
-  el.modalVideo.dataset.slug = '';
 }
 
 // ---------------------------------------------------------------------------
 // WebSocket
 // ---------------------------------------------------------------------------
 
-/** Modal açıkken WS mesajlarını hemen yeniden çekmek yerine biriktirip
- * debounce'lu tek bir tazeleme yapar. Eski davranış her mesajda modalin
- * tamamını yeniden çekip renderModal'ı yeniden çalıştırıyordu; bu, az önce
- * kilitlenmiş bir aksiyon butonunun "✓" durumunu DOM'dan siliyor ve operatörü
- * aynı aksiyonu tekrar tıklamaya yönlendiriyordu. */
+/**
+ * Modal açıkken her WS mesajında modalin tamamını yeniden çekmek ağır ve
+ * gereksizdir; bunun yerine ~500ms'lik debounce ile tek bir tazeleme
+ * planlanır. Aksiyon butonlarının kilit durumu executedTools Set'inde
+ * ayrıca tutulduğu için bu tazeleme onları silmez (renderSuggestedActions
+ * kilidi Set'ten okuyup yeniden uygular).
+ */
 let modalRefreshTimer = null;
 function scheduleModalRefresh() {
   if (modalRefreshTimer) return;
@@ -607,17 +658,11 @@ function scheduleModalRefresh() {
     modalRefreshTimer = null;
     if (!openCameraId || !el.modal.classList.contains('open')) return;
     try {
-      const d = await api(`/pseudolive/cameras/${openCameraId}`);
-      if (currentAnalysis && d.analysis && currentAnalysis.slug !== d.analysis.slug) {
+      const detail = await api(`/pseudolive/cameras/${openCameraId}`);
+      if (currentAnalysis && detail.analysis && currentAnalysis.slug !== detail.analysis.slug) {
         return; // Kamera bir sonraki videoya geçti, modaldaki şu anki analiz görünümünü bozma
       }
-      // Yalnızca sayaç/olay/ilerleme alanlarını güncelle; aksiyon butonlarının
-      // kilit durumunu korumak için renderModal'ın aksiyon bölümünü atlıyoruz
-      // (renderModal zaten idempotent şekilde yeniden oluşturuyor, ama kilitli
-      // butonlar "runOnce" ile zaten sunucu tarafında da idempotent olduğu
-      // için yeniden oluşsalar da tekrar tıklamak zararsızdır — save_event
-      // tekrar yazmaz, get_or_create_assignment tekrar satır açmaz).
-      renderModal(openCameraId, d.active, d.analysis);
+      renderModal(openCameraId, detail.active, detail.analysis);
     } catch { /* modal kapanmış olabilir */ }
   }, 500);
 }
@@ -629,21 +674,26 @@ function handleWsMessage(msg) {
   addNotification(stream, data);
 
   if (stream === 'event.detected' && data.camera_id) {
-    const active = cameras.get(data.camera_id);
-    if (active) {
-      active.current_event = data;
-      active.fired_count = (active.fired_count || 0) + 1;
-      renderCell(data.camera_id, active);
+    const cam = cameraState.get(data.camera_id);
+    if (cam) {
+      cam.current_event = data;
+      cam.fired_count = (cam.fired_count || 0) + 1;
+      renderCell(data.camera_id, cam);
     }
   } else if (stream === 'decision.final' && data.camera_id) {
-    const active = cameras.get(data.camera_id);
-    if (active) {
-      active.risk = data.risk || active.risk;
-      active.summary = data.summary || active.summary;
-      active.current_event = null;
-      active.fired_count = 0;
-      renderCell(data.camera_id, active);
+    const cam = cameraState.get(data.camera_id);
+    if (cam) {
+      cam.risk = data.risk || cam.risk;
+      cam.summary = data.summary || cam.summary;
+      cam.current_event = null;
+      cam.fired_count = 0;
+      renderCell(data.camera_id, cam);
     }
+  } else if (stream === 'tool.executed' && data.camera_id && data.tool_name && !data.already_executed) {
+    // Başka bir ekrandan (örn. saha) tetiklenen araç da bu kameranın kilit
+    // kümesine işlenir; modal daha sonra açıldığında araç yeniden
+    // tıklanabilir görünmez.
+    markToolExecuted(data.camera_id, data.tool_name);
   }
 
   if (openCameraId && data.camera_id === openCameraId && el.modal.classList.contains('open')) {
@@ -657,11 +707,7 @@ function handleWsMessage(msg) {
 
 async function init() {
   await loadCameras();
-  // Yoklama, sanal oynatma kafasını ve sayaçları tazeler; uyarılar WebSocket
-  // üzerinden anında gelir. Ayrıca kamera çerçevesinin risk penceresi dışına
-  // çıktığında sönmesi de bu yoklamayla gerçekleşir (server active_window'u
-  // yeniden hesaplar).
-  setInterval(loadCameras, 1000);
+  setInterval(loadCameras, POLL_MS);
 
   const proto = location.protocol === 'https:' ? 'wss' : 'ws';
   const ws = new WsClient(`${proto}://${location.host}/ws`);
@@ -671,16 +717,15 @@ async function init() {
   el.assignBtn.addEventListener('click', submitAssignment);
   el.manualRunBtn.addEventListener('click', runManualAction);
 
-  el.fbBtnCorrect?.addEventListener('click', () => submitFeedback('correct', false));
-  el.fbBtnToggleEdit?.addEventListener('click', () => {
+  el.fbBtnCorrect.addEventListener('click', () => submitFeedback('correct', false));
+  el.fbBtnToggleEdit.addEventListener('click', () => {
     el.fbEditPanel.hidden = !el.fbEditPanel.hidden;
   });
-  el.fbBtnCancelEdit?.addEventListener('click', () => {
+  el.fbBtnCancelEdit.addEventListener('click', () => {
     el.fbEditPanel.hidden = true;
   });
-  el.fbBtnSubmitCorrection?.addEventListener('click', () => {
-    const fbType = el.fbType.value || 'other';
-    submitFeedback(fbType, true);
+  el.fbBtnSubmitCorrection.addEventListener('click', () => {
+    submitFeedback(el.fbType.value || 'other', true);
   });
 
   document.getElementById('modal-close').addEventListener('click', closeModal);

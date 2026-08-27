@@ -33,6 +33,7 @@ KULLANIM
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import hashlib
 import json
 import re
@@ -256,16 +257,12 @@ def analyze_video(video_path: Path, out_dir: Path, config_path: str) -> dict:
         Kaydedilen sonuç sözlüğü.
     """
     # Ağır bağımlılıklar fonksiyon içinde: script --help ile hızlı açılsın.
-    import numpy as np
-    from PIL import Image
-
     from preprocessing import probe_video  # Kanal_B/preprocessing.py
     from src.config import load_config
     from src.events.event_engine import EventEngine
     from src.models.vlm_backend import create_backend
     from src.output.guardrail import OutputGuardrail
     from src.perception.observer_agent import ObserverAgent
-    from src.preprocessing.enhancer import LowLightEnhancer
     from src.preprocessing.frame_sampler import FrameSampler
     from src.preprocessing.video_reader import VideoReader
     from src.reasoning.decision_agent import DecisionAgent
@@ -280,32 +277,59 @@ def analyze_video(video_path: Path, out_dir: Path, config_path: str) -> dict:
     info = probe_video(str(video_path))
     duration_sec = float(info["duration_sec"])
 
-    # --- Kanal A & Kanal B Paralel Çalıştırma -------------------------
-    from concurrent.futures import ThreadPoolExecutor
-    from pipeline import run_channel_b
-
+    # Kanal B'nin girdileri ve modül importu, iş parçacıkları başlamadan ÖNCE
+    # hazırlanır: aynı modülü iki thread'den ilk kez içe aktarmak import
+    # kilidinde yarışa yol açabilir.
     channel_b_dir = out_dir.parent / "channel_b" / slug
+    from pipeline import run_channel_b  # Kanal_B/pipeline.py
 
-    def _run_channel_a_worker():
+    def _run_channel_a() -> dict:
+        """Kanal A: yoğun örnekleme + YOLO/tracker algısı + kural motoru + RAG.
+
+        Karar ajanının ihtiyaç duyduğu geometrik kanıtları üretir. Kanal B'nin
+        hiçbir çıktısına ihtiyaç duymaz; bu yüzden onunla eşzamanlı çalışır.
+
+        Returns:
+            Aşağı akışın (karar ajanı + metadata) kullandığı değerler.
+        """
+        t0 = time.time()
+        print("    [Kanal A] başladı (YOLO + tracker + kural motoru)")
+
         reader = VideoReader(str(video_path))
         native_fps = reader.fps or 25.0
         target_fps = config.preprocessing.channel_a_fps
         step = max(1, round(native_fps / target_fps)) if target_fps > 0 else 1
         fps_a = native_fps / step
 
-        channel_a_frames, channel_a_indices = [], []
+        frames, frame_indices = [], []
         for idx, frame in enumerate(reader.iter_frames()):
             if idx % step == 0:
-                channel_a_frames.append(frame)
-                channel_a_indices.append(idx)
+                frames.append(frame)
+                frame_indices.append(idx)
         reader.close()
 
-        if not channel_a_frames:
+        if not frames:
             raise ValueError("Videodan kare okunamadı.")
 
+        # Akıllı örnekleme: yalnızca hangi karelerin temsilci seçildiğini
+        # (`sampled_indices`) izlenebilirlik amacıyla metadata'ya yazmak için
+        # gereklidir. Seçilen karelerin GÖRÜNTÜ verisi kullanılmaz: Kanal B'nin
+        # 10-kare yedek yolu kaldırıldığından (commit 3153c31) bu karelere
+        # uygulanan iyileştirme/yeniden boyutlandırma işlemlerinin sonucunu
+        # okuyan kimse kalmamıştı; ölü hesaplama olduğu için çıkarıldı.
+        sampler = FrameSampler(
+            target_count=config.preprocessing.target_frame_count,
+            use_smart_sampling=config.preprocessing.use_smart_sampling,
+            ssim_threshold=config.preprocessing.ssim_threshold,
+            min_laplacian_variance=config.preprocessing.min_laplacian_variance,
+        )
+        _, sampled_pos = sampler.sample(frames, len(frames))
+        sampled_indices = [frame_indices[p] for p in sampled_pos]
+
+        # --- Algı + olay motoru ---
         observer = ObserverAgent(config.perception)
         observations = observer.observe_video(
-            channel_a_frames, native_fps, sampled_indices=channel_a_indices
+            frames, native_fps, sampled_indices=frame_indices
         )
         scene_graphs = [obs["scene_graph"] for obs in observations]
 
@@ -314,27 +338,72 @@ def analyze_video(video_path: Path, out_dir: Path, config_path: str) -> dict:
             engine.process_observation(obs)
         event_signals = engine.get_signals()
 
+        # --- RAG bağlamı ---
         rag = RAGLayer()
         rag_context = rag.build_context(observations, event_signals)
-        memory = ShortTermMemory()
-        for sig in event_signals:
-            memory.add(sig, entry_type="event")
 
-        return observations, scene_graphs, event_signals, rag_context, memory, fps_a, channel_a_indices, channel_a_frames, rag
-
-    with ThreadPoolExecutor(max_workers=2) as executor:
-        future_a = executor.submit(_run_channel_a_worker)
-        future_b = executor.submit(
-            run_channel_b, str(video_path), video_id=slug, output_dir=str(channel_b_dir)
+        print(
+            f"    [Kanal A] bitti ({time.time() - t0:.1f}s, "
+            f"{len(frames)} kare, {len(event_signals)} sinyal)"
         )
+        return {
+            "scene_graphs": scene_graphs,
+            "event_signals": event_signals,
+            "rag": rag,
+            "rag_context": rag_context,
+            "fps_a": fps_a,
+            "total_frames": len(frames),
+            "sampled_indices": sampled_indices,
+        }
 
-        observations, scene_graphs, event_signals, rag_context, memory, fps_a, channel_a_indices, channel_a_frames, rag = future_a.result()
-        vlm_interpretation = future_b.result()
+    def _run_channel_b() -> dict:
+        """Kanal B: EVREN ``vlm`` modeliyle bağımsız video yorumu.
 
+        Süresinin neredeyse tamamını EVREN'e yapılan HTTP çağrısında bekler;
+        bu sırada GIL serbest kaldığı için Kanal A'nın YOLO çıkarımı fiilen
+        paralel ilerler. Segment döngüsü (uzun videolarda) kendi içinde
+        sıralıdır ve burada değiştirilmez — her segment öncekinin metin
+        hafızasını kullanır.
+        """
+        t0 = time.time()
+        print("    [Kanal B] başladı (EVREN video yorumu)")
+        interpretation = run_channel_b(
+            str(video_path), video_id=slug, output_dir=str(channel_b_dir)
+        )
+        print(f"    [Kanal B] bitti ({time.time() - t0:.1f}s)")
+        return interpretation
+
+    # İki kanal birbirinden bağımsız kanıt üretir ve yalnızca karar ajanında
+    # birleşir; bu yüzden eşzamanlı çalıştırılabilirler. Video başına süre
+    # artık ikisinin TOPLAMI değil, MAKSİMUMU kadardır.
+    #
+    # Hata davranışı: bir kanal hata verirse future.result() exception'ı ana
+    # thread'e taşır (fallback yok, hata yükseltilir). Çalışan bir thread
+    # iptal edilemediği için `with` bloğundan çıkarken diğer kanalın bitmesi
+    # beklenir; bu kaçınılmazdır.
+    with concurrent.futures.ThreadPoolExecutor(
+        max_workers=2, thread_name_prefix="kanal"
+    ) as pool:
+        fut_a = pool.submit(_run_channel_a)
+        fut_b = pool.submit(_run_channel_b)
+        a = fut_a.result()
+        vlm_interpretation = fut_b.result()
+
+    scene_graphs = a["scene_graphs"]
+    event_signals = a["event_signals"]
+    rag = a["rag"]
+    rag_context = a["rag_context"]
+    fps_a = a["fps_a"]
+    total_frames = a["total_frames"]
+    sampled_indices = a["sampled_indices"]
     channel_b_mode = "video"
+
+    # --- Hafıza + araçlar + karar ajanı (iki kanalın birleşimi) --------
+    memory = ShortTermMemory()
+    for sig in event_signals:
+        memory.add(sig, entry_type="event")
     tools = MockToolRegistry()
 
-    # --- Karar Ajanı + LLM Çıkarımı -----------------------------------
     backend = create_backend(config.vlm, force="server")
     agent = DecisionAgent(
         config=config.decision_agent, vlm_config=config.vlm,
@@ -408,8 +477,8 @@ def analyze_video(video_path: Path, out_dir: Path, config_path: str) -> dict:
             "segment_count": vlm_interpretation.get("segment_count", 1),
             "failed_segments": vlm_interpretation.get("failed_segments", []),
             "channel_a_fps": round(fps_a, 2),
-            "total_frames": len(channel_a_frames),
-            "sampled_indices": channel_a_indices,
+            "total_frames": total_frames,
+            "sampled_indices": sampled_indices,
             "geometric_signals": event_signals,
             "vlm_interpretation": vlm_interpretation,
             "rag_context": rag_context,

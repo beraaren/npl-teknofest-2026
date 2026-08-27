@@ -1,120 +1,72 @@
 import { WsClient } from './ws.js';
+import { api, escapeHtml, riskClass, showToast, initToast } from './app.js';
 
-const kpiEvents = document.getElementById('kpi-events');
-const kpiDecisions = document.getElementById('kpi-decisions');
-const kpiTools = document.getElementById('kpi-tools');
-const kpiNotifications = document.getElementById('kpi-notifications');
-const kpiFeedbacks = document.getElementById('kpi-feedbacks');
-const kpiAccuracy = document.getElementById('kpi-accuracy');
-const feedbacksBody = document.getElementById('feedbacks-body');
-const eventsBody = document.getElementById('events-body');
-const riskChart = document.getElementById('risk-chart');
-const suggestBtn = document.getElementById('suggest-btn');
-const queryInput = document.getElementById('query-text');
-const suggestionsList = document.getElementById('suggestions-list');
-const toastEl = document.getElementById('toast');
+const el = {
+  kpiEvents: document.getElementById('kpi-events'),
+  kpiDecisions: document.getElementById('kpi-decisions'),
+  kpiTools: document.getElementById('kpi-tools'),
+  kpiNotifications: document.getElementById('kpi-notifications'),
+  kpiFeedbacks: document.getElementById('kpi-feedbacks'),
+  kpiAccuracy: document.getElementById('kpi-accuracy'),
+  feedbacksBody: document.getElementById('feedbacks-body'),
+  eventsBody: document.getElementById('events-body'),
+  riskChart: document.getElementById('risk-chart'),
+  suggestBtn: document.getElementById('suggest-btn'),
+  queryInput: document.getElementById('query-text'),
+  suggestionsList: document.getElementById('suggestions-list'),
+};
+initToast(document.getElementById('toast'));
 
+/** WS'ten gelen son 50 olay; öneri sorgusu için event_type listesi buradan
+ * çıkarılır. */
 const recentEvents = [];
-let toastTimer = null;
 
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text == null ? '' : String(text);
-  return div.innerHTML;
-}
-
-function showToast(message) {
-  toastEl.textContent = message;
-  toastEl.classList.add('show');
-  if (toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3000);
-}
+const FEEDBACK_TYPE_BADGE = {
+  correct: '<span class="status-badge status-tamamlandi">✔ Doğrulandı</span>',
+  false_positive: '<span class="status-badge status-atandi">✖ Yanlış Alarm</span>',
+  wrong_risk: '<span class="status-badge status-goruldu">⚠ Hatalı Risk</span>',
+  wrong_event: '<span class="status-badge status-goruldu">⚠ Hatalı Olay</span>',
+  wrong_action: '<span class="status-badge status-goruldu">⚠ Hatalı Aksiyon</span>',
+  other: '<span class="status-badge">Diğer Düzeltme</span>',
+};
 
 function formatTime(date = new Date()) {
   return date.toLocaleTimeString('tr-TR');
 }
 
-async function loadFeedbackData() {
-  try {
-    const [statsRes, listRes] = await Promise.all([
-      fetch('/api/v1/feedback/stats'),
-      fetch('/api/v1/feedback?limit=25'),
-    ]);
-
-    if (statsRes.ok && kpiFeedbacks && kpiAccuracy) {
-      const stats = await statsRes.json();
-      kpiFeedbacks.textContent = stats.total ?? 0;
-      kpiAccuracy.textContent = stats.total > 0 ? `%${stats.accuracy_rate}` : '%100';
-    }
-
-    if (listRes.ok && feedbacksBody) {
-      const items = await listRes.json();
-      renderFeedbacksTable(items);
-    }
-  } catch (err) {
-    console.error('Geri bildirim verileri yüklenemedi:', err);
-  }
-}
-
-function renderFeedbacksTable(items) {
-  if (!feedbacksBody) return;
-  if (!items || !items.length) {
-    feedbacksBody.innerHTML = '<tr><td colspan="6" class="empty-state">Henüz geri bildirim kaydı yok.</td></tr>';
-    return;
-  }
-
-  const typeLabels = {
-    correct: '<span class="status-badge status-tamamlandi">✔ Doğrulandı</span>',
-    false_positive: '<span class="status-badge status-atandi">✖ Yanlış Alarm</span>',
-    wrong_risk: '<span class="status-badge status-goruldu">⚠ Hatalı Risk</span>',
-    wrong_event: '<span class="status-badge status-goruldu">⚠ Hatalı Olay</span>',
-    wrong_action: '<span class="status-badge status-goruldu">⚠ Hatalı Aksiyon</span>',
-    other: '<span class="status-badge">Diğer Düzeltme</span>',
-  };
-
-  feedbacksBody.innerHTML = items.map((f) => `
-    <tr>
-      <td>${escapeHtml(f.created_at ? new Date(f.created_at).toLocaleTimeString('tr-TR') : '-')}</td>
-      <td><strong>${escapeHtml(f.analysis_slug || '-')}</strong> <span class="meta">(${escapeHtml(f.camera_id || '-')})</span></td>
-      <td>${typeLabels[f.feedback_type] || escapeHtml(f.feedback_type)}</td>
-      <td><span class="risk-badge ${(f.original_risk || '').toLowerCase() === 'yüksek' ? 'high' : (f.original_risk || '').toLowerCase() === 'orta' ? 'medium' : 'low'}">${escapeHtml(f.original_risk || '-')}</span></td>
-      <td><span class="risk-badge ${(f.corrected_risk || '').toLowerCase() === 'yüksek' ? 'high' : (f.corrected_risk || '').toLowerCase() === 'orta' ? 'medium' : 'low'}">${escapeHtml(f.corrected_risk || '-')}</span></td>
-      <td>${escapeHtml(f.supervisor_notes || f.corrected_summary || '-')}</td>
-    </tr>
-  `).join('');
-}
+// ---------------------------------------------------------------------------
+// KPI + risk grafiği
+// ---------------------------------------------------------------------------
 
 async function loadMetrics() {
   try {
-    const res = await fetch('/api/v1/metrics');
-    if (!res.ok) throw new Error(res.statusText);
-    const data = await res.json();
-    kpiEvents.textContent = data.events_detected ?? '—';
-    kpiDecisions.textContent = data.decisions_made ?? '—';
-    kpiTools.textContent = data.tools_executed ?? '—';
-    kpiNotifications.textContent = data.notifications_sent ?? '—';
+    const data = await api('/metrics');
+    el.kpiEvents.textContent = data.events_detected ?? '—';
+    el.kpiDecisions.textContent = data.decisions_made ?? '—';
+    el.kpiTools.textContent = data.tools_executed ?? '—';
+    el.kpiNotifications.textContent = data.notifications_sent ?? '—';
     drawRiskChart(data.risk_distribution || {});
   } catch (err) {
     console.error('Metrikler yüklenemedi:', err);
   }
 }
 
-
 function drawRiskChart(distribution) {
-  const canvas = riskChart;
+  const canvas = el.riskChart;
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.parentElement.getBoundingClientRect();
   canvas.width = rect.width * dpr;
   canvas.height = rect.height * dpr;
-  canvas.style.width = rect.width + 'px';
-  canvas.style.height = rect.height + 'px';
+  canvas.style.width = `${rect.width}px`;
+  canvas.style.height = `${rect.height}px`;
   ctx.scale(dpr, dpr);
 
   const width = rect.width;
   const height = rect.height;
   ctx.clearRect(0, 0, width, height);
 
+  // Risk seviyeleri kesin olarak üç değerdir (bkz. app.js RISK_CLASS).
   const labels = ['Düşük', 'Orta', 'Yüksek'];
   const colors = ['#22c55e', '#f59e0b', '#ef4444'];
   const values = labels.map((l) => Number(distribution[l]) || 0);
@@ -123,10 +75,9 @@ function drawRiskChart(distribution) {
   const padding = 24;
   const chartW = width - padding * 2;
   const chartH = height - padding * 2;
-  const barW = chartW / labels.length * 0.5;
   const step = chartW / labels.length;
+  const barW = step * 0.5;
 
-  ctx.fillStyle = '#94a3b8';
   ctx.font = '12px system-ui';
   ctx.textAlign = 'center';
 
@@ -147,6 +98,45 @@ function drawRiskChart(distribution) {
   });
 }
 
+// ---------------------------------------------------------------------------
+// RLHF / DPO geri bildirim tablosu
+// ---------------------------------------------------------------------------
+
+async function loadFeedbackData() {
+  try {
+    const [stats, items] = await Promise.all([
+      api('/feedback/stats'),
+      api('/feedback?limit=25'),
+    ]);
+    el.kpiFeedbacks.textContent = stats.total ?? 0;
+    el.kpiAccuracy.textContent = stats.total > 0 ? `%${stats.accuracy_rate}` : '%100';
+    renderFeedbacksTable(items);
+  } catch (err) {
+    console.error('Geri bildirim verileri yüklenemedi:', err);
+  }
+}
+
+function renderFeedbacksTable(items) {
+  if (!items || !items.length) {
+    el.feedbacksBody.innerHTML = '<tr><td colspan="6" class="empty-state">Henüz geri bildirim kaydı yok.</td></tr>';
+    return;
+  }
+  el.feedbacksBody.innerHTML = items.map((f) => `
+    <tr>
+      <td>${escapeHtml(f.created_at ? new Date(f.created_at).toLocaleTimeString('tr-TR') : '-')}</td>
+      <td><strong>${escapeHtml(f.analysis_slug || '-')}</strong> <span class="meta">(${escapeHtml(f.camera_id || '-')})</span></td>
+      <td>${FEEDBACK_TYPE_BADGE[f.feedback_type] || escapeHtml(f.feedback_type)}</td>
+      <td><span class="risk-badge ${riskClass(f.original_risk)}">${escapeHtml(f.original_risk || '-')}</span></td>
+      <td><span class="risk-badge ${riskClass(f.corrected_risk)}">${escapeHtml(f.corrected_risk || '-')}</span></td>
+      <td>${escapeHtml(f.supervisor_notes || f.corrected_summary || '-')}</td>
+    </tr>
+  `).join('');
+}
+
+// ---------------------------------------------------------------------------
+// Son olaylar tablosu
+// ---------------------------------------------------------------------------
+
 function addEvent(stream, data) {
   recentEvents.unshift({ stream, time: new Date(), data });
   if (recentEvents.length > 50) recentEvents.pop();
@@ -155,15 +145,15 @@ function addEvent(stream, data) {
 
 function renderEventsTable() {
   if (!recentEvents.length) {
-    eventsBody.innerHTML = '<tr><td colspan="5" class="empty-state">Henüz olay yok.</td></tr>';
+    el.eventsBody.innerHTML = '<tr><td colspan="5" class="empty-state">Henüz olay yok.</td></tr>';
     return;
   }
-  eventsBody.innerHTML = recentEvents.map((e) => `
+  el.eventsBody.innerHTML = recentEvents.map((e) => `
     <tr>
       <td>${escapeHtml(formatTime(e.time))}</td>
       <td>${escapeHtml(e.data.camera_id || '-')}</td>
       <td>${escapeHtml(e.stream)}</td>
-      <td>${escapeHtml(e.data.event_type || e.data.current_event || '-')}</td>
+      <td>${escapeHtml(e.data.event_type || '-')}</td>
       <td>${escapeHtml(e.data.risk || '-')}</td>
     </tr>
   `).join('');
@@ -178,28 +168,30 @@ function collectEventTypes() {
   return types;
 }
 
+// ---------------------------------------------------------------------------
+// Çalışma alanı önerileri — DÜZ METİN, tıklanamaz, sohbet/yorum yok
+// ---------------------------------------------------------------------------
+
 async function fetchSuggestions() {
   const eventTypes = collectEventTypes();
   if (!eventTypes.length) {
     showToast('Henüz olay tipi yok.');
     return;
   }
-  suggestBtn.disabled = true;
-  suggestBtn.textContent = 'Yükleniyor...';
+  const original = el.suggestBtn.textContent;
+  el.suggestBtn.disabled = true;
+  el.suggestBtn.textContent = 'Yükleniyor...';
   try {
-    const res = await fetch('/api/v1/suggestions/query', {
+    const data = await api('/suggestions/query', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ event_types: eventTypes, query_text: queryInput.value || '' }),
+      body: JSON.stringify({ event_types: eventTypes, query_text: el.queryInput.value || '' }),
     });
-    if (!res.ok) throw new Error(res.statusText);
-    const data = await res.json();
     renderSuggestions(Array.isArray(data) ? data : []);
   } catch (err) {
-    showToast('Öneriler alınamadı: ' + err.message);
+    showToast(`Öneriler alınamadı: ${err.message}`, true);
   } finally {
-    suggestBtn.disabled = false;
-    suggestBtn.textContent = 'Seçili olaylar için öneri al';
+    el.suggestBtn.disabled = false;
+    el.suggestBtn.textContent = original;
   }
 }
 
@@ -209,20 +201,20 @@ function formatCost(cost) {
 }
 
 /**
- * Öneriler artık düz metin satırları olarak gösterilir; tıklama, post-it
- * kartı ve LLM sohbet çekmecesi kaldırıldı (özellik gereksiz yere
- * ağırlaştırılmıştı ve burada bir yorum/sohbet bölümüne ihtiyaç yok).
+ * Öneriler düz metin satırları olarak render edilir: başlık, kategori,
+ * öncelik, skor, maliyet. Hiçbiri tıklanamaz — post-it kartı ve LLM sohbet
+ * çekmecesi (eski özellik) buraya KASITLI olarak eklenmedi.
+ *
  * "Öncelik" burada önerinin öncelik seviyesidir (data/isg_onerileri.yaml
  * oncelik alanı) — kamera duvarındaki RİSK seviyesiyle aynı vokabüler
- * DEĞİLDİR; karışmaması için ayrıca etiketlenir.
+ * DEĞİLDİR, karışmaması için "Öncelik" olarak açıkça etiketlenir.
  */
 function renderSuggestions(suggestions) {
-  suggestionsList.innerHTML = '';
   if (!suggestions.length) {
-    suggestionsList.innerHTML = '<div class="empty-state">Öneri bulunamadı.</div>';
+    el.suggestionsList.innerHTML = '<div class="empty-state">Öneri bulunamadı.</div>';
     return;
   }
-  suggestionsList.innerHTML = suggestions.map((s) => `
+  el.suggestionsList.innerHTML = suggestions.map((s) => `
     <div class="suggestion-row">
       <div class="suggestion-title">${escapeHtml(s.baslik)}</div>
       <div class="meta">
@@ -234,6 +226,10 @@ function renderSuggestions(suggestions) {
     </div>
   `).join('');
 }
+
+// ---------------------------------------------------------------------------
+// WebSocket + başlatma
+// ---------------------------------------------------------------------------
 
 function handleWsMessage(msg) {
   const { stream, data } = msg || {};
@@ -258,8 +254,8 @@ function init() {
   ws.connect();
   ws.onMessage(handleWsMessage);
 
-  suggestBtn.addEventListener('click', fetchSuggestions);
-  window.addEventListener('resize', () => loadMetrics().then(() => {}));
+  el.suggestBtn.addEventListener('click', fetchSuggestions);
+  window.addEventListener('resize', loadMetrics);
 }
 
 init();

@@ -5,10 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin | Video Risk Analizi</title>
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    .app.with-sidebar .main { margin-right: 360px; }
-    .app.with-sidebar .sidebar { width: 360px; }
-  </style>
   <script type="module" src="admin.js"></script>
 </head>
 <body>
@@ -33,7 +29,7 @@
 
       <!-- RLHF / DPO Veri Seti ve Geri Bildirim Havuzu -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin:1.5rem 0 0.5rem;flex-wrap:wrap;gap:0.5rem;">
-        <h2 style="margin:0;">🎯 RLHF & DPO Geri Bildirim Havuzu</h2>
+        <h2 style="margin:0;">🎯 RLHF &amp; DPO Geri Bildirim Havuzu</h2>
         <div style="display:flex;gap:0.5rem;">
           <a href="/api/v1/feedback/export" class="btn-dpo-export" download="dpo_dataset.jsonl">📥 DPO Veri Setini İndir (.jsonl)</a>
           <a href="/api/v1/feedback/export?only_corrections=true" class="btn-dpo-export" style="background:#334155;" download="dpo_corrections.jsonl">📥 Sadece Düzeltmeleri İndir</a>
@@ -58,18 +54,20 @@
       <div class="chart-wrap">
         <canvas id="risk-chart"></canvas>
       </div>
-
     </main>
 
     <aside class="sidebar" style="width:360px;">
       <h2>💡 Çalışma Alanı Önerileri</h2>
       <label class="meta" for="query-text">Sorgu metni (isteğe bağlı)</label>
-      <input id="query-text" class="chat-input" style="padding:0.5rem;" placeholder="Örn: risk azaltma önlemleri..." />
+      <div class="query-input-row">
+        <input id="query-text" type="text" placeholder="Örn: risk azaltma önlemleri..." />
+      </div>
       <button id="suggest-btn" class="btn" style="width:100%;">Seçili olaylar için öneri al</button>
-      <!-- Düz metin listesi: başlık, kategori, öncelik, maliyet. Eskiden
-           tıklanabilir post-it kartları + LLM sohbet çekmecesi vardı; bu
-           özellik aşırı ağırlaştırılmıştı ve burada yorum/sohbet bölümüne
-           gerek yok. -->
+      <!--
+        Öneriler düz metin satırları olarak listelenir: başlık, kategori,
+        öncelik, skor, maliyet. Tıklanamaz; sohbet/yorum bölümü kasıtlı
+        olarak yoktur.
+      -->
       <div id="suggestions-list" class="suggestions-plain"></div>
     </aside>
   </div>

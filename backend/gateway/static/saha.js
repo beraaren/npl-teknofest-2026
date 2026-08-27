@@ -1,8 +1,12 @@
 import { WsClient } from './ws.js';
-import { api, escapeHtml, mmss, showToast, initToast, runOnce } from './app.js';
+import { API, api, escapeHtml, mmss, riskClass, showToast, initToast, runOnce } from './app.js';
 
-const RISK_CLASS = { 'Yüksek': 'high', 'Orta': 'medium', 'Düşük': 'low' };
 const STATUS_LABEL = { atandi: 'Bekliyor', goruldu: 'Görüldü', devam_ediyor: 'İntikal Edildi', tamamlandi: 'Bitti' };
+/** Durum ilerleme sırası: bir görev geri gidemez, bu yüzden mevcut durumun
+ * rankından düşük/eşit statü butonları kilitlenir. Eskiden yalnızca
+ * "tamamlandi" durumunda tüm butonlar kilitleniyordu; "Gördüm"e basılıp
+ * durum "goruldu" olduktan sonra "Gördüm" butonu hâlâ tıklanabilir kalıyordu. */
+const STATUS_RANK = { atandi: 0, goruldu: 1, devam_ediyor: 2, tamamlandi: 3 };
 /** Olayın kaç saniye öncesinden oynatmaya başlanacağı (bağlam için). */
 const PRE_ROLL_SEC = 3;
 
@@ -18,12 +22,19 @@ initToast(el.toast);
 
 let currentRole = '';
 let roleLabels = new Map();
-/** Araç katalogu; kart başına Önerilen/Manuel aksiyon listelerini kurar. */
 let toolCatalog = [];
+/**
+ * assignment_id -> Set(tool_name): bu oturumda bu görev için çalıştırılmış
+ * araçlar. loadAssignments() periyodik olarak (WS mesajı, filtre değişimi,
+ * "Yenile") TÜM kartları sıfırdan yeniden çiziyor; bu Set olmadan her
+ * yeniden çizimde "✓ Çalıştırıldı" kilidi kaybolup buton yeniden tıklanabilir
+ * görünürdü.
+ */
+const executedTools = new Map();
 
 function toolLabel(toolName) {
-  const tool = toolCatalog.find((t) => t.tool_name === toolName);
-  return tool?.description || toolName;
+  const found = toolCatalog.find((t) => t.tool_name === toolName);
+  return found?.description || toolName;
 }
 
 function playAlertSound() {
@@ -45,24 +56,28 @@ function playAlertSound() {
  *
  * Video, atamadaki `event_seconds` değerinin biraz öncesinden başlar ve
  * `event_end_seconds` biliniyorsa (backend'in ürettiği duration > 0 olduğu
- * durumlarda) tam o anda durur; süre bilinmiyorsa (event_end_seconds === 0)
- * klip sonuna kadar oynar — süre uydurulmaz.
+ * durumlarda) tam o anda durur; süre bilinmiyorsa (event_end_seconds === 0
+ * veya event_seconds'a eşit) klip sonuna kadar oynar — süre uydurulmaz.
  */
 function renderAssignmentCard(row) {
-  const riskCls = RISK_CLASS[row.risk] || 'low';
   const card = document.createElement('div');
   card.className = `alarm-card status-${row.status}`;
   card.id = `assignment-${row.id}`;
 
-  const actions = (row.actions || []).length
+  const actionsHtml = (row.actions || []).length
     ? row.actions.map((a) => `<li>${escapeHtml(a)}</li>`).join('')
     : '<li class="meta">Aksiyon önerisi yok.</li>';
+
+  const hasKnownEnd = Number(row.event_end_seconds) > Number(row.event_seconds);
+  const clipHint = hasKnownEnd
+    ? `Klip olayın süresine (${mmss(row.event_seconds)}–${mmss(row.event_end_seconds)}) konumlandı ve sonunda durur.`
+    : `Klip olayın anına (${escapeHtml(row.event_timestamp || mmss(row.event_seconds))}) konumlandı.`;
 
   card.innerHTML = `
     <div class="alarm-banner">⚠ GÖREV #${row.id} · ${escapeHtml(STATUS_LABEL[row.status] || row.status)}</div>
     <div class="card-head">
       <h3>${escapeHtml(row.headline || 'Görev')}</h3>
-      <span class="risk-badge ${riskCls}">${escapeHtml(row.risk || '—')}</span>
+      <span class="risk-badge ${riskClass(row.risk)}">${escapeHtml(row.risk || '—')}</span>
     </div>
 
     <div class="meta card-facts">
@@ -78,14 +93,10 @@ function renderAssignmentCard(row) {
     <p class="summary-box">${escapeHtml(row.summary || 'Özet yok.')}</p>
 
     <video controls playsinline preload="metadata"></video>
-    <div class="meta clip-hint">
-      ${row.event_end_seconds > row.event_seconds
-        ? `Klip olayın süresine (${mmss(row.event_seconds)}–${mmss(row.event_end_seconds)}) konumlandı ve sonunda durur.`
-        : `Klip olayın anına (${escapeHtml(row.event_timestamp || mmss(row.event_seconds))}) konumlandı.`}
-    </div>
+    <div class="meta clip-hint">${clipHint}</div>
 
     <h4>✅ Yapılacaklar</h4>
-    <ul class="action-advice">${actions}</ul>
+    <ul class="action-advice">${actionsHtml}</ul>
 
     <h4>⚡ Önerilen Aksiyonlar</h4>
     <div class="actions-list card-suggested-actions"></div>
@@ -108,69 +119,90 @@ function renderAssignmentCard(row) {
     </details>
   `;
 
-  // Video: atanan olayın anına konumlanır, biliniyorsa bitişte durur.
-  const video = card.querySelector('video');
-  if (row.analysis_slug) {
-    video.src = `${API()}/library/videos/${encodeURIComponent(row.analysis_slug)}`;
-    const start = Math.max(0, (Number(row.event_seconds) || 0) - PRE_ROLL_SEC);
-    const end = Number(row.event_end_seconds) || 0;
-    video.addEventListener('loadedmetadata', () => {
-      try {
-        video.currentTime = Math.min(start, Math.max(0, video.duration - 0.2));
-      } catch { /* seek mümkün değil */ }
-    }, { once: true });
-    if (end > (Number(row.event_seconds) || 0)) {
-      video.addEventListener('timeupdate', () => {
-        if (video.currentTime >= end) video.pause();
-      });
-    }
-  } else {
-    video.replaceWith(Object.assign(document.createElement('div'), {
-      className: 'empty-state',
-      textContent: 'Bu görev için video bulunamadı.',
-    }));
-  }
-
-  // Önerilen aksiyonlar: assignments tablosu hangi aracın tetiklediğini
-  // taşımaz (bkz. store.py); bu ekibe atama yapan aracı katalogdan
-  // (assigns_role alanı) geriye eşleyerek birincil öneriyi kuruyoruz. Bu araç
-  // zaten tetiklenmiş olabilir (idempotency backend'de zaten var), tekrar
-  // tıklamak zararsızdır.
-  const suggestedBox = card.querySelector('.card-suggested-actions');
-  suggestedBox.innerHTML = '';
-  const suggestedTool = toolCatalog.find((t) => t.enabled && t.assigns_role === row.role);
-  if (suggestedTool) {
-    const btn = document.createElement('button');
-    btn.className = 'btn btn-secondary';
-    btn.textContent = suggestedTool.description || suggestedTool.tool_name;
-    btn.addEventListener('click', () => runTool(btn, row, suggestedTool.tool_name));
-    suggestedBox.appendChild(btn);
-  } else {
-    suggestedBox.innerHTML = '<span class="meta">Bu görev için önerilen araç yok.</span>';
-  }
-
-  const manualSelect = card.querySelector('.manual-tool-select');
-  manualSelect.innerHTML = toolCatalog
-    .filter((t) => t.enabled)
-    .map((t) => `<option value="${escapeHtml(t.tool_name)}">${escapeHtml(t.description || t.tool_name)}</option>`)
-    .join('');
-  card.querySelector('.manual-run-btn').addEventListener('click', (e) => {
-    runTool(e.target, row, manualSelect.value, true);
-  });
-
-  // Durum butonları
-  card.querySelectorAll('button[data-status]').forEach((btn) => {
-    btn.addEventListener('click', () => updateStatus(row, btn.dataset.status, btn));
-  });
-
-  if (row.status === 'tamamlandi') {
-    card.querySelectorAll('button[data-status]').forEach((b) => { b.disabled = true; });
-  }
+  setupCardVideo(card, row);
+  setupSuggestedAction(card, row);
+  setupManualAction(card, row);
+  setupStatusButtons(card, row);
 
   return card;
 }
 
-function API() { return '/api/v1'; }
+function setupCardVideo(card, row) {
+  const video = card.querySelector('video');
+  if (!row.analysis_slug) {
+    video.replaceWith(Object.assign(document.createElement('div'), {
+      className: 'empty-state',
+      textContent: 'Bu görev için video bulunamadı.',
+    }));
+    return;
+  }
+  video.src = `${API}/library/videos/${encodeURIComponent(row.analysis_slug)}`;
+  const start = Math.max(0, (Number(row.event_seconds) || 0) - PRE_ROLL_SEC);
+  const end = Number(row.event_end_seconds) || 0;
+  video.addEventListener('loadedmetadata', () => {
+    try {
+      video.currentTime = Math.min(start, Math.max(0, video.duration - 0.2));
+    } catch { /* seek mümkün değil */ }
+  }, { once: true });
+  if (end > (Number(row.event_seconds) || 0)) {
+    video.addEventListener('timeupdate', () => {
+      if (video.currentTime >= end) video.pause();
+    });
+  }
+}
+
+function setupSuggestedAction(card, row) {
+  const box = card.querySelector('.card-suggested-actions');
+  const locked = executedTools.get(row.id) || new Set();
+  // assignments tablosu hangi aracın bu görevi tetikledigini taşımaz (bkz.
+  // store.py); bu ekibe atama yapan aracı katalogdan (assigns_role alanı)
+  // geriye eşleyerek birincil öneriyi kuruyoruz.
+  const suggestedTool = toolCatalog.find((t) => t.enabled && t.assigns_role === row.role);
+  if (!suggestedTool) {
+    box.innerHTML = '<span class="meta">Bu görev için önerilen araç yok.</span>';
+    return;
+  }
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-secondary';
+  if (locked.has(suggestedTool.tool_name)) {
+    btn.disabled = true;
+    btn.dataset.locked = '1';
+    btn.classList.add('btn-done');
+    btn.textContent = `✓ ${suggestedTool.description || suggestedTool.tool_name}`;
+  } else {
+    btn.textContent = suggestedTool.description || suggestedTool.tool_name;
+    btn.addEventListener('click', () => executeSuggestedTool(btn, row, suggestedTool.tool_name));
+  }
+  box.appendChild(btn);
+}
+
+function setupManualAction(card, row) {
+  const select = card.querySelector('.manual-tool-select');
+  select.innerHTML = toolCatalog
+    .filter((t) => t.enabled)
+    .map((t) => `<option value="${escapeHtml(t.tool_name)}">${escapeHtml(t.description || t.tool_name)}</option>`)
+    .join('');
+  card.querySelector('.manual-run-btn').addEventListener('click', (e) => {
+    runManualTool(e.currentTarget, row, select.value);
+  });
+}
+
+function setupStatusButtons(card, row) {
+  const currentRank = STATUS_RANK[row.status] ?? 0;
+  card.querySelectorAll('button[data-status]').forEach((btn) => {
+    const target = btn.dataset.status;
+    const targetRank = STATUS_RANK[target] ?? 0;
+    if (targetRank <= currentRank) {
+      btn.disabled = true;
+      if (targetRank === currentRank) {
+        btn.classList.add('btn-done');
+        btn.textContent = `✓ ${STATUS_LABEL[target] || target}`;
+      }
+    } else {
+      btn.addEventListener('click', () => updateStatus(row, target, btn));
+    }
+  });
+}
 
 async function updateStatus(row, status, btn) {
   try {
@@ -188,32 +220,62 @@ async function updateStatus(row, status, btn) {
   }
 }
 
-async function runTool(btn, row, toolName, isManual = false) {
-  if (!toolName) return;
+async function executeSuggestedTool(btn, row, toolName) {
   try {
     await runOnce(btn, async () => {
-      const res = await api('/tools/execute', {
-        method: 'POST',
-        body: JSON.stringify({
-          tool_name: toolName,
-          params: {
-            location: row.camera_id || 'saha',
-            urgency: row.risk || 'Orta',
-            reason: (row.headline || '').slice(0, 100),
-          },
-          camera_id: row.camera_id,
-          analysis_slug: row.analysis_slug,
-          triggered_by: 'field',
-        }),
-      });
+      const res = await execTool(row, toolName);
+      markToolExecuted(row.id, toolName);
       showToast(res.already_executed
         ? `${res.tool_name} zaten çalıştırılmıştı.`
         : `${res.tool_name}: ${res.mock_result || res.status}`);
-      return { label: isManual ? 'Çalıştırıldı ✓' : `✓ ${toolLabel(toolName)}` };
+      return { label: `✓ ${toolLabel(toolName)}` };
     });
   } catch (err) {
     showToast(`Araç çalıştırılamadı: ${err.message}`, true);
   }
+}
+
+async function runManualTool(btn, row, toolName) {
+  if (!toolName) return;
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = `${original} …`;
+  try {
+    const res = await execTool(row, toolName);
+    markToolExecuted(row.id, toolName);
+    showToast(res.already_executed
+      ? `${res.tool_name} zaten çalıştırılmıştı.`
+      : `${res.tool_name}: ${res.mock_result || res.status}`);
+    btn.textContent = 'Çalıştırıldı ✓';
+    setTimeout(() => { btn.textContent = original; }, 1200);
+  } catch (err) {
+    showToast(`Araç çalıştırılamadı: ${err.message}`, true);
+    btn.textContent = original;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function markToolExecuted(assignmentId, toolName) {
+  if (!executedTools.has(assignmentId)) executedTools.set(assignmentId, new Set());
+  executedTools.get(assignmentId).add(toolName);
+}
+
+function execTool(row, toolName) {
+  return api('/tools/execute', {
+    method: 'POST',
+    body: JSON.stringify({
+      tool_name: toolName,
+      params: {
+        location: row.camera_id || 'saha',
+        urgency: row.risk || 'Orta',
+        reason: (row.headline || '').slice(0, 100),
+      },
+      camera_id: row.camera_id,
+      analysis_slug: row.analysis_slug,
+      triggered_by: 'field',
+    }),
+  });
 }
 
 // ---------------------------------------------------------------------------

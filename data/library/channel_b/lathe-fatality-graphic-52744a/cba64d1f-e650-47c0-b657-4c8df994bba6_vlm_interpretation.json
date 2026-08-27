@@ -1,0 +1,74 @@
+{
+  "packet_id": "cba64d1f-e650-47c0-b657-4c8df994bba6",
+  "video_id": "lathe-fatality-graphic-52744a",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir atölye veya endüstriyel çalışma alanındaki güvenlik kamerası görüntüsü. Başlangıçta tek bir kişi makineye çalışırken, 32. saniyede birden fazla kişi atölyeye girer ve bir makine etrafında toplanır. Bu kişiler, makineye müdahale ederken hızlı ve koordineli hareketler yapar. Ortamda çeşitli makineler, araç gereçler ve metal parçalar bulunur.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Başlangıçta bir kişi, 32. saniyede birden fazla kişi atölyeye girer ve makine etrafında toplanır."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Ortada büyük bir makine (muhtemelen bir torna veya benzeri) yer alır. Kırmızı bir tekerleği ve çeşitli mekanik parçaları vardır."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Duvarlarda ve zeminde metal raf ve yapılar, araç gereçlerin saklandığı yerlerdir."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Zeminde ve makinelerin etrafında çeşitli metal parçalar ve yükler bulunur."
+    },
+    {
+      "label": "fan",
+      "confidence_hint": "high",
+      "notes_tr": "Makinenin yanında büyük bir stand fanı yer alır."
+    }
+  ],
+  "detected_actions_tr": [
+    "Bir kişi makineye çalışır.",
+    "Birden fazla kişi atölyeye girer.",
+    "Kişiler makine etrafında toplanır.",
+    "Kişiler makineye müdahale eder.",
+    "Hızlı ve koordineli hareketler yapılır."
+  ],
+  "confidence_overall": 0.85,
+  "inference": {
+    "latency_ms": 20324.02110000112,
+    "tokens_generated": 715
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir atölye veya endüstriyel çalışma alanındaki güvenlik kamerası görüntüsü. Başlangıçta tek bir kişi makineye çalışırken, 32. saniyede birden fazla kişi atölyeye girer ve bir makine etrafında toplanır. Bu kişiler, makineye müdahale ederken hızlı ve koordineli hareketler yapar. Ortamda çeşitli makineler, araç gereçler ve metal parçalar bulunur.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Başlangıçta bir kişi, 32. saniyede birden fazla kişi atölyeye girer ve makine etrafında toplanır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Ortada büyük bir makine (muhtemelen bir torna veya benzeri) yer alır. Kırmızı bir tekerleği ve çeşitli mekanik parçaları vardır.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Duvarlarda ve zeminde metal raf ve yapılar, araç gereçlerin saklandığı yerlerdir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Zeminde ve makinelerin etrafında çeşitli metal parçalar ve yükler bulunur.\"\n    },\n    {\n      \"label\": \"fan\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin yanında büyük bir stand fanı yer alır.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Bir kişi makineye çalışır.\",\n    \"Birden fazla kişi atölyeye girer.\",\n    \"Kişiler makine etrafında toplanır.\",\n    \"Kişiler makineye müdahale eder.\",\n    \"Hızlı ve koordineli hareketler yapılır.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"32. saniyede birden fazla kişi atölyeye hızlıca girer ve makine etrafında yoğunlaşır. Bu, makinenin çalışırken veya tehlikeli bir durumda olabileceği anlamına gelir. Hızlı hareketler ve koordinasyon eksikliği, personelin yaralanma riskini artırır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 32.0\n    },\n    {\n      \"description_tr\": \"35. saniyede kişiler makineye müdahale ederken, bazıları eğilmiş veya bükülmüş pozisyonda olup, makinenin hareketli parçalarına yakın dururlar. Bu, makineye yanlış müdahale veya hareketli parçalara temas riski oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 35.0\n    }\n  ],\n  \"confidence_overall\": 0.85\n}",
+  "risk_events": [
+    {
+      "description_tr": "32. saniyede birden fazla kişi atölyeye hızlıca girer ve makine etrafında yoğunlaşır. Bu, makinenin çalışırken veya tehlikeli bir durumda olabileceği anlamına gelir. Hızlı hareketler ve koordinasyon eksikliği, personelin yaralanma riskini artırır.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 32.0
+    },
+    {
+      "description_tr": "35. saniyede kişiler makineye müdahale ederken, bazıları eğilmiş veya bükülmüş pozisyonda olup, makinenin hareketli parçalarına yakın dururlar. Bu, makineye yanlış müdahale veya hareketli parçalara temas riski oluşturur.",
+      "severity": "high",
+      "confidence": 0.8,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 35.0
+    }
+  ],
+  "risk_flags_tr": [
+    "32. saniyede birden fazla kişi atölyeye hızlıca girer ve makine etrafında yoğunlaşır. Bu, makinenin çalışırken veya tehlikeli bir durumda olabileceği anlamına gelir. Hızlı hareketler ve koordinasyon eksikliği, personelin yaralanma riskini artırır.",
+    "35. saniyede kişiler makineye müdahale ederken, bazıları eğilmiş veya bükülmüş pozisyonda olup, makinenin hareketli parçalarına yakın dururlar. Bu, makineye yanlış müdahale veya hareketli parçalara temas riski oluşturur."
+  ],
+  "computed_confidence": 0.6356,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 55.43333333333333,
+  "created_at": "2026-08-27T13:55:16.113478+00:00"
+}

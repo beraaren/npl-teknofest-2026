@@ -62,12 +62,16 @@
         <h3>⏱ Olay Zaman Çizelgesi</h3>
         <ul id="modal-events" class="event-timeline"></ul>
 
-        <!-- Önerilen Aksiyonlar: ajanın tetiklediği araçlar + yazdığı metin
-             talimatlar. Manuel Aksiyon: süpervizörün kataloğun tamamından
-             seçip elle çalıştırdığı/atadığı aksiyonlar. Eskiden "mock araç
-             butonları" ile "saha ekibi çağır" tamamen ayrı iki panel ve iki
-             farklı mantıktı; artık ikisi de aynı /tools/execute uç noktasına
-             gider, tek fark hangi araçların gösterildiği. -->
+        <!--
+          Aksiyonlar tek bölüm, iki alt grup:
+          - Önerilen Aksiyonlar: ajanın tetiklediği araçlar (gerçek buton,
+            /tools/execute'a gider) + yazdığı metin talimatlar (düz liste).
+          - Manuel Aksiyon: süpervizörün kataloğun TAMAMINDAN seçip elle
+            çalıştırdığı araç, ve ayrıca ekibe doğrudan atama.
+          Eskiden "mock araç butonları" ile "saha ekibi çağır" tamamen ayrı
+          iki panel ve iki farklı mantıktı; artık ikisi de aynı uç noktaya
+          gider, aralarındaki tek fark hangi araçların önceden gösterildiği.
+        -->
         <h3>⚡ Önerilen Aksiyonlar</h3>
         <div id="suggested-actions" class="actions-list"></div>
 
@@ -84,8 +88,7 @@
         <div id="manual-result" class="meta"></div>
 
         <!-- Aracın kendisi bir ekibe görev düşürmüyorsa (assigns_role boşsa)
-             ekibe doğrudan atama burada yapılır. Örn. temizlik/teknisyen
-             rollerinin bağlı bir mock aracı yok. -->
+             ekibe doğrudan atama burada yapılır. -->
         <div class="manual-action-panel">
           <label class="meta">Ekip
             <select id="assign-role"></select>

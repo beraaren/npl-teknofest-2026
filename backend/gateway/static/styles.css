@@ -8,8 +8,6 @@
   --danger: #ef4444;
   --warn: #f59e0b;
   --success: #22c55e;
-  --post-it: #fef08a;
-  --post-it-text: #422006;
 }
 
 * { box-sizing: border-box; }
@@ -26,6 +24,10 @@ html, body {
 
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
+
+/* ---------------------------------------------------------------------- */
+/* Header / navigasyon                                                    */
+/* ---------------------------------------------------------------------- */
 
 header {
   height: 56px;
@@ -46,33 +48,52 @@ header h1 {
   gap: 0.5rem;
 }
 
-.nav-links {
+header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
+
+.nav-links { display: flex; gap: 1rem; }
+.nav-links a { padding: 0.35rem 0.6rem; border-radius: 6px; }
+.nav-links a.active { background: var(--surface-2); color: var(--text); }
+
+/* ---------------------------------------------------------------------- */
+/* Genel yerleşim                                                          */
+/* ---------------------------------------------------------------------- */
+
+.app { display: flex; height: calc(100vh - 56px); }
+.main { flex: 1; overflow: auto; padding: 1rem; }
+
+.sidebar {
+  width: 320px;
+  background: var(--surface);
+  border-left: 1px solid var(--surface-2);
   display: flex;
-  gap: 1rem;
-}
-
-.nav-links a {
-  padding: 0.35rem 0.6rem;
-  border-radius: 6px;
-}
-
-.nav-links a.active {
-  background: var(--surface-2);
-  color: var(--text);
-}
-
-.app {
-  display: flex;
-  height: calc(100vh - 56px);
-}
-
-.main {
-  flex: 1;
-  overflow: auto;
+  flex-direction: column;
   padding: 1rem;
+  gap: 1rem;
+  position: fixed;
+  right: 0;
+  top: 56px;
+  bottom: 0;
+  overflow-y: auto;
 }
 
-/* Camera grid */
+.app.with-sidebar .main { margin-right: 320px; }
+.sidebar h2 { margin: 0; font-size: 1rem; }
+
+@media (max-width: 900px) {
+  .camera-grid { grid-template-columns: repeat(2, 1fr); }
+  .sidebar { width: 100%; position: relative; top: auto; right: auto; border-left: none; border-top: 1px solid var(--surface-2); }
+  .app.with-sidebar { flex-direction: column; }
+  .app.with-sidebar .main { margin-right: 0; }
+}
+
+@media (max-width: 600px) {
+  .camera-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Kamera duvarı                                                           */
+/* ---------------------------------------------------------------------- */
+
 .camera-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -97,22 +118,20 @@ header h1 {
   display: block;
 }
 
-/* Kamera çerçevesi: SADECE backend'in ürettiği aktif risk penceresi
- * (active_window) doluyken renklenir — analizin videosu boyunca kesintisiz
- * yanmaz. Pencere yoksa (.window-* sınıflarından hiçbiri) çerçeve şeffaf
- * kalır. Bkz. index.js renderCell() ve replay.py active_risk_window(). */
+/*
+ * Kamera çerçevesi risk rengi: SADECE sunucunun o an oynatma konumu için
+ * ürettiği aktif risk penceresi (active_window) doluyken uygulanır. Analizin
+ * genel riski (`.risk-badge`) her zaman görünen AYRI bir bilgidir; çerçeve
+ * ondan bağımsız çalışır ve pencere kapandığında (`.window-*` sınıflarının
+ * hiçbiri yokken) şeffaf/nötr kalır. Bkz. backend/gateway/replay.py
+ * active_risk_window() ve static/index.js renderCell().
+ */
 .camera-cell.window-high {
   animation: blink-red 1s infinite;
   border: 4px solid #ff0000;
 }
-
-.camera-cell.window-medium {
-  border: 3px solid #f59e0b;
-}
-
-.camera-cell.window-low {
-  border: 2px solid #22c55e;
-}
+.camera-cell.window-medium { border: 3px solid #f59e0b; }
+.camera-cell.window-low { border: 2px solid #22c55e; }
 
 @keyframes blink-red {
   0%, 100% { border-color: #ff0000; }
@@ -132,6 +151,32 @@ header h1 {
   font-size: 0.85rem;
 }
 
+.camera-label .label-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cell-event {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  background: rgba(15, 23, 42, 0.75);
+  border-top: 1px solid rgba(148, 163, 184, 0.15);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cell-event-active {
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.16);
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Rozetler                                                                */
+/* ---------------------------------------------------------------------- */
+
 .risk-badge {
   padding: 0.15rem 0.45rem;
   border-radius: 999px;
@@ -139,67 +184,26 @@ header h1 {
   text-transform: uppercase;
   font-size: 0.7rem;
 }
-
 .risk-badge.high { background: rgba(239,68,68,0.2); color: #fca5a5; }
 .risk-badge.medium { background: rgba(245,158,11,0.2); color: #fcd34d; }
 .risk-badge.low { background: rgba(34,197,94,0.2); color: #86efac; }
 
-/* Sidebar */
-.sidebar {
-  width: 320px;
-  background: var(--surface);
-  border-left: 1px solid var(--surface-2);
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  gap: 1rem;
-  position: fixed;
-  right: 0;
-  top: 56px;
-  bottom: 0;
-  overflow-y: auto;
+.status-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(148, 163, 184, 0.18);
+  color: #cbd5e1;
 }
+.status-badge.status-atandi { background: rgba(239, 68, 68, 0.18); color: #fca5a5; }
+.status-badge.status-goruldu { background: rgba(245, 158, 11, 0.18); color: #fcd34d; }
+.status-badge.status-devam_ediyor { background: rgba(56, 189, 248, 0.18); color: #7dd3fc; }
+.status-badge.status-tamamlandi { background: rgba(34, 197, 94, 0.18); color: #86efac; }
 
-.app.with-sidebar .main {
-  margin-right: 320px;
-}
-
-.sidebar h2 {
-  margin: 0;
-  font-size: 1rem;
-}
-
-.notifications-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  max-height: 220px;
-  overflow-y: auto;
-}
-
-.notification-card {
-  background: var(--surface-2);
-  border-radius: 8px;
-  padding: 0.6rem;
-  font-size: 0.85rem;
-}
-
-.notification-card .meta {
-  color: var(--muted);
-  font-size: 0.75rem;
-  margin-top: 0.25rem;
-}
-
-.actions-panel h3 {
-  margin: 0 0 0.5rem;
-  font-size: 0.95rem;
-}
-
-.actions-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
+/* ---------------------------------------------------------------------- */
+/* Butonlar                                                                */
+/* ---------------------------------------------------------------------- */
 
 .btn {
   background: var(--accent);
@@ -211,20 +215,83 @@ header h1 {
   cursor: pointer;
   font-size: 0.85rem;
 }
-
 .btn:hover { filter: brightness(1.1); }
+.btn:disabled { cursor: default; filter: none; opacity: 0.6; }
+.btn-secondary { background: var(--surface-2); color: var(--text); }
+.btn-danger { background: var(--danger); color: white; }
+.btn-done { opacity: 0.75; border: 1px solid rgba(34, 197, 94, 0.5); }
 
-.btn-secondary {
-  background: var(--surface-2);
-  color: var(--text);
+.actions-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.action-advice {
+  margin: 0.4rem 0 0;
+  padding-left: 1.2rem;
+  font-size: 0.83rem;
+  line-height: 1.55;
+  color: #cbd5e1;
+}
+.action-advice li { margin-bottom: 0.2rem; }
+
+/* ---------------------------------------------------------------------- */
+/* Manuel aksiyon / atama paneli (süpervizör modalı ve saha kartları)      */
+/* ---------------------------------------------------------------------- */
+
+.manual-action-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.6rem;
+  align-items: end;
+  padding: 0.8rem;
+  background: rgba(148, 163, 184, 0.06);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 7px;
+  margin-bottom: 0.6rem;
+}
+.manual-action-panel label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.76rem; }
+.manual-action-panel select,
+.manual-action-panel input {
+  padding: 0.45rem 0.55rem;
+  border-radius: 5px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 0.82rem;
+  font-family: inherit;
+}
+.manual-action-panel .btn { height: 2.2rem; }
+
+#assign-existing, #manual-result {
+  margin-top: 0.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+  font-size: 0.82rem;
+  color: var(--muted);
 }
 
-.btn-danger {
-  background: var(--danger);
-  color: white;
+.card-manual-panel {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.card-manual-panel .manual-tool-select {
+  flex: 1;
+  min-width: 160px;
+  padding: 0.45rem 0.55rem;
+  border-radius: 5px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 0.82rem;
+  font-family: inherit;
 }
 
-/* Modal */
+/* ---------------------------------------------------------------------- */
+/* Modal (süpervizör kamera detayı)                                        */
+/* ---------------------------------------------------------------------- */
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -234,7 +301,6 @@ header h1 {
   justify-content: center;
   z-index: 100;
 }
-
 .modal-overlay.open { display: flex; }
 
 .modal {
@@ -255,163 +321,24 @@ header h1 {
   border-bottom: 1px solid var(--surface-2);
 }
 
-.modal-body {
-  padding: 1rem;
-  overflow-y: auto;
-}
+.modal-body { padding: 1rem; overflow-y: auto; }
+.modal-body h3 { margin: 1.1rem 0 0.4rem; font-size: 0.95rem; }
+.modal-body h4 { margin: 0.9rem 0 0.35rem; font-size: 0.88rem; }
 
-.modal video {
+.modal video, .alarm-card video {
   width: 100%;
   aspect-ratio: 16/9;
   background: #000;
   border-radius: 8px;
 }
+.alarm-card video { margin: 0.75rem 0; }
 
-/* Çalışma alanı önerileri: düz metin satırları (tıklanamaz, sohbet yok). */
-.suggestions-plain {
+.modal-meta-row {
   display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  margin-top: 1rem;
-  overflow-y: auto;
-  flex: 1;
-}
-.suggestion-row {
-  padding: 0.6rem 0.75rem;
-  background: var(--surface-2);
-  border-radius: 6px;
-  border-left: 3px solid var(--accent);
-}
-.suggestion-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.25rem; }
-
-/* Alarm banner */
-.alarm-banner {
-  background: var(--danger);
-  color: white;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  animation: blink-bg 1s infinite;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-@keyframes blink-bg {
-  0%, 100% { background: #ef4444; }
-  50% { background: #7f1d1d; }
-}
-
-/* Toast */
-.toast {
-  position: fixed;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--surface-2);
-  color: var(--text);
-  padding: 0.75rem 1.25rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  z-index: 200;
-  display: none;
-}
-
-.toast.show { display: block; }
-
-/* Saha */
-.role-selector {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
-
-.role-selector button.active {
-  background: var(--accent);
-  color: #082f49;
-}
-
-.alarm-card {
-  background: var(--surface);
-  border-radius: 10px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid var(--surface-2);
-}
-
-.alarm-card video {
-  width: 100%;
-  aspect-ratio: 16/9;
-  background: #000;
-  border-radius: 8px;
-  margin: 0.75rem 0;
-}
-
-/* Admin */
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.kpi-card {
-  background: var(--surface);
-  border-radius: 10px;
-  padding: 1rem;
-  text-align: center;
-}
-
-.kpi-card .value {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--accent);
-}
-
-.kpi-card .label {
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin-top: 0.25rem;
-}
-
-.events-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.85rem;
-  margin-bottom: 1.5rem;
-}
-
-.events-table th,
-.events-table td {
-  padding: 0.6rem 0.75rem;
-  border-bottom: 1px solid var(--surface-2);
-  text-align: left;
-}
-
-.events-table th { color: var(--muted); }
-
-.chart-wrap {
-  width: 100%;
-  max-width: 420px;
-  aspect-ratio: 2 / 1;
-  margin-bottom: 1.5rem;
-}
-
-/* Admin sidebar'daki sorgu metni girişi (chat-drawer kaldırıldı, bu sınıf
- * yalnızca input stilini paylaşmak için tutuldu). */
-.chat-input {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.chat-input input {
-  flex: 1;
-  background: var(--bg);
-  border: 1px solid var(--surface-2);
-  border-radius: 6px;
-  color: var(--text);
-  padding: 0.5rem 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 0.85rem;
 }
 
 .close-drawer {
@@ -422,58 +349,26 @@ header h1 {
   cursor: pointer;
 }
 
-.empty-state {
-  color: var(--muted);
-  font-size: 0.9rem;
-  text-align: center;
-  padding: 2rem;
+/* ---------------------------------------------------------------------- */
+/* Bildirim kartları                                                       */
+/* ---------------------------------------------------------------------- */
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 220px;
+  overflow-y: auto;
 }
 
-@media (max-width: 900px) {
-  .camera-grid { grid-template-columns: repeat(2, 1fr); }
-  .sidebar { width: 100%; position: relative; top: auto; right: auto; border-left: none; border-top: 1px solid var(--surface-2); }
-  .app.with-sidebar { flex-direction: column; }
-  .app.with-sidebar .main { margin-right: 0; }
-}
-
-@media (max-width: 600px) {
-  .camera-grid { grid-template-columns: 1fr; }
-}
-
-/* =========================================================================
-   Sözde-canlı arayüz eklemeleri — gerçek analiz verisi için yeni bileşenler
-   ========================================================================= */
-
-/* Başlık çubuğundaki kütüphane/rol durumu */
-header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
-
-/* Kamera hücresi: o an tetiklenen uyarı satırı */
-.cell-event {
-  padding: 0.35rem 0.6rem;
-  font-size: 0.75rem;
-  color: #94a3b8;
-  background: rgba(15, 23, 42, 0.75);
-  border-top: 1px solid rgba(148, 163, 184, 0.15);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.cell-event-active {
-  color: #fca5a5;
-  background: rgba(239, 68, 68, 0.16);
-  font-weight: 600;
-}
-
-.camera-label .label-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* --- Bildirim kartları: şiddet renkli, zaman damgalı --- */
 .notification-card {
+  background: var(--surface-2);
+  border-radius: 8px;
+  padding: 0.6rem;
+  font-size: 0.85rem;
   border-left: 3px solid rgba(148, 163, 184, 0.4);
 }
+.notification-card .meta { color: var(--muted); font-size: 0.75rem; margin-top: 0.25rem; }
 .notification-card.severity-high { border-left-color: #ef4444; }
 .notification-card.severity-medium { border-left-color: #f59e0b; }
 .notification-card.severity-low { border-left-color: #22c55e; }
@@ -498,7 +393,10 @@ header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
 .notif-clock { font-size: 0.7rem; opacity: 0.6; font-variant-numeric: tabular-nums; }
 .notif-title { font-size: 0.85rem; font-weight: 600; }
 
-/* --- Ajan olay özeti kutusu (iki ekranda da aynı metin) --- */
+/* ---------------------------------------------------------------------- */
+/* Ajan özeti / not kutuları                                               */
+/* ---------------------------------------------------------------------- */
+
 .summary-box {
   margin: 0.35rem 0 0.75rem;
   padding: 0.7rem 0.85rem;
@@ -519,18 +417,10 @@ header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
   font-size: 0.85rem;
 }
 
-.modal-meta-row {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-top: 0.85rem;
-}
+/* ---------------------------------------------------------------------- */
+/* Olay zaman çizelgesi                                                    */
+/* ---------------------------------------------------------------------- */
 
-.modal-body h3 { margin: 1.1rem 0 0.4rem; font-size: 0.95rem; }
-.modal-body h4 { margin: 0.9rem 0 0.35rem; font-size: 0.88rem; }
-
-/* --- Olay zaman çizelgesi --- */
 .event-timeline { list-style: none; margin: 0; padding: 0; }
 .timeline-item {
   display: grid;
@@ -558,121 +448,9 @@ header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
 .timeline-sev.low { background: rgba(34, 197, 94, 0.2); color: #86efac; }
 .timeline-item .meta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* --- Aksiyon listesi (operatör talimatları) --- */
-.action-advice {
-  margin: 0.4rem 0 0;
-  padding-left: 1.2rem;
-  font-size: 0.83rem;
-  line-height: 1.55;
-  color: #cbd5e1;
-}
-.action-advice li { margin-bottom: 0.2rem; }
-
-.btn-done { opacity: 0.75; border-color: rgba(34, 197, 94, 0.5); }
-
-/* --- Manuel aksiyon / atama paneli (süpervizör modalı ve saha kartları) --- */
-.manual-action-panel {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 0.6rem;
-  align-items: end;
-  padding: 0.8rem;
-  background: rgba(148, 163, 184, 0.06);
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 7px;
-  margin-bottom: 0.6rem;
-}
-.manual-action-panel label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.76rem; }
-.manual-action-panel select,
-.manual-action-panel input {
-  padding: 0.45rem 0.55rem;
-  border-radius: 5px;
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  background: #0f172a;
-  color: #e2e8f0;
-  font-size: 0.82rem;
-  font-family: inherit;
-}
-.manual-action-panel .btn { height: 2.2rem; }
-#assign-existing, #manual-result { margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
-
-/* --- Durum rozetleri --- */
-.status-badge {
-  font-size: 0.68rem;
-  font-weight: 600;
-  padding: 0.15rem 0.45rem;
-  border-radius: 4px;
-  background: rgba(148, 163, 184, 0.18);
-  color: #cbd5e1;
-}
-.status-badge.status-atandi { background: rgba(239, 68, 68, 0.18); color: #fca5a5; }
-.status-badge.status-goruldu { background: rgba(245, 158, 11, 0.18); color: #fcd34d; }
-.status-badge.status-tamamlandi { background: rgba(34, 197, 94, 0.18); color: #86efac; }
-
-/* --- Saha ekibi görev kartları --- */
-.filter-row {
-  display: flex;
-  gap: 0.8rem;
-  align-items: end;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
-.filter-row label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.76rem; }
-.filter-row select {
-  padding: 0.4rem 0.55rem;
-  border-radius: 5px;
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  background: #0f172a;
-  color: #e2e8f0;
-  font-family: inherit;
-}
-
-.card-manual-panel {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.card-manual-panel .manual-tool-select {
-  flex: 1;
-  min-width: 160px;
-  padding: 0.45rem 0.55rem;
-  border-radius: 5px;
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  background: #0f172a;
-  color: #e2e8f0;
-  font-size: 0.82rem;
-  font-family: inherit;
-}
-
-.alarm-card .card-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.8rem;
-}
-.alarm-card .card-head h3 { margin: 0.5rem 0; }
-.card-facts { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-bottom: 0.6rem; }
-.clip-hint { margin-top: 0.3rem; opacity: 0.7; }
-.card-buttons { margin-top: 0.6rem; flex-wrap: wrap; }
-
-.alarm-card.status-goruldu { border-color: rgba(245, 158, 11, 0.45); }
-.alarm-card.status-tamamlandi { border-color: rgba(34, 197, 94, 0.4); opacity: 0.82; }
-.alarm-card.status-tamamlandi .alarm-banner { background: rgba(34, 197, 94, 0.2); color: #86efac; }
-.alarm-card.status-goruldu .alarm-banner { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
-
-.toast-error { background: #7f1d1d !important; color: #fecaca !important; }
-
-.empty-state code {
-  background: rgba(148, 163, 184, 0.15);
-  padding: 0.1rem 0.35rem;
-  border-radius: 4px;
-  font-size: 0.85em;
-}
-
-/* =========================================================================
-   RLHF & Human-in-the-Loop (HitL) Model Geri Bildirim Bileşenleri
-   ========================================================================= */
+/* ---------------------------------------------------------------------- */
+/* RLHF / Human-in-the-Loop geri bildirim paneli                           */
+/* ---------------------------------------------------------------------- */
 
 .feedback-section {
   margin: 1.25rem 0 0.75rem;
@@ -682,14 +460,12 @@ header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
   border-left: 4px solid #38bdf8;
   border-radius: 8px;
 }
-
 .feedback-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.75rem;
 }
-
 .feedback-header h3 {
   margin: 0 !important;
   font-size: 0.92rem;
@@ -698,7 +474,6 @@ header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
   align-items: center;
   gap: 0.4rem;
 }
-
 .fb-badge {
   font-size: 0.7rem;
   font-weight: 600;
@@ -706,29 +481,11 @@ header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
   border-radius: 999px;
   letter-spacing: 0.02em;
 }
+.fb-badge.pending { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }
+.fb-badge.correct { background: rgba(34, 197, 94, 0.2); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.4); }
+.fb-badge.corrected { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.4); }
 
-.fb-badge.pending {
-  background: rgba(148, 163, 184, 0.15);
-  color: #94a3b8;
-}
-
-.fb-badge.correct {
-  background: rgba(34, 197, 94, 0.2);
-  color: #86efac;
-  border: 1px solid rgba(34, 197, 94, 0.4);
-}
-
-.fb-badge.corrected {
-  background: rgba(245, 158, 11, 0.2);
-  color: #fcd34d;
-  border: 1px solid rgba(245, 158, 11, 0.4);
-}
-
-.feedback-quick-actions {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
+.feedback-quick-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
 
 .btn-success-light {
   background: rgba(34, 197, 94, 0.15);
@@ -741,11 +498,7 @@ header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
   font-weight: 600;
   transition: all 0.15s ease;
 }
-
-.btn-success-light:hover {
-  background: rgba(34, 197, 94, 0.3);
-  color: #fff;
-}
+.btn-success-light:hover { background: rgba(34, 197, 94, 0.3); color: #fff; }
 
 .btn-warning-light {
   background: rgba(245, 158, 11, 0.15);
@@ -758,11 +511,7 @@ header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
   font-weight: 600;
   transition: all 0.15s ease;
 }
-
-.btn-warning-light:hover {
-  background: rgba(245, 158, 11, 0.3);
-  color: #fff;
-}
+.btn-warning-light:hover { background: rgba(245, 158, 11, 0.3); color: #fff; }
 
 .fb-edit-panel {
   margin-top: 0.85rem;
@@ -772,24 +521,9 @@ header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
   flex-direction: column;
   gap: 0.6rem;
 }
-
-.fb-edit-panel[hidden] {
-  display: none !important;
-}
-
-.fb-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-}
-
-.fb-edit-panel label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.76rem;
-}
-
+.fb-edit-panel[hidden] { display: none !important; }
+.fb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+.fb-edit-panel label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.76rem; }
 .fb-edit-panel select,
 .fb-edit-panel input,
 .fb-edit-panel textarea {
@@ -801,17 +535,8 @@ header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
   font-size: 0.82rem;
   font-family: inherit;
 }
-
-.fb-textarea {
-  resize: vertical;
-  min-height: 50px;
-}
-
-.fb-actions-row {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.3rem;
-}
+.fb-textarea { resize: vertical; min-height: 50px; }
+.fb-actions-row { display: flex; gap: 0.5rem; margin-top: 0.3rem; }
 
 .btn-dpo-export {
   display: inline-flex;
@@ -827,8 +552,135 @@ header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
   cursor: pointer;
   transition: background 0.15s;
 }
+.btn-dpo-export:hover { background: #0369a1; }
 
-.btn-dpo-export:hover {
-  background: #0369a1;
+/* ---------------------------------------------------------------------- */
+/* Saha ekibi ekranı                                                       */
+/* ---------------------------------------------------------------------- */
+
+.role-selector { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.role-selector button.active { background: var(--accent); color: #082f49; }
+
+.filter-row { display: flex; gap: 0.8rem; align-items: end; margin-bottom: 1rem; flex-wrap: wrap; }
+.filter-row label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.76rem; }
+.filter-row select {
+  padding: 0.4rem 0.55rem;
+  border-radius: 5px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: #0f172a;
+  color: #e2e8f0;
+  font-family: inherit;
 }
 
+.alarm-banner {
+  background: var(--danger);
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  animation: blink-bg 1s infinite;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+@keyframes blink-bg {
+  0%, 100% { background: #ef4444; }
+  50% { background: #7f1d1d; }
+}
+
+.alarm-card {
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--surface-2);
+}
+.alarm-card .card-head { display: flex; justify-content: space-between; align-items: center; gap: 0.8rem; }
+.alarm-card .card-head h3 { margin: 0.5rem 0; }
+.card-facts { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-bottom: 0.6rem; }
+.clip-hint { margin-top: 0.3rem; opacity: 0.7; }
+.card-buttons { margin-top: 0.6rem; flex-wrap: wrap; }
+
+.alarm-card.status-goruldu { border-color: rgba(245, 158, 11, 0.45); }
+.alarm-card.status-devam_ediyor { border-color: rgba(56, 189, 248, 0.45); }
+.alarm-card.status-tamamlandi { border-color: rgba(34, 197, 94, 0.4); opacity: 0.82; }
+.alarm-card.status-tamamlandi .alarm-banner { background: rgba(34, 197, 94, 0.2); color: #86efac; }
+.alarm-card.status-goruldu .alarm-banner { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+.alarm-card.status-devam_ediyor .alarm-banner { background: rgba(56, 189, 248, 0.2); color: #7dd3fc; }
+
+/* ---------------------------------------------------------------------- */
+/* Admin: KPI, tablo, grafik, öneri listesi                                */
+/* ---------------------------------------------------------------------- */
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.kpi-card { background: var(--surface); border-radius: 10px; padding: 1rem; text-align: center; }
+.kpi-card .value { font-size: 1.75rem; font-weight: 700; color: var(--accent); }
+.kpi-card .label { font-size: 0.85rem; color: var(--muted); margin-top: 0.25rem; }
+
+.events-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 1.5rem; }
+.events-table th, .events-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--surface-2); text-align: left; }
+.events-table th { color: var(--muted); }
+
+.chart-wrap { width: 100%; max-width: 420px; aspect-ratio: 2 / 1; margin-bottom: 1.5rem; }
+
+/* Çalışma alanı önerileri: düz metin satırları. Tıklanamaz, sohbet/yorum
+ * bölümü YOKTUR — özellik kasıtlı olarak sadeleştirildi. */
+.suggestions-plain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  overflow-y: auto;
+  flex: 1;
+}
+.suggestion-row {
+  padding: 0.6rem 0.75rem;
+  background: var(--surface-2);
+  border-radius: 6px;
+  border-left: 3px solid var(--accent);
+}
+.suggestion-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.25rem; }
+
+/* Admin sidebar'daki sorgu metni girişi. */
+.query-input-row { display: flex; gap: 0.5rem; }
+.query-input-row input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--surface-2);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 0.5rem 0.75rem;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Toast / boş durum                                                       */
+/* ---------------------------------------------------------------------- */
+
+.toast {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface-2);
+  color: var(--text);
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  z-index: 200;
+  display: none;
+}
+.toast.show { display: block; }
+.toast-error { background: #7f1d1d !important; color: #fecaca !important; }
+
+.empty-state { color: var(--muted); font-size: 0.9rem; text-align: center; padding: 2rem; }
+.empty-state code {
+  background: rgba(148, 163, 184, 0.15);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+}

@@ -1,0 +1,67 @@
+{
+  "packet_id": "f8f9da97-7219-4833-a560-0f0e4031ffbf",
+  "video_id": "daily-safety-failsthis-is-why-you-wear-s-71027c",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir depo veya üretim alanındaki güvenlik kamerası görüntüsünde, birkaç kişi büyük ahşap konteynerleri veya rafları taşımak için birlikte çalışmaktadır. Alanın sağ tarafında bir forklift durmaktadır. İşçiler, konteynerleri yerlerinden kaldırıp hareket ettirmek için el ile itme ve çekme hareketleri yapmaktadır.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "En az üç kişi göze çarpmaktadır; biri forkliftin yanında duruyor, diğerleri konteynerleri taşımakta."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük ahşap konteynerler veya raflar, işçiler tarafından taşınmaktadır."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Sağ tarafta duran forklift, muhtemelen bir yük taşıma makinesidir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Arka planda yüksek raf sistemleri ve depolama birimleri mevcuttur."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler, büyük ahşap konteynerleri el ile iterek ve çekerek hareket ettiriyor.",
+    "Bir kişi forkliftin yanında duruyor ve etrafı izliyor.",
+    "Konteynerler, belirlenen bir alana yerleştiriliyor veya oradan kaldırılıyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 12303.398100000777,
+    "tokens_generated": 606
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir depo veya üretim alanındaki güvenlik kamerası görüntüsünde, birkaç kişi büyük ahşap konteynerleri veya rafları taşımak için birlikte çalışmaktadır. Alanın sağ tarafında bir forklift durmaktadır. İşçiler, konteynerleri yerlerinden kaldırıp hareket ettirmek için el ile itme ve çekme hareketleri yapmaktadır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az üç kişi göze çarpmaktadır; biri forkliftin yanında duruyor, diğerleri konteynerleri taşımakta.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük ahşap konteynerler veya raflar, işçiler tarafından taşınmaktadır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sağ tarafta duran forklift, muhtemelen bir yük taşıma makinesidir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Arka planda yüksek raf sistemleri ve depolama birimleri mevcuttur.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, büyük ahşap konteynerleri el ile iterek ve çekerek hareket ettiriyor.\",\n    \"Bir kişi forkliftin yanında duruyor ve etrafı izliyor.\",\n    \"Konteynerler, belirlenen bir alana yerleştiriliyor veya oradan kaldırılıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, ağır yükleri el ile taşımakta olup, bu durum sırt ve omurilik yaralanmalarına neden olabilir. Ayrıca, konteynerlerin dengesiz olması veya düşmesi durumunda yaralanma riski mevcuttur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 15.0\n    },\n    {\n      \"description_tr\": \"Forkliftin yanında duran kişi, forkliftin hareket etmesi durumunda veya yüklerin düşmesi durumunda zarar görebilir. Çalışanlar arasında yeterli mesafe bırakılmamıştır.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 25.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçiler, ağır yükleri el ile taşımakta olup, bu durum sırt ve omurilik yaralanmalarına neden olabilir. Ayrıca, konteynerlerin dengesiz olması veya düşmesi durumunda yaralanma riski mevcuttur.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 15.0
+    },
+    {
+      "description_tr": "Forkliftin yanında duran kişi, forkliftin hareket etmesi durumunda veya yüklerin düşmesi durumunda zarar görebilir. Çalışanlar arasında yeterli mesafe bırakılmamıştır.",
+      "severity": "medium",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 25.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçiler, ağır yükleri el ile taşımakta olup, bu durum sırt ve omurilik yaralanmalarına neden olabilir. Ayrıca, konteynerlerin dengesiz olması veya düşmesi durumunda yaralanma riski mevcuttur.",
+    "Forkliftin yanında duran kişi, forkliftin hareket etmesi durumunda veya yüklerin düşmesi durumunda zarar görebilir. Çalışanlar arasında yeterli mesafe bırakılmamıştır."
+  ],
+  "computed_confidence": 0.64,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 32.36566666666667,
+  "created_at": "2026-08-27T08:17:04.943471+00:00"
+}

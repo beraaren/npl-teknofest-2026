@@ -1,0 +1,59 @@
+{
+  "packet_id": "e401b894-4608-4bf5-96a5-fc0d411a282a",
+  "video_id": "fire-in-bale-plucker-e011f3",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Üretim tesisinde, bir makinenin üzerindeki pamuk benzeri malzemede yangın meydana gelmiştir. Alevler hızla yayılmış ve yoğun duman oluşumu başlamıştır. Yangın, makinenin etrafındaki malzemeleri de etkilemiş ve sahne giderek dumanla kaplanmıştır.",
+  "detected_entities": [
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Makine, taşımaların üzerinde hareket eden, boru sistemi içeren bir yapıdır."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Beyaz, pamuk benzeri malzeme, taşımalar üzerinde sıralanmıştır."
+    },
+    {
+      "label": "conveyor",
+      "confidence_hint": "high",
+      "notes_tr": "İki uzun taşımada malzeme taşınıyor."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Yangın başlamış ve yoğun duman oluşumu devam etmektedir."
+    }
+  ],
+  "detected_actions_tr": [
+    "Makinede ani bir yangın meydana gelmiştir.",
+    "Alevler, makinenin etrafındaki malzemeye hızla yayılmıştır.",
+    "Yoğun duman oluşumu başlamış ve sahne giderek dumanla kaplanmıştır.",
+    "Yangın, zamanla azalmış ve alevler kısmen sönmüştür."
+  ],
+  "confidence_overall": 0.95,
+  "inference": {
+    "latency_ms": 10837.612000001172,
+    "tokens_generated": 501
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Üretim tesisinde, bir makinenin üzerindeki pamuk benzeri malzemede yangın meydana gelmiştir. Alevler hızla yayılmış ve yoğun duman oluşumu başlamıştır. Yangın, makinenin etrafındaki malzemeleri de etkilemiş ve sahne giderek dumanla kaplanmıştır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makine, taşımaların üzerinde hareket eden, boru sistemi içeren bir yapıdır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Beyaz, pamuk benzeri malzeme, taşımalar üzerinde sıralanmıştır.\"\n    },\n    {\n      \"label\": \"conveyor\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki uzun taşımada malzeme taşınıyor.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yangın başlamış ve yoğun duman oluşumu devam etmektedir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Makinede ani bir yangın meydana gelmiştir.\",\n    \"Alevler, makinenin etrafındaki malzemeye hızla yayılmıştır.\",\n    \"Yoğun duman oluşumu başlamış ve sahne giderek dumanla kaplanmıştır.\",\n    \"Yangın, zamanla azalmış ve alevler kısmen sönmüştür.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinede meydana gelen yangın, çevredeki yüksek hacimli, yanıcı malzemelerle birleşerek hızlı yayılma ve potansiyel patlama riski oluşturuyor. Yoğun duman, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 60.0\n    }\n  ],\n  \"confidence_overall\": 0.95\n}",
+  "risk_events": [
+    {
+      "description_tr": "Makinede meydana gelen yangın, çevredeki yüksek hacimli, yanıcı malzemelerle birleşerek hızlı yayılma ve potansiyel patlama riski oluşturuyor. Yoğun duman, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Makinede meydana gelen yangın, çevredeki yüksek hacimli, yanıcı malzemelerle birleşerek hızlı yayılma ve potansiyel patlama riski oluşturuyor. Yoğun duman, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor."
+  ],
+  "computed_confidence": 0.785,
+  "reasoning_trace": "",
+  "segment_start_sec": 60.0,
+  "segment_end_sec": 120.0,
+  "created_at": "2026-08-27T08:23:44.499270+00:00"
+}

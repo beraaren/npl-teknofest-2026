@@ -63,6 +63,7 @@ def init_db():
             reasoning TEXT,
             event_type TEXT,
             event_seconds REAL DEFAULT 0,
+            event_end_seconds REAL DEFAULT 0,
             event_timestamp TEXT,
             actions_json TEXT,
             video_file TEXT,
@@ -73,9 +74,26 @@ def init_db():
             resolved_at DATETIME
         )
     """)
+    # Eski veritabanlarında bu kolon yok; saha ekranının klibi olayın bittiği
+    # anda durdurabilmesi için eklenir (bkz. library.event_window).
+    cursor.execute("PRAGMA table_info(assignments)")
+    existing_cols = {row["name"] for row in cursor.fetchall()}
+    if "event_end_seconds" not in existing_cols:
+        cursor.execute(
+            "ALTER TABLE assignments ADD COLUMN event_end_seconds REAL DEFAULT 0"
+        )
     cursor.execute(
         "CREATE INDEX IF NOT EXISTS idx_assignments_role_status "
         "ON assignments (role, status)"
+    )
+    # Aynı olayın (analiz+rol+olay anı) aynı ekibe iki kez atanmasını önler.
+    # POST /assignments artık bu üçlü için açık (tamamlanmamış) kayıt varsa
+    # onu döner; yeni satır eklemez. Eski veritabanlarında tekrar eden
+    # kayıtlar olabileceği için indeks UNIQUE değil; tekilleştirme
+    # uygulama katmanında (get_or_create_assignment) yapılır.
+    cursor.execute(
+        "CREATE INDEX IF NOT EXISTS idx_assignments_dedupe "
+        "ON assignments (analysis_slug, role, event_seconds, status)"
     )
     # RLHF / DPO Human-in-the-Loop geri bildirim tablosu
     cursor.execute("""
@@ -97,15 +115,51 @@ def init_db():
         )
     """)
     cursor.execute(
-        "CREATE INDEX IF NOT EXISTS idx_feedbacks_slug "
-        "ON feedbacks (analysis_slug)"
-    )
-    cursor.execute(
         "CREATE INDEX IF NOT EXISTS idx_feedbacks_type "
         "ON feedbacks (feedback_type)"
     )
     conn.commit()
+    _migrate_feedbacks_unique_slug(conn)
+    _migrate_events_dedupe_index(conn)
     conn.close()
+
+
+def _migrate_feedbacks_unique_slug(conn: sqlite3.Connection) -> None:
+    """Analiz başına tek geri bildirim kalacak şekilde tabloyu tekilleştirir.
+
+    RLHF havuzunda aynı analiz için birden fazla değerlendirme birikmişse
+    (eski davranış: her tıklama yeni satır ekliyordu), en yeni kayıt dışındaki
+    tekrarlar silinir ve ``analysis_slug`` üzerine bir UNIQUE indeks kurulur.
+    Bundan sonra ``create_feedback`` bu indeksi ``ON CONFLICT`` ile kullanarak
+    üzerine yazar; havuz artık şişmez.
+    """
+    cursor = conn.cursor()
+    cursor.execute(
+        "DELETE FROM feedbacks WHERE id NOT IN ("
+        "  SELECT MAX(id) FROM feedbacks GROUP BY analysis_slug"
+        ")"
+    )
+    cursor.execute(
+        "CREATE UNIQUE INDEX IF NOT EXISTS idx_feedbacks_slug_unique "
+        "ON feedbacks (analysis_slug)"
+    )
+    conn.commit()
+
+
+def _migrate_events_dedupe_index(conn: sqlite3.Connection) -> None:
+    """``tool.executed`` tekrarlarını tespit etmek için sorgu indeksi kurar.
+
+    ``events`` tablosunda tekilleştirme UNIQUE ile değil, uygulama katmanında
+    (``was_tool_already_executed``) yapılır çünkü tablo dört farklı akışın
+    (decision.final, event.detected, notification.push, tool.executed) ortak
+    günlüğüdür ve yalnızca sonuncusu için idempotency istenir.
+    """
+    cursor = conn.cursor()
+    cursor.execute(
+        "CREATE INDEX IF NOT EXISTS idx_events_job_stream "
+        "ON events (job_id, stream)"
+    )
+    conn.commit()
 
 
 
@@ -239,6 +293,39 @@ def save_event(job_id: str, stream: str, payload: dict):
     conn.commit()
     conn.close()
 
+def find_recent_tool_execution(job_id: str, tool_name: str) -> Optional[dict]:
+    """Aynı ``job_id`` için bu aracın daha önce çalıştırılıp çalıştırılmadığını bulur.
+
+    ``POST /tools/execute`` çift tıklamada veya WS yeniden render'ında tekrar
+    çağrılabiliyordu; bu her seferinde yeni bir ``events`` satırı ve yeni bir
+    ``tool.executed`` yayını üretiyordu. Aynı döngü (``job_id``) içinde aynı
+    aracın sonucu zaten varsa çağıran taraf onu döndürüp yeni satır eklemez.
+
+    Args:
+        job_id: Kamera döngüsü veya manuel çağrı kimliği.
+        tool_name: Aranan araç adı.
+
+    Returns:
+        En son ``tool.executed`` yükü; yoksa ``None``.
+    """
+    if not job_id:
+        return None
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT payload_json FROM events WHERE job_id = ? AND stream = 'tool.executed' "
+        "ORDER BY datetime(created_at) DESC, id DESC",
+        (job_id,),
+    )
+    rows = cursor.fetchall()
+    conn.close()
+    for row in rows:
+        payload = json.loads(row["payload_json"])
+        if payload.get("tool_name") == tool_name:
+            return payload
+    return None
+
+
 def get_events_by_job(job_id: str) -> List[dict]:
     conn = get_connection()
     cursor = conn.cursor()
@@ -265,7 +352,7 @@ def get_events_by_job(job_id: str) -> List[dict]:
 ASSIGNMENT_STATUSES = ("atandi", "goruldu", "devam_ediyor", "tamamlandi")
 
 
-def create_assignment(
+def get_or_create_assignment(
     analysis_slug: str,
     role: str,
     camera_id: str = "",
@@ -275,20 +362,28 @@ def create_assignment(
     reasoning: str = "",
     event_type: str = "",
     event_seconds: float = 0.0,
+    event_end_seconds: float = 0.0,
     event_timestamp: str = "",
     actions: Optional[List[str]] = None,
     video_file: str = "",
     note: str = "",
     assigned_by: str = "supervisor",
-) -> dict:
-    """Bir olayı belirli bir ekibe atar ve kaydı döner.
+) -> tuple[dict, bool]:
+    """Bir olayı belirli bir ekibe atar; aynı görev zaten açıksa onu döner.
 
     Olayın karar çıktısındaki alanları atamaya kopyalanır; böylece saha ekranı
     analiz dosyasını okumak zorunda kalmaz ve atama anındaki bilgi sabit kalır.
 
+    Tekilleştirme: ``(analysis_slug, role, event_seconds)`` üçlüsü için
+    ``tamamlandi`` dışında bir durumda kayıt varsa yeni satır eklenmez, mevcut
+    kayıt döner. Böylece aynı butona art arda tıklamak veya aynı aracı iki kez
+    çalıştırmak saha ekibinin ekranında görev çoğaltmaz. Görev kapatıldıktan
+    (``tamamlandi``) sonra aynı olay tekrar atanabilir — bu kasıtlı, çünkü
+    kapanmış bir göreve "tekrar bak" anlamlı bir eylemdir.
+
     Args:
         analysis_slug: İlgili analizin kimliği (``data/library/analyses``).
-        role: Atanan ekip rolü (örn. ``"sağlık"``).
+        role: Atanan ekip rolü (örn. ``"saglik"``).
         camera_id: Olayın görüldüğü kamera.
         risk: Karar çıktısındaki risk seviyesi.
         headline: Kısa kart başlığı.
@@ -296,6 +391,8 @@ def create_assignment(
         reasoning: Ajanın gerekçesi (saha ekibi isterse ayrıntıyı görür).
         event_type: Olay tipi (örn. ``"person_fall"``).
         event_seconds: Olayın videodaki mutlak saniyesi; klip bu ana konumlanır.
+        event_end_seconds: Olayın bittiği mutlak saniye (biliniyorsa); saha
+            ekranı klibi burada durdurur. 0 ise süre bilinmiyordur.
         event_timestamp: Aynı anın ``MM:SS`` biçimi.
         actions: Önerilen aksiyonlar.
         video_file: Videonun repo-göreli yolu.
@@ -303,21 +400,37 @@ def create_assignment(
         assigned_by: Atamayı yapan.
 
     Returns:
-        Oluşturulan atama kaydı.
+        ``(kayıt, olusturuldu_mu)`` ikilisi. ``olusturuldu_mu`` ``False`` ise
+        mevcut açık görev döndürülmüştür, yeni satır eklenmemiştir.
     """
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
         """
+        SELECT * FROM assignments
+        WHERE analysis_slug = ? AND role = ? AND event_seconds = ?
+          AND status != 'tamamlandi'
+        ORDER BY datetime(created_at) DESC LIMIT 1
+        """,
+        (analysis_slug, role, float(event_seconds or 0.0)),
+    )
+    existing = cursor.fetchone()
+    if existing:
+        conn.close()
+        return _row_to_assignment(existing), False
+
+    cursor.execute(
+        """
         INSERT INTO assignments (
             analysis_slug, camera_id, role, status, risk, headline, summary,
-            reasoning, event_type, event_seconds, event_timestamp,
-            actions_json, video_file, note, assigned_by
-        ) VALUES (?, ?, ?, 'atandi', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            reasoning, event_type, event_seconds, event_end_seconds,
+            event_timestamp, actions_json, video_file, note, assigned_by
+        ) VALUES (?, ?, ?, 'atandi', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         (
             analysis_slug, camera_id, role, risk, headline, summary,
-            reasoning, event_type, float(event_seconds or 0.0), event_timestamp,
+            reasoning, event_type, float(event_seconds or 0.0),
+            float(event_end_seconds or 0.0), event_timestamp,
             json.dumps(actions or [], ensure_ascii=False), video_file, note, assigned_by,
         ),
     )
@@ -326,7 +439,7 @@ def create_assignment(
     cursor.execute("SELECT * FROM assignments WHERE id = ?", (assignment_id,))
     row = cursor.fetchone()
     conn.close()
-    return _row_to_assignment(row)
+    return _row_to_assignment(row), True
 
 
 def get_assignments(
@@ -458,6 +571,7 @@ def _row_to_assignment(row: sqlite3.Row) -> dict:
         "reasoning": row["reasoning"],
         "event_type": row["event_type"],
         "event_seconds": row["event_seconds"],
+        "event_end_seconds": row["event_end_seconds"] if "event_end_seconds" in row.keys() else 0.0,
         "event_timestamp": row["event_timestamp"],
         "actions": json.loads(row["actions_json"] or "[]"),
         "video_file": row["video_file"],
@@ -530,6 +644,9 @@ def create_feedback(
 
     conn = get_connection()
     cursor = conn.cursor()
+    # Analiz başına tek geri bildirim tutulur (idx_feedbacks_slug_unique).
+    # Süpervizör kararını değiştirirse (örn. önce "doğru" deyip sonra
+    # düzeltirse) satır güncellenir; RLHF/DPO havuzu tekrarla şişmez.
     cursor.execute(
         """
         INSERT INTO feedbacks (
@@ -538,6 +655,19 @@ def create_feedback(
             corrected_risk, corrected_summary, corrected_actions_json,
             corrected_output_json, prompt_context_json, supervisor_notes
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT (analysis_slug) DO UPDATE SET
+            camera_id = excluded.camera_id,
+            feedback_type = excluded.feedback_type,
+            original_risk = excluded.original_risk,
+            original_summary = excluded.original_summary,
+            original_output_json = excluded.original_output_json,
+            corrected_risk = excluded.corrected_risk,
+            corrected_summary = excluded.corrected_summary,
+            corrected_actions_json = excluded.corrected_actions_json,
+            corrected_output_json = excluded.corrected_output_json,
+            prompt_context_json = excluded.prompt_context_json,
+            supervisor_notes = excluded.supervisor_notes,
+            created_at = CURRENT_TIMESTAMP
         """,
         (
             analysis_slug,
@@ -554,9 +684,8 @@ def create_feedback(
             supervisor_notes,
         ),
     )
-    feedback_id = cursor.lastrowid
     conn.commit()
-    cursor.execute("SELECT * FROM feedbacks WHERE id = ?", (feedback_id,))
+    cursor.execute("SELECT * FROM feedbacks WHERE analysis_slug = ?", (analysis_slug,))
     row = cursor.fetchone()
     conn.close()
     return _row_to_feedback(row)

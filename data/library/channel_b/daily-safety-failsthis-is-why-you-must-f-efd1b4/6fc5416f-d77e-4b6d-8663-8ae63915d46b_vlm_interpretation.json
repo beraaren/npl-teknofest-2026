@@ -1,0 +1,64 @@
+{
+  "packet_id": "6fc5416f-d77e-4b6d-8663-8ae63915d46b",
+  "video_id": "daily-safety-failsthis-is-why-you-must-f-efd1b4",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir metal işleme fabrikasında, çalışanlar büyük metal levhaların arasında hareket ediyor. Arka planda bir kumanda ile hareket eden sarı renkli bir taşıma aracı (muhtemelen bir kargo taşıyıcı veya kran) ve çeşitli metal yığınları mevcut. 00:12'den itibaren bir metal levha yığınından toz veya duman yükseliyor, bu da bir çatışma, düşme veya diğer bir etki sonucu olabilir.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "En az 4 kişi göze çarpıyor; bazıları kask takıyor, bazıları hareket halinde."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Sarı renkli büyük bir taşıma aracı (kargo taşıyıcı veya kran) göze çarpıyor; muhtemelen bir kumanda ile hareket ediyor."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Yığın halindeki büyük metal levhalar, bazıları ahşap destekler üzerinde."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "medium",
+      "notes_tr": "00:12'den itibaren metal levhaların üzerinde toz veya duman yükseliyor; açık alev görülmemektedir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Metal levhaların yığıldığı ahşap destekler ve fabrika çatısı yapıları."
+    }
+  ],
+  "detected_actions_tr": [
+    "İnsanlar metal levhaların arasında yürüyor ve duruyor.",
+    "Sarı taşıma aracı hareket halinde.",
+    "Bir metal levha yığınından toz veya duman yükseliyor.",
+    "Bir çalışan 00:21'de eğilerek bir nesneyi topluyor gibi görünüyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 16716.08019999985,
+    "tokens_generated": 648
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir metal işleme fabrikasında, çalışanlar büyük metal levhaların arasında hareket ediyor. Arka planda bir kumanda ile hareket eden sarı renkli bir taşıma aracı (muhtemelen bir kargo taşıyıcı veya kran) ve çeşitli metal yığınları mevcut. 00:12'den itibaren bir metal levha yığınından toz veya duman yükseliyor, bu da bir çatışma, düşme veya diğer bir etki sonucu olabilir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az 4 kişi göze çarpıyor; bazıları kask takıyor, bazıları hareket halinde.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli büyük bir taşıma aracı (kargo taşıyıcı veya kran) göze çarpıyor; muhtemelen bir kumanda ile hareket ediyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yığın halindeki büyük metal levhalar, bazıları ahşap destekler üzerinde.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"00:12'den itibaren metal levhaların üzerinde toz veya duman yükseliyor; açık alev görülmemektedir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Metal levhaların yığıldığı ahşap destekler ve fabrika çatısı yapıları.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İnsanlar metal levhaların arasında yürüyor ve duruyor.\",\n    \"Sarı taşıma aracı hareket halinde.\",\n    \"Bir metal levha yığınından toz veya duman yükseliyor.\",\n    \"Bir çalışan 00:21'de eğilerek bir nesneyi topluyor gibi görünüyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"00:12'den itibaren metal levhaların üzerinde toz veya duman yükseliyor; bu, bir levhanın düşmesi, çatışması veya diğer bir mekanik etki sonucu olabilir. Bu durum, çalışanların solunum sağlığına zarar verebilir ve potansiyel bir yaralanma riski oluşturabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 12.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "00:12'den itibaren metal levhaların üzerinde toz veya duman yükseliyor; bu, bir levhanın düşmesi, çatışması veya diğer bir mekanik etki sonucu olabilir. Bu durum, çalışanların solunum sağlığına zarar verebilir ve potansiyel bir yaralanma riski oluşturabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 12.0
+    }
+  ],
+  "risk_flags_tr": [
+    "00:12'den itibaren metal levhaların üzerinde toz veya duman yükseliyor; bu, bir levhanın düşmesi, çatışması veya diğer bir mekanik etki sonucu olabilir. Bu durum, çalışanların solunum sağlığına zarar verebilir ve potansiyel bir yaralanma riski oluşturabilir."
+  ],
+  "computed_confidence": 0.6663,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 21.77175,
+  "created_at": "2026-08-27T12:33:20.711719+00:00"
+}

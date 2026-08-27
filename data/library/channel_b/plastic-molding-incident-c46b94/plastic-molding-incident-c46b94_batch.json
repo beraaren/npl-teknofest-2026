@@ -3,7 +3,7 @@
   "total_segments": 2,
   "total_risk_events": 6,
   "most_critical_segment_index": 0,
-  "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Sanayi bir üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makinayı açıp kapatırken, içine malzeme yerleştirirken ve birbirleriyle koordinasyon sağlarken görülür. İş yerinde çeşitli araçlar, kablolar ve ça\n  - [00:00] görülen varlıklar: cable/wire, load, machine, person, rack/structure, workbench\n  - [01:00] Sanayi üretim alanında, birkaç işçi büyük bir makinenin etrafında koordineli bir şekilde çalışmaktadır. İşçiler, makineye malzeme yerleştirirken, makinenin kontrol paneline müdahale ederken ve birbirleriyle iletişim kurarken görülür. Zemind\n  - [01:00] görülen varlıklar: cable/wire, load, machine, person, rack/structure, workbench\nZaman damgalı olaylar:\n  - 00:10 — İşçiler, makinenin kapısını açarken ve kapatırken, makinenin hareket halinde olabileceğini varsaymadan çalışmaktadır. Bu, makinenin ani hareketi durumunda sıkışma veya yaralanma riski oluşturabilir. [high, güven 0.85]\n  - 00:00 — Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle makine etrafında yoğun hareket olduğunda bu risk artar. [medium, güven 0.80]\n  - 00:30 — İşçiler, makineye uzun bir metal parça yerleştirirken, parça düşme veya kayma riski taşıyor. Bu durum, yakın çalışanlara ciddi yaralanma nedeni olabilir. [high, güven 0.85]\n  - 01:00 — İşçiler, makinenin kapısını açarken ve kapatırken, makinenin hareket halinde olabileceğini varsaymadan çalışmaktadır. Bu, makinenin ani hareketi durumunda sıkışma veya yaralanma riski oluşturabilir. [high, güven 0.85]\n  - 01:00 — Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle makine etrafında yoğun hareket olduğunda bu risk artar. [medium, güven 0.80]\n  - 01:01 — İşçiler, makineye uzun bir metal parça yerleştirirken, parça düşme veya kayma riski taşıyor. Bu durum, yakın çalışanlara ciddi yaralanma nedeni olabilir. [high, güven 0.85]",
+  "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Sanayi bir üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makinanın kapılarını açıp kapatırken, içine malzeme yerleştirirken ve birbirleriyle koordinasyon sağlarken görülür. Alan, çeşitli araçlar, kablola\n  - [00:00] görülen varlıklar: liquid/substance, load, machine, person, rack/structure, vehicle\n  - [01:00] Sanayi üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makinanın kapısını açıp kapatırken, içine malzeme yerleştirirken ve birbirleriyle koordinasyon sağlarken görülür. Alan, çeşitli araçlar, kablolar ve y\n  - [01:00] görülen varlıklar: liquid/substance, load, machine, person, rack/structure, vehicle\nZaman damgalı olaylar:\n  - 00:10 — İşçiler, makinanın kapısını açarken ve kapatırken, makine içi hareketli parçalarla temas etme riski taşıyor. Bu, özellikle kapıların tamamen kapanmadan veya makine çalışırken olursa ciddi yaralanmaya neden olabilir. [high, güven 0.85]\n  - 00:25 — İşçiler, makinaya uzun bir yük yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski mevcuttur. Ayrıca, yükün ağırlığı ve boyutu nedeniyle uygun kalkma teknikleri uygulanmamış olabilir. [high, güven 0.80]\n  - 00:00 — Çalışma alanında kablolar ve araçlar yerde serbestçe bulunuyor; bu, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir. [medium, güven 0.75]\n  - 01:00 — İşçiler, makinanın kapısını açarken ve kapatırken, makine içi hareketli parçalarla temas etme riski taşıyor. Bu, özellikle kapıların tamamen kapanmadan veya makine çalışırken olursa ciddi yaralanmaya neden olabilir. [high, güven 0.85]\n  - 01:00 — İşçiler, makinaya uzun bir yük yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski mevcuttur. Ayrıca, yükün ağırlığı ve boyutu nedeniyle uygun kalkma teknikleri uygulanmamış olabilir. [high, güven 0.80]\n  - 01:01 — Çalışma alanında kablolar ve araçlar yerde serbestçe bulunuyor; bu, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir. [medium, güven 0.75]",
   "segments": [
     {
       "segment_index": 0,
@@ -12,59 +12,59 @@
       "time_range": "00:00-01:00",
       "max_severity": "high",
       "interpretation": {
-        "packet_id": "b9630644-ed83-4050-b41d-1ba5f8fca2a7",
+        "packet_id": "6a67154f-fc98-4649-b7aa-a8f8466ba69d",
         "video_id": "plastic-molding-incident-c46b94",
         "model_name": "vlm",
         "model_backend": "server",
-        "scene_summary_tr": "Sanayi bir üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makinayı açıp kapatırken, içine malzeme yerleştirirken ve birbirleriyle koordinasyon sağlarken görülür. İş yerinde çeşitli araçlar, kablolar ve çalışma masaları bulunmaktadır.",
+        "scene_summary_tr": "Sanayi bir üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makinanın kapılarını açıp kapatırken, içine malzeme yerleştirirken ve birbirleriyle koordinasyon sağlarken görülür. Alan, çeşitli araçlar, kablolar ve çalışma masalarıyla doludur.",
         "detected_entities": [
           {
             "label": "person",
             "confidence_hint": "high",
-            "notes_tr": "En az 4 işçi, farklı giysilerle ve bazıları koruyucu kask takmaktadır."
+            "notes_tr": "En az 4 işçi göze çarpar; bazıları mavi, bazıları beyaz üst giyimde. İşçilerin bazıları koruyucu kask takmaktadır."
           },
           {
             "label": "machine",
             "confidence_hint": "high",
-            "notes_tr": "Büyük, turuncu renkli bir üretim makinesi, kapıları açılıp kapanmaktadır."
+            "notes_tr": "Büyük, turuncu renkli bir makine merkezde yer alır; kapıları açılıp kapanır ve içine malzeme yerleştirilir."
           },
           {
             "label": "rack/structure",
             "confidence_hint": "high",
-            "notes_tr": "Mavi metal raf ve yapılar, üretim alanını çevrelemektedir."
+            "notes_tr": "Mavi metal raf ve yapılar, üretim alanını çevreler; kablolar ve ekipmanlar üzerinde yer alır."
           },
           {
             "label": "load",
             "confidence_hint": "medium",
-            "notes_tr": "Makineye yerleştirilen uzun, metalik bir parça, muhtemelen işlenmek üzere."
+            "notes_tr": "İşçilerin makinaya yerleştirdiği, uzun ve metalik görünümlü bir yük olabilir; kesin tespit zordur."
           },
           {
-            "label": "cable/wire",
-            "confidence_hint": "high",
-            "notes_tr": "Zeminde ve makine etrafında birçok kablo ve elektrik kablosu bulunmaktadır."
+            "label": "vehicle",
+            "confidence_hint": "low",
+            "notes_tr": "Arka planda bir araç olabilecek nesne görülür ancak net bir tanımlama yapılamaz."
           },
           {
-            "label": "workbench",
-            "confidence_hint": "high",
-            "notes_tr": "Makinenin önünde ve yanlarında çalışma masaları yer almaktadır."
+            "label": "liquid/substance",
+            "confidence_hint": "low",
+            "notes_tr": "Masa üzerinde küçük bir kova veya konteyner olabilir; içeriği belirsizdir."
           }
         ],
         "detected_actions_tr": [
-          "İşçiler, büyük bir makinenin kapısını açıp kapatıyor.",
-          "Bir işçi, makineye uzun bir metal parça yerleştiriyor.",
-          "İşçiler, makinenin etrafında koordinasyonla hareket ediyor.",
-          "Bir işçi, makinenin kontrol paneline dokunuyor.",
-          "İşçiler, birbirleriyle konuşarak işi yönetiyor."
+          "İşçiler, büyük makinanın kapısını açar ve kapatır.",
+          "Bir işçi, makinaya uzun bir metalik yük yerleştirir.",
+          "İşçiler, makinanın etrafında koordinasyonla hareket eder.",
+          "Bir işçi, makinanın kontrol paneline yaklaşır.",
+          "İşçiler, birbirleriyle konuşur ve işi yönlendirir."
         ],
-        "confidence_overall": 0.88,
+        "confidence_overall": 0.85,
         "inference": {
-          "latency_ms": 12421.674599987455,
-          "tokens_generated": 773
+          "latency_ms": 18317.749199999525,
+          "tokens_generated": 867
         },
-        "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi bir üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makinayı açıp kapatırken, içine malzeme yerleştirirken ve birbirleriyle koordinasyon sağlarken görülür. İş yerinde çeşitli araçlar, kablolar ve çalışma masaları bulunmaktadır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az 4 işçi, farklı giysilerle ve bazıları koruyucu kask takmaktadır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, turuncu renkli bir üretim makinesi, kapıları açılıp kapanmaktadır.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Mavi metal raf ve yapılar, üretim alanını çevrelemektedir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makineye yerleştirilen uzun, metalik bir parça, muhtemelen işlenmek üzere.\"\n    },\n    {\n      \"label\": \"cable/wire\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Zeminde ve makine etrafında birçok kablo ve elektrik kablosu bulunmaktadır.\"\n    },\n    {\n      \"label\": \"workbench\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin önünde ve yanlarında çalışma masaları yer almaktadır.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, büyük bir makinenin kapısını açıp kapatıyor.\",\n    \"Bir işçi, makineye uzun bir metal parça yerleştiriyor.\",\n    \"İşçiler, makinenin etrafında koordinasyonla hareket ediyor.\",\n    \"Bir işçi, makinenin kontrol paneline dokunuyor.\",\n    \"İşçiler, birbirleriyle konuşarak işi yönetiyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, makinenin kapısını açarken ve kapatırken, makinenin hareket halinde olabileceğini varsaymadan çalışmaktadır. Bu, makinenin ani hareketi durumunda sıkışma veya yaralanma riski oluşturabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 10.0\n    },\n    {\n      \"description_tr\": \"Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle makine etrafında yoğun hareket olduğunda bu risk artar.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 0.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye uzun bir metal parça yerleştirirken, parça düşme veya kayma riski taşıyor. Bu durum, yakın çalışanlara ciddi yaralanma nedeni olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 30.0\n    }\n  ],\n  \"confidence_overall\": 0.88\n}",
+        "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi bir üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makinanın kapılarını açıp kapatırken, içine malzeme yerleştirirken ve birbirleriyle koordinasyon sağlarken görülür. Alan, çeşitli araçlar, kablolar ve çalışma masalarıyla doludur.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az 4 işçi göze çarpar; bazıları mavi, bazıları beyaz üst giyimde. İşçilerin bazıları koruyucu kask takmaktadır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, turuncu renkli bir makine merkezde yer alır; kapıları açılıp kapanır ve içine malzeme yerleştirilir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Mavi metal raf ve yapılar, üretim alanını çevreler; kablolar ve ekipmanlar üzerinde yer alır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"İşçilerin makinaya yerleştirdiği, uzun ve metalik görünümlü bir yük olabilir; kesin tespit zordur.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Arka planda bir araç olabilecek nesne görülür ancak net bir tanımlama yapılamaz.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Masa üzerinde küçük bir kova veya konteyner olabilir; içeriği belirsizdir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, büyük makinanın kapısını açar ve kapatır.\",\n    \"Bir işçi, makinaya uzun bir metalik yük yerleştirir.\",\n    \"İşçiler, makinanın etrafında koordinasyonla hareket eder.\",\n    \"Bir işçi, makinanın kontrol paneline yaklaşır.\",\n    \"İşçiler, birbirleriyle konuşur ve işi yönlendirir.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, makinanın kapısını açarken ve kapatırken, makine içi hareketli parçalarla temas etme riski taşıyor. Bu, özellikle kapıların tamamen kapanmadan veya makine çalışırken olursa ciddi yaralanmaya neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 10.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinaya uzun bir yük yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski mevcuttur. Ayrıca, yükün ağırlığı ve boyutu nedeniyle uygun kalkma teknikleri uygulanmamış olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 25.0\n    },\n    {\n      \"description_tr\": \"Çalışma alanında kablolar ve araçlar yerde serbestçe bulunuyor; bu, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.75,\n      \"timestamp_sec\": 0.0\n    }\n  ],\n  \"confidence_overall\": 0.85\n}",
         "risk_events": [
           {
-            "description_tr": "İşçiler, makinenin kapısını açarken ve kapatırken, makinenin hareket halinde olabileceğini varsaymadan çalışmaktadır. Bu, makinenin ani hareketi durumunda sıkışma veya yaralanma riski oluşturabilir.",
+            "description_tr": "İşçiler, makinanın kapısını açarken ve kapatırken, makine içi hareketli parçalarla temas etme riski taşıyor. Bu, özellikle kapıların tamamen kapanmadan veya makine çalışırken olursa ciddi yaralanmaya neden olabilir.",
             "severity": "high",
             "confidence": 0.85,
             "supporting_frame_count": 1,
@@ -72,32 +72,32 @@
             "timestamp_sec": 10.0
           },
           {
-            "description_tr": "Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle makine etrafında yoğun hareket olduğunda bu risk artar.",
-            "severity": "medium",
+            "description_tr": "İşçiler, makinaya uzun bir yük yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski mevcuttur. Ayrıca, yükün ağırlığı ve boyutu nedeniyle uygun kalkma teknikleri uygulanmamış olabilir.",
+            "severity": "high",
             "confidence": 0.8,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
-            "timestamp_sec": 0.0
+            "timestamp_sec": 25.0
           },
           {
-            "description_tr": "İşçiler, makineye uzun bir metal parça yerleştirirken, parça düşme veya kayma riski taşıyor. Bu durum, yakın çalışanlara ciddi yaralanma nedeni olabilir.",
-            "severity": "high",
-            "confidence": 0.85,
+            "description_tr": "Çalışma alanında kablolar ve araçlar yerde serbestçe bulunuyor; bu, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir.",
+            "severity": "medium",
+            "confidence": 0.75,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
-            "timestamp_sec": 30.0
+            "timestamp_sec": 0.0
           }
         ],
         "risk_flags_tr": [
-          "İşçiler, makinenin kapısını açarken ve kapatırken, makinenin hareket halinde olabileceğini varsaymadan çalışmaktadır. Bu, makinenin ani hareketi durumunda sıkışma veya yaralanma riski oluşturabilir.",
-          "Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle makine etrafında yoğun hareket olduğunda bu risk artar.",
-          "İşçiler, makineye uzun bir metal parça yerleştirirken, parça düşme veya kayma riski taşıyor. Bu durum, yakın çalışanlara ciddi yaralanma nedeni olabilir."
+          "İşçiler, makinanın kapısını açarken ve kapatırken, makine içi hareketli parçalarla temas etme riski taşıyor. Bu, özellikle kapıların tamamen kapanmadan veya makine çalışırken olursa ciddi yaralanmaya neden olabilir.",
+          "İşçiler, makinaya uzun bir yük yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski mevcuttur. Ayrıca, yükün ağırlığı ve boyutu nedeniyle uygun kalkma teknikleri uygulanmamış olabilir.",
+          "Çalışma alanında kablolar ve araçlar yerde serbestçe bulunuyor; bu, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir."
         ],
-        "computed_confidence": 0.6325,
+        "computed_confidence": 0.6112,
         "reasoning_trace": "",
         "segment_start_sec": 0.0,
         "segment_end_sec": 60.0,
-        "created_at": "2026-08-24T11:01:56.215180+00:00"
+        "created_at": "2026-08-27T12:49:24.690149+00:00"
       }
     },
     {
@@ -107,58 +107,58 @@
       "time_range": "01:00-01:03",
       "max_severity": "high",
       "interpretation": {
-        "packet_id": "7e657f46-958c-4b44-8934-2757beb77df8",
+        "packet_id": "c6b3e46f-cf92-477a-8592-396ab91ded5d",
         "video_id": "plastic-molding-incident-c46b94",
         "model_name": "vlm",
         "model_backend": "server",
-        "scene_summary_tr": "Sanayi üretim alanında, birkaç işçi büyük bir makinenin etrafında koordineli bir şekilde çalışmaktadır. İşçiler, makineye malzeme yerleştirirken, makinenin kontrol paneline müdahale ederken ve birbirleriyle iletişim kurarken görülür. Zeminde serbestçe uzanan kablolar ve çeşitli araçlar mevcuttur.",
+        "scene_summary_tr": "Sanayi üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makinanın kapısını açıp kapatırken, içine malzeme yerleştirirken ve birbirleriyle koordinasyon sağlarken görülür. Alan, çeşitli araçlar, kablolar ve yapısal unsurlarla doludur.",
         "detected_entities": [
           {
             "label": "person",
             "confidence_hint": "high",
-            "notes_tr": "Dört işçi makinenin etrafında hareket halindedir; iki kişi makineye yakın, iki kişi ise çalışma masasının yanında."
+            "notes_tr": "Dört işçi, makinanın etrafında hareket ediyor; biri makinanın kapısını açarken, diğeri malzeme yerleştiriyor."
           },
           {
             "label": "machine",
             "confidence_hint": "high",
-            "notes_tr": "Büyük, kırmızı ve mavi renkli endüstriyel makine, etrafında işçilerin çalıştığı görülmektedir."
+            "notes_tr": "Büyük, kırmızı ve mavi renkli bir üretim makinesi, etrafında işçiler çalışıyor."
           },
           {
-            "label": "cable/wire",
+            "label": "load",
             "confidence_hint": "high",
-            "notes_tr": "Zeminde ve makinenin etrafında serbestçe uzanan kablolar, özellikle sol tarafta yoğunlukta."
-          },
-          {
-            "label": "workbench",
-            "confidence_hint": "high",
-            "notes_tr": "Makinenin önünde, işçilere malzeme hazırlama alanı olarak kullanılan çalışma masası."
+            "notes_tr": "Makineye yerleştirilmek üzere olan, delikli bir metal levha şeklindeki yük."
           },
           {
             "label": "rack/structure",
             "confidence_hint": "high",
-            "notes_tr": "Makinenin üstünde ve etrafında yer alan metal raf ve yapı elemanları."
+            "notes_tr": "Makinenin üstünde ve etrafında yer alan mavi metal yapılar ve raf sistemleri."
           },
           {
-            "label": "load",
-            "confidence_hint": "medium",
-            "notes_tr": "Çalışma masasında düzenli deliklerle donatılmış metal parça, muhtemelen makineye yerleştirilecek yük."
+            "label": "liquid/substance",
+            "confidence_hint": "low",
+            "notes_tr": "Yerde küçük bir sıvı lekesi olası; net bir şekilde belirgin değil."
+          },
+          {
+            "label": "vehicle",
+            "confidence_hint": "low",
+            "notes_tr": "Arka planda bir araç gövdesi olası; ancak tam olarak tanımlanamadı."
           }
         ],
         "detected_actions_tr": [
-          "İşçiler, makinenin kontrol paneline dokunarak ayar yapmaktadır.",
-          "Bir işçi, çalışma masasından metal parça alarak makineye doğru hareket etmektedir.",
-          "Diğer işçiler, makinenin kapısını açıp kapatırken ve içine malzeme yerleştirirken koordinasyon sağlar.",
-          "Zemindeki kablolar, çalışanların hareketlerini etkilememektedir ancak potansiyel bir engel oluşturmaktadır."
+          "İşçiler, makinanın kapısını açıyor ve kapatıyor.",
+          "Bir işçi, makineye uzun bir metal levha şeklindeki yük yerleştiriyor.",
+          "İşçiler, birbirleriyle koordinasyon sağlayarak makineye malzeme yerleştiriyor.",
+          "Yerdeki kablolar ve araçlar, işçilerin hareketini etkiliyor gibi görünüyor."
         ],
-        "confidence_overall": 0.88,
+        "confidence_overall": 0.82,
         "inference": {
-          "latency_ms": 11085.288099944592,
-          "tokens_generated": 848
+          "latency_ms": 12760.085300000355,
+          "tokens_generated": 831
         },
-        "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi üretim alanında, birkaç işçi büyük bir makinenin etrafında koordineli bir şekilde çalışmaktadır. İşçiler, makineye malzeme yerleştirirken, makinenin kontrol paneline müdahale ederken ve birbirleriyle iletişim kurarken görülür. Zeminde serbestçe uzanan kablolar ve çeşitli araçlar mevcuttur.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Dört işçi makinenin etrafında hareket halindedir; iki kişi makineye yakın, iki kişi ise çalışma masasının yanında.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, kırmızı ve mavi renkli endüstriyel makine, etrafında işçilerin çalıştığı görülmektedir.\"\n    },\n    {\n      \"label\": \"cable/wire\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Zeminde ve makinenin etrafında serbestçe uzanan kablolar, özellikle sol tarafta yoğunlukta.\"\n    },\n    {\n      \"label\": \"workbench\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin önünde, işçilere malzeme hazırlama alanı olarak kullanılan çalışma masası.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin üstünde ve etrafında yer alan metal raf ve yapı elemanları.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Çalışma masasında düzenli deliklerle donatılmış metal parça, muhtemelen makineye yerleştirilecek yük.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, makinenin kontrol paneline dokunarak ayar yapmaktadır.\",\n    \"Bir işçi, çalışma masasından metal parça alarak makineye doğru hareket etmektedir.\",\n    \"Diğer işçiler, makinenin kapısını açıp kapatırken ve içine malzeme yerleştirirken koordinasyon sağlar.\",\n    \"Zemindeki kablolar, çalışanların hareketlerini etkilememektedir ancak potansiyel bir engel oluşturmaktadır.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, makinenin kapısını açarken ve kapatırken, makinenin hareket halinde olabileceğini varsaymadan çalışmaktadır. Bu, makinenin ani hareketi durumunda sıkışma veya yaralanma riski oluşturabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 60.0\n    },\n    {\n      \"description_tr\": \"Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle makine etrafında yoğun hareket olduğunda bu risk artar.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 60.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye uzun bir metal parça yerleştirirken, parça düşme veya kayma riski taşıyor. Bu durum, yakın çalışanlara ciddi yaralanma nedeni olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 61.0\n    }\n  ],\n  \"confidence_overall\": 0.88\n}",
+        "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makinanın kapısını açıp kapatırken, içine malzeme yerleştirirken ve birbirleriyle koordinasyon sağlarken görülür. Alan, çeşitli araçlar, kablolar ve yapısal unsurlarla doludur.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Dört işçi, makinanın etrafında hareket ediyor; biri makinanın kapısını açarken, diğeri malzeme yerleştiriyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, kırmızı ve mavi renkli bir üretim makinesi, etrafında işçiler çalışıyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makineye yerleştirilmek üzere olan, delikli bir metal levha şeklindeki yük.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin üstünde ve etrafında yer alan mavi metal yapılar ve raf sistemleri.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Yerde küçük bir sıvı lekesi olası; net bir şekilde belirgin değil.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Arka planda bir araç gövdesi olası; ancak tam olarak tanımlanamadı.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, makinanın kapısını açıyor ve kapatıyor.\",\n    \"Bir işçi, makineye uzun bir metal levha şeklindeki yük yerleştiriyor.\",\n    \"İşçiler, birbirleriyle koordinasyon sağlayarak makineye malzeme yerleştiriyor.\",\n    \"Yerdeki kablolar ve araçlar, işçilerin hareketini etkiliyor gibi görünüyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, makinanın kapısını açarken ve kapatırken, makine içi hareketli parçalarla temas etme riski taşıyor. Bu, özellikle kapıların tamamen kapanmadan veya makine çalışırken olursa ciddi yaralanmaya neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 60.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinaya uzun bir yük yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski mevcuttur. Ayrıca, yükün ağırlığı ve boyutu nedeniyle uygun kalkma teknikleri uygulanmamış olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 60.5\n    },\n    {\n      \"description_tr\": \"Çalışma alanında kablolar ve araçlar yerde serbestçe bulunuyor; bu, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.75,\n      \"timestamp_sec\": 61.0\n    }\n  ],\n  \"confidence_overall\": 0.82\n}",
         "risk_events": [
           {
-            "description_tr": "İşçiler, makinenin kapısını açarken ve kapatırken, makinenin hareket halinde olabileceğini varsaymadan çalışmaktadır. Bu, makinenin ani hareketi durumunda sıkışma veya yaralanma riski oluşturabilir.",
+            "description_tr": "İşçiler, makinanın kapısını açarken ve kapatırken, makine içi hareketli parçalarla temas etme riski taşıyor. Bu, özellikle kapıların tamamen kapanmadan veya makine çalışırken olursa ciddi yaralanmaya neden olabilir.",
             "severity": "high",
             "confidence": 0.85,
             "supporting_frame_count": 1,
@@ -166,35 +166,35 @@
             "timestamp_sec": 60.0
           },
           {
-            "description_tr": "Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle makine etrafında yoğun hareket olduğunda bu risk artar.",
-            "severity": "medium",
+            "description_tr": "İşçiler, makinaya uzun bir yük yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski mevcuttur. Ayrıca, yükün ağırlığı ve boyutu nedeniyle uygun kalkma teknikleri uygulanmamış olabilir.",
+            "severity": "high",
             "confidence": 0.8,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
-            "timestamp_sec": 60.0
+            "timestamp_sec": 60.5
           },
           {
-            "description_tr": "İşçiler, makineye uzun bir metal parça yerleştirirken, parça düşme veya kayma riski taşıyor. Bu durum, yakın çalışanlara ciddi yaralanma nedeni olabilir.",
-            "severity": "high",
-            "confidence": 0.85,
+            "description_tr": "Çalışma alanında kablolar ve araçlar yerde serbestçe bulunuyor; bu, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir.",
+            "severity": "medium",
+            "confidence": 0.75,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
             "timestamp_sec": 61.0
           }
         ],
         "risk_flags_tr": [
-          "İşçiler, makinenin kapısını açarken ve kapatırken, makinenin hareket halinde olabileceğini varsaymadan çalışmaktadır. Bu, makinenin ani hareketi durumunda sıkışma veya yaralanma riski oluşturabilir.",
-          "Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle makine etrafında yoğun hareket olduğunda bu risk artar.",
-          "İşçiler, makineye uzun bir metal parça yerleştirirken, parça düşme veya kayma riski taşıyor. Bu durum, yakın çalışanlara ciddi yaralanma nedeni olabilir."
+          "İşçiler, makinanın kapısını açarken ve kapatırken, makine içi hareketli parçalarla temas etme riski taşıyor. Bu, özellikle kapıların tamamen kapanmadan veya makine çalışırken olursa ciddi yaralanmaya neden olabilir.",
+          "İşçiler, makinaya uzun bir yük yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski mevcuttur. Ayrıca, yükün ağırlığı ve boyutu nedeniyle uygun kalkma teknikleri uygulanmamış olabilir.",
+          "Çalışma alanında kablolar ve araçlar yerde serbestçe bulunuyor; bu, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir."
         ],
-        "computed_confidence": 0.6325,
+        "computed_confidence": 0.5962,
         "reasoning_trace": "",
         "segment_start_sec": 60.0,
         "segment_end_sec": 62.857142857142854,
-        "created_at": "2026-08-24T11:02:07.307882+00:00"
+        "created_at": "2026-08-27T12:49:37.460435+00:00"
       }
     }
   ],
   "failed_segments": [],
-  "created_at": "2026-08-24T11:02:07.328121+00:00"
+  "created_at": "2026-08-27T12:49:37.461359+00:00"
 }

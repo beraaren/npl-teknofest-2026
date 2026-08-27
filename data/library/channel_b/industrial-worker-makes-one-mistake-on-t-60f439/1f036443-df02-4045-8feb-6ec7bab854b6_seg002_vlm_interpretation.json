@@ -1,0 +1,68 @@
+{
+  "packet_id": "1f036443-df02-4045-8feb-6ec7bab854b6",
+  "video_id": "industrial-worker-makes-one-mistake-on-t-60f439",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "İki işçi, bir torna makinesi gibi görünen büyük bir makineyle çalışırken görülüyor. İşçiler, makinenin üzerindeki bir parçayı el ile tutarak ve ayarlayarak işleme alıyorlar. İş yerinin dar ve işçilere yakın olduğu, güvenlik ekipmanı kullanılmadığı gözlemleniyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İki işçi, makine başında çalışırken görülüyor. Birisi başlık takmış, diğeri başlık takmamış."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Torna makinesi gibi görünen büyük bir makine, işçilere yakın konumda."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Makinede işlenen uzun metal parça, yük olarak değerlendiriliyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda metal çubuklar veya malzeme yığınları görülmektedir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, makinenin çalışırken el ile parçaya dokunuyor.",
+    "İkinci işçi, makineye yaklaşarak yardımcı oluyor.",
+    "İşçiler, makinenin üzerindeki parçayı ayarlıyor ve tutuyor.",
+    "İşçiler, koruyucu ekipman kullanmaksızın çalışıyor."
+  ],
+  "confidence_overall": 0.88,
+  "inference": {
+    "latency_ms": 11952.67690000037,
+    "tokens_generated": 593
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"İki işçi, bir torna makinesi gibi görünen büyük bir makineyle çalışırken görülüyor. İşçiler, makinenin üzerindeki bir parçayı el ile tutarak ve ayarlayarak işleme alıyorlar. İş yerinin dar ve işçilere yakın olduğu, güvenlik ekipmanı kullanılmadığı gözlemleniyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki işçi, makine başında çalışırken görülüyor. Birisi başlık takmış, diğeri başlık takmamış.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Torna makinesi gibi görünen büyük bir makine, işçilere yakın konumda.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinede işlenen uzun metal parça, yük olarak değerlendiriliyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda metal çubuklar veya malzeme yığınları görülmektedir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, makinenin çalışırken el ile parçaya dokunuyor.\",\n    \"İkinci işçi, makineye yaklaşarak yardımcı oluyor.\",\n    \"İşçiler, makinenin üzerindeki parçayı ayarlıyor ve tutuyor.\",\n    \"İşçiler, koruyucu ekipman kullanmaksızın çalışıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, makinenin çalışırken el ile parçaya dokunuyor ve bu, dönen parçalarla temas riski oluşturuyor. Bu durum, kesik, ezilme veya elin makineye sıkışması gibi ciddi yaralanmalara neden olabilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 120.0\n    },\n    {\n      \"description_tr\": \"İşçiler, güvenlik gözlüğü veya eldiven gibi koruyucu ekipman kullanmamakta. Bu, işçilere karşı potansiyel yaralanmaları artırıyor.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 120.0\n    }\n  ],\n  \"confidence_overall\": 0.88\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, makinenin çalışırken el ile parçaya dokunuyor ve bu, dönen parçalarla temas riski oluşturuyor. Bu durum, kesik, ezilme veya elin makineye sıkışması gibi ciddi yaralanmalara neden olabilir.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    },
+    {
+      "description_tr": "İşçiler, güvenlik gözlüğü veya eldiven gibi koruyucu ekipman kullanmamakta. Bu, işçilere karşı potansiyel yaralanmaları artırıyor.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, makinenin çalışırken el ile parçaya dokunuyor ve bu, dönen parçalarla temas riski oluşturuyor. Bu durum, kesik, ezilme veya elin makineye sıkışması gibi ciddi yaralanmalara neden olabilir.",
+    "İşçiler, güvenlik gözlüğü veya eldiven gibi koruyucu ekipman kullanmamakta. Bu, işçilere karşı potansiyel yaralanmaları artırıyor."
+  ],
+  "computed_confidence": 0.6956,
+  "reasoning_trace": "",
+  "segment_start_sec": 120.0,
+  "segment_end_sec": 180.0,
+  "created_at": "2026-08-27T08:33:51.530396+00:00"
+}

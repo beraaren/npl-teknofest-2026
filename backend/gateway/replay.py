@@ -56,6 +56,66 @@ SEVERITY_TO_RISK = {
 SEVERITY_RANK = {"low": 1, "medium": 2, "high": 3, "critical": 4}
 
 
+def _event_window(stamp: dict) -> tuple[float, float]:
+    """Bir olayın ekranda görünür olacağı ``[baslangic, bitis]`` aralığını döner.
+
+    Kaynak alanlar karar ajanı tarafından üretilir (``timestamp_sec``,
+    ``duration``; bkz. ``src/output/schema.py`` ve
+    ``scripts/analyze_video_library.py:build_event_timestamps``). Model
+    ``duration`` üretmediyse (0 döndürdüyse) aralık sıfır genişlikte olur ve
+    kamera çerçevesi o olay için hiç yanmaz — süre uydurulmaz, çünkü veri
+    kaynağında olmayan bir bilgiyi göstermek yanlış izlenim verir.
+
+    Args:
+        stamp: ``metadata.event_timestamps`` içindeki bir olay sözlüğü.
+
+    Returns:
+        ``(baslangic_sec, bitis_sec)`` ikilisi.
+    """
+    start = float(stamp.get("timestamp_sec") or stamp.get("seconds") or 0.0)
+    duration = float(stamp.get("duration") or 0.0)
+    return start, start + max(0.0, duration)
+
+
+def active_risk_window(stamps: list[dict], position_sec: float) -> Optional[dict]:
+    """Verilen oynatma konumunda aktif olan risk penceresini bulur.
+
+    Birden fazla olay aynı anda aktifse en yüksek şiddetli olan seçilir; arayüz
+    kamera çerçevesini bu pencerenin süresi boyunca (ve yalnızca o süre
+    boyunca) rengiyle yakar. Pencere dışında hiçbir olay aktif değilse
+    ``None`` döner ve çerçeve nötr kalır.
+
+    Args:
+        stamps: ``metadata.event_timestamps`` listesi.
+        position_sec: Sanal oynatma kafasının anlık konumu.
+
+    Returns:
+        Aktif olaydan türetilmiş ``{start_sec, end_sec, severity, risk,
+        event_type, event}`` sözlüğü veya ``None``.
+    """
+    best: Optional[dict] = None
+    best_rank = -1
+    for stamp in stamps:
+        start, end = _event_window(stamp)
+        if end <= start:
+            continue
+        if not (start <= position_sec <= end):
+            continue
+        severity = str(stamp.get("severity") or "low")
+        rank = SEVERITY_RANK.get(severity, 1)
+        if rank > best_rank:
+            best_rank = rank
+            best = {
+                "start_sec": round(start, 2),
+                "end_sec": round(end, 2),
+                "severity": severity,
+                "risk": SEVERITY_TO_RISK.get(severity, "Düşük"),
+                "event_type": stamp.get("event_type", ""),
+                "event": stamp.get("event") or stamp.get("vlm_detail") or "",
+            }
+    return best
+
+
 @dataclass
 class CameraStream:
     """Tek bir kameranın oynatma durumu."""
@@ -218,6 +278,7 @@ class ReplayEngine:
         analysis = cam.analysis
         duration = cam.duration_sec
         position = cam.position_sec
+        stamps = analysis.get("metadata", {}).get("event_timestamps", []) or []
         return {
             "job_id": cam.job_id,
             "camera_label": cam.label,
@@ -236,7 +297,10 @@ class ReplayEngine:
             "cycle_index": cam.cycle_index,
             "current_event": cam.current_event,
             "fired_count": cam.fired_count,
-            "total_events": len(analysis.get("metadata", {}).get("event_timestamps", []) or []),
+            "total_events": len(stamps),
+            # Şu an oynatma konumunda aktif olan risk aralığı; kamera
+            # çerçevesi yalnızca bu doluyken renklenir (bkz. active_risk_window).
+            "active_window": active_risk_window(stamps, position),
         }
 
     def current_analysis(self, camera_id: str) -> Optional[dict]:

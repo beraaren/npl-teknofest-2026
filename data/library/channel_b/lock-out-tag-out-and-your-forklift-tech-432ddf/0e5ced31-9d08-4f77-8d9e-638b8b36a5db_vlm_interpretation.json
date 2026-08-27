@@ -1,0 +1,59 @@
+{
+  "packet_id": "0e5ced31-9d08-4f77-8d9e-638b8b36a5db",
+  "video_id": "lock-out-tag-out-and-your-forklift-tech-432ddf",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir iş yerinde, sarı bir forkliftin yanında bir işçi, forkliftin ön tekerleğinin yanında diz çökmüş durumda. İşçi, forkliftin altına doğru eğilerek bir işlem yapıyor gibi görünüyor. Arka planda beyaz ve kırmızı renkli bir Bobcat makinesi yer alıyor. İşçi, forkliftin tekerleğinin yanında kalkıp duruyor ve forkliftin ön tarafına doğru hareket ediyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Kırmızı güvenlik yeleği giymiş, forkliftin ön tekerleğinin yanında diz çökmüş, sonra kalkıp hareket ediyor."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Sarı renkli forklift, ön tekerleğinin yanında bir işçi var. Makinenin markası belirsiz."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Arka planda beyaz ve kırmızı renkli Bobcat makinesi, muhtemelen bir yükleyici veya kompakt yükleyici. Marka ismi 'Bobcat' net bir şekilde okunuyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Sağ tarafta metal bir raf veya yapı parçası görünüyor, üzerinde bazı nesneler var."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, forkliftin ön tekerleğinin yanında diz çökmüş durumda.",
+    "İşçi, forkliftin altına doğru eğilerek bir işlem yapıyor gibi görünüyor.",
+    "İşçi, kalkıp forkliftin ön tarafına doğru hareket ediyor.",
+    "Forklift hareketsiz duruyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 11596.002599999338,
+    "tokens_generated": 619
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir iş yerinde, sarı bir forkliftin yanında bir işçi, forkliftin ön tekerleğinin yanında diz çökmüş durumda. İşçi, forkliftin altına doğru eğilerek bir işlem yapıyor gibi görünüyor. Arka planda beyaz ve kırmızı renkli bir Bobcat makinesi yer alıyor. İşçi, forkliftin tekerleğinin yanında kalkıp duruyor ve forkliftin ön tarafına doğru hareket ediyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kırmızı güvenlik yeleği giymiş, forkliftin ön tekerleğinin yanında diz çökmüş, sonra kalkıp hareket ediyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli forklift, ön tekerleğinin yanında bir işçi var. Makinenin markası belirsiz.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Arka planda beyaz ve kırmızı renkli Bobcat makinesi, muhtemelen bir yükleyici veya kompakt yükleyici. Marka ismi 'Bobcat' net bir şekilde okunuyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sağ tarafta metal bir raf veya yapı parçası görünüyor, üzerinde bazı nesneler var.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, forkliftin ön tekerleğinin yanında diz çökmüş durumda.\",\n    \"İşçi, forkliftin altına doğru eğilerek bir işlem yapıyor gibi görünüyor.\",\n    \"İşçi, kalkıp forkliftin ön tarafına doğru hareket ediyor.\",\n    \"Forklift hareketsiz duruyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, forkliftin hareket halinde olabilecek tekerleğinin yanında diz çökmüş durumda. Bu, forkliftin beklenmedik bir şekilde hareket etmesi durumunda ciddi yaralanma riski oluşturur. Ayrıca, forkliftin altına eğilerek çalışma, sıkışma veya ezilme tehlikesi taşır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 0.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, forkliftin hareket halinde olabilecek tekerleğinin yanında diz çökmüş durumda. Bu, forkliftin beklenmedik bir şekilde hareket etmesi durumunda ciddi yaralanma riski oluşturur. Ayrıca, forkliftin altına eğilerek çalışma, sıkışma veya ezilme tehlikesi taşır.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 0.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, forkliftin hareket halinde olabilecek tekerleğinin yanında diz çökmüş durumda. Bu, forkliftin beklenmedik bir şekilde hareket etmesi durumunda ciddi yaralanma riski oluşturur. Ayrıca, forkliftin altına eğilerek çalışma, sıkışma veya ezilme tehlikesi taşır."
+  ],
+  "computed_confidence": 0.745,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 9.0,
+  "created_at": "2026-08-27T12:48:18.837069+00:00"
+}

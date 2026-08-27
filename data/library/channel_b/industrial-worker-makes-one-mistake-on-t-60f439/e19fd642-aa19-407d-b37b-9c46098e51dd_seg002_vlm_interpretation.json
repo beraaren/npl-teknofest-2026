@@ -1,0 +1,68 @@
+{
+  "packet_id": "e19fd642-aa19-407d-b37b-9c46098e51dd",
+  "video_id": "industrial-worker-makes-one-mistake-on-t-60f439",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Dar bir atölye ortamında, bir işçi büyük bir torna makinesi gibi görünen bir makine başında uzun bir malzeme parçasını el ile ayarlamak ve işlemek için eğilmiş durumdadır. İşçi, makinenin hareketli parçalarına yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor. İş yerinde çeşitli malzemeler yere ve makinenin etrafına dağılmış durumdadır. 02:22'de ikinci bir işçi sahneye girer ve ilk işçinin yanında durur.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İki işçi görülüyor; biri makine başında çalışırken, diğeri 02:22'de sahneye giriyor."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük, uzun bir torna makinesi gibi görünen makine, işçinin çalıştığı ana cihaz."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Uzun metalik bir malzeme parçası, makinenin üzerinde işleniyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Sahnenin sol tarafında, malzemelerin durduğu bir raf veya yapı görünüyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, makinenin üzerindeki uzun malzeme parçasını el ile ayarlıyor ve işliyor.",
+    "İşçi, makinenin hareketli parçalarına yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor.",
+    "02:22'de ikinci bir işçi sahneye girer ve ilk işçinin yanında durur.",
+    "İşçiler, dar bir alanda çalışırken, malzemelerin yere ve makinenin etrafına dağılması nedeniyle kayma veya düşme riski oluşuyor."
+  ],
+  "confidence_overall": 0.88,
+  "inference": {
+    "latency_ms": 12721.681099999842,
+    "tokens_generated": 737
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Dar bir atölye ortamında, bir işçi büyük bir torna makinesi gibi görünen bir makine başında uzun bir malzeme parçasını el ile ayarlamak ve işlemek için eğilmiş durumdadır. İşçi, makinenin hareketli parçalarına yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor. İş yerinde çeşitli malzemeler yere ve makinenin etrafına dağılmış durumdadır. 02:22'de ikinci bir işçi sahneye girer ve ilk işçinin yanında durur.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki işçi görülüyor; biri makine başında çalışırken, diğeri 02:22'de sahneye giriyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, uzun bir torna makinesi gibi görünen makine, işçinin çalıştığı ana cihaz.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun metalik bir malzeme parçası, makinenin üzerinde işleniyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sahnenin sol tarafında, malzemelerin durduğu bir raf veya yapı görünüyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, makinenin üzerindeki uzun malzeme parçasını el ile ayarlıyor ve işliyor.\",\n    \"İşçi, makinenin hareketli parçalarına yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor.\",\n    \"02:22'de ikinci bir işçi sahneye girer ve ilk işçinin yanında durur.\",\n    \"İşçiler, dar bir alanda çalışırken, malzemelerin yere ve makinenin etrafına dağılması nedeniyle kayma veya düşme riski oluşuyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, hareket halindeki makine parçalarına çok yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor. Bu, makineye temas halinde ciddi yaralanma riski oluşturabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 120.0\n    },\n    {\n      \"description_tr\": \"İş yerinin dar olması ve malzemelerin yere ve makinenin etrafına dağılması, kayma veya düşme riski oluşturuyor. Özellikle 02:22'de ikinci işçi sahneye girdiğinde, hareket alanı daha da daralıyor.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 122.0\n    }\n  ],\n  \"confidence_overall\": 0.88\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, hareket halindeki makine parçalarına çok yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor. Bu, makineye temas halinde ciddi yaralanma riski oluşturabilir.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    },
+    {
+      "description_tr": "İş yerinin dar olması ve malzemelerin yere ve makinenin etrafına dağılması, kayma veya düşme riski oluşturuyor. Özellikle 02:22'de ikinci işçi sahneye girdiğinde, hareket alanı daha da daralıyor.",
+      "severity": "medium",
+      "confidence": 0.8,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 122.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, hareket halindeki makine parçalarına çok yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor. Bu, makineye temas halinde ciddi yaralanma riski oluşturabilir.",
+    "İş yerinin dar olması ve malzemelerin yere ve makinenin etrafına dağılması, kayma veya düşme riski oluşturuyor. Özellikle 02:22'de ikinci işçi sahneye girdiğinde, hareket alanı daha da daralıyor."
+  ],
+  "computed_confidence": 0.6263,
+  "reasoning_trace": "",
+  "segment_start_sec": 120.0,
+  "segment_end_sec": 180.0,
+  "created_at": "2026-08-27T12:45:57.168222+00:00"
+}

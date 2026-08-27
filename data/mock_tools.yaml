@@ -10,6 +10,10 @@ tools:
       urgency: "Yüksek | Orta | Düşük"
       reason: "string"
     enabled: true
+    # Bu araç çalıştırıldığında ilgili role gerçek bir görev ataması oluşur
+    # (bkz. backend/gateway/routers/ops.py execute_tool). "roles.py" içindeki
+    # kanonik rol kimliği kullanılır.
+    assigns_role: "saglik"
 
   secure_area:
     description: "Tehlikeli bölgeyi güvenlik altına al."
@@ -18,6 +22,7 @@ tools:
       radius_meters: "number"
       reason: "string"
     enabled: true
+    assigns_role: "guvenlik"
 
   record_incident:
     description: "Olayı İSG kayıt sistemine ekle."

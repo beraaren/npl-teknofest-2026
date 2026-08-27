@@ -1,0 +1,53 @@
+{
+  "packet_id": "6bf3d93a-6531-4bfb-94b8-90ee488d1cfb",
+  "video_id": "fire-in-bale-plucker-e011f3",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Sahne, yoğun dumanla kaplı bir üretim tesisini gösteriyor. Dumanın içinde birkaç noktada kırmızı alevler parlıyor, yangının hâlâ devam ettiği ve kontrol altına alınamadığı anlaşılıyor. Görüntü, yangının yayıldığı alanın büyük bir kısmını kaplamış durumda.",
+  "detected_entities": [
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Yoğun duman ve birkaç noktada parlayan alevler net bir şekilde görülmektedir."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "low",
+      "notes_tr": "Duman nedeniyle makine detayları belirsiz; ancak önceki segmentlerdeki yapılar burada da varsayılarak varlığı değerlendirilmiştir."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "low",
+      "notes_tr": "Duman nedeniyle malzeme yükleri tam olarak belirlenemiyor, ancak yangının etkilediği alanın bir parçası olduğu düşünülüyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "Yoğun dumanın yayıldığı görülüyor.",
+    "Alevlerin duman içinde parladığını ve yer yer hareket ettiğini gözlemliyoruz.",
+    "Yangının kontrol altına alınmadığı ve hâlâ aktif olduğu anlaşılmaktadır."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 7485.743499999444,
+    "tokens_generated": 465
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Sahne, yoğun dumanla kaplı bir üretim tesisini gösteriyor. Dumanın içinde birkaç noktada kırmızı alevler parlıyor, yangının hâlâ devam ettiği ve kontrol altına alınamadığı anlaşılıyor. Görüntü, yangının yayıldığı alanın büyük bir kısmını kaplamış durumda.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yoğun duman ve birkaç noktada parlayan alevler net bir şekilde görülmektedir.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Duman nedeniyle makine detayları belirsiz; ancak önceki segmentlerdeki yapılar burada da varsayılarak varlığı değerlendirilmiştir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Duman nedeniyle malzeme yükleri tam olarak belirlenemiyor, ancak yangının etkilediği alanın bir parçası olduğu düşünülüyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Yoğun dumanın yayıldığı görülüyor.\",\n    \"Alevlerin duman içinde parladığını ve yer yer hareket ettiğini gözlemliyoruz.\",\n    \"Yangının kontrol altına alınmadığı ve hâlâ aktif olduğu anlaşılmaktadır.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yangın hâlâ devam ediyor ve duman yoğunluğu çalışanların solunum sağlığını ciddi şekilde tehdit ediyor. Alevlerin yayılması, patlama riskini artırıyor ve çevredeki malzemelerin yanması olası.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 120.0\n    }\n  ],\n  \"confidence_overall\": 0.90\n}",
+  "risk_events": [
+    {
+      "description_tr": "Yangın hâlâ devam ediyor ve duman yoğunluğu çalışanların solunum sağlığını ciddi şekilde tehdit ediyor. Alevlerin yayılması, patlama riskini artırıyor ve çevredeki malzemelerin yanması olası.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Yangın hâlâ devam ediyor ve duman yoğunluğu çalışanların solunum sağlığını ciddi şekilde tehdit ediyor. Alevlerin yayılması, patlama riskini artırıyor ve çevredeki malzemelerin yanması olası."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 120.0,
+  "segment_end_sec": 127.08,
+  "created_at": "2026-08-27T08:23:52.028239+00:00"
+}

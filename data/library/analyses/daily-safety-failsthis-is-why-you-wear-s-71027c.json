@@ -2,115 +2,82 @@
   "slug": "daily-safety-failsthis-is-why-you-wear-s-71027c",
   "video_file": "videos/Daily Safety Fails🤯This is WHY You Wear Steel Toe Boots🤯- STAY SAFE TODAY #fails #battery #PPE.mp4",
   "video_name": "Daily Safety Fails🤯This is WHY You Wear Steel Toe Boots🤯- STAY SAFE TODAY #fails #battery #PPE",
-  "analyzed_at": "2026-08-24T10:45:26.158546+00:00",
-  "analysis_seconds": 39.5,
+  "analyzed_at": "2026-08-27T12:34:26.965320+00:00",
+  "analysis_seconds": 52.0,
   "video": {
     "duration_sec": 32.37,
     "fps": 29.97,
     "width": 480,
     "height": 268
   },
-  "summary": "Depo alanında, baret ve yelek gibi temel KKD'leri eksik olan çok sayıda personel (insan_1, insan_3, insan_9, insan_13, insan_15, insan_17, insan_19, insan_23) tespit edilmiştir. Kritik olarak, 00:26 ve 00:28 zaman damgalarında, KKD eksikliği tespit edilen insan_15 ve insan_17 numaralı personellerin düşme hareketleri algılanmıştır. VLM modeli de 29. saniyede bir işçinin dengesini kaybedip düşme tehlikesi yaşadığını doğrulamıştır. Bu durum, doğrudan insan hayatını tehdit eden acil bir durumdur.",
+  "summary": "Depo veya üretim sahasında, büyük ahşap konteynerlerin elle taşındığı bir operasyon sırasında ciddi güvenlik ihlalleri ve bir kaza gerçekleşmiştir. Görüntülerde, alanın sağ tarafında hareketsiz duran bir forklift ve yükleri itip çeken çok sayıda personel (insan_1, insan_3, insan_9, insan_13, insan_15, insan_17, insan_19, insan_23) görülmektedir. Olayın en kritik noktası, 00:24'ten itibaren tespit edilen ve 00:28'e kadar süren KKD eksikliğidir; sahadaki personelin tamamına yakını baret ve yelek gibi temel kişisel koruyucu donanımları kullanmamaktadır. Bu durum, 00:26'da insan_15'in ve 00:28'de insan_17'nin dengesini kaybederek yere düşmesiyle trajik bir hal almıştır. Düşmeler, yük taşıma sırasında denge kaybına bağlı olarak gerçekleşmiş olup, VLM analizi de bu düşme olayını yüksek güvenle doğrulamıştır. Personelin KKD'siz olması ve düşme olaylarının art arda yaşanması, sahadaki genel güvenlik kültürünün zayıf olduğunu ve acil müdahale gerektiren bir durum olduğunu göstermektedir.",
   "headline": "KKD eksikliği (00:00)",
   "risk": "Yüksek",
-  "confidence": 0.85,
-  "reasoning": "Kanıtlar üç kanaldan değerlendirildi: 1) Geometrik olay sinyalleri (YOLO), insan_15 ve insan_17 için düşme olaylarını (00:26 ve 00:28) düşük-orta güvenle (0.50-0.52) raporladı. 2) VLM yorumu, 29. saniyede bir işçinin düşme tehlikesi yaşadığını yüksek güvenle (0.80) doğruladı. Bu iki bağımsız kanalın (geometrik ve görsel) düşme olayını desteklemesi, olayın gerçekliğini güçlendirir. 3) RAG kataloğu, 'person_fall' için 'Yüksek' risk seviyesi (90 puan) ve acil sağlık müdahalesi gerektiren eylemler tanımlamaktadır. Düşme olayları, KKD eksikliklerinden (Orta risk) çok daha önceliklidir ve insan hayatını doğrudan tehdit eder. Bu nedenle, risk seviyesi 'Yüksek' olarak belirlenmiş ve RAG kataloğundaki acil sağlık eylemleri önceliklendirilmiştir. Düşme olaylarının sürekliliği (farklı track ID'lerde ve zamanlarda tekrar etmesi) ve VLM'nin görsel onayı, güven değerini artırmıştır.",
+  "confidence": 0.88,
+  "reasoning": "Karar, üç farklı kanaldan gelen verilerin çapraz doğrulamasına dayanmaktadır. 1) Algı katmanı (YOLO), 00:26 ve 00:28'de iki farklı personel için düşme olayını (confidence ~0.50-0.52) ve sürekli olarak KKD eksikliğini (confidence 0.7) tespit etmiştir. 2) VLM, 00:29 civarında bir işçinin yükü iterken düşmesini yüksek güvenle (0.9) doğrulamış ve sahne özetinde forkliftin hareketsiz olduğunu belirtmiştir. 3) RAG kataloğu, 'person_fall' ve 'ppe_missing' desenlerini 'Yüksek' risk olarak işaretlemiştir. Çelişki yoktur; VLM'nin düşme tespiti, YOLO'nun düşük-orta güvenli düşme sinyallerini güçlendirmiştir. KKD eksikliği, düşme riskini ve olası yaralanma şiddetini artıran kritik bir faktördür. RAG'deki forklift devrilme senaryosu (similarity 0.375) sahadaki forkliftin hareketsiz olması nedeniyle uygulanmamış, ancak düşme ve KKD ihlali nedeniyle risk seviyesi 'Yüksek' olarak belirlenmiştir. Acil sağlık müdahalesi ve bölge izolasyonu önceliklidir.",
   "actions": [
-    "Acil durum ekibini ve sağlık personelini derhal çağır.",
-    "Yaralıyı hareket ettirmeden sağlık ekibini bekle.",
-    "Olay bölgesini güvenlik şeridi ile izole et.",
-    "Çevredeki personeli bölgeden uzaklaştır.",
-    "Düşme nedenini (kaygan zemin, engel, yük dengesizliği) tespit et.",
-    "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
+    "Sağlık ekibini derhal olay yerine çağır.",
+    "Olay bölgesini güvenlik şeridi ile izole et ve erişimi kapat.",
+    "Yaralı personeli hareket ettirmeden sağlık ekibinin gelmesini bekle.",
+    "Sahadaki tüm personeli KKD (baret, yelek) kullanmaya zorla ve uyar.",
+    "Düşme nedenini (kaygan zemin, yük dengesizliği) tespit et.",
+    "Olayı İSG kayıt sistemine işle ve alan sorumlusunu bilgilendir."
   ],
   "events": [
     {
       "time": "00:00",
-      "event": "Personel insan_1 baret ve yelek eksikliği ile tespit edildi.",
+      "event": "Birden fazla personelin (insan_1, insan_3, insan_9, insan_13, insan_15, insan_17, insan_19, insan_23) baret ve yelek takmadan çalışması.",
       "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "00:02",
-      "event": "Personel insan_3 baret ve yelek eksikliği ile tespit edildi.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "00:07",
-      "event": "Personel insan_9 baret ve yelek eksikliği ile tespit edildi.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "00:17",
-      "event": "Personel insan_9 ve insan_13 baret ve yelek eksikliği ile tespit edildi.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "00:24",
-      "event": "Personel insan_15 baret ve yelek eksikliği ile tespit edildi.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "00:25",
-      "event": "Personel insan_17 baret ve yelek eksikliği ile tespit edildi.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
+      "confidence": 0.85,
+      "timestamp_sec": 0.0,
+      "duration": 31.0,
+      "end_time": "00:31"
     },
     {
       "time": "00:26",
-      "event": "Personel (track 15) düşme hareketi gösterdi.",
+      "event": "Personel (track 15) yük taşıma sırasında dengesini kaybederek yere düşüyor.",
       "event_type": "person_fall",
-      "confidence": 0.506
+      "confidence": 0.75,
+      "timestamp_sec": 26.0,
+      "duration": 0.0,
+      "end_time": "00:26"
     },
     {
       "time": "00:28",
-      "event": "Personel insan_19 baret ve yelek eksikliği ile tespit edildi.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "00:28",
-      "event": "Personel (track 17) düşme hareketi gösterdi.",
+      "event": "Personel (track 17) yük taşıma sırasında dengesini kaybederek yere düşüyor.",
       "event_type": "person_fall",
-      "confidence": 0.52
-    },
-    {
-      "time": "00:31",
-      "event": "Personel insan_23 baret ve yelek eksikliği ile tespit edildi.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
+      "confidence": 0.78,
+      "timestamp_sec": 28.0,
+      "duration": 0.0,
+      "end_time": "00:28"
     }
   ],
   "triggered_mock_tools": [
     {
       "tool_name": "call_health_team",
       "params": {
-        "location": "Depo Alanı - Yük Taşıma Bölümü",
+        "location": "Depo sahası, yük taşıma alanı",
         "urgency": "Yüksek"
       }
     },
     {
       "tool_name": "secure_area",
       "params": {
-        "location": "Düşme Olayı Bölgesi (Track 15 ve 17)",
+        "location": "Düşme olayı gerçekleşen alan",
         "urgency": "Yüksek"
       }
     },
     {
       "tool_name": "notify_supervisor",
       "params": {
-        "location": "Depo Alanı",
+        "location": "Depo sahası",
         "urgency": "Yüksek"
       }
     },
     {
       "tool_name": "record_incident",
       "params": {
-        "location": "Depo Alanı",
+        "location": "Depo sahası",
         "urgency": "Yüksek"
       }
     }
@@ -120,7 +87,7 @@
       "status": "success",
       "tool": "call_health_team",
       "params": {
-        "location": "Depo Alanı - Yük Taşıma Bölümü",
+        "location": "Depo sahası, yük taşıma alanı",
         "urgency": "Yüksek"
       },
       "mock_result": "call_health_team başarıyla simüle edildi."
@@ -129,7 +96,7 @@
       "status": "success",
       "tool": "secure_area",
       "params": {
-        "location": "Düşme Olayı Bölgesi (Track 15 ve 17)",
+        "location": "Düşme olayı gerçekleşen alan",
         "urgency": "Yüksek"
       },
       "mock_result": "secure_area başarıyla simüle edildi."
@@ -138,7 +105,7 @@
       "status": "success",
       "tool": "notify_supervisor",
       "params": {
-        "location": "Depo Alanı",
+        "location": "Depo sahası",
         "urgency": "Yüksek"
       },
       "mock_result": "notify_supervisor başarıyla simüle edildi."
@@ -147,7 +114,7 @@
       "status": "success",
       "tool": "record_incident",
       "params": {
-        "location": "Depo Alanı",
+        "location": "Depo sahası",
         "urgency": "Yüksek"
       },
       "mock_result": "record_incident başarıyla simüle edildi."
@@ -282,14 +249,14 @@
         "event_type": "person_fall",
         "timestamp": "00:26",
         "description": "Personel (track 15) düşme hareketi gösteriyor.",
-        "confidence": 0.506,
+        "confidence": 0.505,
         "involved_track_ids": [
           15
         ],
         "metadata": {
-          "vertical_displacement_pixels": 27.39500000000001,
-          "scale_pixels": 67.72689816255458,
-          "drop_ratio": 0.4044921699240966
+          "vertical_displacement_pixels": 27.39,
+          "scale_pixels": 67.73038972942147,
+          "drop_ratio": 0.4043974958570485
         }
       },
       {
@@ -317,8 +284,8 @@
         ],
         "metadata": {
           "vertical_displacement_pixels": 22.805000000000007,
-          "scale_pixels": 54.791451486875175,
-          "drop_ratio": 0.41621456232935805
+          "scale_pixels": 54.79306884952522,
+          "drop_ratio": 0.4162022766534204
         }
       },
       {
@@ -338,88 +305,117 @@
       }
     ],
     "vlm_interpretation": {
-      "packet_id": "6bc41fde-81b5-47b7-9a7f-fa4e6f203839",
+      "packet_id": "5b0767df-a54b-4f94-a72b-9b927fe5dde2",
       "video_id": "daily-safety-failsthis-is-why-you-wear-s-71027c",
       "model_name": "vlm",
       "model_backend": "server",
-      "scene_summary_tr": "Bir depo veya üretim alanındaki güvenlik kamerası görüntüsünde, birkaç kişi büyük ahşap konteynerleri veya rafları taşımak için birlikte çalışmaktadır. Alanın sağ tarafında bir forklift durmaktadır. İşçiler, konteynerleri yerinden oynatmak ve taşımak için fiziksel çaba sarf etmektedir.",
+      "scene_summary_tr": "Bir depo veya üretim alanındaki güvenlik kamerası görüntüsü. Birden fazla kişi, büyük ahşap konteynerler veya raflar gibi yükleri taşımak için el ile itme ve çekme hareketleri yapıyor. Alanın sağ tarafında bir forklift duruyor. İşçiler, yüklerin yanından geçerken ve taşırken dikkatli hareket ediyor gibi görünüyor.",
       "detected_entities": [
         {
           "label": "person",
           "confidence_hint": "high",
-          "notes_tr": "En az üç kişi göze çarpmaktadır; iki kişi konteyneri itmek için birlikte çalışırken, bir kişi forkliftin yanında durmaktadır."
+          "notes_tr": "En az 3 kişi göze çarpıyor; bazıları yükleri itiyor, bazıları hareket ediyor."
         },
         {
           "label": "load",
           "confidence_hint": "high",
-          "notes_tr": "Büyük ahşap konteynerler veya raflar, işçiler tarafından taşınmaktadır."
+          "notes_tr": "Büyük ahşap konteynerler veya raflar, yük olarak tanımlanabilir."
         },
         {
           "label": "machine",
           "confidence_hint": "high",
-          "notes_tr": "Sağ tarafta duran forklift, muhtemelen bir yük taşıma makinesidir. Tipi net olmasa da, işlevi açıkça görülmektedir."
+          "notes_tr": "Sağ tarafta duran forklift, iş yerinde kullanılan bir makinedir."
         },
         {
           "label": "rack/structure",
           "confidence_hint": "high",
-          "notes_tr": "Arka planda yüksek raf sistemleri ve depolama alanları mevcuttur."
+          "notes_tr": "Yüklerin dizildiği ve taşındığı ahşap yapılar, raf veya yapı olarak değerlendirilebilir."
         }
       ],
       "detected_actions_tr": [
-        "İşçiler, büyük ahşap konteynerleri birlikte iterek hareket ettiriyor.",
-        "Bir kişi forkliftin yanında duruyor ve etrafı izliyor.",
-        "Konteynerler, belirlenen bir alanda sıralanıyor veya yeniden konumlandırılıyor."
+        "İşçiler, büyük ahşap konteynerleri elleriyle itiyor ve çekiyor.",
+        "Bir kişi, yükün yanından geçerken dengesini kaybediyor ve yere düşüyor.",
+        "Diğer işçiler, yüklerin taşınmasını devam ettiriyor.",
+        "Forklift, hareketsiz duruyor."
       ],
       "confidence_overall": 0.85,
       "inference": {
-        "latency_ms": 10857.367899967358,
-        "tokens_generated": 626
+        "latency_ms": 14572.62609999816,
+        "tokens_generated": 491
       },
-      "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir depo veya üretim alanındaki güvenlik kamerası görüntüsünde, birkaç kişi büyük ahşap konteynerleri veya rafları taşımak için birlikte çalışmaktadır. Alanın sağ tarafında bir forklift durmaktadır. İşçiler, konteynerleri yerinden oynatmak ve taşımak için fiziksel çaba sarf etmektedir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az üç kişi göze çarpmaktadır; iki kişi konteyneri itmek için birlikte çalışırken, bir kişi forkliftin yanında durmaktadır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük ahşap konteynerler veya raflar, işçiler tarafından taşınmaktadır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sağ tarafta duran forklift, muhtemelen bir yük taşıma makinesidir. Tipi net olmasa da, işlevi açıkça görülmektedir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Arka planda yüksek raf sistemleri ve depolama alanları mevcuttur.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, büyük ahşap konteynerleri birlikte iterek hareket ettiriyor.\",\n    \"Bir kişi forkliftin yanında duruyor ve etrafı izliyor.\",\n    \"Konteynerler, belirlenen bir alanda sıralanıyor veya yeniden konumlandırılıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, ağır yükleri birlikte iterken uygun koruyucu ekipman (örneğin, eldiven, ayakkabı) kullanmadıkları gözlemlenmektedir. Bu, fiziksel yaralanma riskini artırır.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 15.0\n    },\n    {\n      \"description_tr\": \"Bir işçi, konteyneri iterken dengesini kaybederek düşme tehlikesiyle karşı karşıya kalıyor. 29.0 saniyede, bir işçi yere düşer veya kayar gibi görünmektedir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 29.0\n    }\n  ],\n  \"confidence_overall\": 0.85\n}",
+      "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir depo veya üretim alanındaki güvenlik kamerası görüntüsü. Birden fazla kişi, büyük ahşap konteynerler veya raflar gibi yükleri taşımak için el ile itme ve çekme hareketleri yapıyor. Alanın sağ tarafında bir forklift duruyor. İşçiler, yüklerin yanından geçerken ve taşırken dikkatli hareket ediyor gibi görünüyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az 3 kişi göze çarpıyor; bazıları yükleri itiyor, bazıları hareket ediyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük ahşap konteynerler veya raflar, yük olarak tanımlanabilir.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sağ tarafta duran forklift, iş yerinde kullanılan bir makinedir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yüklerin dizildiği ve taşındığı ahşap yapılar, raf veya yapı olarak değerlendirilebilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, büyük ahşap konteynerleri elleriyle itiyor ve çekiyor.\",\n    \"Bir kişi, yükün yanından geçerken dengesini kaybediyor ve yere düşüyor.\",\n    \"Diğer işçiler, yüklerin taşınmasını devam ettiriyor.\",\n    \"Forklift, hareketsiz duruyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Bir işçi, yükü iterken dengesini kaybederek yere düşüyor. Bu, yaralanma riski oluşturabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 29.0\n    }\n  ],\n  \"confidence_overall\": 0.85\n}",
       "risk_events": [
         {
-          "description_tr": "İşçiler, ağır yükleri birlikte iterken uygun koruyucu ekipman (örneğin, eldiven, ayakkabı) kullanmadıkları gözlemlenmektedir. Bu, fiziksel yaralanma riskini artırır.",
-          "severity": "medium",
-          "confidence": 0.85,
-          "supporting_frame_count": 1,
-          "supporting_frame_positions": [],
-          "timestamp_sec": 15.0
-        },
-        {
-          "description_tr": "Bir işçi, konteyneri iterken dengesini kaybederek düşme tehlikesiyle karşı karşıya kalıyor. 29.0 saniyede, bir işçi yere düşer veya kayar gibi görünmektedir.",
+          "description_tr": "Bir işçi, yükü iterken dengesini kaybederek yere düşüyor. Bu, yaralanma riski oluşturabilir.",
           "severity": "high",
-          "confidence": 0.8,
+          "confidence": 0.9,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
           "timestamp_sec": 29.0
         }
       ],
       "risk_flags_tr": [
-        "İşçiler, ağır yükleri birlikte iterken uygun koruyucu ekipman (örneğin, eldiven, ayakkabı) kullanmadıkları gözlemlenmektedir. Bu, fiziksel yaralanma riskini artırır.",
-        "Bir işçi, konteyneri iterken dengesini kaybederek düşme tehlikesiyle karşı karşıya kalıyor. 29.0 saniyede, bir işçi yere düşer veya kayar gibi görünmektedir."
+        "Bir işçi, yükü iterken dengesini kaybederek yere düşüyor. Bu, yaralanma riski oluşturabilir."
       ],
-      "computed_confidence": 0.6038,
+      "computed_confidence": 0.6525,
       "reasoning_trace": "",
       "segment_start_sec": 0.0,
       "segment_end_sec": 32.36566666666667,
-      "created_at": "2026-08-24T10:45:13.333561+00:00"
+      "created_at": "2026-08-27T12:34:09.867503+00:00"
     },
     "rag_context": {
       "risk_level": "Yüksek",
-      "risk_score": 90,
+      "risk_score": 100,
       "actions": [
+        "Forklift operatörünün durumunu kontrol et, ilk yardım sağla.",
+        "Forklifti ve çevresini yangın/sızıntı riskine karşı kontrol et.",
+        "Forklift operasyonlarını bölgede durdur.",
         "Yaralıyı hareket ettirmeden sağlık ekibini bekle.",
         "Düşme nedenini (kaygan zemin, engel, yükseklik) tespit et.",
         "Çevredeki personeli bölgeden uzaklaştır.",
+        "Forklift operatörünü acil olarak durdur.",
+        "Yaya trafiğini alternatif güzergaha yönlendir.",
+        "Çarpışmaya karışan personelin durumunu kontrol et.",
+        "Yangın söndürme sistemini derhal devreye al.",
+        "Bölgedeki tüm personeli tahliye et.",
+        "İtfaiye ve acil müdahale ekiplerini çağır.",
+        "Yakıt veya kimyasal kaynakları kapatmaya çalış (güvenlik varsa).",
+        "Çöken palet çevresindeki personelin durumunu kontrol et.",
+        "Dengesiz palet yüklerini güvenli şekilde kaldır veya sabitle.",
+        "Depo/saha bölümünü erişime kapat.",
         "Bölgenin ana şalterden elektriğini kes.",
         "Kıvılcım veya yangın ihtimaline karşı alanı izole et.",
         "Acil bakım/onarım ekibine derhal bilgi ver.",
+        "Acil çıkış yolundaki engelleri (palet, kutu) acilen kaldır.",
+        "Yangın söndürme ekipmanının erişilebilirliğini kontrol et.",
+        "İlgili alan sorumlusunu prosedür ihlali hakkında uyar.",
+        "Forklift operatörünü uyar ve hızını düşürmesini sağla.",
+        "Yayaları kör noktalara girmemeleri konusunda sesli ikaz et.",
+        "Bölgedeki uyarı aynalarının açısını kontrol et.",
+        "Vinci acil durdur ve operatörle telsiz iletişimi kur.",
+        "Yük altındaki personeli sesli sirenle uyar.",
+        "Riskli alanı güvenlik şeridiyle kapat.",
+        "Forkliftin hızını uzaktan sınırlandır (IoT entegrasyonu ile).",
+        "Sürücüye hız limitini aştığına dair kabin içi uyarı gönder.",
+        "Bölgedeki yayaları olası kazaya karşı uyar.",
         "Acil durum ekibini ve sağlık personelini derhal çağır.",
         "Olay bölgesini güvenlik şeridi ile izole et.",
         "Güvenlik kameralarını ve kayıtları sakla, yetkililere bildir.",
         "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
       ],
       "matched_patterns": [
+        {
+          "pattern": "forklift_tip_over",
+          "description": "Forkliftin yan yatması, devrilmesi veya tekerleklerinin yerden kesilmesi.",
+          "risk_score": 95,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Yakıt sızıntısı ve yangın",
+            "Sürücü travması",
+            "Operasyon durması"
+          ],
+          "similarity": 0.375
+        },
         {
           "pattern": "person_fall",
           "description": "Personelin ani düşüşü veya zemine çökmesi.",
@@ -430,7 +426,7 @@
             "Kanama",
             "Bilinç kaybı"
           ],
-          "similarity": 0.1,
+          "similarity": 0.632,
           "matched_signal": {
             "event_type": "person_fall",
             "timestamp": "00:28",
@@ -441,8 +437,8 @@
             ],
             "metadata": {
               "vertical_displacement_pixels": 22.805000000000007,
-              "scale_pixels": 54.791451486875175,
-              "drop_ratio": 0.41621456232935805
+              "scale_pixels": 54.79306884952522,
+              "drop_ratio": 0.4162022766534204
             }
           }
         },
@@ -456,7 +452,7 @@
             "Tahliye güçlüğü",
             "İş verimi kaybı"
           ],
-          "similarity": 0.292,
+          "similarity": 0.649,
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -471,7 +467,7 @@
             "Hayati tehlike",
             "Tıbbi müdahale gecikmesi"
           ],
-          "similarity": 0.1,
+          "similarity": 0.777,
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -486,7 +482,7 @@
             "Kafa travması",
             "Görünmezlik kaynaklı ezilme"
           ],
-          "similarity": 0.1,
+          "similarity": 0.605,
           "matched_signal": {
             "event_type": "ppe_missing",
             "timestamp": "00:31",
@@ -504,6 +500,53 @@
           }
         },
         {
+          "pattern": "dangerous_proximity",
+          "description": "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski.",
+          "risk_score": 80,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Çarpışma",
+            "Ezilme",
+            "Ölümcül kaza"
+          ],
+          "similarity": 0.277
+        },
+        {
+          "pattern": "fire_smoke",
+          "description": "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir.",
+          "risk_score": 100,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Tesis yangını",
+            "Zehirli gaz soluma",
+            "Patlama"
+          ],
+          "similarity": 0.388
+        },
+        {
+          "pattern": "leakage",
+          "description": "Sıvı/kimyasal sızıntı veya birikintisi — kayma ve zehirlenme riski.",
+          "risk_score": 60,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Kayma ve düşme",
+            "Kimyasal yanık",
+            "Yangın (yanıcı madde ise)"
+          ],
+          "similarity": 0.341
+        },
+        {
+          "pattern": "pallet_collapse",
+          "description": "Palet yükünün devrilmesi, çökmesi veya tehlikeli pozisyonda olması.",
+          "risk_score": 75,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Çalışanların ezilmesi",
+            "Acil çıkış yollarının kapanması"
+          ],
+          "similarity": 0.29
+        },
+        {
           "pattern": "electrical_hazard",
           "description": "Açık pano, kablo veya elektrik tehlikesi barındıran durum.",
           "risk_score": 85,
@@ -512,7 +555,7 @@
             "Elektrik çarpması",
             "Elektrik kaynaklı yangın"
           ],
-          "similarity": 0.198
+          "similarity": 0.338
         },
         {
           "pattern": "unauthorized_access",
@@ -523,11 +566,46 @@
             "Sabotaj",
             "Eğitimsiz personel kazası"
           ],
-          "similarity": 0.1,
+          "similarity": 0.408,
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
           }
+        },
+        {
+          "pattern": "blocked_emergency_exit",
+          "description": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması.",
+          "risk_score": 75,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Tahliye engeli",
+            "Toplu panik"
+          ],
+          "similarity": 0.497
+        },
+        {
+          "pattern": "spill_slip_hazard",
+          "description": "Zeminde dökülmüş sıvı, yağ veya su kaynaklı kayma tehlikesi.",
+          "risk_score": 55,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Başını çarpma",
+            "Kırık/Çıkık",
+            "Kimyasal reaksiyon"
+          ],
+          "similarity": 0.391
+        },
+        {
+          "pattern": "cluttered_workspace",
+          "description": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski).",
+          "risk_score": 40,
+          "risk_level": "Düşük",
+          "potential_hazards": [
+            "Takılma ve düşme",
+            "Acil müdahale gecikmesi",
+            "Forklift manevra engeli"
+          ],
+          "similarity": 0.23
         },
         {
           "pattern": "running_in_facility",
@@ -539,11 +617,34 @@
             "Kayma ve düşme",
             "Panik yaratma"
           ],
-          "similarity": 0.1,
+          "similarity": 0.531,
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
           }
+        },
+        {
+          "pattern": "blind_spot_movement",
+          "description": "Kavşak veya kör noktalarda kontrolsüz hareket.",
+          "risk_score": 75,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Ani çarpışma",
+            "Fren mesafesi yetersizliği",
+            "Ölümcül kaza"
+          ],
+          "similarity": 0.355
+        },
+        {
+          "pattern": "overhead_hazard",
+          "description": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük).",
+          "risk_score": 85,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Kafa travması",
+            "Ölümcül ezilme"
+          ],
+          "similarity": 0.431
         },
         {
           "pattern": "fatigue_detection",
@@ -554,11 +655,22 @@
             "İş kazası potansiyeli artışı",
             "Bayılma öncülü"
           ],
-          "similarity": 0.1,
+          "similarity": 0.446,
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
           }
+        },
+        {
+          "pattern": "vehicle_speeding",
+          "description": "Forkliftin veya aracın tesis içi hız limitini aşması.",
+          "risk_score": 75,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Manevra kaybı",
+            "Ani çarpışma"
+          ],
+          "similarity": 0.286
         },
         {
           "pattern": "restricted_time_access",
@@ -569,7 +681,7 @@
             "Hırsızlık/Sabotaj",
             "Yalnız çalışma kazası"
           ],
-          "similarity": 0.1,
+          "similarity": 0.434,
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -579,94 +691,40 @@
     },
     "event_timestamps": [
       {
-        "seconds": 0,
+        "seconds": 0.0,
         "timestamp": "00:00",
+        "end_time": "00:31",
+        "timestamp_sec": 0.0,
+        "duration": 31.0,
         "event_type": "ppe_missing",
-        "event": "Personel insan_1 baret ve yelek eksikliği ile tespit edildi.",
-        "confidence": 0.7,
+        "event": "Birden fazla personelin (insan_1, insan_3, insan_9, insan_13, insan_15, insan_17, insan_19, insan_23) baret ve yelek takmadan çalışması.",
+        "confidence": 0.85,
         "severity": "high",
         "vlm_detail": ""
       },
       {
-        "seconds": 2,
-        "timestamp": "00:02",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_3 baret ve yelek eksikliği ile tespit edildi.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": ""
-      },
-      {
-        "seconds": 7,
-        "timestamp": "00:07",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_9 baret ve yelek eksikliği ile tespit edildi.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": ""
-      },
-      {
-        "seconds": 17,
-        "timestamp": "00:17",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_9 ve insan_13 baret ve yelek eksikliği ile tespit edildi.",
-        "confidence": 0.7,
-        "severity": "medium",
-        "vlm_detail": "İşçiler, ağır yükleri birlikte iterken uygun koruyucu ekipman (örneğin, eldiven, ayakkabı) kullanmadıkları gözlemlenmektedir. Bu, fiziksel yaralanma riskini artırır."
-      },
-      {
-        "seconds": 24,
-        "timestamp": "00:24",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_15 baret ve yelek eksikliği ile tespit edildi.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": "Bir işçi, konteyneri iterken dengesini kaybederek düşme tehlikesiyle karşı karşıya kalıyor. 29.0 saniyede, bir işçi yere düşer veya kayar gibi görünmektedir."
-      },
-      {
-        "seconds": 25,
-        "timestamp": "00:25",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_17 baret ve yelek eksikliği ile tespit edildi.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": "Bir işçi, konteyneri iterken dengesini kaybederek düşme tehlikesiyle karşı karşıya kalıyor. 29.0 saniyede, bir işçi yere düşer veya kayar gibi görünmektedir."
-      },
-      {
-        "seconds": 26,
+        "seconds": 26.0,
         "timestamp": "00:26",
+        "end_time": "00:26",
+        "timestamp_sec": 26.0,
+        "duration": 0.0,
         "event_type": "person_fall",
-        "event": "Personel (track 15) düşme hareketi gösterdi.",
-        "confidence": 0.506,
+        "event": "Personel (track 15) yük taşıma sırasında dengesini kaybederek yere düşüyor.",
+        "confidence": 0.75,
         "severity": "high",
-        "vlm_detail": "Bir işçi, konteyneri iterken dengesini kaybederek düşme tehlikesiyle karşı karşıya kalıyor. 29.0 saniyede, bir işçi yere düşer veya kayar gibi görünmektedir."
+        "vlm_detail": "Bir işçi, yükü iterken dengesini kaybederek yere düşüyor. Bu, yaralanma riski oluşturabilir."
       },
       {
-        "seconds": 28,
+        "seconds": 28.0,
         "timestamp": "00:28",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_19 baret ve yelek eksikliği ile tespit edildi.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": "Bir işçi, konteyneri iterken dengesini kaybederek düşme tehlikesiyle karşı karşıya kalıyor. 29.0 saniyede, bir işçi yere düşer veya kayar gibi görünmektedir."
-      },
-      {
-        "seconds": 28,
-        "timestamp": "00:28",
+        "end_time": "00:28",
+        "timestamp_sec": 28.0,
+        "duration": 0.0,
         "event_type": "person_fall",
-        "event": "Personel (track 17) düşme hareketi gösterdi.",
-        "confidence": 0.52,
+        "event": "Personel (track 17) yük taşıma sırasında dengesini kaybederek yere düşüyor.",
+        "confidence": 0.78,
         "severity": "high",
-        "vlm_detail": "Bir işçi, konteyneri iterken dengesini kaybederek düşme tehlikesiyle karşı karşıya kalıyor. 29.0 saniyede, bir işçi yere düşer veya kayar gibi görünmektedir."
-      },
-      {
-        "seconds": 31,
-        "timestamp": "00:31",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_23 baret ve yelek eksikliği ile tespit edildi.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": "Bir işçi, konteyneri iterken dengesini kaybederek düşme tehlikesiyle karşı karşıya kalıyor. 29.0 saniyede, bir işçi yere düşer veya kayar gibi görünmektedir."
+        "vlm_detail": "Bir işçi, yükü iterken dengesini kaybederek yere düşüyor. Bu, yaralanma riski oluşturabilir."
       }
     ]
   }

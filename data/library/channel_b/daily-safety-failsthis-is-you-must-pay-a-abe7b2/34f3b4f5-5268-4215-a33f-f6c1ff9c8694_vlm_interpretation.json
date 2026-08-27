@@ -1,0 +1,66 @@
+{
+  "packet_id": "34f3b4f5-5268-4215-a33f-f6c1ff9c8694",
+  "video_id": "daily-safety-failsthis-is-you-must-pay-a-abe7b2",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Sanayi bir üretim alanında, bir personel makineye yakın bir alanda çalışırken, bir forklift makinenin hemen yanında duruyor. 00:07'de makineden ani bir patlama ve alevler çıkıyor, personel kaçmaya başlıyor. Forklift sürücüsü de durumu fark ederek geri çekiliyor. Patlamadan sonra duman ve parçalar yerde yayılıyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Makinenin yanında çalışan bir kişi ve forklift sürücüsü görülmektedir."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "high",
+      "notes_tr": "Sarı renkli forklift, makinenin hemen yanında duruyor. Tipi forklift olarak net bir şekilde tanımlanabilir."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük boyutlu, metalik yapıda üretim makinesi. Patlama noktasıdır."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "00:07'den itibaren makineden alevler ve duman çıkıyor, patlama izlenimi veriyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Makine etrafında metal raf ve koruyucu bariyerler mevcut."
+    }
+  ],
+  "detected_actions_tr": [
+    "Personel makineye yakın bir alanda çalışırken",
+    "Forklift makinenin yanında duruyor",
+    "Makineden ani alev ve duman çıkıyor",
+    "Personel kaçmaya başlıyor",
+    "Forklift geri çekiliyor",
+    "Duman ve parçalar yerde yayılıyor"
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 9367.728400000487,
+    "tokens_generated": 561
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi bir üretim alanında, bir personel makineye yakın bir alanda çalışırken, bir forklift makinenin hemen yanında duruyor. 00:07'de makineden ani bir patlama ve alevler çıkıyor, personel kaçmaya başlıyor. Forklift sürücüsü de durumu fark ederek geri çekiliyor. Patlamadan sonra duman ve parçalar yerde yayılıyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin yanında çalışan bir kişi ve forklift sürücüsü görülmektedir.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli forklift, makinenin hemen yanında duruyor. Tipi forklift olarak net bir şekilde tanımlanabilir.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük boyutlu, metalik yapıda üretim makinesi. Patlama noktasıdır.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:07'den itibaren makineden alevler ve duman çıkıyor, patlama izlenimi veriyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makine etrafında metal raf ve koruyucu bariyerler mevcut.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Personel makineye yakın bir alanda çalışırken\",\n    \"Forklift makinenin yanında duruyor\",\n    \"Makineden ani alev ve duman çıkıyor\",\n    \"Personel kaçmaya başlıyor\",\n    \"Forklift geri çekiliyor\",\n    \"Duman ve parçalar yerde yayılıyor\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makineden ani patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşımaktadır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 7.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Makineden ani patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşımaktadır.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 7.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Makineden ani patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşımaktadır."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 19.333333333333332,
+  "created_at": "2026-08-27T08:17:43.635654+00:00"
+}

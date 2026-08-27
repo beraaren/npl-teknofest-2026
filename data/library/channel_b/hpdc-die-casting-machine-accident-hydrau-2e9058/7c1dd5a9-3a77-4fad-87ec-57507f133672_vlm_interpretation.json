@@ -1,0 +1,65 @@
+{
+  "packet_id": "7c1dd5a9-3a77-4fad-87ec-57507f133672",
+  "video_id": "hpdc-die-casting-machine-accident-hydrau-2e9058",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir endüstriyel üretim tesisi içinde, işçiler makineye yakın çalışırken, 00:09'da bir makinede ani bir alev ve duman patlaması meydana gelir. İşçiler panikle kaçar ve ardından yangın söndürme çabaları başlar. Olay yerine diğer çalışanlar ve muhtemelen güvenlik ekipleri akın eder.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Birden fazla işçi, bazıları mavi gömlek, bazıları koyu renk kıyafetler giymiş. Bazıları kask takıyor, bazıları takmıyor."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Çok sayıda endüstriyel makine, özellikle ortada büyük bir pres veya işleme makinesi dikkat çekiyor."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "00:09'da bir makineden ani alev ve yoğun duman çıkışı görülüyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Makinelere yakın metal raf ve yapılar var, bazılarında malzeme depolanıyor."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Ön planda plastikle kaplı ve ahşap paletlerle taşınan yükler var."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler makineye yakın çalışırken",
+    "Ani alev ve duman patlaması",
+    "İşçiler panikle kaçıyor",
+    "Yangın söndürme çabaları başlatılıyor",
+    "Diğer çalışanlar ve ekipmanlar olay yerine akın ediyor"
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 11920.789899999363,
+    "tokens_generated": 580
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir endüstriyel üretim tesisi içinde, işçiler makineye yakın çalışırken, 00:09'da bir makinede ani bir alev ve duman patlaması meydana gelir. İşçiler panikle kaçar ve ardından yangın söndürme çabaları başlar. Olay yerine diğer çalışanlar ve muhtemelen güvenlik ekipleri akın eder.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Birden fazla işçi, bazıları mavi gömlek, bazıları koyu renk kıyafetler giymiş. Bazıları kask takıyor, bazıları takmıyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çok sayıda endüstriyel makine, özellikle ortada büyük bir pres veya işleme makinesi dikkat çekiyor.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:09'da bir makineden ani alev ve yoğun duman çıkışı görülüyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinelere yakın metal raf ve yapılar var, bazılarında malzeme depolanıyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Ön planda plastikle kaplı ve ahşap paletlerle taşınan yükler var.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler makineye yakın çalışırken\",\n    \"Ani alev ve duman patlaması\",\n    \"İşçiler panikle kaçıyor\",\n    \"Yangın söndürme çabaları başlatılıyor\",\n    \"Diğer çalışanlar ve ekipmanlar olay yerine akın ediyor\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Bir makinede ani alev ve duman patlaması meydana gelmiş, çalışanların hemen kaçması ve yangın söndürme çabaları başlatılmasıyla birlikte ciddi bir yangın riski ortaya çıkmıştır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 9.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Bir makinede ani alev ve duman patlaması meydana gelmiş, çalışanların hemen kaçması ve yangın söndürme çabaları başlatılmasıyla birlikte ciddi bir yangın riski ortaya çıkmıştır.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 9.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Bir makinede ani alev ve duman patlaması meydana gelmiş, çalışanların hemen kaçması ve yangın söndürme çabaları başlatılmasıyla birlikte ciddi bir yangın riski ortaya çıkmıştır."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 35.43333333333333,
+  "created_at": "2026-08-27T08:24:59.251502+00:00"
+}

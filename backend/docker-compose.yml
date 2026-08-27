@@ -23,6 +23,8 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+    env_file:
+      - ../.env
     environment:
       - REDIS_URL=redis://redis:6379
       - INGEST_SERVICE_URL=http://camera-ingest:8001
@@ -51,6 +53,8 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+    env_file:
+      - ../.env
     environment:
       - REDIS_URL=redis://redis:6379
       - TEKNOFEST_CONFIG=/app/config.yaml
@@ -74,6 +78,8 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+    env_file:
+      - ../.env
     environment:
       - REDIS_URL=redis://redis:6379
       - TEKNOFEST_CONFIG=/app/config.yaml
@@ -97,6 +103,8 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+    env_file:
+      - ../.env
     environment:
       - REDIS_URL=redis://redis:6379
       - TEKNOFEST_CONFIG=/app/config.yaml
@@ -120,6 +128,8 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+    env_file:
+      - ../.env
     environment:
       - REDIS_URL=redis://redis:6379
       - TEKNOFEST_CONFIG=/app/config.yaml
@@ -143,6 +153,8 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+    env_file:
+      - ../.env
     environment:
       - REDIS_URL=redis://redis:6379
       - TEKNOFEST_CONFIG=/app/config.yaml

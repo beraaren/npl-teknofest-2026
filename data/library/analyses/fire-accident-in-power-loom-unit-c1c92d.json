@@ -2,211 +2,95 @@
   "slug": "fire-accident-in-power-loom-unit-c1c92d",
   "video_file": "videos/Fire Accident in Power Loom Unit தறி பட்டறையில் தீ விபத்து.mp4",
   "video_name": "Fire Accident in Power Loom Unit தறி பட்டறையில் தீ விபத்து",
-  "analyzed_at": "2026-08-24T10:48:16.388725+00:00",
-  "analysis_seconds": 138.6,
+  "analyzed_at": "2026-08-27T12:38:12.036711+00:00",
+  "analysis_seconds": 171.7,
   "video": {
     "duration_sec": 144.96,
     "fps": 25.0,
     "width": 600,
     "height": 360
   },
-  "summary": "Tekstil atölyesinde, makine arızası sonucu çıkan yangın ve yoğun duman nedeniyle kritik bir acil durum yaşanmaktadır. VLM analizi, 01:39'da makinede alevlenme ve 01:44'ten itibaren ortamın dumanla dolmasını doğrulamaktadır. Bu durum, çalışanların solunum yollarına zarar verebilecek toksik dumanlara maruz kalmasına ve kaçış yollarının kapanmasına neden olmaktadır. Ayrıca, video boyunca çok sayıda personelin (insan_4, insan_6, insan_7, insan_12, insan_35 vb.) baret ve yelek gibi temel KKD'lerini takmadığı tespit edilmiştir. 00:55 ve 01:32'de iki farklı personelin düşme hareketi gösterdiği algılanmıştır. Forklift ile personel arasındaki tehlikeli yakınlık sinyalleri düşük güven skoruna sahip olsa da, yangın ve duman varlığı tüm saha güvenliğini tehdit eden en üst düzey risk olarak öne çıkmaktadır.",
-  "headline": "Yangın / duman (01:39)",
+  "summary": "Tekstil atölyesinde, dokuma makineleri arasında çalışan personel arasında ciddi bir güvenlik ihlali ve acil durum yaşanmıştır. Olayın başlangıcında, 00:12 ile 02:17 saatleri arasında çok sayıda personel (insan_4, insan_6, insan_7, insan_12, insan_32, insan_35, insan_42, insan_43, insan_61, insan_67, insan_75, insan_76, insan_81, insan_95, insan_98, insan_102, insan_104, insan_108) baret ve yelek gibi temel kişisel koruyucu donanımları (KKD) takmadan çalışırken tespit edilmiştir. Bu durum, atölyedeki genel güvenlik kültürünün zayıf olduğunu göstermektedir. Kritik olay, 01:39 civarında bir dokuma makinesinin alt kısmında ani bir yangın patlamasıyla başlamıştır. VLM analizi, alevlerin ve yoğun dumanın hızla yayıldığını, görüş alanının ciddi şekilde kısıtlandığını doğrulamaktadır. Yangın sırasında, 01:32'de insan_35 ve 00:55'te insan_12'nin düşme hareketleri algılanmıştır; bu düşmeler muhtemelen yangın kaynaklı panik veya dumanlı ortamda denge kaybından kaynaklanmıştır. Yangın sonrası, personel panikle kaçmış ancak bazıları yangın söndürme ekipmanı kullanarak müdahale etmeye çalışmıştır. Yoğun duman nedeniyle görüşün tamamen kapandığı ve solunum riskinin yüksek olduğu bir ortamda, ikinci bir kişinin de sahneye girerek müdahale etmeye çalıştığı görülmüştür. Atölyenin dar yapısı ve malzeme yığınları, acil tahliye ve müdahaleyi zorlaştıran ek bir risk faktörüdür.",
+  "headline": "KKD eksikliği (00:12)",
   "risk": "Yüksek",
   "confidence": 0.92,
-  "reasoning": "Karar, üç kanaldan gelen verilerin entegrasyonu ile alınmıştır. 1) VLM kanalı, 01:39'da makinede yangın ve 01:44'ten itibaren yoğun duman tespit etmiştir (güven 0.95 ve 0.90). Yangın ve duman, insan sağlığı için doğrudan ve anlık bir tehdit oluşturduğu için, diğer tüm risklerden (KKD eksikliği, düşme, forklift yakınlığı) daha yüksek önceliğe sahiptir. 2) YOLO/Kural motoru, çok sayıda personelde KKD eksikliği ve iki farklı düşme olayı tespit etmiştir. Düşme olayları (00:55, 01:32) orta güven skoruna (0.51) sahip olsa da, yangın ortamında yaralı personelin durumu kritik hale gelmektedir. 3) RAG kataloğu, 'person_fall' ve 'dangerous_proximity' için yüksek risk skorları vermiştir, ancak yangın senaryosu (VLM tarafından doğrulanan) katalogda doğrudan eşleşmese de 'electrical_hazard' ve 'fire_smoke' mantığıyla en yüksek risk seviyesini (Yüksek) desteklemektedir. Çelişki çözümü: YOLO'nun düşük güven skorlu 'dangerous_proximity' (0.013) sinyalleri, yangın ve duman gibi kesin tehditler yanında ikincil kalmıştır. VLM'nin tek kaynaklı yangın tespiti, geometrik verilerin yetersiz kaldığı 'yangın/duman' kategorisinde tek geçerli kanıt olduğu için esas alınmıştır. Sonuç olarak, yangın ve duman nedeniyle tesisin acil olarak tahliyesi ve yangın söndürme protokollerinin devreye sokulması önceliklendirilmiştir.",
+  "reasoning": "Karar, üç kanaldan gelen verilerin entegrasyonuna dayanmaktadır. VLM kanalı, 'fire_smoke' (yangın/duman) olayını %95 güvenle ve kritik seviyede tespit etmiş olup, bu durum YOLO'nun algılayamadığı (sadece geometrik ve nesne tabanlı çalışan) bir durumdur. Bu nedenle, yangın riski en yüksek öncelik olarak kabul edilmiştir. YOLO verileri, çok sayıda personelin KKD eksikliği (baret/yelek) ve iki ayrı düşme olayını (track 12 ve 35) raporlamıştır. Düşme olaylarının güven skorları (%50-51) orta düzeyde olsa da, VLM'nin raporladığı yangın ve panik ortamı ile birleştiğinde, bu düşmelerin yangın kaynaklı yaralanmalar veya panik hareketleri olduğu sonucuna varılmıştır. RAG kataloğundaki 'fire_smoke' ve 'person_fall' kalıpları, tespit edilen olaylarla yüksek benzerlik göstermektedir. Çelişki yoktur; YOLO'nun algılayamadığı yangın, VLM tarafından doğrulanmıştır. KKD ihlalleri, yangın riskini artıran sistematik bir güvenlik açığı olarak değerlendirilmiştir. Bu nedenle risk seviyesi 'Yüksek' olarak belirlenmiş ve yangın müdahalesi ile tahliye öncelikli aksiyonlar olarak seçilmiştir.",
   "actions": [
     "Acil durum ekibini ve sağlık personelini derhal çağır.",
-    "Bölgenin ana şalterden elektriğini kes.",
-    "Kıvılcım veya yangın ihtimaline karşı alanı izole et.",
-    "Çevredeki personeli bölgeden uzaklaştır.",
-    "Yaralıyı hareket ettirmeden sağlık ekibini bekle.",
     "Olay bölgesini güvenlik şeridi ile izole et.",
+    "Bölgedeki tüm personeli tahliye et.",
+    "Yangın söndürme sistemini derhal devreye al.",
+    "İtfaiye ve acil müdahale ekiplerini çağır.",
+    "Yakıt veya kimyasal kaynakları kapatmaya çalış (güvenlik varsa).",
     "Güvenlik kameralarını ve kayıtları sakla, yetkililere bildir.",
-    "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
+    "İlgili alan sorumlusunu prosedür ihlali hakkında uyar."
   ],
   "events": [
     {
       "time": "00:12",
-      "event": "Personel insan_4 eksik KKD: baret, yelek.",
+      "event": "Çok sayıda personelin baret ve yelek takmadan çalışması (sistemik KKD ihlali).",
       "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "00:16",
-      "event": "Personel (track 4) 3.0 saniyedir hareketsiz.",
-      "event_type": "immobile_person",
-      "confidence": 0.304
-    },
-    {
-      "time": "00:16",
-      "event": "Personel insan_6 eksik KKD: baret, yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "00:18",
-      "event": "Personel insan_7 eksik KKD: baret, yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "00:27",
-      "event": "Personel insan_12 eksik KKD: baret, yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "00:27",
-      "event": "Arac ve insan arasında tehlikeli yakınlık (~191 piksel).",
-      "event_type": "dangerous_proximity",
-      "confidence": 0.141
-    },
-    {
-      "time": "00:32",
-      "event": "Arac ve insan arasında tehlikeli yakınlık (~240 piksel).",
-      "event_type": "dangerous_proximity",
-      "confidence": 0.013
-    },
-    {
-      "time": "00:37",
-      "event": "Personel insan_12 eksik KKD: baret, yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "00:47",
-      "event": "Personel insan_12 eksik KKD: baret, yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
+      "confidence": 0.95,
+      "timestamp_sec": 12.0,
+      "duration": 125.0,
+      "end_time": "02:17"
     },
     {
       "time": "00:55",
       "event": "Personel (track 12) düşme hareketi gösteriyor.",
       "event_type": "person_fall",
-      "confidence": 0.511
-    },
-    {
-      "time": "01:29",
-      "event": "Personel insan_32 eksik KKD: baret, yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "01:30",
-      "event": "Personel insan_35 eksik KKD: baret, yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
+      "confidence": 0.511,
+      "timestamp_sec": 55.0,
+      "duration": 0.0,
+      "end_time": "00:55"
     },
     {
       "time": "01:32",
       "event": "Personel (track 35) düşme hareketi gösteriyor.",
       "event_type": "person_fall",
-      "confidence": 0.508
-    },
-    {
-      "time": "01:35",
-      "event": "Personel insan_42 eksik KKD: baret, yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "01:42",
-      "event": "Personel insan_43 eksik KKD: baret, yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "01:46",
-      "event": "Personel insan_61 eksik KKD: baret, yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "01:48",
-      "event": "Personel insan_67 eksik KKD: yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "01:57",
-      "event": "Personel insan_75 eksik KKD: baret, yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "01:57",
-      "event": "Personel insan_76 eksik KKD: baret, yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "02:02",
-      "event": "Personel insan_81 eksik KKD: yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "02:03",
-      "event": "Personel insan_95 eksik KKD: yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "02:08",
-      "event": "Personel insan_98 eksik KKD: baret, yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "02:09",
-      "event": "Personel insan_102 eksik KKD: yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "02:13",
-      "event": "Personel insan_104 eksik KKD: baret, yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
-    },
-    {
-      "time": "02:17",
-      "event": "Personel insan_108 eksik KKD: yelek.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7
+      "confidence": 0.508,
+      "timestamp_sec": 92.0,
+      "duration": 0.0,
+      "end_time": "01:32"
     },
     {
       "time": "01:39",
-      "event": "Dokuma makinesinde ani yangın patlaması ve alevlenme.",
+      "event": "Dokuma makinesinde ani yangın patlaması, alevlenme ve yoğun duman oluşumu.",
       "event_type": "fire_smoke",
-      "confidence": 0.95
+      "confidence": 0.95,
+      "timestamp_sec": 99.0,
+      "duration": 46.0,
+      "end_time": "02:25"
     },
     {
       "time": "01:44",
-      "event": "Atölyenin yoğun dumanla dolması ve görüşün azalması.",
-      "event_type": "fire_smoke",
-      "confidence": 0.9
-    },
-    {
-      "time": "01:48",
-      "event": "Toksik dumanlara maruz kalma riski.",
-      "event_type": "fire_smoke",
-      "confidence": 0.92
+      "event": "Yangın sonrası panikle kaçış ve yangın söndürme ekipmanı ile müdahale denemesi.",
+      "event_type": "gathering",
+      "confidence": 0.88,
+      "timestamp_sec": 104.0,
+      "duration": 6.0,
+      "end_time": "01:50"
     }
   ],
   "triggered_mock_tools": [
     {
       "tool_name": "call_health_team",
       "params": {
-        "location": "Tekstil Atölyesi - Makine Bölümü",
+        "location": "Tekstil Atölyesi - Dokuma Makinesi Bölümü",
         "urgency": "Yüksek"
       }
     },
     {
-      "tool_name": "secure_area",
+      "tool_name": "trigger_fire_suppression",
       "params": {
-        "location": "Yangın ve Duman Bölgesi",
+        "location": "Tekstil Atölyesi - Dokuma Makinesi Bölümü",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "lockdown_facility",
+      "params": {
+        "location": "Tekstil Atölyesi",
         "urgency": "Yüksek"
       }
     },
@@ -218,7 +102,7 @@
       }
     },
     {
-      "tool_name": "record_incident",
+      "tool_name": "notify_supervisor",
       "params": {
         "location": "Tekstil Atölyesi",
         "urgency": "Yüksek"
@@ -230,19 +114,28 @@
       "status": "success",
       "tool": "call_health_team",
       "params": {
-        "location": "Tekstil Atölyesi - Makine Bölümü",
+        "location": "Tekstil Atölyesi - Dokuma Makinesi Bölümü",
         "urgency": "Yüksek"
       },
       "mock_result": "call_health_team başarıyla simüle edildi."
     },
     {
       "status": "success",
-      "tool": "secure_area",
+      "tool": "trigger_fire_suppression",
       "params": {
-        "location": "Yangın ve Duman Bölgesi",
+        "location": "Tekstil Atölyesi - Dokuma Makinesi Bölümü",
         "urgency": "Yüksek"
       },
-      "mock_result": "secure_area başarıyla simüle edildi."
+      "mock_result": "trigger_fire_suppression başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "lockdown_facility",
+      "params": {
+        "location": "Tekstil Atölyesi",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "lockdown_facility başarıyla simüle edildi."
     },
     {
       "status": "success",
@@ -255,12 +148,12 @@
     },
     {
       "status": "success",
-      "tool": "record_incident",
+      "tool": "notify_supervisor",
       "params": {
         "location": "Tekstil Atölyesi",
         "urgency": "Yüksek"
       },
-      "mock_result": "record_incident başarıyla simüle edildi."
+      "mock_result": "notify_supervisor başarıyla simüle edildi."
     }
   ],
   "metadata": {
@@ -367,8 +260,8 @@
           12
         ],
         "metadata": {
-          "estimated_distance_pixels": 190.52960727928874,
-          "effective_limit_pixels": 221.75994266149073
+          "estimated_distance_pixels": 190.53786008297672,
+          "effective_limit_pixels": 221.76968738083826
         }
       },
       {
@@ -381,8 +274,8 @@
           12
         ],
         "metadata": {
-          "estimated_distance_pixels": 239.96159364573325,
-          "effective_limit_pixels": 243.13151010630548
+          "estimated_distance_pixels": 239.96789498805876,
+          "effective_limit_pixels": 243.13643191689687
         }
       },
       {
@@ -424,9 +317,9 @@
           12
         ],
         "metadata": {
-          "vertical_displacement_pixels": 68.44,
-          "scale_pixels": 167.3760282148064,
-          "drop_ratio": 0.4088996538510624
+          "vertical_displacement_pixels": 68.43,
+          "scale_pixels": 167.3762054584458,
+          "drop_ratio": 0.4088394751964251
         }
       },
       {
@@ -468,9 +361,9 @@
           35
         ],
         "metadata": {
-          "vertical_displacement_pixels": 89.72499999999997,
-          "scale_pixels": 220.96310241823335,
-          "drop_ratio": 0.40606327037430334
+          "vertical_displacement_pixels": 89.71999999999997,
+          "scale_pixels": 220.95396239289673,
+          "drop_ratio": 0.4060574385195289
         }
       },
       {
@@ -650,26 +543,26 @@
       }
     ],
     "vlm_interpretation": {
-      "scene_summary_tr": "[00:00-00:48] Bir tekstil atölyesinde, birkaç dokuma makinesi çalışırken, bir işçi makinelere yaklaşarak birini kontrol eder. İşçi, makinenin yanında durur ve makineye müdahale eder. Atölye, eski ve yoğun bir şekilde kullanılan makinelere sahiptir. [00:48-01:48] Bir tekstil atölyesinde, çalışan bir işçi makineye müdahale ederken, makinede ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. İşçi, yangın başladığında makineden uzaklaşır ve daha sonra yangın söndürme ekipmanı ile müdahale eder. Atölye, yoğun dumanla dolup, görüş alanını azaltır. [01:48-02:25] Bir tekstil atölyesinde, yangın sonrası dumanlı bir ortamda bir işçi kırmızı bir kova ile makineye müdahale eder. İşçi, kovayı kullanarak yangın bölgesindeki bir noktaya sıvı dökerek söndürme çalışması yapar. Daha sonra başka bir işçi, koyu renkli bir kıyafetle sahneye girer ve makineye yaklaşarak müdahale eder. Ortam, yoğun duman ve yangın sonrası zarar gören makinelere sahiptir.",
+      "scene_summary_tr": "[00:00-00:48] Bir tekstil atölyesinde, çok sayıda dokuma makinesi sıralanmış durumda. Makineler çalışır halde olup, bir işçi 00:30'dan itibaren atölyenin derinliklerinden yaklaşarak bir makineye doğru hareket eder ve 00:40'dan itibaren makinenin başında durarak işlem yapmaya başlar. İşçi, makineye yakın bir mesafede çalışırken, çevredeki alanlar oldukça dar ve düzenli olmayan bir şekilde doldurulmuştur. [00:48-01:48] Bir tekstil atölyesinde, çalışan bir işçi makineye yakın bir mesafede çalışırken, makinede ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. İşçi yangın sonrası panikle kaçar ve tekrar dönerken yangın söndürme ekipmanı kullanmaya çalışır. Atölye, yoğun dumanla dolup, görüş alanını ciddi şekilde engeller. [01:48-02:25] Bir tekstil atölyesinde, yangın sonrası yoğun dumanlı bir ortamda çalışan bir işçi, kırmızı bir yangın söndürücü ile makineye müdahale eder. İşçi, yangın söndürücüyü kullanırken duman nedeniyle görüşü kısıtlı olup, daha sonra başka bir kişi de sahneye girer ve durumu kontrol etmeye çalışır.",
       "detected_entities": [
         {
           "label": "person",
           "confidence_hint": "high",
-          "notes_tr": "Bir erkek işçi, beyaz gömlek ve kısa pantolon giymiş, makinelere yaklaşarak çalışır."
+          "notes_tr": "İşçi, beyaz gömlek ve kısa etek giymiş, 00:30'dan itibaren görünür ve makineye yaklaşır."
         },
         {
           "label": "machine",
           "confidence_hint": "high",
-          "notes_tr": "Çok sayıda dokuma makinesi, büyük olasılıkla tekstil üretimine yönelik, atölyede sıralanmıştır."
+          "notes_tr": "Çok sayıda dokuma makinesi, yeşil renkli, uzun ve geniş yapıda, atölyenin büyük kısmını kaplamaktadır."
         },
         {
           "label": "load",
           "confidence_hint": "medium",
-          "notes_tr": "Makinelere bağlı büyük beyaz dokuma bobinleri ve diğer malzemeler görülmektedir."
+          "notes_tr": "Makinelere yakın yerlerde, kumaş veya ham madde olarak görünen büyük beyaz rulo ve kumaş yığınları bulunmaktadır."
         },
         {
           "label": "rack/structure",
-          "confidence_hint": "high",
+          "confidence_hint": "medium",
           "notes_tr": "Duvarlara ve makinelere bağlı kablolar, borular ve destek yapıları mevcuttur."
         },
         {
@@ -680,32 +573,41 @@
       ],
       "detected_actions_tr": [
         "İşçi, atölyenin derinliklerinden yaklaşarak bir dokuma makinesine doğru yürür.",
-        "İşçi, makinenin yanında durur ve makineye müdahale eder.",
-        "Makinelere bağlı dokuma bobinleri hareket halindedir.",
-        "Atölyede genel olarak üretim faaliyeti devam etmektedir.",
-        "İşçi, makineye müdahale eder.",
+        "İşçi, makinenin başında durarak makineyi kontrol eder ve ayarlar yapar.",
+        "Dokuma makineleri, sürekli olarak çalışır halde olup, kumaş üretimi devam eder.",
+        "İşçi, makineye yakın bir mesafede çalışırken, el hareketleriyle makineyi yönetir.",
+        "İşçi, makinenin başında çalışır.",
         "Makinede ani bir yangın patlaması meydana gelir.",
-        "İşçi, yangın başladığında makineden uzaklaşır.",
-        "İşçi, yangın söndürme ekipmanı ile müdahale eder.",
-        "Atölye, dumanla dolup görüş alanını azaltır.",
-        "İşçi, kırmızı bir kova ile yangın bölgesindeki makineye sıvı dökerek söndürme çalışması yapar.",
-        "İşçi, kovayı bırakıp makinenin yanından uzaklaşır.",
-        "İkinci işçi, koyu renkli kıyafetle sahneye girer ve makineye yaklaşır.",
-        "İkinci işçi, makineye müdahale ederken dumanlı ortamda hareket eder.",
-        "Ortamdaki duman yoğunlukta artmaya devam eder."
+        "İşçi panikle kaçar.",
+        "İşçi yangın söndürme ekipmanı kullanmaya çalışır.",
+        "Atölye yoğun dumanla doldurulur.",
+        "İşçi, kırmızı bir yangın söndürücü ile yangın çıkan makineye doğru ilerler.",
+        "İşçi, yangın söndürücüyü makineye doğrudan kullanmaya çalışır.",
+        "Yangın söndürücü kullanıldıktan sonra, işçi geri çekilir ve dumanlı ortamda durumu değerlendirir.",
+        "İkinci bir kişi, sahneye girer ve yangın bölgesinde durumu kontrol etmeye çalışır.",
+        "Duman, sahnenin büyük kısmını kaplar ve görüşü ciddi şekilde engeller."
       ],
       "risk_events": [
         {
-          "description_tr": "İşçi, hareket halindeki dokuma makinesine yakın bir mesafede çalışırken, elini veya kıyafetini makine parçalarına takma riski taşıyor. Bu, kesik, ezilme veya sıkışma gibi ciddi yaralanmalara neden olabilir.",
-          "severity": "high",
+          "description_tr": "Atölye, makine ve malzeme yığınları nedeniyle dar ve düzenli olmayan bir yapıdadır. Bu, acil durumlarda kaçış yollarının engellenmesi ve işçinin hareket özgürlüğünün kısıtlanması riskini artırır.",
+          "severity": "medium",
           "confidence": 0.85,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
-          "timestamp_sec": 42.0,
-          "timestamp": "00:42"
+          "timestamp_sec": 0.0,
+          "timestamp": "00:00"
         },
         {
-          "description_tr": "Dokuma makinesinde ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. Bu, çalışanların sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder.",
+          "description_tr": "İşçi, hareket halindeki dokuma makinesinin çok yakın mesafesinde çalışmaktadır. Bu, makinenin hareketli parçalarına temas riski oluşturur ve ciddi yaralanmaya yol açabilir.",
+          "severity": "high",
+          "confidence": 0.9,
+          "supporting_frame_count": 1,
+          "supporting_frame_positions": [],
+          "timestamp_sec": 40.0,
+          "timestamp": "00:40"
+        },
+        {
+          "description_tr": "Makinede ani bir yangın patlaması meydana gelir. Alevler ve duman, çalışanın sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder. Yangın, elektriksel arıza veya malzeme yanması sonucu olabilir.",
           "severity": "critical",
           "confidence": 0.95,
           "supporting_frame_count": 1,
@@ -714,59 +616,80 @@
           "timestamp": "01:39"
         },
         {
-          "description_tr": "Yangın sırasında atölye yoğun dumanla doldurulur. Bu, çalışanların solunum sistemlerini etkileyebilir ve kaçış yollarını engelleyebilir.",
+          "description_tr": "Yangın sonrası, işçinin panikle kaçması ve tekrar dönmek için yangın söndürme ekipmanı kullanmaya çalışması, yangın kontrolü açısından gecikmeye neden olabilir. Bu, yangının yayılmasına ve daha büyük bir yangın tehlikesine yol açabilir.",
           "severity": "high",
-          "confidence": 0.9,
+          "confidence": 0.88,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
           "timestamp_sec": 103.8,
           "timestamp": "01:44"
         },
         {
-          "description_tr": "Yangın sonrası dumanlı ortamda çalışan işçiler, solunum yollarına zarar verebilecek toksik dumanlara maruz kalıyor. Bu, hemen hemen acil bir sağlık riskidir.",
-          "severity": "critical",
-          "confidence": 0.92,
+          "description_tr": "Atölye, yoğun dumanla dolup, acil durumda kaçış yollarının engellenmesi ve çalışanların solunum sağlığına zarar verme riski oluşur. Duman, görüşü tamamen engeller ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır.",
+          "severity": "high",
+          "confidence": 0.9,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
-          "timestamp_sec": 108.4,
-          "timestamp": "01:48"
+          "timestamp_sec": 106.8,
+          "timestamp": "01:47"
         },
         {
-          "description_tr": "İşçi, yangın bölgesindeki makineye sıvı dökerek müdahale ederken, sıcak yüzeylere veya yanmaya devam eden noktalara temas riski taşıyor. Bu, yanık veya patlama riski oluşturabilir.",
+          "description_tr": "Yangın söndürücü kullanılırken, duman nedeniyle görüşü tamamen engellenmiş olup, işçi yangın söndürme ekipmanını doğru şekilde kullanamayabilir. Bu, yangının kontrol edilmesinde gecikmeye ve daha büyük bir yangın tehlikesine yol açabilir.",
           "severity": "high",
           "confidence": 0.88,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
-          "timestamp_sec": 110.0,
+          "timestamp_sec": 110.4,
           "timestamp": "01:50"
         },
         {
-          "description_tr": "İkinci işçi, dumanlı ve belirsiz bir ortamda makineye yaklaşırken, görsel engel nedeniyle makine parçalarına takılma veya düşme riski taşıyor.",
+          "description_tr": "Atölye, yoğun dumanla dolup, çalışanların solunum sağlığına zarar verme riski oluşur. Duman, acil durumda kaçış yollarının engellenmesi ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır.",
+          "severity": "high",
+          "confidence": 0.9,
+          "supporting_frame_count": 1,
+          "supporting_frame_positions": [],
+          "timestamp_sec": 112.0,
+          "timestamp": "01:52"
+        },
+        {
+          "description_tr": "İkinci bir kişi, dumanlı ortamda sahneye girerken, yangın bölgesindeki sıcaklık ve duman nedeniyle ciddi yaralanma veya solunum problemleri riski taşır. Bu, acil durumda uygun koruyucu ekipman olmaması nedeniyle daha da tehlikeli hâle gelir.",
           "severity": "high",
           "confidence": 0.85,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
-          "timestamp_sec": 120.0,
-          "timestamp": "02:00"
+          "timestamp_sec": 118.0,
+          "timestamp": "01:58"
+        },
+        {
+          "description_tr": "Makinenin hâlâ küçük alevler ve duman çıkarması, yangının tamamen söndürülmemiş olduğunu gösterir. Bu, yangının yeniden patlaması veya yayılması riskini artırır.",
+          "severity": "critical",
+          "confidence": 0.92,
+          "supporting_frame_count": 1,
+          "supporting_frame_positions": [],
+          "timestamp_sec": 125.0,
+          "timestamp": "02:05"
         }
       ],
       "risk_flags_tr": [
-        "İşçi, hareket halindeki dokuma makinesine yakın bir mesafede çalışırken, elini veya kıyafetini makine parçalarına takma riski taşıyor. Bu, kesik, ezilme veya sıkışma gibi ciddi yaralanmalara neden olabilir.",
-        "Dokuma makinesinde ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. Bu, çalışanların sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder.",
-        "Yangın sırasında atölye yoğun dumanla doldurulur. Bu, çalışanların solunum sistemlerini etkileyebilir ve kaçış yollarını engelleyebilir.",
-        "Yangın sonrası dumanlı ortamda çalışan işçiler, solunum yollarına zarar verebilecek toksik dumanlara maruz kalıyor. Bu, hemen hemen acil bir sağlık riskidir.",
-        "İşçi, yangın bölgesindeki makineye sıvı dökerek müdahale ederken, sıcak yüzeylere veya yanmaya devam eden noktalara temas riski taşıyor. Bu, yanık veya patlama riski oluşturabilir.",
-        "İkinci işçi, dumanlı ve belirsiz bir ortamda makineye yaklaşırken, görsel engel nedeniyle makine parçalarına takılma veya düşme riski taşıyor."
+        "Atölye, makine ve malzeme yığınları nedeniyle dar ve düzenli olmayan bir yapıdadır. Bu, acil durumlarda kaçış yollarının engellenmesi ve işçinin hareket özgürlüğünün kısıtlanması riskini artırır.",
+        "İşçi, hareket halindeki dokuma makinesinin çok yakın mesafesinde çalışmaktadır. Bu, makinenin hareketli parçalarına temas riski oluşturur ve ciddi yaralanmaya yol açabilir.",
+        "Makinede ani bir yangın patlaması meydana gelir. Alevler ve duman, çalışanın sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder. Yangın, elektriksel arıza veya malzeme yanması sonucu olabilir.",
+        "Yangın sonrası, işçinin panikle kaçması ve tekrar dönmek için yangın söndürme ekipmanı kullanmaya çalışması, yangın kontrolü açısından gecikmeye neden olabilir. Bu, yangının yayılmasına ve daha büyük bir yangın tehlikesine yol açabilir.",
+        "Atölye, yoğun dumanla dolup, acil durumda kaçış yollarının engellenmesi ve çalışanların solunum sağlığına zarar verme riski oluşur. Duman, görüşü tamamen engeller ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır.",
+        "Yangın söndürücü kullanılırken, duman nedeniyle görüşü tamamen engellenmiş olup, işçi yangın söndürme ekipmanını doğru şekilde kullanamayabilir. Bu, yangının kontrol edilmesinde gecikmeye ve daha büyük bir yangın tehlikesine yol açabilir.",
+        "Atölye, yoğun dumanla dolup, çalışanların solunum sağlığına zarar verme riski oluşur. Duman, acil durumda kaçış yollarının engellenmesi ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır.",
+        "İkinci bir kişi, dumanlı ortamda sahneye girerken, yangın bölgesindeki sıcaklık ve duman nedeniyle ciddi yaralanma veya solunum problemleri riski taşır. Bu, acil durumda uygun koruyucu ekipman olmaması nedeniyle daha da tehlikeli hâle gelir.",
+        "Makinenin hâlâ küçük alevler ve duman çıkarması, yangının tamamen söndürülmemiş olduğunu gösterir. Bu, yangının yeniden patlaması veya yayılması riskini artırır."
       ],
-      "confidence_overall": 0.9066666666666667,
-      "computed_confidence": 0.6972999999999999,
+      "confidence_overall": 0.8966666666666666,
+      "computed_confidence": 0.6768000000000001,
       "segment_count": 3,
       "failed_segments": [],
-      "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Bir tekstil atölyesinde, birkaç dokuma makinesi çalışırken, bir işçi makinelere yaklaşarak birini kontrol eder. İşçi, makinenin yanında durur ve makineye müdahale eder. Atölye, eski ve yoğun bir şekilde kullanılan makinelere sahiptir.\n  - [00:00] görülen varlıklar: load, machine, person, rack/structure\n  - [00:48] Bir tekstil atölyesinde, çalışan bir işçi makineye müdahale ederken, makinede ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. İşçi, yangın başladığında makineden uzaklaşır ve daha sonra yangı\n  - [00:48] görülen varlıklar: machine, person, rack/structure, smoke or flame\n  - [01:48] Bir tekstil atölyesinde, yangın sonrası dumanlı bir ortamda bir işçi kırmızı bir kova ile makineye müdahale eder. İşçi, kovayı kullanarak yangın bölgesindeki bir noktaya sıvı dökerek söndürme çalışması yapar. Daha sonra başka bir işçi, koyu\n  - [01:48] görülen varlıklar: load, machine, person, rack/structure, smoke or flame\nZaman damgalı olaylar:\n  - 00:42 — İşçi, hareket halindeki dokuma makinesine yakın bir mesafede çalışırken, elini veya kıyafetini makine parçalarına takma riski taşıyor. Bu, kesik, ezilme veya sıkışma gibi ciddi yaralanmalara neden olabilir. [high, güven 0.85]\n  - 01:39 — Dokuma makinesinde ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. Bu, çalışanların sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder. [critical, güven 0.95]\n  - 01:44 — Yangın sırasında atölye yoğun dumanla doldurulur. Bu, çalışanların solunum sistemlerini etkileyebilir ve kaçış yollarını engelleyebilir. [high, güven 0.90]\n  - 01:48 — Yangın sonrası dumanlı ortamda çalışan işçiler, solunum yollarına zarar verebilecek toksik dumanlara maruz kalıyor. Bu, hemen hemen acil bir sağlık riskidir. [critical, güven 0.92]\n  - 01:50 — İşçi, yangın bölgesindeki makineye sıvı dökerek müdahale ederken, sıcak yüzeylere veya yanmaya devam eden noktalara temas riski taşıyor. Bu, yanık veya patlama riski oluşturabilir. [high, güven 0.88]\n  - 02:00 — İkinci işçi, dumanlı ve belirsiz bir ortamda makineye yaklaşırken, görsel engel nedeniyle makine parçalarına takılma veya düşme riski taşıyor. [high, güven 0.85]"
+      "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Bir tekstil atölyesinde, çok sayıda dokuma makinesi sıralanmış durumda. Makineler çalışır halde olup, bir işçi 00:30'dan itibaren atölyenin derinliklerinden yaklaşarak bir makineye doğru hareket eder ve 00:40'dan itibaren makinenin başında \n  - [00:00] görülen varlıklar: load, machine, person, rack/structure\n  - [00:48] Bir tekstil atölyesinde, çalışan bir işçi makineye yakın bir mesafede çalışırken, makinede ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. İşçi yangın sonrası panikle kaçar ve tekrar dönerken\n  - [00:48] görülen varlıklar: machine, person, rack/structure, smoke or flame\n  - [01:48] Bir tekstil atölyesinde, yangın sonrası yoğun dumanlı bir ortamda çalışan bir işçi, kırmızı bir yangın söndürücü ile makineye müdahale eder. İşçi, yangın söndürücüyü kullanırken duman nedeniyle görüşü kısıtlı olup, daha sonra başka bir kişi\n  - [01:48] görülen varlıklar: load, machine, person, rack/structure, smoke or flame\nZaman damgalı olaylar:\n  - 00:40 — İşçi, hareket halindeki dokuma makinesinin çok yakın mesafesinde çalışmaktadır. Bu, makinenin hareketli parçalarına temas riski oluşturur ve ciddi yaralanmaya yol açabilir. [high, güven 0.90]\n  - 00:00 — Atölye, makine ve malzeme yığınları nedeniyle dar ve düzenli olmayan bir yapıdadır. Bu, acil durumlarda kaçış yollarının engellenmesi ve işçinin hareket özgürlüğünün kısıtlanması riskini artırır. [medium, güven 0.85]\n  - 01:39 — Makinede ani bir yangın patlaması meydana gelir. Alevler ve duman, çalışanın sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder. Yangın, elektriksel arıza veya malzeme yanması sonucu olabilir. [critical, güven 0.95]\n  - 01:44 — Yangın sonrası, işçinin panikle kaçması ve tekrar dönmek için yangın söndürme ekipmanı kullanmaya çalışması, yangın kontrolü açısından gecikmeye neden olabilir. Bu, yangının yayılmasına ve daha büyük bir yangın tehlikesine yol açabilir. [high, güven 0.88]\n  - 01:47 — Atölye, yoğun dumanla dolup, acil durumda kaçış yollarının engellenmesi ve çalışanların solunum sağlığına zarar verme riski oluşur. Duman, görüşü tamamen engeller ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır. [high, güven 0.90]\n  - 01:50 — Yangın söndürücü kullanılırken, duman nedeniyle görüşü tamamen engellenmiş olup, işçi yangın söndürme ekipmanını doğru şekilde kullanamayabilir. Bu, yangının kontrol edilmesinde gecikmeye ve daha büyük bir yangın tehlikesine yol açabilir. [high, güven 0.88]\n  - 01:52 — Atölye, yoğun dumanla dolup, çalışanların solunum sağlığına zarar verme riski oluşur. Duman, acil durumda kaçış yollarının engellenmesi ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır. [high, güven 0.90]\n  - 01:58 — İkinci bir kişi, dumanlı ortamda sahneye girerken, yangın bölgesindeki sıcaklık ve duman nedeniyle ciddi yaralanma veya solunum problemleri riski taşır. Bu, acil durumda uygun koruyucu ekipman olmaması nedeniyle daha da tehlikeli hâle gelir. [high, güven 0.85]\n  - 02:05 — Makinenin hâlâ küçük alevler ve duman çıkarması, yangının tamamen söndürülmemiş olduğunu gösterir. Bu, yangının yeniden patlaması veya yayılması riskini artırır. [critical, güven 0.92]"
     },
     "rag_context": {
       "risk_level": "Yüksek",
-      "risk_score": 95,
+      "risk_score": 100,
       "actions": [
         "Forklift operatörünün durumunu kontrol et, ilk yardım sağla.",
         "Forklifti ve çevresini yangın/sızıntı riskine karşı kontrol et.",
@@ -777,12 +700,25 @@
         "Forklift operatörünü acil olarak durdur.",
         "Yaya trafiğini alternatif güzergaha yönlendir.",
         "Çarpışmaya karışan personelin durumunu kontrol et.",
+        "Yangın söndürme sistemini derhal devreye al.",
+        "Bölgedeki tüm personeli tahliye et.",
+        "İtfaiye ve acil müdahale ekiplerini çağır.",
+        "Yakıt veya kimyasal kaynakları kapatmaya çalış (güvenlik varsa).",
         "Çöken palet çevresindeki personelin durumunu kontrol et.",
         "Dengesiz palet yüklerini güvenli şekilde kaldır veya sabitle.",
         "Depo/saha bölümünü erişime kapat.",
         "Bölgenin ana şalterden elektriğini kes.",
         "Kıvılcım veya yangın ihtimaline karşı alanı izole et.",
         "Acil bakım/onarım ekibine derhal bilgi ver.",
+        "Acil çıkış yolundaki engelleri (palet, kutu) acilen kaldır.",
+        "Yangın söndürme ekipmanının erişilebilirliğini kontrol et.",
+        "İlgili alan sorumlusunu prosedür ihlali hakkında uyar.",
+        "Forklift operatörünü uyar ve hızını düşürmesini sağla.",
+        "Yayaları kör noktalara girmemeleri konusunda sesli ikaz et.",
+        "Bölgedeki uyarı aynalarının açısını kontrol et.",
+        "Vinci acil durdur ve operatörle telsiz iletişimi kur.",
+        "Yük altındaki personeli sesli sirenle uyar.",
+        "Riskli alanı güvenlik şeridiyle kapat.",
         "Forkliftin hızını uzaktan sınırlandır (IoT entegrasyonu ile).",
         "Sürücüye hız limitini aştığına dair kabin içi uyarı gönder.",
         "Bölgedeki yayaları olası kazaya karşı uyar.",
@@ -802,7 +738,7 @@
             "Sürücü travması",
             "Operasyon durması"
           ],
-          "similarity": 0.465
+          "similarity": 0.425
         },
         {
           "pattern": "person_fall",
@@ -814,7 +750,7 @@
             "Kanama",
             "Bilinç kaybı"
           ],
-          "similarity": 0.1,
+          "similarity": 0.571,
           "matched_signal": {
             "event_type": "person_fall",
             "timestamp": "01:32",
@@ -824,9 +760,9 @@
               35
             ],
             "metadata": {
-              "vertical_displacement_pixels": 89.72499999999997,
-              "scale_pixels": 220.96310241823335,
-              "drop_ratio": 0.40606327037430334
+              "vertical_displacement_pixels": 89.71999999999997,
+              "scale_pixels": 220.95396239289673,
+              "drop_ratio": 0.4060574385195289
             }
           }
         },
@@ -840,7 +776,7 @@
             "Tahliye güçlüğü",
             "İş verimi kaybı"
           ],
-          "similarity": 0.164,
+          "similarity": 0.49,
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -855,7 +791,7 @@
             "Hayati tehlike",
             "Tıbbi müdahale gecikmesi"
           ],
-          "similarity": 0.1,
+          "similarity": 0.629,
           "matched_signal": {
             "event_type": "immobile_person",
             "timestamp": "00:16",
@@ -880,7 +816,7 @@
             "Kafa travması",
             "Görünmezlik kaynaklı ezilme"
           ],
-          "similarity": 0.1,
+          "similarity": 0.553,
           "matched_signal": {
             "event_type": "ppe_missing",
             "timestamp": "02:17",
@@ -906,7 +842,7 @@
             "Ezilme",
             "Ölümcül kaza"
           ],
-          "similarity": 0.505,
+          "similarity": 0.409,
           "matched_signal": {
             "event_type": "dangerous_proximity",
             "timestamp": "00:32",
@@ -917,10 +853,34 @@
               12
             ],
             "metadata": {
-              "estimated_distance_pixels": 239.96159364573325,
-              "effective_limit_pixels": 243.13151010630548
+              "estimated_distance_pixels": 239.96789498805876,
+              "effective_limit_pixels": 243.13643191689687
             }
           }
+        },
+        {
+          "pattern": "fire_smoke",
+          "description": "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir.",
+          "risk_score": 100,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Tesis yangını",
+            "Zehirli gaz soluma",
+            "Patlama"
+          ],
+          "similarity": 0.353
+        },
+        {
+          "pattern": "leakage",
+          "description": "Sıvı/kimyasal sızıntı veya birikintisi — kayma ve zehirlenme riski.",
+          "risk_score": 60,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Kayma ve düşme",
+            "Kimyasal yanık",
+            "Yangın (yanıcı madde ise)"
+          ],
+          "similarity": 0.264
         },
         {
           "pattern": "pallet_collapse",
@@ -931,7 +891,7 @@
             "Çalışanların ezilmesi",
             "Acil çıkış yollarının kapanması"
           ],
-          "similarity": 0.125
+          "similarity": 0.288
         },
         {
           "pattern": "electrical_hazard",
@@ -942,7 +902,7 @@
             "Elektrik çarpması",
             "Elektrik kaynaklı yangın"
           ],
-          "similarity": 0.107
+          "similarity": 0.227
         },
         {
           "pattern": "unauthorized_access",
@@ -953,11 +913,46 @@
             "Sabotaj",
             "Eğitimsiz personel kazası"
           ],
-          "similarity": 0.1,
+          "similarity": 0.341,
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
           }
+        },
+        {
+          "pattern": "blocked_emergency_exit",
+          "description": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması.",
+          "risk_score": 75,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Tahliye engeli",
+            "Toplu panik"
+          ],
+          "similarity": 0.352
+        },
+        {
+          "pattern": "spill_slip_hazard",
+          "description": "Zeminde dökülmüş sıvı, yağ veya su kaynaklı kayma tehlikesi.",
+          "risk_score": 55,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Başını çarpma",
+            "Kırık/Çıkık",
+            "Kimyasal reaksiyon"
+          ],
+          "similarity": 0.386
+        },
+        {
+          "pattern": "cluttered_workspace",
+          "description": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski).",
+          "risk_score": 40,
+          "risk_level": "Düşük",
+          "potential_hazards": [
+            "Takılma ve düşme",
+            "Acil müdahale gecikmesi",
+            "Forklift manevra engeli"
+          ],
+          "similarity": 0.23
         },
         {
           "pattern": "running_in_facility",
@@ -969,11 +964,34 @@
             "Kayma ve düşme",
             "Panik yaratma"
           ],
-          "similarity": 0.1,
+          "similarity": 0.47,
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
           }
+        },
+        {
+          "pattern": "blind_spot_movement",
+          "description": "Kavşak veya kör noktalarda kontrolsüz hareket.",
+          "risk_score": 75,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Ani çarpışma",
+            "Fren mesafesi yetersizliği",
+            "Ölümcül kaza"
+          ],
+          "similarity": 0.29
+        },
+        {
+          "pattern": "overhead_hazard",
+          "description": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük).",
+          "risk_score": 85,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Kafa travması",
+            "Ölümcül ezilme"
+          ],
+          "similarity": 0.302
         },
         {
           "pattern": "fatigue_detection",
@@ -984,7 +1002,7 @@
             "İş kazası potansiyeli artışı",
             "Bayılma öncülü"
           ],
-          "similarity": 0.1,
+          "similarity": 0.324,
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -999,7 +1017,7 @@
             "Manevra kaybı",
             "Ani çarpışma"
           ],
-          "similarity": 0.153
+          "similarity": 0.286
         },
         {
           "pattern": "restricted_time_access",
@@ -1010,7 +1028,7 @@
             "Hırsızlık/Sabotaj",
             "Yalnız çalışma kazası"
           ],
-          "similarity": 0.1,
+          "similarity": 0.462,
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -1020,89 +1038,23 @@
     },
     "event_timestamps": [
       {
-        "seconds": 12,
+        "seconds": 12.0,
         "timestamp": "00:12",
+        "end_time": "02:17",
+        "timestamp_sec": 12.0,
+        "duration": 125.0,
         "event_type": "ppe_missing",
-        "event": "Personel insan_4 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
+        "event": "Çok sayıda personelin baret ve yelek takmadan çalışması (sistemik KKD ihlali).",
+        "confidence": 0.95,
         "severity": "high",
         "vlm_detail": ""
       },
       {
-        "seconds": 16,
-        "timestamp": "00:16",
-        "event_type": "immobile_person",
-        "event": "Personel (track 4) 3.0 saniyedir hareketsiz.",
-        "confidence": 0.304,
-        "severity": "high",
-        "vlm_detail": ""
-      },
-      {
-        "seconds": 16,
-        "timestamp": "00:16",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_6 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": ""
-      },
-      {
-        "seconds": 18,
-        "timestamp": "00:18",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_7 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": ""
-      },
-      {
-        "seconds": 27,
-        "timestamp": "00:27",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_12 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": ""
-      },
-      {
-        "seconds": 27,
-        "timestamp": "00:27",
-        "event_type": "dangerous_proximity",
-        "event": "Arac ve insan arasında tehlikeli yakınlık (~191 piksel).",
-        "confidence": 0.141,
-        "severity": "high",
-        "vlm_detail": ""
-      },
-      {
-        "seconds": 32,
-        "timestamp": "00:32",
-        "event_type": "dangerous_proximity",
-        "event": "Arac ve insan arasında tehlikeli yakınlık (~240 piksel).",
-        "confidence": 0.013,
-        "severity": "high",
-        "vlm_detail": ""
-      },
-      {
-        "seconds": 37,
-        "timestamp": "00:37",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_12 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": "İşçi, hareket halindeki dokuma makinesine yakın bir mesafede çalışırken, elini veya kıyafetini makine parçalarına takma riski taşıyor. Bu, kesik, ezilme veya sıkışma gibi ciddi yaralanmalara neden olabilir."
-      },
-      {
-        "seconds": 47,
-        "timestamp": "00:47",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_12 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": "İşçi, hareket halindeki dokuma makinesine yakın bir mesafede çalışırken, elini veya kıyafetini makine parçalarına takma riski taşıyor. Bu, kesik, ezilme veya sıkışma gibi ciddi yaralanmalara neden olabilir."
-      },
-      {
-        "seconds": 55,
+        "seconds": 55.0,
         "timestamp": "00:55",
+        "end_time": "00:55",
+        "timestamp_sec": 55.0,
+        "duration": 0.0,
         "event_type": "person_fall",
         "event": "Personel (track 12) düşme hareketi gösteriyor.",
         "confidence": 0.511,
@@ -1110,26 +1062,11 @@
         "vlm_detail": ""
       },
       {
-        "seconds": 89,
-        "timestamp": "01:29",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_32 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": ""
-      },
-      {
-        "seconds": 90,
-        "timestamp": "01:30",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_35 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": ""
-      },
-      {
-        "seconds": 92,
+        "seconds": 92.0,
         "timestamp": "01:32",
+        "end_time": "01:32",
+        "timestamp_sec": 92.0,
+        "duration": 0.0,
         "event_type": "person_fall",
         "event": "Personel (track 35) düşme hareketi gösteriyor.",
         "confidence": 0.508,
@@ -1137,139 +1074,28 @@
         "vlm_detail": ""
       },
       {
-        "seconds": 95,
-        "timestamp": "01:35",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_42 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "severity": "critical",
-        "vlm_detail": "Dokuma makinesinde ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. Bu, çalışanların sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder."
-      },
-      {
-        "seconds": 99,
+        "seconds": 99.0,
         "timestamp": "01:39",
+        "end_time": "02:25",
+        "timestamp_sec": 99.0,
+        "duration": 46.0,
         "event_type": "fire_smoke",
-        "event": "Dokuma makinesinde ani yangın patlaması ve alevlenme.",
+        "event": "Dokuma makinesinde ani yangın patlaması, alevlenme ve yoğun duman oluşumu.",
         "confidence": 0.95,
         "severity": "critical",
-        "vlm_detail": "Dokuma makinesinde ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. Bu, çalışanların sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder."
+        "vlm_detail": "Makinede ani bir yangın patlaması meydana gelir. Alevler ve duman, çalışanın sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder. Yangın, elektriksel arıza veya malzeme yanması sonucu olabilir."
       },
       {
-        "seconds": 102,
-        "timestamp": "01:42",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_43 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": "Yangın sırasında atölye yoğun dumanla doldurulur. Bu, çalışanların solunum sistemlerini etkileyebilir ve kaçış yollarını engelleyebilir."
-      },
-      {
-        "seconds": 104,
+        "seconds": 104.0,
         "timestamp": "01:44",
-        "event_type": "fire_smoke",
-        "event": "Atölyenin yoğun dumanla dolması ve görüşün azalması.",
-        "confidence": 0.9,
+        "end_time": "01:50",
+        "timestamp_sec": 104.0,
+        "duration": 6.0,
+        "event_type": "gathering",
+        "event": "Yangın sonrası panikle kaçış ve yangın söndürme ekipmanı ile müdahale denemesi.",
+        "confidence": 0.88,
         "severity": "high",
-        "vlm_detail": "Yangın sırasında atölye yoğun dumanla doldurulur. Bu, çalışanların solunum sistemlerini etkileyebilir ve kaçış yollarını engelleyebilir."
-      },
-      {
-        "seconds": 106,
-        "timestamp": "01:46",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_61 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": "Yangın sırasında atölye yoğun dumanla doldurulur. Bu, çalışanların solunum sistemlerini etkileyebilir ve kaçış yollarını engelleyebilir."
-      },
-      {
-        "seconds": 108,
-        "timestamp": "01:48",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_67 eksik KKD: yelek.",
-        "confidence": 0.7,
-        "severity": "critical",
-        "vlm_detail": "Yangın sonrası dumanlı ortamda çalışan işçiler, solunum yollarına zarar verebilecek toksik dumanlara maruz kalıyor. Bu, hemen hemen acil bir sağlık riskidir."
-      },
-      {
-        "seconds": 108,
-        "timestamp": "01:48",
-        "event_type": "fire_smoke",
-        "event": "Toksik dumanlara maruz kalma riski.",
-        "confidence": 0.92,
-        "severity": "critical",
-        "vlm_detail": "Yangın sonrası dumanlı ortamda çalışan işçiler, solunum yollarına zarar verebilecek toksik dumanlara maruz kalıyor. Bu, hemen hemen acil bir sağlık riskidir."
-      },
-      {
-        "seconds": 117,
-        "timestamp": "01:57",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_75 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": "İkinci işçi, dumanlı ve belirsiz bir ortamda makineye yaklaşırken, görsel engel nedeniyle makine parçalarına takılma veya düşme riski taşıyor."
-      },
-      {
-        "seconds": 117,
-        "timestamp": "01:57",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_76 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": "İkinci işçi, dumanlı ve belirsiz bir ortamda makineye yaklaşırken, görsel engel nedeniyle makine parçalarına takılma veya düşme riski taşıyor."
-      },
-      {
-        "seconds": 122,
-        "timestamp": "02:02",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_81 eksik KKD: yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": "İkinci işçi, dumanlı ve belirsiz bir ortamda makineye yaklaşırken, görsel engel nedeniyle makine parçalarına takılma veya düşme riski taşıyor."
-      },
-      {
-        "seconds": 123,
-        "timestamp": "02:03",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_95 eksik KKD: yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": "İkinci işçi, dumanlı ve belirsiz bir ortamda makineye yaklaşırken, görsel engel nedeniyle makine parçalarına takılma veya düşme riski taşıyor."
-      },
-      {
-        "seconds": 128,
-        "timestamp": "02:08",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_98 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": ""
-      },
-      {
-        "seconds": 129,
-        "timestamp": "02:09",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_102 eksik KKD: yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": ""
-      },
-      {
-        "seconds": 133,
-        "timestamp": "02:13",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_104 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": ""
-      },
-      {
-        "seconds": 137,
-        "timestamp": "02:17",
-        "event_type": "ppe_missing",
-        "event": "Personel insan_108 eksik KKD: yelek.",
-        "confidence": 0.7,
-        "severity": "high",
-        "vlm_detail": ""
+        "vlm_detail": "Yangın sonrası, işçinin panikle kaçması ve tekrar dönmek için yangın söndürme ekipmanı kullanmaya çalışması, yangın kontrolü açısından gecikmeye neden olabilir. Bu, yangının yayılmasına ve daha büyük bir yangın tehlikesine yol açabilir."
       }
     ]
   }

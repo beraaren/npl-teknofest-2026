@@ -1,0 +1,64 @@
+{
+  "packet_id": "9fafacfc-7c88-4b83-adb5-fb01daef955d",
+  "video_id": "kaos-and-the-hands-of-fate-machine-shop-a34463",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir endüstriyel üretim tesisi içinde, uzun bir metal çubuk veya rulonun bir makine üzerinde işleme sırasında olduğu görülüyor. 07:20:38 saniyede bir patlama veya şiddetli basınç salınımı meydana gelir ve bu, büyük miktarda duman, toz ve parçacıkların havaya fırlamasına neden olur. Personel, olaydan hemen sonra kaçış hareketi yapar.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İşçi, koyu renkli kıyafetler içinde, makineye yakın bir alanda yürüyor ve olaydan sonra kaçış hareketi yapar."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Uzun, mavi ve kırmızı renkli büyük bir işleme makinesi, muhtemelen bir rulo veya çubuk işleme ünitesi."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Uzun, metalik, silindirik bir yük (muhtemelen rulo veya çubuk) makinenin üzerinde yer alıyor."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "07:20:38'den itibaren yoğun duman ve parçacıkların havaya yayıldığı net bir şekilde görülüyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda, malzeme depolama için kullanılan raf ve yapılar görülebiliyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, makinenin yanında yürüyor.",
+    "Makinede bir patlama veya basınç salınımı meydana gelir.",
+    "Duman ve parçacıklar havaya fırlar.",
+    "İşçi, olaydan kaçış hareketi yapar."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 10424.787200001447,
+    "tokens_generated": 644
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir endüstriyel üretim tesisi içinde, uzun bir metal çubuk veya rulonun bir makine üzerinde işleme sırasında olduğu görülüyor. 07:20:38 saniyede bir patlama veya şiddetli basınç salınımı meydana gelir ve bu, büyük miktarda duman, toz ve parçacıkların havaya fırlamasına neden olur. Personel, olaydan hemen sonra kaçış hareketi yapar.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, koyu renkli kıyafetler içinde, makineye yakın bir alanda yürüyor ve olaydan sonra kaçış hareketi yapar.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun, mavi ve kırmızı renkli büyük bir işleme makinesi, muhtemelen bir rulo veya çubuk işleme ünitesi.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun, metalik, silindirik bir yük (muhtemelen rulo veya çubuk) makinenin üzerinde yer alıyor.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"07:20:38'den itibaren yoğun duman ve parçacıkların havaya yayıldığı net bir şekilde görülüyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda, malzeme depolama için kullanılan raf ve yapılar görülebiliyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, makinenin yanında yürüyor.\",\n    \"Makinede bir patlama veya basınç salınımı meydana gelir.\",\n    \"Duman ve parçacıklar havaya fırlar.\",\n    \"İşçi, olaydan kaçış hareketi yapar.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinede ani bir patlama veya basınç salınımı meydana gelmiş, bu da yoğun duman ve parçacıkların yayılmasına neden olmuştur. İşçi, olaydan hemen sonra kaçış hareketi yapmıştır, ancak bu tür bir olayda yaralanma riski yüksek ve hemen müdahale gerektirir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 9.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Makinede ani bir patlama veya basınç salınımı meydana gelmiş, bu da yoğun duman ve parçacıkların yayılmasına neden olmuştur. İşçi, olaydan hemen sonra kaçış hareketi yapmıştır, ancak bu tür bir olayda yaralanma riski yüksek ve hemen müdahale gerektirir.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 9.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Makinede ani bir patlama veya basınç salınımı meydana gelmiş, bu da yoğun duman ve parçacıkların yayılmasına neden olmuştur. İşçi, olaydan hemen sonra kaçış hareketi yapmıştır, ancak bu tür bir olayda yaralanma riski yüksek ve hemen müdahale gerektirir."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 15.815815815815816,
+  "created_at": "2026-08-27T12:47:44.047617+00:00"
+}

@@ -35,7 +35,7 @@
     </aside>
   </div>
 
-  <!-- Kamera detay + atama penceresi -->
+  <!-- Kamera detay penceresi -->
   <div id="modal" class="modal-overlay">
     <div class="modal">
       <div class="modal-header">
@@ -62,8 +62,40 @@
         <h3>⏱ Olay Zaman Çizelgesi</h3>
         <ul id="modal-events" class="event-timeline"></ul>
 
-        <h3>⚡ Aksiyonlar</h3>
-        <div id="modal-actions" class="actions-list"></div>
+        <!-- Önerilen Aksiyonlar: ajanın tetiklediği araçlar + yazdığı metin
+             talimatlar. Manuel Aksiyon: süpervizörün kataloğun tamamından
+             seçip elle çalıştırdığı/atadığı aksiyonlar. Eskiden "mock araç
+             butonları" ile "saha ekibi çağır" tamamen ayrı iki panel ve iki
+             farklı mantıktı; artık ikisi de aynı /tools/execute uç noktasına
+             gider, tek fark hangi araçların gösterildiği. -->
+        <h3>⚡ Önerilen Aksiyonlar</h3>
+        <div id="suggested-actions" class="actions-list"></div>
+
+        <h3>🛠 Manuel Aksiyon</h3>
+        <div class="manual-action-panel">
+          <label class="meta">Araç
+            <select id="manual-tool"></select>
+          </label>
+          <label class="meta">Not (opsiyonel)
+            <input id="manual-note" type="text" placeholder="Örn: İlk yardım çantasıyla gidin" />
+          </label>
+          <button class="btn btn-danger" id="manual-run-btn">Çalıştır</button>
+        </div>
+        <div id="manual-result" class="meta"></div>
+
+        <!-- Aracın kendisi bir ekibe görev düşürmüyorsa (assigns_role boşsa)
+             ekibe doğrudan atama burada yapılır. Örn. temizlik/teknisyen
+             rollerinin bağlı bir mock aracı yok. -->
+        <div class="manual-action-panel">
+          <label class="meta">Ekip
+            <select id="assign-role"></select>
+          </label>
+          <label class="meta">Olay
+            <select id="assign-event"></select>
+          </label>
+          <button class="btn btn-secondary" id="assign-btn">Ekibe Ata</button>
+        </div>
+        <div id="assign-existing" class="meta"></div>
 
         <!-- RLHF / Human-in-the-Loop Geri Bildirim Paneli -->
         <div class="feedback-section" id="feedback-section">
@@ -71,7 +103,7 @@
             <h3>🎯 Model Değerlendirmesi (RLHF / HitL)</h3>
             <span id="feedback-badge" class="fb-badge pending">Değerlendirilmedi</span>
           </div>
-          
+
           <div class="feedback-quick-actions" id="fb-quick-actions">
             <button class="btn-success-light" id="fb-btn-correct">✔ Karar Doğru</button>
             <button class="btn-warning-light" id="fb-btn-toggle-edit">✏ Düzelt / Yanlış Alarm</button>
@@ -108,21 +140,6 @@
             </div>
           </div>
         </div>
-
-        <h3>👷 Saha Ekibine Ata</h3>
-        <div class="assign-panel">
-          <label class="meta">Ekip
-            <select id="assign-role"></select>
-          </label>
-          <label class="meta">Olay
-            <select id="assign-event"></select>
-          </label>
-          <label class="meta">Not (opsiyonel)
-            <input id="assign-note" type="text" placeholder="Örn: İlk yardım çantasıyla gidin" />
-          </label>
-          <button class="btn btn-danger" id="assign-btn">Görevi Ata</button>
-        </div>
-        <div id="assign-existing" class="meta"></div>
       </div>
     </div>
   </div>

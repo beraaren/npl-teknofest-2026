@@ -1,0 +1,65 @@
+{
+  "packet_id": "5c78aa98-8cd5-467b-b595-414380e75fac",
+  "video_id": "always-wear-safety-harness-whenever-you-38f6d5",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Inşaat alanında, bir kırık kolu (boom) ile çalışan bir yükseklikte çalışma makinesi (kuleli kollarlı araç) görülüyor. Makine, bir bina inşaatının yanında yer alıyor ve kolu yukarıda sabit durumda. Yolun üzerinde birkaç işçi ve bir kişi yürüyor. 45. saniyede, makinenin kolu ani bir şekilde çökerek yere devriliyor ve bir işçi kolu üzerindeyken düşüyor. Olay, diğer işçilerin dikkatini çekiyor.",
+  "detected_entities": [
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Kuleli kollarlı araç (boom lift) olarak tanımlanabilir; kırmızı ve siyah renkli, yükseklikte çalışma için kullanılıyor."
+    },
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İşçiler, bazıları turuncu güvenlik yeleği giymiş, bazıları koyu renk kıyafetlerde. Yol üzerinde ve makine etrafında hareket ediyorlar."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "İnşaat halindeki bina ve etrafındaki iskeleler (scaffolding) görülmektedir."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "medium",
+      "notes_tr": "Makinenin alt kısmında bir araç gövdesi belirgin olmamakla birlikte, kuleli kollarlı araçın bir kamyon tabanına monte edildiği anlaşılmaktadır."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "low",
+      "notes_tr": "Makinenin kolu üzerinde bir yük veya malzeme taşıdığı kesin olarak belirlenemiyor; ancak kolu yukarıda sabit duruyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler yol üzerinde yürüyor.",
+    "Yükseklikte çalışma makinesi (kuleli kollarlı araç) sabit durumda.",
+    "Makinenin kolu ani bir şekilde çöküyor.",
+    "Bir işçi kolu üzerindeyken düşüyor.",
+    "Diğer işçiler olaya tepki gösteriyor ve yaklaşmaya başlıyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 22732.335000000603,
+    "tokens_generated": 690
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Inşaat alanında, bir kırık kolu (boom) ile çalışan bir yükseklikte çalışma makinesi (kuleli kollarlı araç) görülüyor. Makine, bir bina inşaatının yanında yer alıyor ve kolu yukarıda sabit durumda. Yolun üzerinde birkaç işçi ve bir kişi yürüyor. 45. saniyede, makinenin kolu ani bir şekilde çökerek yere devriliyor ve bir işçi kolu üzerindeyken düşüyor. Olay, diğer işçilerin dikkatini çekiyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kuleli kollarlı araç (boom lift) olarak tanımlanabilir; kırmızı ve siyah renkli, yükseklikte çalışma için kullanılıyor.\"\n    },\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçiler, bazıları turuncu güvenlik yeleği giymiş, bazıları koyu renk kıyafetlerde. Yol üzerinde ve makine etrafında hareket ediyorlar.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İnşaat halindeki bina ve etrafındaki iskeleler (scaffolding) görülmektedir.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinenin alt kısmında bir araç gövdesi belirgin olmamakla birlikte, kuleli kollarlı araçın bir kamyon tabanına monte edildiği anlaşılmaktadır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Makinenin kolu üzerinde bir yük veya malzeme taşıdığı kesin olarak belirlenemiyor; ancak kolu yukarıda sabit duruyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler yol üzerinde yürüyor.\",\n    \"Yükseklikte çalışma makinesi (kuleli kollarlı araç) sabit durumda.\",\n    \"Makinenin kolu ani bir şekilde çöküyor.\",\n    \"Bir işçi kolu üzerindeyken düşüyor.\",\n    \"Diğer işçiler olaya tepki gösteriyor ve yaklaşmaya başlıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"45. saniyede, yükseklikte çalışma makinesinin kolu ani bir şekilde çökerek yere devriliyor. Kolu üzerindeki işçi düşüyor ve ciddi yaralanma riski taşıyor. Bu, insan sağlığı için hemen tehlike oluşturan bir olaydır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 45.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "45. saniyede, yükseklikte çalışma makinesinin kolu ani bir şekilde çökerek yere devriliyor. Kolu üzerindeki işçi düşüyor ve ciddi yaralanma riski taşıyor. Bu, insan sağlığı için hemen tehlike oluşturan bir olaydır.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 45.0
+    }
+  ],
+  "risk_flags_tr": [
+    "45. saniyede, yükseklikte çalışma makinesinin kolu ani bir şekilde çökerek yere devriliyor. Kolu üzerindeki işçi düşüyor ve ciddi yaralanma riski taşıyor. Bu, insan sağlığı için hemen tehlike oluşturan bir olaydır."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 52.6,
+  "created_at": "2026-08-27T12:32:01.982232+00:00"
+}

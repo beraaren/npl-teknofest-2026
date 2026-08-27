@@ -1,0 +1,77 @@
+{
+  "packet_id": "5513dcf8-9c82-4547-b59b-96411948255a",
+  "video_id": "industrial-worker-makes-one-mistake-on-t-60f439",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "İki işçi, dar bir atölye ortamında büyük bir torna makinesi gibi görünen bir makine başında çalışmaktadır. İşçiler, makinenin üzerindeki uzun bir malzeme parçasını el ile ayarlamak ve işlemek için eğilmiş durumdadır. İş yerinde çeşitli malzemeler ve araçlar yere ve makinenin etrafına dağılmıştır.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İki işçi, makine başında çalışırken görülüyor. Birisi daha aktif hareket ederken diğeri daha az görünür."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük, uzun bir torna makinesi gibi görünen makine, işçilere yakın konumda."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Uzun, sivri uçlu bir malzeme parçası, makinenin üzerinde işleniyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Makinenin arkasında ve yanlarında metal raflar veya yapılar görülmektedir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler, makinenin üzerindeki uzun malzeme parçasını el ile ayarlıyor ve işliyor.",
+    "Bir işçi, makinenin üst kısmına uzanarak parçayı tutuyor.",
+    "Diğer işçi, makinenin yanından geçerek kısa bir süreliğine görünmüyor.",
+    "İşçiler, makinenin hareketli parçalarına yakın mesafede çalışırken el ve kolları tehlikeli bölgelerde."
+  ],
+  "confidence_overall": 0.88,
+  "inference": {
+    "latency_ms": 14088.85139999984,
+    "tokens_generated": 765
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"İki işçi, dar bir atölye ortamında büyük bir torna makinesi gibi görünen bir makine başında çalışmaktadır. İşçiler, makinenin üzerindeki uzun bir malzeme parçasını el ile ayarlamak ve işlemek için eğilmiş durumdadır. İş yerinde çeşitli malzemeler ve araçlar yere ve makinenin etrafına dağılmıştır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki işçi, makine başında çalışırken görülüyor. Birisi daha aktif hareket ederken diğeri daha az görünür.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, uzun bir torna makinesi gibi görünen makine, işçilere yakın konumda.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun, sivri uçlu bir malzeme parçası, makinenin üzerinde işleniyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinenin arkasında ve yanlarında metal raflar veya yapılar görülmektedir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, makinenin üzerindeki uzun malzeme parçasını el ile ayarlıyor ve işliyor.\",\n    \"Bir işçi, makinenin üst kısmına uzanarak parçayı tutuyor.\",\n    \"Diğer işçi, makinenin yanından geçerek kısa bir süreliğine görünmüyor.\",\n    \"İşçiler, makinenin hareketli parçalarına yakın mesafede çalışırken el ve kolları tehlikeli bölgelerde.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, hareket halindeki makine parçalarına çok yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor. Bu, makineye temas halinde ciddi yaralanma riski oluşturabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 60.0\n    },\n    {\n      \"description_tr\": \"İşçilerin el ve kolları, makinenin hareketli parçalarına çok yakın durumda. Özellikle 01:00-01:15 arasında bir işçi, makinenin üst kısmına uzanırken, eli tehlikeli bölgeye girmiş gibi görünüyor.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 65.0\n    },\n    {\n      \"description_tr\": \"İş yerinin dar olması ve malzemelerin yere ve makinenin etrafına dağılması, kayma veya düşme riski oluşturuyor. Bu, özellikle 01:00-01:20 arasında bir işçi geriye doğru hareket ettiğinde daha belirgin hale geliyor.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 62.0\n    }\n  ],\n  \"confidence_overall\": 0.88\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçiler, hareket halindeki makine parçalarına çok yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor. Bu, makineye temas halinde ciddi yaralanma riski oluşturabilir.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    },
+    {
+      "description_tr": "İşçilerin el ve kolları, makinenin hareketli parçalarına çok yakın durumda. Özellikle 01:00-01:15 arasında bir işçi, makinenin üst kısmına uzanırken, eli tehlikeli bölgeye girmiş gibi görünüyor.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 65.0
+    },
+    {
+      "description_tr": "İş yerinin dar olması ve malzemelerin yere ve makinenin etrafına dağılması, kayma veya düşme riski oluşturuyor. Bu, özellikle 01:00-01:20 arasında bir işçi geriye doğru hareket ettiğinde daha belirgin hale geliyor.",
+      "severity": "medium",
+      "confidence": 0.8,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 62.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçiler, hareket halindeki makine parçalarına çok yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor. Bu, makineye temas halinde ciddi yaralanma riski oluşturabilir.",
+    "İşçilerin el ve kolları, makinenin hareketli parçalarına çok yakın durumda. Özellikle 01:00-01:15 arasında bir işçi, makinenin üst kısmına uzanırken, eli tehlikeli bölgeye girmiş gibi görünüyor.",
+    "İş yerinin dar olması ve malzemelerin yere ve makinenin etrafına dağılması, kayma veya düşme riski oluşturuyor. Bu, özellikle 01:00-01:20 arasında bir işçi geriye doğru hareket ettiğinde daha belirgin hale geliyor."
+  ],
+  "computed_confidence": 0.6362,
+  "reasoning_trace": "",
+  "segment_start_sec": 60.0,
+  "segment_end_sec": 120.0,
+  "created_at": "2026-08-27T12:45:44.436612+00:00"
+}

@@ -1,23 +1,5 @@
-/**
- * Saha ekibi ekranı — yalnızca kendi ekibine atanan görevleri gösterir.
- *
- * MOCK KALDIRILDI
- * Eskiden bu ekran, atama olmadan da tüm uyarıları listeliyor ve canlı kamera
- * akışını gösteriyordu; ajanın olay özeti hiç görünmüyordu, aksiyon butonları
- * ise yalnızca ekranda bir bildirim gösterip kayboluyordu.
- *
- * ŞİMDİ
- * - Görevler süpervizörün yaptığı atamadan gelir (`/assignments?role=`), yani
- *   ekip yalnızca kendisine ait olanı görür.
- * - Her görev, karar ajanının yazdığı olay özetini taşır; süpervizörün gördüğü
- *   metnin aynısıdır (sunucu tarafında tek kaynaktan okunur).
- * - Video, olayın geçtiği saniyeye konumlanır; ekip doğrudan kritik anı görür.
- * - "Gördüm" / "Tamamlandı" işaretleri ve araç çalıştırmaları sunucuya yazılır,
- *   yani kalıcıdır ve süpervizör ekranı da bunu görür.
- */
 import { WsClient } from './ws.js';
-
-const API = '/api/v1';
+import { api, escapeHtml, mmss, showToast, initToast, runOnce } from './app.js';
 
 const RISK_CLASS = { 'Yüksek': 'high', 'Orta': 'medium', 'Düşük': 'low' };
 const STATUS_LABEL = { atandi: 'Bekliyor', goruldu: 'Görüldü', devam_ediyor: 'İntikal Edildi', tamamlandi: 'Bitti' };
@@ -32,78 +14,39 @@ const el = {
   roleStatus: document.getElementById('role-status'),
   toast: document.getElementById('toast'),
 };
+initToast(el.toast);
 
 let currentRole = '';
 let roleLabels = new Map();
-let toastTimer = null;
+/** Araç katalogu; kart başına Önerilen/Manuel aksiyon listelerini kurar. */
+let toolCatalog = [];
 
-// ---------------------------------------------------------------------------
-// Yardımcılar
-// ---------------------------------------------------------------------------
-
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text == null ? '' : String(text);
-  return div.innerHTML;
-}
-
-function mmss(seconds) {
-  const total = Math.max(0, Math.round(Number(seconds) || 0));
-  return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
-}
-
-function showToast(message, isError = false) {
-  el.toast.textContent = message;
-  el.toast.classList.toggle('toast-error', isError);
-  el.toast.classList.add('show');
-  if (toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.toast.classList.remove('show'), 3200);
-}
-
-async function api(path, options = {}) {
-  const res = await fetch(`${API}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options,
-  });
-  if (!res.ok) {
-    let detail = res.statusText;
-    try {
-      const body = await res.json();
-      detail = body.detail || detail;
-    } catch { /* gövde JSON değil */ }
-    throw new Error(detail);
-  }
-  return res.status === 204 ? null : res.json();
+function toolLabel(toolName) {
+  const tool = toolCatalog.find((t) => t.tool_name === toolName);
+  return tool?.description || toolName;
 }
 
 function playAlertSound() {
   try {
-    const Ctx = window.AudioContext || window.webkitAudioContext;
-    if (!Ctx) return;
-    const ctx = new Ctx();
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(880, ctx.currentTime);
-    gain.gain.setValueAtTime(0.08, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
+    osc.type = 'sine';
+    osc.frequency.value = 880;
+    gain.gain.value = 0.15;
+    osc.connect(gain).connect(ctx.destination);
     osc.start();
-    osc.stop(ctx.currentTime + 0.25);
-  } catch { /* ses engellenebilir */ }
+    setTimeout(() => { osc.stop(); ctx.close(); }, 220);
+  } catch { /* ses API'si yoksa sessizce geç */ }
 }
-
-// ---------------------------------------------------------------------------
-// Görev kartı
-// ---------------------------------------------------------------------------
 
 /**
  * Bir atamayı kart olarak oluşturur.
  *
- * Video, atamadaki `event_seconds` değerinin biraz öncesinden başlar; ekip
- * olayı bağlamıyla görür. Klip, olaydan birkaç saniye sonra durur ki dikkat
- * kritik anda kalsın.
+ * Video, atamadaki `event_seconds` değerinin biraz öncesinden başlar ve
+ * `event_end_seconds` biliniyorsa (backend'in ürettiği duration > 0 olduğu
+ * durumlarda) tam o anda durur; süre bilinmiyorsa (event_end_seconds === 0)
+ * klip sonuna kadar oynar — süre uydurulmaz.
  */
 function renderAssignmentCard(row) {
   const riskCls = RISK_CLASS[row.risk] || 'low';
@@ -129,24 +72,34 @@ function renderAssignmentCard(row) {
       <span><strong>Atandı:</strong> ${escapeHtml(row.created_at || '')}</span>
     </div>
 
-    ${row.note ? `<p class="note-box">📌 Süpervizör notu: ${escapeHtml(row.note)}</p>` : ''}
+    ${row.note ? `<p class="note-box">📌 Not: ${escapeHtml(row.note)}</p>` : ''}
 
     <h4>🧠 Ajan Olay Özeti</h4>
     <p class="summary-box">${escapeHtml(row.summary || 'Özet yok.')}</p>
 
     <video controls playsinline preload="metadata"></video>
-    <div class="meta clip-hint">Klip olayın geçtiği ana (${escapeHtml(row.event_timestamp || mmss(row.event_seconds))}) konumlandı.</div>
+    <div class="meta clip-hint">
+      ${row.event_end_seconds > row.event_seconds
+        ? `Klip olayın süresine (${mmss(row.event_seconds)}–${mmss(row.event_end_seconds)}) konumlandı ve sonunda durur.`
+        : `Klip olayın anına (${escapeHtml(row.event_timestamp || mmss(row.event_seconds))}) konumlandı.`}
+    </div>
 
     <h4>✅ Yapılacaklar</h4>
     <ul class="action-advice">${actions}</ul>
+
+    <h4>⚡ Önerilen Aksiyonlar</h4>
+    <div class="actions-list card-suggested-actions"></div>
+
+    <h4>🛠 Manuel Aksiyon</h4>
+    <div class="manual-action-panel card-manual-panel">
+      <select class="manual-tool-select"></select>
+      <button class="btn btn-secondary manual-run-btn">Çalıştır</button>
+    </div>
 
     <div class="actions-list card-buttons">
       <button class="btn btn-secondary" data-status="goruldu">Gördüm</button>
       <button class="btn btn-secondary" data-status="devam_ediyor">İntikal Edildi</button>
       <button class="btn btn-danger" data-status="tamamlandi">Bitti</button>
-      <button class="btn btn-secondary" data-tool="call_health_team">Sağlık Ekibi Çağır</button>
-      <button class="btn btn-secondary" data-tool="secure_area">Alanı Güvene Al</button>
-      <button class="btn btn-secondary" data-tool="record_incident">Olayı Kaydet</button>
     </div>
 
     <details>
@@ -155,16 +108,22 @@ function renderAssignmentCard(row) {
     </details>
   `;
 
-  // Video: atanan olayın anına konumlanır.
+  // Video: atanan olayın anına konumlanır, biliniyorsa bitişte durur.
   const video = card.querySelector('video');
   if (row.analysis_slug) {
-    video.src = `${API}/library/videos/${encodeURIComponent(row.analysis_slug)}`;
+    video.src = `${API()}/library/videos/${encodeURIComponent(row.analysis_slug)}`;
     const start = Math.max(0, (Number(row.event_seconds) || 0) - PRE_ROLL_SEC);
+    const end = Number(row.event_end_seconds) || 0;
     video.addEventListener('loadedmetadata', () => {
       try {
         video.currentTime = Math.min(start, Math.max(0, video.duration - 0.2));
       } catch { /* seek mümkün değil */ }
     }, { once: true });
+    if (end > (Number(row.event_seconds) || 0)) {
+      video.addEventListener('timeupdate', () => {
+        if (video.currentTime >= end) video.pause();
+      });
+    }
   } else {
     video.replaceWith(Object.assign(document.createElement('div'), {
       className: 'empty-state',
@@ -172,13 +131,36 @@ function renderAssignmentCard(row) {
     }));
   }
 
+  // Önerilen aksiyonlar: assignments tablosu hangi aracın tetiklediğini
+  // taşımaz (bkz. store.py); bu ekibe atama yapan aracı katalogdan
+  // (assigns_role alanı) geriye eşleyerek birincil öneriyi kuruyoruz. Bu araç
+  // zaten tetiklenmiş olabilir (idempotency backend'de zaten var), tekrar
+  // tıklamak zararsızdır.
+  const suggestedBox = card.querySelector('.card-suggested-actions');
+  suggestedBox.innerHTML = '';
+  const suggestedTool = toolCatalog.find((t) => t.enabled && t.assigns_role === row.role);
+  if (suggestedTool) {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-secondary';
+    btn.textContent = suggestedTool.description || suggestedTool.tool_name;
+    btn.addEventListener('click', () => runTool(btn, row, suggestedTool.tool_name));
+    suggestedBox.appendChild(btn);
+  } else {
+    suggestedBox.innerHTML = '<span class="meta">Bu görev için önerilen araç yok.</span>';
+  }
+
+  const manualSelect = card.querySelector('.manual-tool-select');
+  manualSelect.innerHTML = toolCatalog
+    .filter((t) => t.enabled)
+    .map((t) => `<option value="${escapeHtml(t.tool_name)}">${escapeHtml(t.description || t.tool_name)}</option>`)
+    .join('');
+  card.querySelector('.manual-run-btn').addEventListener('click', (e) => {
+    runTool(e.target, row, manualSelect.value, true);
+  });
+
   // Durum butonları
   card.querySelectorAll('button[data-status]').forEach((btn) => {
     btn.addEventListener('click', () => updateStatus(row, btn.dataset.status, btn));
-  });
-  // Araç butonları — sunucuda gerçekten çalışır
-  card.querySelectorAll('button[data-tool]').forEach((btn) => {
-    btn.addEventListener('click', () => runTool(row, btn.dataset.tool, btn));
   });
 
   if (row.status === 'tamamlandi') {
@@ -188,51 +170,49 @@ function renderAssignmentCard(row) {
   return card;
 }
 
+function API() { return '/api/v1'; }
+
 async function updateStatus(row, status, btn) {
-  const original = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = `${original} …`;
   try {
-    const updated = await api(`/assignments/${row.id}`, {
-      method: 'PATCH',
-      body: JSON.stringify({ status }),
+    await runOnce(btn, async () => {
+      const updated = await api(`/assignments/${row.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+      });
+      showToast(`Görev #${updated.id}: ${STATUS_LABEL[updated.status] || updated.status}`);
+      await loadAssignments();
+      return { label: STATUS_LABEL[status] || status };
     });
-    showToast(`Görev #${updated.id}: ${STATUS_LABEL[updated.status] || updated.status}`);
-    await loadAssignments();
   } catch (err) {
     showToast(`Güncellenemedi: ${err.message}`, true);
-    btn.textContent = original;
-    btn.disabled = false;
   }
 }
 
-async function runTool(row, toolName, btn) {
-  const original = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = `${original} …`;
+async function runTool(btn, row, toolName, isManual = false) {
+  if (!toolName) return;
   try {
-    const res = await api('/tools/execute', {
-      method: 'POST',
-      body: JSON.stringify({
-        tool_name: toolName,
-        params: {
-          location: row.camera_id || 'saha',
-          urgency: row.risk || 'Orta',
-          reason: (row.headline || '').slice(0, 100),
-        },
-        camera_id: row.camera_id,
-        analysis_slug: row.analysis_slug,
-        triggered_by: 'field',
-      }),
+    await runOnce(btn, async () => {
+      const res = await api('/tools/execute', {
+        method: 'POST',
+        body: JSON.stringify({
+          tool_name: toolName,
+          params: {
+            location: row.camera_id || 'saha',
+            urgency: row.risk || 'Orta',
+            reason: (row.headline || '').slice(0, 100),
+          },
+          camera_id: row.camera_id,
+          analysis_slug: row.analysis_slug,
+          triggered_by: 'field',
+        }),
+      });
+      showToast(res.already_executed
+        ? `${res.tool_name} zaten çalıştırılmıştı.`
+        : `${res.tool_name}: ${res.mock_result || res.status}`);
+      return { label: isManual ? 'Çalıştırıldı ✓' : `✓ ${toolLabel(toolName)}` };
     });
-    showToast(`${res.tool_name}: ${res.mock_result || res.status}`);
-    btn.classList.add('btn-done');
-    btn.textContent = `✓ ${original}`;
   } catch (err) {
     showToast(`Araç çalıştırılamadı: ${err.message}`, true);
-    btn.textContent = original;
-  } finally {
-    btn.disabled = false;
   }
 }
 
@@ -271,15 +251,23 @@ async function loadAssignments() {
 
 async function loadRoles() {
   try {
-    const roles = await api('/roles');
-    roleLabels = new Map(roles.map((r) => [r.role, r.label]));
-    el.selector.innerHTML = roles
+    const rolesList = await api('/roles');
+    roleLabels = new Map(rolesList.map((r) => [r.role, r.label]));
+    el.selector.innerHTML = rolesList
       .map((r, i) =>
         `<button class="btn ${i === 0 ? 'active' : 'btn-secondary'}" data-role="${escapeHtml(r.role)}">${escapeHtml(r.label)}</button>`)
       .join('');
-    currentRole = roles.length ? roles[0].role : '';
+    currentRole = rolesList.length ? rolesList[0].role : '';
   } catch (err) {
     el.selector.innerHTML = `<span class="empty-state">Roller yüklenemedi: ${escapeHtml(err.message)}</span>`;
+  }
+}
+
+async function loadToolCatalog() {
+  try {
+    toolCatalog = await api('/tools');
+  } catch {
+    toolCatalog = [];
   }
 }
 
@@ -287,7 +275,6 @@ function handleWsMessage(msg) {
   const { stream, data } = msg || {};
   if (!data) return;
 
-  // Yalnızca bu ekibi ilgilendiren atamalar dikkate alınır.
   if (stream === 'assignment.created' && data.role === currentRole) {
     playAlertSound();
     showToast(`Yeni görev: ${data.headline || data.event_type}`);
@@ -314,7 +301,7 @@ function init() {
   el.statusFilter.addEventListener('change', loadAssignments);
   el.refreshBtn.addEventListener('click', loadAssignments);
 
-  loadRoles().then(loadAssignments);
+  Promise.all([loadRoles(), loadToolCatalog()]).then(loadAssignments);
 
   const proto = location.protocol === 'https:' ? 'wss' : 'ws';
   const ws = new WsClient(`${proto}://${location.host}/ws`);

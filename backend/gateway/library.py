@@ -170,6 +170,26 @@ def event_timestamps(slug: str) -> List[dict]:
     return data.get("metadata", {}).get("event_timestamps", []) or []
 
 
+def event_window(event: dict) -> tuple[float, float]:
+    """Bir olayın videoda görünür olacağı ``[baslangic, bitis]`` aralığını döner.
+
+    Karar ajanı ``timestamp_sec`` (mutlak başlangıç saniyesi) ve ``duration``
+    (saniye) üretir (bkz. ``src/output/schema.py``). Model süre üretmediyse
+    (``duration == 0``) aralık sıfır genişlikte döner; saha ekranı bu durumda
+    klip stop mantığını uygulamaz, video sonuna kadar oynar — süre
+    uydurulmaz.
+
+    Args:
+        event: ``metadata.event_timestamps`` içindeki bir olay sözlüğü.
+
+    Returns:
+        ``(baslangic_sec, bitis_sec)`` ikilisi.
+    """
+    start = float(event.get("timestamp_sec") or event.get("seconds") or 0.0)
+    duration = float(event.get("duration") or 0.0)
+    return start, start + max(0.0, duration)
+
+
 def pick_event(analysis: dict, event_index: Optional[int] = None) -> Dict[str, Any]:
     """Atama için ilgili olayı seçer.
 

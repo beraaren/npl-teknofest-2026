@@ -1,0 +1,76 @@
+{
+  "packet_id": "e741e698-be0a-45c2-8725-34310e70e5ec",
+  "video_id": "industrial-worker-makes-one-mistake-on-t-60f439",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Dar bir atölye ortamında, bir işçi büyük bir torna makinesi gibi görünen bir makine başında uzun bir malzeme parçasını el ile ayarlamak ve işlemek için eğilmiş durumdadır. İşçi, makinenin hareketli parçalarına yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor. İş yerinde çeşitli malzemeler yere ve makinenin etrafına dağılmış durumda.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Bir işçi, makinenin başında eğilmiş durumda, uzun bir malzeme parçasını el ile ayarlamakta."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük, torna makinesi benzeri bir makine, hareketli parçaları ile işçinin etrafında."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Uzun metal malzeme parçası, makinenin üzerinde işlenmek üzere yerleştirilmiş."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Sahnenin sol tarafında, malzemelerin tutulduğu bir raf veya yapı görünüyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, makinenin üzerindeki uzun malzeme parçasını el ile ayarlamakta ve işlemektedir.",
+    "İşçi, makinenin hareketli parçalarına çok yakın mesafede çalışmaktadır.",
+    "İşçi, makinenin üst kısmına uzanırken eli tehlikeli bölgeye girmiş gibi görünmektedir."
+  ],
+  "confidence_overall": 0.88,
+  "inference": {
+    "latency_ms": 13894.027199999982,
+    "tokens_generated": 768
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Dar bir atölye ortamında, bir işçi büyük bir torna makinesi gibi görünen bir makine başında uzun bir malzeme parçasını el ile ayarlamak ve işlemek için eğilmiş durumdadır. İşçi, makinenin hareketli parçalarına yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor. İş yerinde çeşitli malzemeler yere ve makinenin etrafına dağılmış durumda.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Bir işçi, makinenin başında eğilmiş durumda, uzun bir malzeme parçasını el ile ayarlamakta.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, torna makinesi benzeri bir makine, hareketli parçaları ile işçinin etrafında.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun metal malzeme parçası, makinenin üzerinde işlenmek üzere yerleştirilmiş.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sahnenin sol tarafında, malzemelerin tutulduğu bir raf veya yapı görünüyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, makinenin üzerindeki uzun malzeme parçasını el ile ayarlamakta ve işlemektedir.\",\n    \"İşçi, makinenin hareketli parçalarına çok yakın mesafede çalışmaktadır.\",\n    \"İşçi, makinenin üst kısmına uzanırken eli tehlikeli bölgeye girmiş gibi görünmektedir.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, hareket halindeki makine parçalarına çok yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor. Bu, makineye temas halinde ciddi yaralanma riski oluşturabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 360.0\n    },\n    {\n      \"description_tr\": \"İşçilerin el ve kolları, makinenin hareketli parçalarına çok yakın durumda. Özellikle 06:00-06:13 arasında işçi, makinenin üst kısmına uzanırken, eli tehlikeli bölgeye girmiş gibi görünüyor.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 360.0\n    },\n    {\n      \"description_tr\": \"İş yerinin dar olması ve malzemelerin yere ve makinenin etrafına dağılması, kayma veya düşme riski oluşturuyor. Özellikle 06:00-06:13 arasında işçi geriye doğru hareket ettiğinde daha belirgin hale geliyor.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 360.0\n    }\n  ],\n  \"confidence_overall\": 0.88\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, hareket halindeki makine parçalarına çok yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor. Bu, makineye temas halinde ciddi yaralanma riski oluşturabilir.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 360.0
+    },
+    {
+      "description_tr": "İşçilerin el ve kolları, makinenin hareketli parçalarına çok yakın durumda. Özellikle 06:00-06:13 arasında işçi, makinenin üst kısmına uzanırken, eli tehlikeli bölgeye girmiş gibi görünüyor.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 360.0
+    },
+    {
+      "description_tr": "İş yerinin dar olması ve malzemelerin yere ve makinenin etrafına dağılması, kayma veya düşme riski oluşturuyor. Özellikle 06:00-06:13 arasında işçi geriye doğru hareket ettiğinde daha belirgin hale geliyor.",
+      "severity": "medium",
+      "confidence": 0.8,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 360.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, hareket halindeki makine parçalarına çok yakın mesafede çalışırken, el ve kolları tehlikeli bölgelerde bulunuyor. Bu, makineye temas halinde ciddi yaralanma riski oluşturabilir.",
+    "İşçilerin el ve kolları, makinenin hareketli parçalarına çok yakın durumda. Özellikle 06:00-06:13 arasında işçi, makinenin üst kısmına uzanırken, eli tehlikeli bölgeye girmiş gibi görünüyor.",
+    "İş yerinin dar olması ve malzemelerin yere ve makinenin etrafına dağılması, kayma veya düşme riski oluşturuyor. Özellikle 06:00-06:13 arasında işçi geriye doğru hareket ettiğinde daha belirgin hale geliyor."
+  ],
+  "computed_confidence": 0.6362,
+  "reasoning_trace": "",
+  "segment_start_sec": 360.0,
+  "segment_end_sec": 372.64,
+  "created_at": "2026-08-27T12:46:59.476015+00:00"
+}

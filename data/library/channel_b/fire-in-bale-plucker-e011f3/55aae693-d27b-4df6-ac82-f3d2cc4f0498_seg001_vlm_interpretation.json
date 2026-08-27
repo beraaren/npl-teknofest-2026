@@ -1,0 +1,59 @@
+{
+  "packet_id": "55aae693-d27b-4df6-ac82-f3d2cc4f0498",
+  "video_id": "fire-in-bale-plucker-e011f3",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Üretim tesisinde, bir taşımada beyaz, pamuk benzeri malzeme üzerinde ve etrafında alevler ve yoğun duman oluşumu devam ediyor. Yangın, makineye ve çevresine yayılıyor ve tesisin büyük bir kısmını kaplayan duman nedeniyle görüş bozuluyor. Yangın kontrol altına alınmamış durumda ve tehlike artıyor.",
+  "detected_entities": [
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Makine, taşımada yer alan ve yangın merkezi olan yapıdır."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Taşımada hareket eden beyaz, pamuk benzeri malzeme."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Alevler ve yoğun duman, yangının yayıldığını ve tesisin görüşünü engellediğini gösteriyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda yer alan metal raf veya yapılar, ancak duman nedeniyle net görülmemektedir."
+    }
+  ],
+  "detected_actions_tr": [
+    "Yangın, makinenin etrafındaki malzemeye yayılıyor.",
+    "Duman, tesisin büyük bir kısmını kaplıyor ve görüşü bozuyor.",
+    "Alevler, taşımada hareket eden yüklerin üzerine sıçrıyor.",
+    "Yangın, zamanla kontrol altına alınamıyor ve yayılıyor."
+  ],
+  "confidence_overall": 0.95,
+  "inference": {
+    "latency_ms": 14334.1322999986,
+    "tokens_generated": 512
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Üretim tesisinde, bir taşımada beyaz, pamuk benzeri malzeme üzerinde ve etrafında alevler ve yoğun duman oluşumu devam ediyor. Yangın, makineye ve çevresine yayılıyor ve tesisin büyük bir kısmını kaplayan duman nedeniyle görüş bozuluyor. Yangın kontrol altına alınmamış durumda ve tehlike artıyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makine, taşımada yer alan ve yangın merkezi olan yapıdır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Taşımada hareket eden beyaz, pamuk benzeri malzeme.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Alevler ve yoğun duman, yangının yayıldığını ve tesisin görüşünü engellediğini gösteriyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda yer alan metal raf veya yapılar, ancak duman nedeniyle net görülmemektedir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Yangın, makinenin etrafındaki malzemeye yayılıyor.\",\n    \"Duman, tesisin büyük bir kısmını kaplıyor ve görüşü bozuyor.\",\n    \"Alevler, taşımada hareket eden yüklerin üzerine sıçrıyor.\",\n    \"Yangın, zamanla kontrol altına alınamıyor ve yayılıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yangın, pamuk benzeri malzemede hızla yayılıyor ve tesisin büyük bir kısmını kaplayan duman, çalışanların güvenliğini ciddi şekilde tehdit ediyor. Acil müdahale gerekiyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 60.0\n    }\n  ],\n  \"confidence_overall\": 0.95\n}",
+  "risk_events": [
+    {
+      "description_tr": "Yangın, pamuk benzeri malzemede hızla yayılıyor ve tesisin büyük bir kısmını kaplayan duman, çalışanların güvenliğini ciddi şekilde tehdit ediyor. Acil müdahale gerekiyor.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Yangın, pamuk benzeri malzemede hızla yayılıyor ve tesisin büyük bir kısmını kaplayan duman, çalışanların güvenliğini ciddi şekilde tehdit ediyor. Acil müdahale gerekiyor."
+  ],
+  "computed_confidence": 0.785,
+  "reasoning_trace": "",
+  "segment_start_sec": 60.0,
+  "segment_end_sec": 120.0,
+  "created_at": "2026-08-27T12:40:04.078733+00:00"
+}

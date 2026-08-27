@@ -1,0 +1,78 @@
+{
+  "packet_id": "9ad16aee-3767-4709-a169-a6a740f60095",
+  "video_id": "fire-accident-in-power-loom-unit-c1c92d",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir tekstil atölyesinde, çalışan bir işçi makineye yakın bir mesafede çalışırken, makinede ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. İşçi yangın sonrası panikle kaçar ve tekrar dönerken yangın söndürme ekipmanı kullanmaya çalışır. Atölye, yoğun dumanla dolup, görüş alanını ciddi şekilde engeller.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İşçi, beyaz tank top ve kısa pantolon giymiş, makineye yakın çalışır ve yangın sonrası hareket eder."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Çalışan dokuma makineleri, yangın sırasında alevler ve duman üretir."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Yangın, makinenin alt kısmından başlar ve duman üretir; alevler net bir şekilde görülür."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Atölyenin sağ tarafında malzeme yığınları ve yapısal unsurlar mevcuttur."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, makinenin başında çalışır.",
+    "Makinede ani bir yangın patlaması meydana gelir.",
+    "İşçi panikle kaçar.",
+    "İşçi yangın söndürme ekipmanı kullanmaya çalışır.",
+    "Atölye yoğun dumanla doldurulur."
+  ],
+  "confidence_overall": 0.92,
+  "inference": {
+    "latency_ms": 22411.140899999737,
+    "tokens_generated": 778
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, çalışan bir işçi makineye yakın bir mesafede çalışırken, makinede ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. İşçi yangın sonrası panikle kaçar ve tekrar dönerken yangın söndürme ekipmanı kullanmaya çalışır. Atölye, yoğun dumanla dolup, görüş alanını ciddi şekilde engeller.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, beyaz tank top ve kısa pantolon giymiş, makineye yakın çalışır ve yangın sonrası hareket eder.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çalışan dokuma makineleri, yangın sırasında alevler ve duman üretir.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yangın, makinenin alt kısmından başlar ve duman üretir; alevler net bir şekilde görülür.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Atölyenin sağ tarafında malzeme yığınları ve yapısal unsurlar mevcuttur.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, makinenin başında çalışır.\",\n    \"Makinede ani bir yangın patlaması meydana gelir.\",\n    \"İşçi panikle kaçar.\",\n    \"İşçi yangın söndürme ekipmanı kullanmaya çalışır.\",\n    \"Atölye yoğun dumanla doldurulur.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinede ani bir yangın patlaması meydana gelir. Alevler ve duman, çalışanın sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder. Yangın, elektriksel arıza veya malzeme yanması sonucu olabilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 50.4\n    },\n    {\n      \"description_tr\": \"Yangın sonrası, işçinin panikle kaçması ve tekrar dönmek için yangın söndürme ekipmanı kullanmaya çalışması, yangın kontrolü açısından gecikmeye neden olabilir. Bu, yangının yayılmasına ve daha büyük bir yangın tehlikesine yol açabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 55.4\n    },\n    {\n      \"description_tr\": \"Atölye, yoğun dumanla dolup, acil durumda kaçış yollarının engellenmesi ve çalışanların solunum sağlığına zarar verme riski oluşur. Duman, görüşü tamamen engeller ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 58.4\n    }\n  ],\n  \"confidence_overall\": 0.92\n}",
+  "risk_events": [
+    {
+      "description_tr": "Makinede ani bir yangın patlaması meydana gelir. Alevler ve duman, çalışanın sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder. Yangın, elektriksel arıza veya malzeme yanması sonucu olabilir.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 98.8
+    },
+    {
+      "description_tr": "Yangın sonrası, işçinin panikle kaçması ve tekrar dönmek için yangın söndürme ekipmanı kullanmaya çalışması, yangın kontrolü açısından gecikmeye neden olabilir. Bu, yangının yayılmasına ve daha büyük bir yangın tehlikesine yol açabilir.",
+      "severity": "high",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 103.8
+    },
+    {
+      "description_tr": "Atölye, yoğun dumanla dolup, acil durumda kaçış yollarının engellenmesi ve çalışanların solunum sağlığına zarar verme riski oluşur. Duman, görüşü tamamen engeller ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 106.8
+    }
+  ],
+  "risk_flags_tr": [
+    "Makinede ani bir yangın patlaması meydana gelir. Alevler ve duman, çalışanın sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder. Yangın, elektriksel arıza veya malzeme yanması sonucu olabilir.",
+    "Yangın sonrası, işçinin panikle kaçması ve tekrar dönmek için yangın söndürme ekipmanı kullanmaya çalışması, yangın kontrolü açısından gecikmeye neden olabilir. Bu, yangının yayılmasına ve daha büyük bir yangın tehlikesine yol açabilir.",
+    "Atölye, yoğun dumanla dolup, acil durumda kaçış yollarının engellenmesi ve çalışanların solunum sağlığına zarar verme riski oluşur. Duman, görüşü tamamen engeller ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır."
+  ],
+  "computed_confidence": 0.7135,
+  "reasoning_trace": "",
+  "segment_start_sec": 48.4,
+  "segment_end_sec": 108.4,
+  "created_at": "2026-08-27T12:37:23.811620+00:00"
+}

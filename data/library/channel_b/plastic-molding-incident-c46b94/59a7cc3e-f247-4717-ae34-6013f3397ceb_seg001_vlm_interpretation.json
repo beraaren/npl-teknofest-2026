@@ -1,0 +1,87 @@
+{
+  "packet_id": "59a7cc3e-f247-4717-ae34-6013f3397ceb",
+  "video_id": "plastic-molding-incident-c46b94",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Sanayi üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makinanın kapısını açıp kapatırken, içine malzeme yerleştirirken ve birbirleriyle koordinasyon sağlarken görülür. Zeminde serbestçe uzanan kablolar ve çeşitli araçlar mevcuttur.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Beş işçi, makinanın etrafında hareket halindedir. Giysileri ve pozisyonları iş yerinde aktif çalışma göstermektedir."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük, kırmızı-kahverengi renkli bir üretim makinesi, işçilerin etrafında yer almaktadır. Kapısı açık durumdadır."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Makinenin üstünde ve yanlarında mavi metal raf ve yapılar mevcuttur. Bu yapılar, üretim hattının bir parçasıdır."
+    },
+    {
+      "label": "table",
+      "confidence_hint": "high",
+      "notes_tr": "Makinenin önünde bir çalışma masası yer alır. Üzerinde çeşitli parçalar ve araçlar bulunmaktadır."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Masada ve makinenin yanında yerleştirilmiş, düzenli delikler içeren büyük bir metal plaka veya yük parçası görülmektedir."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "low",
+      "notes_tr": "Zeminde küçük bir sıvı lekesi veya toz birikintisi olabilir; net bir tanımlama yapılamamıştır."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler, makinanın kapısını açıp kapatırken ve içine malzeme yerleştirirken görülür.",
+    "Bir işçi, makinenin yanında duran masada bir parçayı hazırlamaktadır.",
+    "Diğer işçiler, makinenin etrafında koordinasyon sağlayarak hareket ederken görülür.",
+    "Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine neden olabilir."
+  ],
+  "confidence_overall": 0.8,
+  "inference": {
+    "latency_ms": 12134.44740000159,
+    "tokens_generated": 840
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makinanın kapısını açıp kapatırken, içine malzeme yerleştirirken ve birbirleriyle koordinasyon sağlarken görülür. Zeminde serbestçe uzanan kablolar ve çeşitli araçlar mevcuttur.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Beş işçi, makinanın etrafında hareket halindedir. Giysileri ve pozisyonları iş yerinde aktif çalışma göstermektedir.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, kırmızı-kahverengi renkli bir üretim makinesi, işçilerin etrafında yer almaktadır. Kapısı açık durumdadır.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin üstünde ve yanlarında mavi metal raf ve yapılar mevcuttur. Bu yapılar, üretim hattının bir parçasıdır.\"\n    },\n    {\n      \"label\": \"table\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin önünde bir çalışma masası yer alır. Üzerinde çeşitli parçalar ve araçlar bulunmaktadır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Masada ve makinenin yanında yerleştirilmiş, düzenli delikler içeren büyük bir metal plaka veya yük parçası görülmektedir.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Zeminde küçük bir sıvı lekesi veya toz birikintisi olabilir; net bir tanımlama yapılamamıştır.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, makinanın kapısını açıp kapatırken ve içine malzeme yerleştirirken görülür.\",\n    \"Bir işçi, makinenin yanında duran masada bir parçayı hazırlamaktadır.\",\n    \"Diğer işçiler, makinenin etrafında koordinasyon sağlayarak hareket ederken görülür.\",\n    \"Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine neden olabilir.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, makinanın kapısını açarken ve içine parça yerleştirirken, makine aniden çalışabilir veya hareket edebilir. Bu durumda, işçinin eli veya kolu sıkışabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 60.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinanın açık kapısının önünde yoğun bir şekilde toplanır. Bu, bir acil durumda kaçış yolu engellenmesi riskini artırır.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.75,\n      \"timestamp_sec\": 60.0\n    },\n    {\n      \"description_tr\": \"Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir.\",\n      \"severity\": \"low\",\n      \"confidence\": 0.65,\n      \"timestamp_sec\": 60.0\n    }\n  ],\n  \"confidence_overall\": 0.8\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, makinanın kapısını açarken ve içine parça yerleştirirken, makine aniden çalışabilir veya hareket edebilir. Bu durumda, işçinin eli veya kolu sıkışabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 60.0
+    },
+    {
+      "description_tr": "İşçiler, makinanın açık kapısının önünde yoğun bir şekilde toplanır. Bu, bir acil durumda kaçış yolu engellenmesi riskini artırır.",
+      "severity": "medium",
+      "confidence": 0.75,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 60.0
+    },
+    {
+      "description_tr": "Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir.",
+      "severity": "low",
+      "confidence": 0.65,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 60.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, makinanın kapısını açarken ve içine parça yerleştirirken, makine aniden çalışabilir veya hareket edebilir. Bu durumda, işçinin eli veya kolu sıkışabilir.",
+    "İşçiler, makinanın açık kapısının önünde yoğun bir şekilde toplanır. Bu, bir acil durumda kaçış yolu engellenmesi riskini artırır.",
+    "Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir."
+  ],
+  "computed_confidence": 0.5425,
+  "reasoning_trace": "",
+  "segment_start_sec": 60.0,
+  "segment_end_sec": 62.857142857142854,
+  "created_at": "2026-08-27T08:39:39.178879+00:00"
+}

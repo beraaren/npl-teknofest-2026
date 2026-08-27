@@ -66,20 +66,12 @@
       <label class="meta" for="query-text">Sorgu metni (isteğe bağlı)</label>
       <input id="query-text" class="chat-input" style="padding:0.5rem;" placeholder="Örn: risk azaltma önlemleri..." />
       <button id="suggest-btn" class="btn" style="width:100%;">Seçili olaylar için öneri al</button>
-      <div id="suggestions-list" style="display:flex;flex-direction:column;gap:0.75rem;margin-top:1rem;overflow-y:auto;flex:1;"></div>
+      <!-- Düz metin listesi: başlık, kategori, öncelik, maliyet. Eskiden
+           tıklanabilir post-it kartları + LLM sohbet çekmecesi vardı; bu
+           özellik aşırı ağırlaştırılmıştı ve burada yorum/sohbet bölümüne
+           gerek yok. -->
+      <div id="suggestions-list" class="suggestions-plain"></div>
     </aside>
-  </div>
-
-  <div id="chat-drawer" class="chat-drawer">
-    <div class="modal-header">
-      <h3 id="chat-title">Öneri Sohbeti</h3>
-      <button class="close-drawer" id="chat-close">×</button>
-    </div>
-    <div id="chat-messages" class="chat-messages"></div>
-    <form id="chat-form" class="chat-input">
-      <input id="chat-input" type="text" placeholder="Mesaj yazın..." autocomplete="off" />
-      <button class="btn" type="submit">Gönder</button>
-    </form>
   </div>
 
   <div id="toast" class="toast"></div>

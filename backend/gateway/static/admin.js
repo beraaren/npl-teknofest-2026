@@ -12,17 +12,10 @@ const riskChart = document.getElementById('risk-chart');
 const suggestBtn = document.getElementById('suggest-btn');
 const queryInput = document.getElementById('query-text');
 const suggestionsList = document.getElementById('suggestions-list');
-const chatDrawer = document.getElementById('chat-drawer');
-const chatTitle = document.getElementById('chat-title');
-const chatMessages = document.getElementById('chat-messages');
-const chatForm = document.getElementById('chat-form');
-const chatInput = document.getElementById('chat-input');
-const chatClose = document.getElementById('chat-close');
 const toastEl = document.getElementById('toast');
 
 const recentEvents = [];
 let toastTimer = null;
-let currentSuggestion = null;
 
 function escapeHtml(text) {
   const div = document.createElement('div');
@@ -215,82 +208,31 @@ function formatCost(cost) {
   return `${cost.alt_sinir_tl || 0} - ${cost.ust_sinir_tl || 0} ${cost.para_birimi || 'TL'}`;
 }
 
+/**
+ * Öneriler artık düz metin satırları olarak gösterilir; tıklama, post-it
+ * kartı ve LLM sohbet çekmecesi kaldırıldı (özellik gereksiz yere
+ * ağırlaştırılmıştı ve burada bir yorum/sohbet bölümüne ihtiyaç yok).
+ * "Öncelik" burada önerinin öncelik seviyesidir (data/isg_onerileri.yaml
+ * oncelik alanı) — kamera duvarındaki RİSK seviyesiyle aynı vokabüler
+ * DEĞİLDİR; karışmaması için ayrıca etiketlenir.
+ */
 function renderSuggestions(suggestions) {
   suggestionsList.innerHTML = '';
   if (!suggestions.length) {
     suggestionsList.innerHTML = '<div class="empty-state">Öneri bulunamadı.</div>';
     return;
   }
-  for (const s of suggestions) {
-    const card = document.createElement('div');
-    card.className = 'post-it';
-    card.innerHTML = `
-      <h4>${escapeHtml(s.baslik)}</h4>
-      <p><strong>Kategori:</strong> ${escapeHtml(s.kategori || '-')}</p>
-      <p><strong>Öncelik:</strong> ${escapeHtml(s.oncelik || '-')} | <strong>Skor:</strong> ${escapeHtml(String(s.skor ?? '-'))}</p>
-      <p><strong>Maliyet:</strong> ${escapeHtml(formatCost(s.maliyet_tahmini))}</p>
-    `;
-    card.addEventListener('click', () => openChat(s));
-    suggestionsList.appendChild(card);
-  }
-}
-
-function openChat(suggestion) {
-  currentSuggestion = suggestion;
-  currentSuggestion.messages = currentSuggestion.messages || [];
-  chatTitle.textContent = suggestion.baslik;
-  chatMessages.innerHTML = '';
-  chatDrawer.classList.add('open');
-  renderChatMessages();
-}
-
-function closeChat() {
-  chatDrawer.classList.remove('open');
-  currentSuggestion = null;
-}
-
-function renderChatMessages() {
-  chatMessages.innerHTML = currentSuggestion.messages.map((m) => `
-    <div class="chat-bubble ${m.role === 'user' ? 'user' : ''}">
-      <strong>${m.role === 'user' ? 'Siz' : 'Asistan'}:</strong> ${escapeHtml(m.content)}
+  suggestionsList.innerHTML = suggestions.map((s) => `
+    <div class="suggestion-row">
+      <div class="suggestion-title">${escapeHtml(s.baslik)}</div>
+      <div class="meta">
+        <strong>Kategori:</strong> ${escapeHtml(s.kategori || '-')}
+        · <strong>Öncelik:</strong> ${escapeHtml(s.oncelik || '-')}
+        · <strong>Skor:</strong> ${escapeHtml(String(s.skor ?? '-'))}
+      </div>
+      <div class="meta"><strong>Maliyet:</strong> ${escapeHtml(formatCost(s.maliyet_tahmini))}</div>
     </div>
   `).join('');
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-async function sendChatMessage(content) {
-  if (!currentSuggestion) return;
-  currentSuggestion.messages.push({ role: 'user', content });
-  renderChatMessages();
-  chatInput.value = '';
-
-  try {
-    const res = await fetch('/api/v1/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ suggestion_id: currentSuggestion.oneri_id, messages: currentSuggestion.messages }),
-    });
-    if (!res.ok) {
-      // Sunucu hatayı `detail` alanında açıklıyor; durum metni yerine onu göster.
-      let detail = res.statusText;
-      try {
-        const body = await res.json();
-        detail = body.detail || detail;
-      } catch { /* gövde JSON değil */ }
-      throw new Error(detail);
-    }
-    const data = await res.json();
-    // DİKKAT: uç nokta yanıtı `assistant` alanında döndürür. Burada `response`
-    // okunuyordu ve bu yüzden başarılı yanıtlarda bile "Yanıt yok." yazıyordu.
-    currentSuggestion.messages.push({
-      role: 'assistant',
-      content: data.assistant || 'Yanıt boş döndü.',
-    });
-    renderChatMessages();
-  } catch (err) {
-    currentSuggestion.messages.push({ role: 'assistant', content: 'Hata: ' + err.message });
-    renderChatMessages();
-  }
 }
 
 function handleWsMessage(msg) {
@@ -318,20 +260,6 @@ function init() {
 
   suggestBtn.addEventListener('click', fetchSuggestions);
   window.addEventListener('resize', () => loadMetrics().then(() => {}));
-
-  chatForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const text = chatInput.value.trim();
-    if (!text) return;
-    sendChatMessage(text);
-  });
-
-  chatClose.addEventListener('click', closeChat);
-  document.addEventListener('click', (e) => {
-    if (chatDrawer.classList.contains('open') && !chatDrawer.contains(e.target) && e.target !== suggestBtn) {
-      // keep drawer open on outside click for usability
-    }
-  });
 }
 
 init();

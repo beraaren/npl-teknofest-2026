@@ -1,0 +1,74 @@
+{
+  "packet_id": "3721c0e8-8f7b-439f-b66c-7c3cccd5b06a",
+  "video_id": "hpdc-die-casting-machine-accident-hydrau-2e9058",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Sanayi bir üretim alanında, bir makineye yakın çalışan bir kişiye ait bir patlama veya yangın olayı meydana gelir. Olay anında duman ve alevler görülür ve çalışanlar panikle kaçar. Daha sonra diğer çalışanlar olay yerine koşarak müdahale ederler.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Birden fazla işçi, bazıları mavi, bazıları koyu renkli kıyafetler giymiş, bazıları kask takmış."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük boyutlu, metalik yapıda üretim makinesi, yan tarafında kontrol paneli var."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "00:09'dan itibaren makinenin sağ tarafında alev ve yoğun duman oluşumu gözlemlenir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Makinenin etrafında ve arka planda metal raf ve yapılar mevcut."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Ön planda plastikle kaplı ve ahşap paletler üzerindeki yükler."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi makineye yakın çalışırken",
+    "Makinede ani alev ve duman çıkışı",
+    "İşçiler panikle kaçış",
+    "Diğer çalışanlar olay yerine koşarak müdahale etmeye çalışır",
+    "Bazı çalışanlar yangın söndürme ekipmanı kullanmaya çalışır"
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 11326.308899999276,
+    "tokens_generated": 616
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi bir üretim alanında, bir makineye yakın çalışan bir kişiye ait bir patlama veya yangın olayı meydana gelir. Olay anında duman ve alevler görülür ve çalışanlar panikle kaçar. Daha sonra diğer çalışanlar olay yerine koşarak müdahale ederler.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Birden fazla işçi, bazıları mavi, bazıları koyu renkli kıyafetler giymiş, bazıları kask takmış.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük boyutlu, metalik yapıda üretim makinesi, yan tarafında kontrol paneli var.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:09'dan itibaren makinenin sağ tarafında alev ve yoğun duman oluşumu gözlemlenir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinenin etrafında ve arka planda metal raf ve yapılar mevcut.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Ön planda plastikle kaplı ve ahşap paletler üzerindeki yükler.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi makineye yakın çalışırken\",\n    \"Makinede ani alev ve duman çıkışı\",\n    \"İşçiler panikle kaçış\",\n    \"Diğer çalışanlar olay yerine koşarak müdahale etmeye çalışır\",\n    \"Bazı çalışanlar yangın söndürme ekipmanı kullanmaya çalışır\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinede ani alev ve duman çıkışı, çalışanların hemen kaçmasıyla birlikte ciddi yangın tehlikesi ve yanma riski ortaya çıkar.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 9.0\n    },\n    {\n      \"description_tr\": \"Olay sonrası çalışanların panikle kaçışı ve müdahale ederken yeterli koruma ekipmanı kullanmaması, ikinci bir kazaya yol açma riski oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 10.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Makinede ani alev ve duman çıkışı, çalışanların hemen kaçmasıyla birlikte ciddi yangın tehlikesi ve yanma riski ortaya çıkar.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 9.0
+    },
+    {
+      "description_tr": "Olay sonrası çalışanların panikle kaçışı ve müdahale ederken yeterli koruma ekipmanı kullanmaması, ikinci bir kazaya yol açma riski oluşturur.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 10.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Makinede ani alev ve duman çıkışı, çalışanların hemen kaçmasıyla birlikte ciddi yangın tehlikesi ve yanma riski ortaya çıkar.",
+    "Olay sonrası çalışanların panikle kaçışı ve müdahale ederken yeterli koruma ekipmanı kullanmaması, ikinci bir kazaya yol açma riski oluşturur."
+  ],
+  "computed_confidence": 0.7131,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 35.43333333333333,
+  "created_at": "2026-08-27T12:41:09.094019+00:00"
+}

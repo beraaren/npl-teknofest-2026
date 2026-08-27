@@ -113,14 +113,20 @@ def _get_broadcast_fn(request: Request):
     return request.app.state.broadcast_fn
 
 
-@router.post("/assignments", status_code=201)
-async def create_assignment_endpoint(body: AssignmentCreate, request: Request):
+@router.post("/assignments")
+async def create_assignment_endpoint(body: AssignmentCreate, request: Request, response: Response):
     """Bir olayı belirli bir ekibe atar ve o ekibin ekranına düşürür.
 
     Gösterilecek metinler (ajan özeti, risk, olay anı, önerilen aksiyonlar)
     **sunucuda** analiz dosyasından okunur. İstemci bunları göndermez; böylece
     saha ekibinin gördüğü özet, süpervizörün gördüğüyle aynı kaynaktan gelir ve
     ekranlar arasında sapma olmaz.
+
+    Aynı ``(analysis_slug, role, event_index)`` için kapanmamış bir görev
+    zaten varsa yeni satır oluşturulmaz; mevcut görev ``duplicate: true`` ile
+    200 döner. Bu, aynı butona art arda tıklamanın veya bir aracın hem
+    tetiklediği hem de manuel tekrarlanmasının saha ekranında görev
+    çoğaltmasını önler.
 
     Raises:
         HTTPException: Analiz bulunamazsa 404.
@@ -140,8 +146,9 @@ async def create_assignment_endpoint(body: AssignmentCreate, request: Request):
         raise HTTPException(status_code=400, detail="Rol belirtilmedi.")
 
     event = library.pick_event(analysis, body.event_index)
+    _, event_end = library.event_window(event)
 
-    row = store.create_assignment(
+    row, created = store.get_or_create_assignment(
         analysis_slug=body.analysis_slug,
         role=role,
         camera_id=body.camera_id,
@@ -152,12 +159,20 @@ async def create_assignment_endpoint(body: AssignmentCreate, request: Request):
         reasoning=str(analysis.get("reasoning") or ""),
         event_type=str(event.get("event_type") or ""),
         event_seconds=float(event.get("seconds") or 0.0),
+        event_end_seconds=event_end,
         event_timestamp=str(event.get("timestamp") or ""),
         actions=list(analysis.get("actions") or []),
         video_file=str(analysis.get("video_file") or ""),
         note=body.note,
         assigned_by=body.assigned_by,
     )
+    response.status_code = 201 if created else 200
+    row = {**row, "duplicate": not created}
+    if not created:
+        logger.info(
+            f"Atama zaten açık, tekrar oluşturulmadı: #{row['id']} {role} <- {body.analysis_slug}"
+        )
+        return row
 
     broadcast_fn = _get_broadcast_fn(request)
     await broadcast_fn({"stream": "assignment.created", "data": row})
@@ -244,6 +259,10 @@ async def list_tools():
             "description": tool.get("description", ""),
             "params": tool.get("params", {}),
             "enabled": tool_registry.is_enabled(name),
+            # Bu araç çalıştırıldığında bir ekibe görev ataması da oluşturur
+            # (bkz. mock_tools.yaml). Arayüz bunu "Önerilen Aksiyon" olarak
+            # gösterirken hangi ekibin göreve düşeceğini belirtebilir.
+            "assigns_role": tool.get("assigns_role", ""),
         }
         for name, tool in (tool_registry.tools or {}).items()
     ]
@@ -259,11 +278,24 @@ async def execute_tool(body: ToolExecuteRequest, request: Request):
     sonucu ``events`` tablosuna kaydeder ve ``tool.executed`` akışına yayınlar
     ki süpervizör ve saha ekranları aynı sonucu görsün.
 
+    İki idempotency kuralı uygulanır:
+
+    1. Aynı ``job_id`` için aynı araç zaten çalıştırılmışsa tekrar
+       çalıştırılmaz; önceki sonuç ``already_executed: true`` ile döner.
+       Bu, çift tıklamanın veya modalin WS mesajında yeniden render
+       edilmesinin aynı aracı ikinci kez tetiklemesini önler.
+    2. Araç ``mock_tools.yaml``'da bir ``assigns_role`` taşıyorsa (örn.
+       ``call_health_team`` -> ``saglik``), çalıştırma o role gerçek bir
+       görev ataması oluşturur (veya varsa mevcut açık görevi döner).
+       Böylece "Sağlık Ekibi Çağır" butonu artık yalnızca bir mock günlük
+       satırı değil, sağlık ekibinin ekranına düşen bir göreve dönüşür.
+
     Raises:
         HTTPException: Araç katalogda yoksa 404, devre dışıysa 409.
     """
     catalog = tool_registry.tools or {}
-    if body.tool_name not in catalog:
+    tool_def = catalog.get(body.tool_name)
+    if tool_def is None:
         raise HTTPException(
             status_code=404,
             detail=f"Araç katalogda yok: {body.tool_name}. "
@@ -272,10 +304,17 @@ async def execute_tool(body: ToolExecuteRequest, request: Request):
     if not tool_registry.is_enabled(body.tool_name):
         raise HTTPException(status_code=409, detail=f"Araç devre dışı: {body.tool_name}")
 
+    job_id = body.job_id or body.camera_id or "manuel"
+
+    already = store.find_recent_tool_execution(job_id, body.tool_name) if job_id != "manuel" else None
+    if already is not None:
+        logger.info(f"Araç zaten çalıştırılmış, tekrar edilmedi: {body.tool_name} (job_id={job_id})")
+        return {**already, "already_executed": True}
+
     result = tool_registry.execute(body.tool_name, body.params)
 
     payload = {
-        "job_id": body.job_id or body.camera_id or "manuel",
+        "job_id": job_id,
         "camera_id": body.camera_id,
         "analysis_slug": body.analysis_slug,
         "tool_name": body.tool_name,
@@ -284,12 +323,45 @@ async def execute_tool(body: ToolExecuteRequest, request: Request):
         "mock_result": result.get("mock_result", result.get("message", "")),
         "triggered_by": body.triggered_by,
         "created_at": datetime.now().isoformat(),
+        "already_executed": False,
     }
 
-    if payload["job_id"]:
+    broadcast_fn = _get_broadcast_fn(request)
+
+    # Araç bir ekibe atama yapıyorsa (örn. sağlık ekibini çağır), gerçek bir
+    # görev oluştur; bu ekranlar arasında ayrık iki mekanizma yerine tek bir
+    # tutarlı akış sağlar.
+    assigns_role = str(tool_def.get("assigns_role") or "")
+    if assigns_role and body.analysis_slug:
+        analysis = library.get(body.analysis_slug)
+        if analysis is not None:
+            role = roles.normalize_role(assigns_role)
+            event = library.pick_event(analysis, None)
+            _, event_end = library.event_window(event)
+            assignment, created = store.get_or_create_assignment(
+                analysis_slug=body.analysis_slug,
+                role=role,
+                camera_id=body.camera_id,
+                risk=str(analysis.get("risk") or ""),
+                headline=str(analysis.get("headline") or ""),
+                summary=str(analysis.get("summary") or ""),
+                reasoning=str(analysis.get("reasoning") or ""),
+                event_type=str(event.get("event_type") or ""),
+                event_seconds=float(event.get("seconds") or 0.0),
+                event_end_seconds=event_end,
+                event_timestamp=str(event.get("timestamp") or ""),
+                actions=list(analysis.get("actions") or []),
+                video_file=str(analysis.get("video_file") or ""),
+                note=f"Otomatik: {body.tool_name} aracıyla çağrıldı.",
+                assigned_by=body.triggered_by,
+            )
+            payload["assignment"] = assignment
+            if created:
+                await broadcast_fn({"stream": "assignment.created", "data": assignment})
+
+    if payload["job_id"] and payload["job_id"] != "manuel":
         store.save_event(payload["job_id"], "tool.executed", payload)
 
-    broadcast_fn = _get_broadcast_fn(request)
     await broadcast_fn({"stream": "tool.executed", "data": payload})
 
     logger.info(

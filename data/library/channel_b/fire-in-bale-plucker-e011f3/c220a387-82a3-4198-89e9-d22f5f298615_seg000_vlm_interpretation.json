@@ -1,0 +1,59 @@
+{
+  "packet_id": "c220a387-82a3-4198-89e9-d22f5f298615",
+  "video_id": "fire-in-bale-plucker-e011f3",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir üretim tesisinde, iki uzun taşımada beyaz, pamuk benzeri bir malzeme taşınıyor. Üzerinde bir boru sistemi bulunan bir makine, bu malzemeyi işlemek için taşımaların üzerinde hareket ediyor. 00:50'den itibaren makinenin içinde ve etrafında alevler ve duman oluşmaya başlıyor.",
+  "detected_entities": [
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Makine, taşımaların üzerinde hareket eden ve bir boru sistemi ile donatılmış bir yapıya sahip."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Taşımalar üzerinde beyaz, pamuk benzeri bir malzeme bulunuyor."
+    },
+    {
+      "label": "conveyor",
+      "confidence_hint": "high",
+      "notes_tr": "İki uzun taşımada malzeme taşınıyor."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "00:50'den itibaren makinenin içinde ve etrafında alevler ve duman gözlemleniyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "Makine, taşımaların üzerinde ilerliyor.",
+    "Makine, taşımada bulunan malzemeyi işliyor.",
+    "00:50'den itibaren makinede alevler ve duman oluşuyor.",
+    "Alevler, makinenin etrafındaki malzemeye yayılıyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 10515.381799999886,
+    "tokens_generated": 522
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir üretim tesisinde, iki uzun taşımada beyaz, pamuk benzeri bir malzeme taşınıyor. Üzerinde bir boru sistemi bulunan bir makine, bu malzemeyi işlemek için taşımaların üzerinde hareket ediyor. 00:50'den itibaren makinenin içinde ve etrafında alevler ve duman oluşmaya başlıyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makine, taşımaların üzerinde hareket eden ve bir boru sistemi ile donatılmış bir yapıya sahip.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Taşımalar üzerinde beyaz, pamuk benzeri bir malzeme bulunuyor.\"\n    },\n    {\n      \"label\": \"conveyor\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki uzun taşımada malzeme taşınıyor.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:50'den itibaren makinenin içinde ve etrafında alevler ve duman gözlemleniyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Makine, taşımaların üzerinde ilerliyor.\",\n    \"Makine, taşımada bulunan malzemeyi işliyor.\",\n    \"00:50'den itibaren makinede alevler ve duman oluşuyor.\",\n    \"Alevler, makinenin etrafındaki malzemeye yayılıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinede ani bir yangın meydana geldi. Alevler, makinenin içinde ve etrafındaki malzemeye yayılıyor. Bu, yangın yayılmasına, duman oluşumuna ve potansiyel bir patlamaya yol açabilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 50.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Makinede ani bir yangın meydana geldi. Alevler, makinenin içinde ve etrafındaki malzemeye yayılıyor. Bu, yangın yayılmasına, duman oluşumuna ve potansiyel bir patlamaya yol açabilir.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 50.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Makinede ani bir yangın meydana geldi. Alevler, makinenin içinde ve etrafındaki malzemeye yayılıyor. Bu, yangın yayılmasına, duman oluşumuna ve potansiyel bir patlamaya yol açabilir."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 60.0,
+  "created_at": "2026-08-27T08:23:33.632622+00:00"
+}

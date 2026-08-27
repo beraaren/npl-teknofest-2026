@@ -1,0 +1,92 @@
+{
+  "packet_id": "11aa0f18-5d73-4f1c-aee3-4ebecea0dd5a",
+  "video_id": "fire-accident-in-power-loom-unit-c1c92d",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir tekstil atölyesinde, yangın sonrası yoğun dumanlı bir ortamda çalışan bir işçi, kırmızı bir yangın söndürücü ile makineye müdahale eder. İşçi, yangın söndürücüyü kullanırken duman nedeniyle görüşü kısıtlı olup, daha sonra başka bir kişi de sahneye girer ve durumu kontrol etmeye çalışır.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İşçi, beyaz gömlek ve kısa pantolon giymiş, yangın söndürücü ile müdahale eder. Daha sonra başka bir kişi, koyu renkli kıyafetlerle sahneye girer."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Dokuma makinesi, yangın sonrası duman içinde görünür. Makinenin alt kısmında küçük alevler ve duman devam eder."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Yangın sonrası yoğun duman, sahnenin büyük kısmını kaplar. Makinenin alt kısmında hâlâ küçük alevler ve duman görülmektedir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Atölyenin sağ tarafında malzeme yığınları ve metal yapılar yer alır. Bu yapılar, acil durumda kaçış yollarını engelleyebilir."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Makineye yakın yerde büyük bir malzeme yığını (muhtemelen kumaş veya ham madde) bulunur. Yangın sırasında bu malzeme yanabilir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, kırmızı bir yangın söndürücü ile yangın çıkan makineye doğru ilerler.",
+    "İşçi, yangın söndürücüyü makineye doğrudan kullanmaya çalışır.",
+    "Yangın söndürücü kullanıldıktan sonra, işçi geri çekilir ve dumanlı ortamda durumu değerlendirir.",
+    "İkinci bir kişi, sahneye girer ve yangın bölgesinde durumu kontrol etmeye çalışır.",
+    "Duman, sahnenin büyük kısmını kaplar ve görüşü ciddi şekilde engeller."
+  ],
+  "confidence_overall": 0.87,
+  "inference": {
+    "latency_ms": 27433.73799999972,
+    "tokens_generated": 1051
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, yangın sonrası yoğun dumanlı bir ortamda çalışan bir işçi, kırmızı bir yangın söndürücü ile makineye müdahale eder. İşçi, yangın söndürücüyü kullanırken duman nedeniyle görüşü kısıtlı olup, daha sonra başka bir kişi de sahneye girer ve durumu kontrol etmeye çalışır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, beyaz gömlek ve kısa pantolon giymiş, yangın söndürücü ile müdahale eder. Daha sonra başka bir kişi, koyu renkli kıyafetlerle sahneye girer.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Dokuma makinesi, yangın sonrası duman içinde görünür. Makinenin alt kısmında küçük alevler ve duman devam eder.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yangın sonrası yoğun duman, sahnenin büyük kısmını kaplar. Makinenin alt kısmında hâlâ küçük alevler ve duman görülmektedir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Atölyenin sağ tarafında malzeme yığınları ve metal yapılar yer alır. Bu yapılar, acil durumda kaçış yollarını engelleyebilir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makineye yakın yerde büyük bir malzeme yığını (muhtemelen kumaş veya ham madde) bulunur. Yangın sırasında bu malzeme yanabilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, kırmızı bir yangın söndürücü ile yangın çıkan makineye doğru ilerler.\",\n    \"İşçi, yangın söndürücüyü makineye doğrudan kullanmaya çalışır.\",\n    \"Yangın söndürücü kullanıldıktan sonra, işçi geri çekilir ve dumanlı ortamda durumu değerlendirir.\",\n    \"İkinci bir kişi, sahneye girer ve yangın bölgesinde durumu kontrol etmeye çalışır.\",\n    \"Duman, sahnenin büyük kısmını kaplar ve görüşü ciddi şekilde engeller.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yangın söndürücü kullanılırken, duman nedeniyle görüşü tamamen engellenmiş olup, işçi yangın söndürme ekipmanını doğru şekilde kullanamayabilir. Bu, yangının kontrol edilmesinde gecikmeye ve daha büyük bir yangın tehlikesine yol açabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 110.4\n    },\n    {\n      \"description_tr\": \"Atölye, yoğun dumanla dolup, çalışanların solunum sağlığına zarar verme riski oluşur. Duman, acil durumda kaçış yollarının engellenmesi ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 112.0\n    },\n    {\n      \"description_tr\": \"İkinci bir kişi, dumanlı ortamda sahneye girerken, yangın bölgesindeki sıcaklık ve duman nedeniyle ciddi yaralanma veya solunum problemleri riski taşır. Bu, acil durumda uygun koruyucu ekipman olmaması nedeniyle daha da tehlikeli hâle gelir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 118.0\n    },\n    {\n      \"description_tr\": \"Makinenin hâlâ küçük alevler ve duman çıkarması, yangının tamamen söndürülmemiş olduğunu gösterir. Bu, yangının yeniden patlaması veya yayılması riskini artırır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.92,\n      \"timestamp_sec\": 125.0\n    }\n  ],\n  \"confidence_overall\": 0.87\n}",
+  "risk_events": [
+    {
+      "description_tr": "Yangın söndürücü kullanılırken, duman nedeniyle görüşü tamamen engellenmiş olup, işçi yangın söndürme ekipmanını doğru şekilde kullanamayabilir. Bu, yangının kontrol edilmesinde gecikmeye ve daha büyük bir yangın tehlikesine yol açabilir.",
+      "severity": "high",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 110.4
+    },
+    {
+      "description_tr": "Atölye, yoğun dumanla dolup, çalışanların solunum sağlığına zarar verme riski oluşur. Duman, acil durumda kaçış yollarının engellenmesi ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 112.0
+    },
+    {
+      "description_tr": "İkinci bir kişi, dumanlı ortamda sahneye girerken, yangın bölgesindeki sıcaklık ve duman nedeniyle ciddi yaralanma veya solunum problemleri riski taşır. Bu, acil durumda uygun koruyucu ekipman olmaması nedeniyle daha da tehlikeli hâle gelir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 118.0
+    },
+    {
+      "description_tr": "Makinenin hâlâ küçük alevler ve duman çıkarması, yangının tamamen söndürülmemiş olduğunu gösterir. Bu, yangının yeniden patlaması veya yayılması riskini artırır.",
+      "severity": "critical",
+      "confidence": 0.92,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 125.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Yangın söndürücü kullanılırken, duman nedeniyle görüşü tamamen engellenmiş olup, işçi yangın söndürme ekipmanını doğru şekilde kullanamayabilir. Bu, yangının kontrol edilmesinde gecikmeye ve daha büyük bir yangın tehlikesine yol açabilir.",
+    "Atölye, yoğun dumanla dolup, çalışanların solunum sağlığına zarar verme riski oluşur. Duman, acil durumda kaçış yollarının engellenmesi ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır.",
+    "İkinci bir kişi, dumanlı ortamda sahneye girerken, yangın bölgesindeki sıcaklık ve duman nedeniyle ciddi yaralanma veya solunum problemleri riski taşır. Bu, acil durumda uygun koruyucu ekipman olmaması nedeniyle daha da tehlikeli hâle gelir.",
+    "Makinenin hâlâ küçük alevler ve duman çıkarması, yangının tamamen söndürülmemiş olduğunu gösterir. Bu, yangının yeniden patlaması veya yayılması riskini artırır."
+  ],
+  "computed_confidence": 0.6769,
+  "reasoning_trace": "",
+  "segment_start_sec": 108.4,
+  "segment_end_sec": 144.96,
+  "created_at": "2026-08-27T12:37:51.257528+00:00"
+}

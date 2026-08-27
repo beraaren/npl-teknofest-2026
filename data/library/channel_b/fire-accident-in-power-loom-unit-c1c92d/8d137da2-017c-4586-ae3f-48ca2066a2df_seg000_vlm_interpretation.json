@@ -1,0 +1,73 @@
+{
+  "packet_id": "8d137da2-017c-4586-ae3f-48ca2066a2df",
+  "video_id": "fire-accident-in-power-loom-unit-c1c92d",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir tekstil atölyesinde, çok sayıda dokuma makinesi sıralanmış durumda. Makineler çalışır halde olup, bir kişi 00:30'dan itibaren atölyenin derinliklerinden yaklaşarak bir makineye doğru hareket eder ve 00:40'dan itibaren makinenin başında durarak işlem yapmaya başlar. Ortamda toz ve kablolar göze çarpar.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Beyaz gömlek ve kısa etek giymiş, 00:30'dan itibaren görünür, makineye yaklaşır ve çalışır."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Çok sayıda dokuma makinesi, yeşil renkli, hareket halinde, büyük rulolarla donatılmış."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Makinelerde büyük beyaz ve koyu renkli rulolar, dokuma malzemesi olarak görünür."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Duvarlara ve makinelere bağlı kablolar ve yapısal destekler, düzenli olmayan bir şekilde yerleştirilmiş."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "low",
+      "notes_tr": "Zeminde hafif bir toz veya kirlilik izlenimi, net bir sıvı veya madde tespit edilemedi."
+    }
+  ],
+  "detected_actions_tr": [
+    "Makineler sürekli hareket halindedir.",
+    "Bir kişi atölyenin derinliklerinden yaklaşır.",
+    "Kişi bir dokuma makinesinin başına gelir.",
+    "Kişi makine üzerinde işlem yapmaya başlar (ayarlar yapar, kontrol eder)."
+  ],
+  "confidence_overall": 0.85,
+  "inference": {
+    "latency_ms": 16855.678300000363,
+    "tokens_generated": 684
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, çok sayıda dokuma makinesi sıralanmış durumda. Makineler çalışır halde olup, bir kişi 00:30'dan itibaren atölyenin derinliklerinden yaklaşarak bir makineye doğru hareket eder ve 00:40'dan itibaren makinenin başında durarak işlem yapmaya başlar. Ortamda toz ve kablolar göze çarpar.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Beyaz gömlek ve kısa etek giymiş, 00:30'dan itibaren görünür, makineye yaklaşır ve çalışır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çok sayıda dokuma makinesi, yeşil renkli, hareket halinde, büyük rulolarla donatılmış.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinelerde büyük beyaz ve koyu renkli rulolar, dokuma malzemesi olarak görünür.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Duvarlara ve makinelere bağlı kablolar ve yapısal destekler, düzenli olmayan bir şekilde yerleştirilmiş.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Zeminde hafif bir toz veya kirlilik izlenimi, net bir sıvı veya madde tespit edilemedi.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Makineler sürekli hareket halindedir.\",\n    \"Bir kişi atölyenin derinliklerinden yaklaşır.\",\n    \"Kişi bir dokuma makinesinin başına gelir.\",\n    \"Kişi makine üzerinde işlem yapmaya başlar (ayarlar yapar, kontrol eder).\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, hareket halindeki dokuma makinesinin yanında çalışırken, elini veya kıyafetini makine parçalarına yaklaştırmaktadır. Bu, makineye takılma ve ciddi yaralanma riski oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 42.0\n    },\n    {\n      \"description_tr\": \"Atölye zemininde toz ve kablolar mevcuttur. Bu, kayma riski ve elektriksel tehlike oluşturabilir.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.75,\n      \"timestamp_sec\": 0.0\n    }\n  ],\n  \"confidence_overall\": 0.85\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, hareket halindeki dokuma makinesinin yanında çalışırken, elini veya kıyafetini makine parçalarına yaklaştırmaktadır. Bu, makineye takılma ve ciddi yaralanma riski oluşturur.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 42.0
+    },
+    {
+      "description_tr": "Atölye zemininde toz ve kablolar mevcuttur. Bu, kayma riski ve elektriksel tehlike oluşturabilir.",
+      "severity": "medium",
+      "confidence": 0.75,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 0.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, hareket halindeki dokuma makinesinin yanında çalışırken, elini veya kıyafetini makine parçalarına yaklaştırmaktadır. Bu, makineye takılma ve ciddi yaralanma riski oluşturur.",
+    "Atölye zemininde toz ve kablolar mevcuttur. Bu, kayma riski ve elektriksel tehlike oluşturabilir."
+  ],
+  "computed_confidence": 0.6019,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 48.4,
+  "created_at": "2026-08-27T08:19:49.393599+00:00"
+}

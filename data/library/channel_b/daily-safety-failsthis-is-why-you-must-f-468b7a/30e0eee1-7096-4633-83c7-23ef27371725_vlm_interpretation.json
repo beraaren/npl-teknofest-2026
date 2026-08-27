@@ -1,0 +1,64 @@
+{
+  "packet_id": "30e0eee1-7096-4633-83c7-23ef27371725",
+  "video_id": "daily-safety-failsthis-is-why-you-must-f-468b7a",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir metal işleme fabrikasında, çalışanlar büyük metal levhaların arasında hareket ediyor. Arka planda bir kumanda ile çalışan sarı renkli bir taşımak makinesi (veya kargo taşıyıcı) yer alıyor. 00:12'den itibaren, bir metal levha yığınının çökmesi sonucu toz bulutu oluşuyor ve çalışanlar bu olaya tepki gösteriyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Birden fazla işçi, bazıları kask takıyor, bazıları hareket halinde."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Sarı renkli, uzun, kumandalı bir taşıma makinesi (muhtemelen bir kargo taşıyıcı veya kumandalı platform)."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Yığın halindeki büyük metal levhalar, bazıları ahşap destekler üzerinde."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "00:12'den itibaren toz bulutu oluşuyor, muhtemelen metal levhaların çökmesinden kaynaklanıyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Metal levhaların yığıldığı ahşap destekler ve fabrika içi yapı elemanları."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçilerin metal levhalar arasında yürümesi",
+    "Sarı makinenin hareket etmemesi (durağan durumda)",
+    "Bir metal levha yığınının çökmesi ve toz bulutu oluşumu",
+    "İşçilerin çökme sonrası duraklaması ve çevreye bakması"
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 11177.979399999458,
+    "tokens_generated": 597
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir metal işleme fabrikasında, çalışanlar büyük metal levhaların arasında hareket ediyor. Arka planda bir kumanda ile çalışan sarı renkli bir taşımak makinesi (veya kargo taşıyıcı) yer alıyor. 00:12'den itibaren, bir metal levha yığınının çökmesi sonucu toz bulutu oluşuyor ve çalışanlar bu olaya tepki gösteriyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Birden fazla işçi, bazıları kask takıyor, bazıları hareket halinde.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli, uzun, kumandalı bir taşıma makinesi (muhtemelen bir kargo taşıyıcı veya kumandalı platform).\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yığın halindeki büyük metal levhalar, bazıları ahşap destekler üzerinde.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:12'den itibaren toz bulutu oluşuyor, muhtemelen metal levhaların çökmesinden kaynaklanıyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Metal levhaların yığıldığı ahşap destekler ve fabrika içi yapı elemanları.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçilerin metal levhalar arasında yürümesi\",\n    \"Sarı makinenin hareket etmemesi (durağan durumda)\",\n    \"Bir metal levha yığınının çökmesi ve toz bulutu oluşumu\",\n    \"İşçilerin çökme sonrası duraklaması ve çevreye bakması\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"00:12'de bir metal levha yığını çökerek toz bulutu oluşturdu. Bu, çalışanların solunum sistemlerine zarar verebilir ve yaralanma riski doğurabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 12.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "00:12'de bir metal levha yığını çökerek toz bulutu oluşturdu. Bu, çalışanların solunum sistemlerine zarar verebilir ve yaralanma riski doğurabilir.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 12.0
+    }
+  ],
+  "risk_flags_tr": [
+    "00:12'de bir metal levha yığını çökerek toz bulutu oluşturdu. Bu, çalışanların solunum sistemlerine zarar verebilir ve yaralanma riski doğurabilir."
+  ],
+  "computed_confidence": 0.6775,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 21.77175,
+  "created_at": "2026-08-27T12:32:39.745056+00:00"
+}

@@ -1,0 +1,58 @@
+{
+  "packet_id": "cbdec5f2-bd1c-43ee-8adf-86d7b4b79175",
+  "video_id": "fire-in-bale-plucker-e011f3",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir üretim tesisinde, uzun bir taşımada beyaz, pamuk benzeri bir malzeme taşınıyor. Üzerinde bir boru sistemi bulunan bir makine, bu malzemeyi işlemek için hareket ediyor. 50. saniyeden itibaren makinenin içinde ve etrafında alevler ve duman oluşmaya başlıyor.",
+  "detected_entities": [
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Makine, taşımaya paralel olarak yerleştirilmiş, boru ve kasa şeklinde yapılar içeren bir yapıya sahip."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Taşıyıcı üzerinde uzun, beyaz, pamuk benzeri malzeme yığıntısı."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda, üretim için kullanılan metal raf ve yapılar görülmektedir."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "50. saniyeden itibaren makinenin içinde ve etrafında alevler ve duman oluşumu gözlemleniyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "Makine, taşımada yer alan malzemeyi işlemek üzere ilerliyor.",
+    "Makinenin içinde ve etrafında alevler ve duman oluşuyor.",
+    "Malzeme, taşımada hareket halinde değil, sabit durumda."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 13700.959100002365,
+    "tokens_generated": 513
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir üretim tesisinde, uzun bir taşımada beyaz, pamuk benzeri bir malzeme taşınıyor. Üzerinde bir boru sistemi bulunan bir makine, bu malzemeyi işlemek için hareket ediyor. 50. saniyeden itibaren makinenin içinde ve etrafında alevler ve duman oluşmaya başlıyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makine, taşımaya paralel olarak yerleştirilmiş, boru ve kasa şeklinde yapılar içeren bir yapıya sahip.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Taşıyıcı üzerinde uzun, beyaz, pamuk benzeri malzeme yığıntısı.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda, üretim için kullanılan metal raf ve yapılar görülmektedir.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"50. saniyeden itibaren makinenin içinde ve etrafında alevler ve duman oluşumu gözlemleniyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Makine, taşımada yer alan malzemeyi işlemek üzere ilerliyor.\",\n    \"Makinenin içinde ve etrafında alevler ve duman oluşuyor.\",\n    \"Malzeme, taşımada hareket halinde değil, sabit durumda.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinenin içinde ve etrafında alevler ve duman oluşumu, yangın tehlikesi oluşturuyor. Bu, üretim tesisinde ciddi bir yangın riski ve çalışanların güvenliği açısından acil müdahale gerektiren bir durumdur.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 50.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Makinenin içinde ve etrafında alevler ve duman oluşumu, yangın tehlikesi oluşturuyor. Bu, üretim tesisinde ciddi bir yangın riski ve çalışanların güvenliği açısından acil müdahale gerektiren bir durumdur.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 50.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Makinenin içinde ve etrafında alevler ve duman oluşumu, yangın tehlikesi oluşturuyor. Bu, üretim tesisinde ciddi bir yangın riski ve çalışanların güvenliği açısından acil müdahale gerektiren bir durumdur."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 60.0,
+  "created_at": "2026-08-27T12:39:49.735096+00:00"
+}

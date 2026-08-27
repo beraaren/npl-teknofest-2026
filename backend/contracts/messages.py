@@ -26,6 +26,8 @@ class EventDetected(BaseModel):
     description: str
     # FrameChunk'tan taşınır; vlm-service video modunu bununla kullanır.
     video_path: str = ""
+    # Demo overlay için: olayın tetiklendiği karedeki tespitler ve sahne grafiği.
+    snapshot: dict = Field(default_factory=dict)
 
 class VlmInterpreted(BaseModel):
     job_id: str

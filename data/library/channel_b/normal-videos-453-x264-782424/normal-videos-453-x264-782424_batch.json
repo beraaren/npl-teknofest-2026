@@ -1,0 +1,192 @@
+{
+  "video_id": "normal-videos-453-x264-782424",
+  "total_segments": 3,
+  "total_risk_events": 0,
+  "most_critical_segment_index": null,
+  "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Bir iş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve bir süre sonra içeriye giren başka bir kişiyle birlikte masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın sö\n  - [00:00] görülen varlıklar: fire extinguisher, person, rack/structure, smoke or flame, vehicle\n  - [01:00] İş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve bir süre sonra içeriye giren başka bir kişiyle birlikte masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndür\n  - [01:00] görülen varlıklar: fire extinguisher, person, rack/structure, smoke or flame, vehicle\n  - [02:00] İş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve diğer ofis malzemeleri görülmektedir. İşçiler ara\n  - [02:00] görülen varlıklar: fire extinguisher, person, rack/structure, smoke or flame, vehicle",
+  "segments": [
+    {
+      "segment_index": 0,
+      "start_sec": 0.0,
+      "end_sec": 60.0,
+      "time_range": "00:00-01:00",
+      "max_severity": "low",
+      "interpretation": {
+        "packet_id": "23682af9-c54d-496e-86ce-d4cd7836ad5e",
+        "video_id": "normal-videos-453-x264-782424",
+        "model_name": "vlm",
+        "model_backend": "server",
+        "scene_summary_tr": "Bir iş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve bir süre sonra içeriye giren başka bir kişiyle birlikte masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve güvenlik işaretleri görülmektedir.",
+        "detected_entities": [
+          {
+            "label": "person",
+            "confidence_hint": "high",
+            "notes_tr": "İçeride masada çalışan bir kişi ve dışarıdan giren iki kişi görülmektedir."
+          },
+          {
+            "label": "vehicle",
+            "confidence_hint": "high",
+            "notes_tr": "Dışarıda duran açık renkli bir araç (muhtemelen hafif ticari araç veya minivan) net bir şekilde görülmektedir."
+          },
+          {
+            "label": "rack/structure",
+            "confidence_hint": "high",
+            "notes_tr": "Masanın arkasında ve yanlarında ürün sergileme rafı veya yapılar mevcuttur."
+          },
+          {
+            "label": "fire extinguisher",
+            "confidence_hint": "high",
+            "notes_tr": "Sol alt köşede kırmızı bir yangın söndürücü yer almaktadır."
+          },
+          {
+            "label": "smoke or flame",
+            "confidence_hint": "low",
+            "notes_tr": "Hiçbir duman veya alev gözlemlenmemiştir."
+          }
+        ],
+        "detected_actions_tr": [
+          "Bir kişi dışarıdan içeri girer.",
+          "İçerideki çalışan masada görev yapar.",
+          "İkinci bir kişi içeri girer ve masanın yanında durur.",
+          "İki kişi masanın etrafında kısa bir süre hareket eder.",
+          "Dışarıda duran araç hareket etmemiştir."
+        ],
+        "confidence_overall": 0.95,
+        "inference": {
+          "latency_ms": 9948.975499952212,
+          "tokens_generated": 468
+        },
+        "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir iş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve bir süre sonra içeriye giren başka bir kişiyle birlikte masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve güvenlik işaretleri görülmektedir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İçeride masada çalışan bir kişi ve dışarıdan giren iki kişi görülmektedir.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Dışarıda duran açık renkli bir araç (muhtemelen hafif ticari araç veya minivan) net bir şekilde görülmektedir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Masanın arkasında ve yanlarında ürün sergileme rafı veya yapılar mevcuttur.\"\n    },\n    {\n      \"label\": \"fire extinguisher\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sol alt köşede kırmızı bir yangın söndürücü yer almaktadır.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Hiçbir duman veya alev gözlemlenmemiştir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Bir kişi dışarıdan içeri girer.\",\n    \"İçerideki çalışan masada görev yapar.\",\n    \"İkinci bir kişi içeri girer ve masanın yanında durur.\",\n    \"İki kişi masanın etrafında kısa bir süre hareket eder.\",\n    \"Dışarıda duran araç hareket etmemiştir.\"\n  ],\n  \"risk_events\": [],\n  \"confidence_overall\": 0.95\n}",
+        "risk_events": [],
+        "risk_flags_tr": [],
+        "computed_confidence": 0.475,
+        "reasoning_trace": "",
+        "segment_start_sec": 0.0,
+        "segment_end_sec": 60.0,
+        "created_at": "2026-08-27T13:25:16.803182+00:00"
+      }
+    },
+    {
+      "segment_index": 1,
+      "start_sec": 60.0,
+      "end_sec": 120.0,
+      "time_range": "01:00-02:00",
+      "max_severity": "low",
+      "interpretation": {
+        "packet_id": "df4bc813-b750-4c40-9104-e5d589183162",
+        "video_id": "normal-videos-453-x264-782424",
+        "model_name": "vlm",
+        "model_backend": "server",
+        "scene_summary_tr": "İş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve bir süre sonra içeriye giren başka bir kişiyle birlikte masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve bir raf yapısı görülmektedir.",
+        "detected_entities": [
+          {
+            "label": "person",
+            "confidence_hint": "high",
+            "notes_tr": "İç mekanda masada görev yapan çalışan ve dışarıdan giren kişi."
+          },
+          {
+            "label": "vehicle",
+            "confidence_hint": "high",
+            "notes_tr": "Dışarıda duran açık renkli bir araç, muhtemelen bir kamyonet veya van, net bir şekilde görünmektedir."
+          },
+          {
+            "label": "fire extinguisher",
+            "confidence_hint": "high",
+            "notes_tr": "Sol alt köşede kırmızı bir yangın söndürücü yer almaktadır."
+          },
+          {
+            "label": "rack/structure",
+            "confidence_hint": "medium",
+            "notes_tr": "Masanın arkasında ve sağ tarafta gövdeli bir raf veya yapı görünmektedir."
+          },
+          {
+            "label": "smoke or flame",
+            "confidence_hint": "low",
+            "notes_tr": "Dışarıdan gelen araçtan veya çevreden herhangi bir duman veya alev izlenmemektedir; ancak dış mekanın yoğunluğu nedeniyle kesinlikle dışarıda olmayabilir."
+          }
+        ],
+        "detected_actions_tr": [
+          "Çalışan masada belgelerle ilgileniyor.",
+          "Dışarıdan gelen kişi giriş yaparak masanın etrafında hareket ediyor.",
+          "İkinci bir kişi masanın arkasında görev yapıyor.",
+          "Bir kişi masanın etrafında geçerek dışarıya doğru hareket ediyor."
+        ],
+        "confidence_overall": 0.9,
+        "inference": {
+          "latency_ms": 12700.910500017926,
+          "tokens_generated": 491
+        },
+        "raw_model_output": "{\n  \"scene_summary_tr\": \"İş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve bir süre sonra içeriye giren başka bir kişiyle birlikte masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve bir raf yapısı görülmektedir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İç mekanda masada görev yapan çalışan ve dışarıdan giren kişi.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Dışarıda duran açık renkli bir araç, muhtemelen bir kamyonet veya van, net bir şekilde görünmektedir.\"\n    },\n    {\n      \"label\": \"fire extinguisher\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sol alt köşede kırmızı bir yangın söndürücü yer almaktadır.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Masanın arkasında ve sağ tarafta gövdeli bir raf veya yapı görünmektedir.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Dışarıdan gelen araçtan veya çevreden herhangi bir duman veya alev izlenmemektedir; ancak dış mekanın yoğunluğu nedeniyle kesinlikle dışarıda olmayabilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Çalışan masada belgelerle ilgileniyor.\",\n    \"Dışarıdan gelen kişi giriş yaparak masanın etrafında hareket ediyor.\",\n    \"İkinci bir kişi masanın arkasında görev yapıyor.\",\n    \"Bir kişi masanın etrafında geçerek dışarıya doğru hareket ediyor.\"\n  ],\n  \"risk_events\": [],\n  \"confidence_overall\": 0.9\n}",
+        "risk_events": [],
+        "risk_flags_tr": [],
+        "computed_confidence": 0.45,
+        "reasoning_trace": "",
+        "segment_start_sec": 60.0,
+        "segment_end_sec": 120.0,
+        "created_at": "2026-08-27T13:25:29.513437+00:00"
+      }
+    },
+    {
+      "segment_index": 2,
+      "start_sec": 120.0,
+      "end_sec": 177.4,
+      "time_range": "02:00-02:57",
+      "max_severity": "low",
+      "interpretation": {
+        "packet_id": "690d3f7c-82dd-4974-b213-9fd6697677bc",
+        "video_id": "normal-videos-453-x264-782424",
+        "model_name": "vlm",
+        "model_backend": "server",
+        "scene_summary_tr": "İş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve diğer ofis malzemeleri görülmektedir. İşçiler arasında bir etkileşim mevcuttur.",
+        "detected_entities": [
+          {
+            "label": "person",
+            "confidence_hint": "high",
+            "notes_tr": "İç mekanda üç kişi görülmektedir: biri masada oturuyor, biri masanın önünde duruyor, biri de masanın yanından geçiyor."
+          },
+          {
+            "label": "vehicle",
+            "confidence_hint": "high",
+            "notes_tr": "Dışarıda açık renkli bir araç (muhtemelen hafif ticari araç veya van) durmaktadır. Araç türü kesin olarak belirlenemese de, iş yerinin önünde park etmiş durumdadır."
+          },
+          {
+            "label": "rack/structure",
+            "confidence_hint": "high",
+            "notes_tr": "Masanın yanında ve duvarda ofis malzemelerini tutan raf veya yapılar görülmektedir."
+          },
+          {
+            "label": "fire extinguisher",
+            "confidence_hint": "high",
+            "notes_tr": "Sol alt köşede kırmızı bir yangın söndürücü yer almaktadır."
+          },
+          {
+            "label": "smoke or flame",
+            "confidence_hint": "low",
+            "notes_tr": "Görüntüde herhangi bir duman veya alev izlenmemektedir. Önceki segmentlerde belirtilmiş olabilir, ancak bu segmentte görünmüyor."
+          }
+        ],
+        "detected_actions_tr": [
+          "Bir çalışan masada oturuyor ve belki de bir cihazla çalışıyor.",
+          "Bir kişi dışarıdan girerek masanın önünde duruyor ve çalışanla etkileşime giriyor.",
+          "Bir başka kişi masanın yanından geçerek içeriye giriyor.",
+          "İşçiler arasında bir konuşma veya işlem gerçekleştiriliyor gibi görünüyor."
+        ],
+        "confidence_overall": 0.9,
+        "inference": {
+          "latency_ms": 10035.957799991593,
+          "tokens_generated": 536
+        },
+        "raw_model_output": "{\n  \"scene_summary_tr\": \"İş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve diğer ofis malzemeleri görülmektedir. İşçiler arasında bir etkileşim mevcuttur.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İç mekanda üç kişi görülmektedir: biri masada oturuyor, biri masanın önünde duruyor, biri de masanın yanından geçiyor.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Dışarıda açık renkli bir araç (muhtemelen hafif ticari araç veya van) durmaktadır. Araç türü kesin olarak belirlenemese de, iş yerinin önünde park etmiş durumdadır.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Masanın yanında ve duvarda ofis malzemelerini tutan raf veya yapılar görülmektedir.\"\n    },\n    {\n      \"label\": \"fire extinguisher\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sol alt köşede kırmızı bir yangın söndürücü yer almaktadır.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Görüntüde herhangi bir duman veya alev izlenmemektedir. Önceki segmentlerde belirtilmiş olabilir, ancak bu segmentte görünmüyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Bir çalışan masada oturuyor ve belki de bir cihazla çalışıyor.\",\n    \"Bir kişi dışarıdan girerek masanın önünde duruyor ve çalışanla etkileşime giriyor.\",\n    \"Bir başka kişi masanın yanından geçerek içeriye giriyor.\",\n    \"İşçiler arasında bir konuşma veya işlem gerçekleştiriliyor gibi görünüyor.\"\n  ],\n  \"risk_events\": [],\n  \"confidence_overall\": 0.9\n}",
+        "risk_events": [],
+        "risk_flags_tr": [],
+        "computed_confidence": 0.45,
+        "reasoning_trace": "",
+        "segment_start_sec": 120.0,
+        "segment_end_sec": 177.4,
+        "created_at": "2026-08-27T13:25:39.559868+00:00"
+      }
+    }
+  ],
+  "failed_segments": [],
+  "created_at": "2026-08-27T13:25:39.560808+00:00"
+}

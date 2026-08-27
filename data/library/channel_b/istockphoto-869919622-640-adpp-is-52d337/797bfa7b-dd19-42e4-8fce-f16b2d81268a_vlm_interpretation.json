@@ -1,0 +1,59 @@
+{
+  "packet_id": "797bfa7b-dd19-42e4-8fce-f16b2d81268a",
+  "video_id": "istockphoto-869919622-640-adpp-is-52d337",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Büyük bir depoda, yüksek raf sistemleriyle dolu bir alanda çalışan işçiler görülüyor. İşçiler, sarı güvenlik yelekleri ve kasklar giymiş durumda. Bir işçi elinde bir kutu taşıyarak yürüyor, diğer biri tablet kullanarak rafı kontrol ediyor. Arka planda forklift ile çalışan bir işçi daha mevcut.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Üç işçi göze çarpar; biri kutu taşıyor, biri tablet kullanıyor, biri forklift ile çalışıyor."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "high",
+      "notes_tr": "Sarı renkli forklift, arka planda hareket halinde görülüyor. Tipi belirgin, ancak model bilgisi tahmin edilemiyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Yüksek, mavi ve turuncu raf sistemleri, karton kutularla dolu."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Raf ve paletlerde yerleştirilmiş karton kutular, bazıları plastikle kaplı."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, elinde bir kutu ile yürüyor.",
+    "İşçi, tablet kullanarak rafı kontrol ediyor.",
+    "Forklift, arka planda hareket ediyor.",
+    "İşçiler, depo içinde görev yapıyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 19874.955700011924,
+    "tokens_generated": 495
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Büyük bir depoda, yüksek raf sistemleriyle dolu bir alanda çalışan işçiler görülüyor. İşçiler, sarı güvenlik yelekleri ve kasklar giymiş durumda. Bir işçi elinde bir kutu taşıyarak yürüyor, diğer biri tablet kullanarak rafı kontrol ediyor. Arka planda forklift ile çalışan bir işçi daha mevcut.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Üç işçi göze çarpar; biri kutu taşıyor, biri tablet kullanıyor, biri forklift ile çalışıyor.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli forklift, arka planda hareket halinde görülüyor. Tipi belirgin, ancak model bilgisi tahmin edilemiyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yüksek, mavi ve turuncu raf sistemleri, karton kutularla dolu.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Raf ve paletlerde yerleştirilmiş karton kutular, bazıları plastikle kaplı.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, elinde bir kutu ile yürüyor.\",\n    \"İşçi, tablet kullanarak rafı kontrol ediyor.\",\n    \"Forklift, arka planda hareket ediyor.\",\n    \"İşçiler, depo içinde görev yapıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Forklift, çalışan işçinin yakınından geçerken çarpışma riski mevcut. İşçi, forkliftin hareket yönüne dikkat etmemiş gibi görünüyor.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 9.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Forklift, çalışan işçinin yakınından geçerken çarpışma riski mevcut. İşçi, forkliftin hareket yönüne dikkat etmemiş gibi görünüyor.",
+      "severity": "medium",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 9.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Forklift, çalışan işçinin yakınından geçerken çarpışma riski mevcut. İşçi, forkliftin hareket yönüne dikkat etmemiş gibi görünüyor."
+  ],
+  "computed_confidence": 0.6025,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 13.013,
+  "created_at": "2026-08-27T13:21:31.272832+00:00"
+}

@@ -1,0 +1,47 @@
+{
+  "packet_id": "dfab8b2f-5c35-4707-ada9-3f4862cde269",
+  "video_id": "normal-videos-914-x264-28c608",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir kavşakta trafik ışıklarının kontrolü altında araçların geçişini gösteren bir güvenlik kamerası görüntüsü. Arka planda binalar, ağaçlar ve park alanları yer alıyor. Trafik yoğunluğu orta düzeyde ve araçlar düzenli bir şekilde hareket ediyor.",
+  "detected_entities": [
+    {
+      "label": "vehicle",
+      "confidence_hint": "high",
+      "notes_tr": "Farklı renk ve model araçlar (sedan, SUV, pikap) kavşakta hareket ediyor. Belirli bir araç modeli tahmin edilemiyor."
+    },
+    {
+      "label": "traffic light",
+      "confidence_hint": "high",
+      "notes_tr": "Kavşakta dikey trafik ışıkları yer alıyor. Işıkların rengi net olarak belirlenemiyor ancak işlevsel durumda."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda binalar ve park alanları ile birlikte bazı yapısal unsurlar (örneğin, elektrik direkleri) görülebiliyor."
+    },
+    {
+      "label": "person",
+      "confidence_hint": "low",
+      "notes_tr": "Araçların içinde kişilerin siluetleri görülebilir ancak net bir şekilde tanımlanamıyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "Araçlar kavşakta duraklamadan geçiyor.",
+    "Trafik ışıklarının kontrolü altında araçlar yön değiştiriyor.",
+    "Farklı yönlerden gelen araçlar kavşakta kesişiyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 8949.425200000405,
+    "tokens_generated": 429
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir kavşakta trafik ışıklarının kontrolü altında araçların geçişini gösteren bir güvenlik kamerası görüntüsü. Arka planda binalar, ağaçlar ve park alanları yer alıyor. Trafik yoğunluğu orta düzeyde ve araçlar düzenli bir şekilde hareket ediyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Farklı renk ve model araçlar (sedan, SUV, pikap) kavşakta hareket ediyor. Belirli bir araç modeli tahmin edilemiyor.\"\n    },\n    {\n      \"label\": \"traffic light\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kavşakta dikey trafik ışıkları yer alıyor. Işıkların rengi net olarak belirlenemiyor ancak işlevsel durumda.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda binalar ve park alanları ile birlikte bazı yapısal unsurlar (örneğin, elektrik direkleri) görülebiliyor.\"\n    },\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Araçların içinde kişilerin siluetleri görülebilir ancak net bir şekilde tanımlanamıyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Araçlar kavşakta duraklamadan geçiyor.\",\n    \"Trafik ışıklarının kontrolü altında araçlar yön değiştiriyor.\",\n    \"Farklı yönlerden gelen araçlar kavşakta kesişiyor.\"\n  ],\n  \"risk_events\": [],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [],
+  "risk_flags_tr": [],
+  "computed_confidence": 0.45,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 29.333333333333332,
+  "created_at": "2026-08-27T13:26:59.889867+00:00"
+}

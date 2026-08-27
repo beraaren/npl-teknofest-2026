@@ -1,0 +1,48 @@
+{
+  "packet_id": "c5d87dd8-4f33-46e6-a0b3-f4bd1637c579",
+  "video_id": "normal-videos-345-x264-c22289",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "İç mekanda, bir ofis veya resepsiyon alanına benzeyen bir alanda üç kişi görülüyor. Sol tarafta bir masada oturan bir kişi bilgisayarla çalışıyor, ortada duran bir kişi ona konuşuyor gibi görünüyor ve arka planda bir kişi yürüyor. Alan, koltuklar, masalar ve dekoratif öğelerle donatılmış.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Üç kişi mevcut; biri masada oturuyor, biri duruyor, biri yürüyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Arka planda kitaplık veya raf benzeri yapılar var."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Masada bilgisayar ve yazıcı gibi makine benzeri cihazlar var."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "low",
+      "notes_tr": "Masada belgeler ve nesneler var, ancak yük olarak değerlendirilmiyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "Bir kişi masada oturarak bilgisayar kullanıyor.",
+    "Bir kişi masanın önünde duruyor ve konuşuyor gibi görünüyor.",
+    "Bir kişi arka planda yürüyor.",
+    "Kişiler arasında iletişim kuruluyor gibi duruyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 5455.13749984093,
+    "tokens_generated": 390
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"İç mekanda, bir ofis veya resepsiyon alanına benzeyen bir alanda üç kişi görülüyor. Sol tarafta bir masada oturan bir kişi bilgisayarla çalışıyor, ortada duran bir kişi ona konuşuyor gibi görünüyor ve arka planda bir kişi yürüyor. Alan, koltuklar, masalar ve dekoratif öğelerle donatılmış.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Üç kişi mevcut; biri masada oturuyor, biri duruyor, biri yürüyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Arka planda kitaplık veya raf benzeri yapılar var.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Masada bilgisayar ve yazıcı gibi makine benzeri cihazlar var.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Masada belgeler ve nesneler var, ancak yük olarak değerlendirilmiyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Bir kişi masada oturarak bilgisayar kullanıyor.\",\n    \"Bir kişi masanın önünde duruyor ve konuşuyor gibi görünüyor.\",\n    \"Bir kişi arka planda yürüyor.\",\n    \"Kişiler arasında iletişim kuruluyor gibi duruyor.\"\n  ],\n  \"risk_events\": [],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [],
+  "risk_flags_tr": [],
+  "computed_confidence": 0.45,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 6.966666666666667,
+  "created_at": "2026-08-27T13:22:44.237510+00:00"
+}

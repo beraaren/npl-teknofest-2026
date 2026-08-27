@@ -1,0 +1,48 @@
+{
+  "packet_id": "fcef37ed-d391-4cd1-9f4c-31972e3a90fe",
+  "video_id": "normal-videos-312-x264-1ac2d1",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir marketin iç mekanında, iki kişi alışveriş yapıyor. Raflar ürünle dolu, ortada karton kutularla oluşturulan bir ürün yığını bulunuyor. İnsanlar raflarda ürün seçerken, biri bir ürün paketini incelemek için alıyor. Ortam genel olarak düzenli ve güvenli görünüyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İki kişi mevcut; biri koyu renkli ceket, diğeri mavi üst giyiyor. Her ikisi de alışveriş yapıyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Marketin her iki tarafında yüksek raflar ürünle dolu. Ortada karton yığını var."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Ortadaki karton yığını, ürünleri taşıyan bir yük olarak değerlendirilebilir."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "low",
+      "notes_tr": "Raf ürünlerinde sıvı veya maddelerin varlığı görsel olarak net değil, ancak bazı ürünlerde olabilir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İnsanlar raflarda ürün seçiyor.",
+    "Bir kişi ürün paketini incelemek için alıyor.",
+    "İnsanlar market içinde yürüyor ve duruyor.",
+    "Bir kişi bir ürünün etiketini okuyor gibi görünüyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 14232.454000040889,
+    "tokens_generated": 406
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir marketin iç mekanında, iki kişi alışveriş yapıyor. Raflar ürünle dolu, ortada karton kutularla oluşturulan bir ürün yığını bulunuyor. İnsanlar raflarda ürün seçerken, biri bir ürün paketini incelemek için alıyor. Ortam genel olarak düzenli ve güvenli görünüyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki kişi mevcut; biri koyu renkli ceket, diğeri mavi üst giyiyor. Her ikisi de alışveriş yapıyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Marketin her iki tarafında yüksek raflar ürünle dolu. Ortada karton yığını var.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Ortadaki karton yığını, ürünleri taşıyan bir yük olarak değerlendirilebilir.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Raf ürünlerinde sıvı veya maddelerin varlığı görsel olarak net değil, ancak bazı ürünlerde olabilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İnsanlar raflarda ürün seçiyor.\",\n    \"Bir kişi ürün paketini incelemek için alıyor.\",\n    \"İnsanlar market içinde yürüyor ve duruyor.\",\n    \"Bir kişi bir ürünün etiketini okuyor gibi görünüyor.\"\n  ],\n  \"risk_events\": [],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [],
+  "risk_flags_tr": [],
+  "computed_confidence": 0.45,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 42.03333333333333,
+  "created_at": "2026-08-27T13:22:19.155536+00:00"
+}

@@ -1,0 +1,103 @@
+{
+  "packet_id": "a072917f-93eb-4b07-97ee-6f69e2db9df5",
+  "video_id": "toplu-kaza-videolari-09679c",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Video, farklı iş yerlerinde meydana gelen dört ayrı güvenlik olayını göstermektedir. İlk olarak, bir yükleyici tarafından bir motosiklet sürücüsünün ezilmesi, ardından bir inşaat alanındaki kazanın devrilmesi, üçüncü olarak bir fabrikada büyük bir malzeme rulosunun düşmesi ve son olarak bir limanda yüklü bir bantın denize düşmesi görülür.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Farklı sahnelerde çalışan kişiler görülür; bazıları motosiklet üzerinde, bazıları yere düşer veya rulo ile etkileşime girer."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "high",
+      "notes_tr": "Yükleyici, motosiklet, inşaat kazası, kamyon ve bant gibi çeşitli araçlar belirgin şekilde görünür."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Yükleyici, kazalar, fabrika makinesi ve bant gibi makineler mevcuttur."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Yükler, rulo, bant ve diğer malzemelerin taşınması veya düşmesi görülür."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Fabrikada rulo yığınları ve limanda bant taşıyan yapılar görülmektedir."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "low",
+      "notes_tr": "Deniz suyu ve bazı sahnelerde toz veya duman oluşumu gözlemlenir."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "low",
+      "notes_tr": "Bazı sahnelerde toz bulutu veya duman oluşumu vardır, ancak açık alev görülmez."
+    }
+  ],
+  "detected_actions_tr": [
+    "Yükleyici, motosikleti ezme",
+    "İnşaat kazası devrilme",
+    "Rulo düşme",
+    "Bant denize düşme",
+    "İnsanların kaçış ve yere düşme hareketleri",
+    "Araçların hareketi ve duruşu"
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 72363.42869978398,
+    "tokens_generated": 939
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Video, farklı iş yerlerinde meydana gelen dört ayrı güvenlik olayını göstermektedir. İlk olarak, bir yükleyici tarafından bir motosiklet sürücüsünün ezilmesi, ardından bir inşaat alanındaki kazanın devrilmesi, üçüncü olarak bir fabrikada büyük bir malzeme rulosunun düşmesi ve son olarak bir limanda yüklü bir bantın denize düşmesi görülür.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Farklı sahnelerde çalışan kişiler görülür; bazıları motosiklet üzerinde, bazıları yere düşer veya rulo ile etkileşime girer.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yükleyici, motosiklet, inşaat kazası, kamyon ve bant gibi çeşitli araçlar belirgin şekilde görünür.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yükleyici, kazalar, fabrika makinesi ve bant gibi makineler mevcuttur.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yükler, rulo, bant ve diğer malzemelerin taşınması veya düşmesi görülür.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Fabrikada rulo yığınları ve limanda bant taşıyan yapılar görülmektedir.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Deniz suyu ve bazı sahnelerde toz veya duman oluşumu gözlemlenir.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Bazı sahnelerde toz bulutu veya duman oluşumu vardır, ancak açık alev görülmez.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Yükleyici, motosikleti ezme\",\n    \"İnşaat kazası devrilme\",\n    \"Rulo düşme\",\n    \"Bant denize düşme\",\n    \"İnsanların kaçış ve yere düşme hareketleri\",\n    \"Araçların hareketi ve duruşu\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"00:08-00:12 arasında, bir motosiklet sürücüsü yükleyici tarafından ezilir. Bu, insan sağlığı için hemen tehlike oluşturur.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 10.0\n    },\n    {\n      \"description_tr\": \"00:16-00:25 arasında, bir inşaat kazası devrilir ve çalışanı ezme riski oluşur. Bu, ciddi yaralanma veya ölüm riski taşır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 20.0\n    },\n    {\n      \"description_tr\": \"00:28-00:41 arasında, bir fabrikada büyük bir rulo düşer ve çalışanı ezme riski vardır. Bu, ciddi yaralanma riski içerir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 35.0\n    },\n    {\n      \"description_tr\": \"00:42-00:56 arasında, bir limanda yüklü bant denize düşer ve suya düşen kişilerin boğulma riski vardır. Bu, insan sağlığı için hemen tehlike oluşturur.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 50.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "00:08-00:12 arasında, bir motosiklet sürücüsü yükleyici tarafından ezilir. Bu, insan sağlığı için hemen tehlike oluşturur.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 10.0
+    },
+    {
+      "description_tr": "00:16-00:25 arasında, bir inşaat kazası devrilir ve çalışanı ezme riski oluşur. Bu, ciddi yaralanma veya ölüm riski taşır.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 20.0
+    },
+    {
+      "description_tr": "00:28-00:41 arasında, bir fabrikada büyük bir rulo düşer ve çalışanı ezme riski vardır. Bu, ciddi yaralanma riski içerir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 35.0
+    },
+    {
+      "description_tr": "00:42-00:56 arasında, bir limanda yüklü bant denize düşer ve suya düşen kişilerin boğulma riski vardır. Bu, insan sağlığı için hemen tehlike oluşturur.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 50.0
+    }
+  ],
+  "risk_flags_tr": [
+    "00:08-00:12 arasında, bir motosiklet sürücüsü yükleyici tarafından ezilir. Bu, insan sağlığı için hemen tehlike oluşturur.",
+    "00:16-00:25 arasında, bir inşaat kazası devrilir ve çalışanı ezme riski oluşur. Bu, ciddi yaralanma veya ölüm riski taşır.",
+    "00:28-00:41 arasında, bir fabrikada büyük bir rulo düşer ve çalışanı ezme riski vardır. Bu, ciddi yaralanma riski içerir.",
+    "00:42-00:56 arasında, bir limanda yüklü bant denize düşer ve suya düşen kişilerin boğulma riski vardır. Bu, insan sağlığı için hemen tehlike oluşturur."
+  ],
+  "computed_confidence": 0.7291,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 56.233333333333334,
+  "created_at": "2026-08-27T14:03:40.571347+00:00"
+}

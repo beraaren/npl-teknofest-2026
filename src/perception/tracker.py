@@ -243,12 +243,15 @@ class ObjectTracker:
             döner.
         """
         model = detector._load()
+        import torch
+        device = getattr(detector, "device", 0 if torch.cuda.is_available() else "cpu")
         results = model.track(
             frame,
             verbose=False,
             conf=detector.confidence,
             tracker=self._get_tracker_str(),
             persist=self.persist,
+            device=device,
         )[0]
 
         tracked: List[TrackedObject] = []

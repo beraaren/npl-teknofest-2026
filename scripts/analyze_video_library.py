@@ -280,76 +280,66 @@ def analyze_video(video_path: Path, out_dir: Path, config_path: str) -> dict:
     info = probe_video(str(video_path))
     duration_sec = float(info["duration_sec"])
 
-    # --- Kanal A: yoğun örnekleme -------------------------------------
-    reader = VideoReader(str(video_path))
-    native_fps = reader.fps or 25.0
-    target_fps = config.preprocessing.channel_a_fps
-    step = max(1, round(native_fps / target_fps)) if target_fps > 0 else 1
-    fps_a = native_fps / step
+    # --- Kanal A & Kanal B Paralel Çalıştırma -------------------------
+    from concurrent.futures import ThreadPoolExecutor
+    from pipeline import run_channel_b
 
-    channel_a_frames, channel_a_indices = [], []
-    for idx, frame in enumerate(reader.iter_frames()):
-        if idx % step == 0:
-            channel_a_frames.append(frame)
-            channel_a_indices.append(idx)
-    reader.close()
+    channel_b_dir = out_dir.parent / "channel_b" / slug
 
-    if not channel_a_frames:
-        raise ValueError("Videodan kare okunamadı.")
+    def _run_channel_a_worker():
+        reader = VideoReader(str(video_path))
+        native_fps = reader.fps or 25.0
+        target_fps = config.preprocessing.channel_a_fps
+        step = max(1, round(native_fps / target_fps)) if target_fps > 0 else 1
+        fps_a = native_fps / step
 
-    # --- Kanal B için akıllı örnekleme (yalnızca yedek yolda kullanılır)
-    sampler = FrameSampler(
-        target_count=config.preprocessing.target_frame_count,
-        use_smart_sampling=config.preprocessing.use_smart_sampling,
-        ssim_threshold=config.preprocessing.ssim_threshold,
-        min_laplacian_variance=config.preprocessing.min_laplacian_variance,
-    )
-    sampled_frames, sampled_pos = sampler.sample(channel_a_frames, len(channel_a_frames))
-    sampled_indices = [channel_a_indices[p] for p in sampled_pos]
-    if config.preprocessing.enhance_low_light:
-        enhancer = LowLightEnhancer(
-            enabled=True,
-            clip_limit=config.preprocessing.clahe_clip_limit,
-            grid_size=tuple(config.preprocessing.clahe_grid_size),
+        channel_a_frames, channel_a_indices = [], []
+        for idx, frame in enumerate(reader.iter_frames()):
+            if idx % step == 0:
+                channel_a_frames.append(frame)
+                channel_a_indices.append(idx)
+        reader.close()
+
+        if not channel_a_frames:
+            raise ValueError("Videodan kare okunamadı.")
+
+        observer = ObserverAgent(config.perception)
+        observations = observer.observe_video(
+            channel_a_frames, native_fps, sampled_indices=channel_a_indices
         )
-        sampled_frames = [enhancer.enhance(f) for f in sampled_frames]
-    target_size = (config.preprocessing.frame_width, config.preprocessing.frame_height)
-    sampled_frames = [np.array(Image.fromarray(f).resize(target_size)) for f in sampled_frames]
+        scene_graphs = [obs["scene_graph"] for obs in observations]
 
-    # --- Algı + olay motoru -------------------------------------------
-    observer = ObserverAgent(config.perception)
-    observations = observer.observe_video(
-        channel_a_frames, native_fps, sampled_indices=channel_a_indices
-    )
-    scene_graphs = [obs["scene_graph"] for obs in observations]
+        engine = EventEngine(config.events, fps=fps_a)
+        for obs in observations:
+            engine.process_observation(obs)
+        event_signals = engine.get_signals()
 
-    engine = EventEngine(config.events, fps=fps_a)
-    for obs in observations:
-        engine.process_observation(obs)
-    event_signals = engine.get_signals()
+        rag = RAGLayer()
+        rag_context = rag.build_context(observations, event_signals)
+        memory = ShortTermMemory()
+        for sig in event_signals:
+            memory.add(sig, entry_type="event")
 
-    # --- RAG + hafıza + araçlar ---------------------------------------
-    rag = RAGLayer()
-    rag_context = rag.build_context(observations, event_signals)
-    memory = ShortTermMemory()
-    for sig in event_signals:
-        memory.add(sig, entry_type="event")
+        return observations, scene_graphs, event_signals, rag_context, memory, fps_a, channel_a_indices, channel_a_frames, rag
+
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        future_a = executor.submit(_run_channel_a_worker)
+        future_b = executor.submit(
+            run_channel_b, str(video_path), video_id=slug, output_dir=str(channel_b_dir)
+        )
+
+        observations, scene_graphs, event_signals, rag_context, memory, fps_a, channel_a_indices, channel_a_frames, rag = future_a.result()
+        vlm_interpretation = future_b.result()
+
+    channel_b_mode = "video"
     tools = MockToolRegistry()
 
-    # --- Kanal B: EVREN video yorumu ----------------------------------
+    # --- Karar Ajanı + LLM Çıkarımı -----------------------------------
     backend = create_backend(config.vlm, force="server")
     agent = DecisionAgent(
         config=config.decision_agent, vlm_config=config.vlm,
         rag=rag, memory=memory, tools=tools, backend=backend,
     )
-
-    channel_b_dir = out_dir.parent / "channel_b" / slug
-    from pipeline import run_channel_b  # Kanal_B/pipeline.py
-
-    vlm_interpretation = run_channel_b(
-        str(video_path), video_id=slug, output_dir=str(channel_b_dir)
-    )
-    channel_b_mode = "video"
 
     # --- Karar + guardrail --------------------------------------------
     decision_raw = agent.decide(
@@ -419,7 +409,7 @@ def analyze_video(video_path: Path, out_dir: Path, config_path: str) -> dict:
             "failed_segments": vlm_interpretation.get("failed_segments", []),
             "channel_a_fps": round(fps_a, 2),
             "total_frames": len(channel_a_frames),
-            "sampled_indices": sampled_indices,
+            "sampled_indices": channel_a_indices,
             "geometric_signals": event_signals,
             "vlm_interpretation": vlm_interpretation,
             "rag_context": rag_context,

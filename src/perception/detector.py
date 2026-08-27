@@ -180,7 +180,7 @@ class ObjectDetector:
 
     supports_tracking = True
 
-    def __init__(self, model_path: str = "yolov8n.pt", confidence: float = 0.35, custom_classes: List[str] | None = None):
+    def __init__(self, model_path: str = "yolov8n.pt", confidence: float = 0.35, custom_classes: List[str] | None = None, device: Any = None):
         """Detector'ı yapılandırır; model henüz yüklenmez (lazy).
 
         Args:
@@ -188,10 +188,16 @@ class ObjectDetector:
             confidence: Tespit kabul eşiği (0.0-1.0).
             custom_classes: Eşlenmiş sınıf adlarının kısıtlanacağı küme.
                 ``None`` veya boşsa kısıtlama uygulanmaz.
+            device: 'cuda', 0 veya 'cpu'. None ise otomatik GPU/CPU seçilir.
         """
+        import torch
         self.model_path = model_path
         self.confidence = confidence
         self.custom_classes = set(custom_classes or [])
+        if device is None:
+            self.device = 0 if torch.cuda.is_available() else "cpu"
+        else:
+            self.device = device
         self._model = None
 
     def _load(self):
@@ -203,6 +209,11 @@ class ObjectDetector:
         if self._model is None:
             from ultralytics import YOLO
             self._model = YOLO(self.model_path)
+            if self.device != "cpu":
+                try:
+                    self._model.to(self.device)
+                except Exception:
+                    pass
         return self._model
 
     def detect(self, frame: NDArray[np.uint8], frame_idx: int = 0) -> List[Detection]:
@@ -218,7 +229,7 @@ class ObjectDetector:
             yoksa boş liste döner.
         """
         model = self._load()
-        results = model(frame, verbose=False, conf=self.confidence)[0]
+        results = model(frame, verbose=False, conf=self.confidence, device=self.device)[0]
         detections: List[Detection] = []
 
         if results.boxes is None:

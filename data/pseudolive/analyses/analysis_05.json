@@ -31,13 +31,6 @@
         "location": "saha",
         "reason": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği."
       }
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "saha",
-        "reason": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği."
-      }
     }
   ],
   "metadata": {

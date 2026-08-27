@@ -43,9 +43,9 @@ class MockToolRegistry:
         """Risk seviyesi ve olay tipine göre önerilen mock tool'ları döner."""
         suggestions = []
         mapping = {
-            "Yüksek": ["call_health_team", "secure_area", "record_incident", "notify_supervisor", "lockdown_facility", "trigger_fire_suppression", "activate_cbrn_protocol"],
-            "Orta": ["record_incident", "notify_supervisor", "sound_alarm"],
-            "Düşük": ["record_incident"],
+            "Yüksek": ["call_health_team", "secure_area", "notify_supervisor", "lockdown_facility", "trigger_fire_suppression", "activate_cbrn_protocol"],
+            "Orta": ["notify_supervisor", "sound_alarm"],
+            "Düşük": [],
         }
         for tool_name in mapping.get(risk_level, []):
             if self.is_enabled(tool_name):

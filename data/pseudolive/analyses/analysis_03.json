@@ -24,13 +24,6 @@
         "location": "saha",
         "reason": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması."
       }
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "saha",
-        "reason": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması."
-      }
     }
   ],
   "metadata": {

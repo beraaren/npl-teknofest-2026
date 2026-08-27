@@ -71,13 +71,6 @@
         "location": "Genel Alan",
         "urgency": "Yüksek"
       }
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "İSG Sistemi",
-        "urgency": "Orta"
-      }
     }
   ],
   "tool_execution_results": [
@@ -107,15 +100,6 @@
         "urgency": "Yüksek"
       },
       "mock_result": "notify_supervisor başarıyla simüle edildi."
-    },
-    {
-      "status": "success",
-      "tool": "record_incident",
-      "params": {
-        "location": "İSG Sistemi",
-        "urgency": "Orta"
-      },
-      "mock_result": "record_incident başarıyla simüle edildi."
     }
   ],
   "metadata": {

@@ -359,17 +359,12 @@
   "confidence": 0.0,
   "reasoning": "Görüntü ve geometrik veriler, makine çevresinde KKD eksikliği ve personel toplanması gibi somut riskleri doğrulamaktadır. Ancak, 'hareketsiz personel' ve 'makineye müdahale' gibi olaylar için kritik kanıtlar (bayılma pozisyonu, makine hareketi/enerji durumu) eksiktir. Bu nedenle, bu olaylar 'uncertain_observation' olarak sınıflandırılmış ve risk seviyesi 'medium' (Orta) olarak belirlenmiştir. Toplam risk, doğrulanmış KKD ve toplanma risklerinden kaynaklanmaktadır.",
   "actions": [
-    "notify_supervisor",
-    "record_incident"
+    "notify_supervisor"
   ],
   "events": [],
   "triggered_mock_tools": [
     {
       "tool_name": "notify_supervisor",
-      "params": {}
-    },
-    {
-      "tool_name": "record_incident",
       "params": {}
     }
   ],
@@ -379,12 +374,6 @@
       "tool": "notify_supervisor",
       "params": {},
       "mock_result": "notify_supervisor başarıyla simüle edildi."
-    },
-    {
-      "status": "success",
-      "tool": "record_incident",
-      "params": {},
-      "mock_result": "record_incident başarıyla simüle edildi."
     }
   ],
   "metadata": {
@@ -1725,8 +1714,7 @@
           ],
           "action_hints": [
             "notify_supervisor",
-            "sound_alarm",
-            "record_incident"
+            "sound_alarm"
           ],
           "similarity": 0.269,
           "evidence_status": "signal_candidate",
@@ -1768,7 +1756,6 @@
           "action_hints": [
             "call_health_team",
             "call_ambulance",
-            "record_incident",
             "notify_supervisor"
           ],
           "similarity": 0.029,
@@ -1809,8 +1796,7 @@
           ],
           "action_hints": [
             "sound_alarm",
-            "notify_supervisor",
-            "record_incident"
+            "notify_supervisor"
           ],
           "similarity": 0.008,
           "evidence_status": "signal_candidate",
@@ -1855,7 +1841,6 @@
             "call_health_team",
             "call_ambulance",
             "secure_area",
-            "record_incident",
             "notify_supervisor"
           ],
           "similarity": 0.003,
@@ -1884,8 +1869,7 @@
           ],
           "action_hints": [
             "sound_alarm",
-            "notify_supervisor",
-            "record_incident"
+            "notify_supervisor"
           ],
           "similarity": 0.001,
           "evidence_status": "structural_candidate",
@@ -1914,8 +1898,7 @@
           ],
           "action_hints": [
             "sound_alarm",
-            "notify_supervisor",
-            "record_incident"
+            "notify_supervisor"
           ],
           "similarity": 0.001,
           "evidence_status": "structural_candidate",
@@ -1943,8 +1926,7 @@
           ],
           "action_hints": [
             "notify_supervisor",
-            "call_health_team",
-            "record_incident"
+            "call_health_team"
           ],
           "similarity": 0.0,
           "evidence_status": "structural_candidate",
@@ -1971,8 +1953,7 @@
           ],
           "action_hints": [
             "sound_alarm",
-            "notify_supervisor",
-            "record_incident"
+            "notify_supervisor"
           ],
           "similarity": 0.002,
           "evidence_status": "structural_candidate",
@@ -2004,7 +1985,6 @@
           "action_hints": [
             "secure_area",
             "sound_alarm",
-            "record_incident",
             "notify_supervisor",
             "isolate_electrical_grid"
           ],
@@ -2031,8 +2011,7 @@
           ],
           "action_hints": [
             "stop_forklift",
-            "sound_alarm",
-            "record_incident"
+            "sound_alarm"
           ],
           "similarity": 0.067,
           "evidence_status": "unverified"
@@ -2055,8 +2034,7 @@
           ],
           "action_hints": [
             "sound_alarm",
-            "secure_area",
-            "record_incident"
+            "secure_area"
           ],
           "similarity": 0.066,
           "evidence_status": "unverified"
@@ -2086,7 +2064,6 @@
             "sound_alarm",
             "call_health_team",
             "call_ambulance",
-            "record_incident",
             "notify_supervisor"
           ],
           "similarity": 0.048,
@@ -2117,8 +2094,7 @@
           ],
           "action_hints": [
             "notify_supervisor",
-            "sound_alarm",
-            "record_incident"
+            "sound_alarm"
           ],
           "similarity": 0.269,
           "evidence_status": "signal_candidate",
@@ -2160,7 +2136,6 @@
           "action_hints": [
             "call_health_team",
             "call_ambulance",
-            "record_incident",
             "notify_supervisor"
           ],
           "similarity": 0.029,
@@ -2201,8 +2176,7 @@
           ],
           "action_hints": [
             "sound_alarm",
-            "notify_supervisor",
-            "record_incident"
+            "notify_supervisor"
           ],
           "similarity": 0.008,
           "evidence_status": "signal_candidate",
@@ -2247,7 +2221,6 @@
             "call_health_team",
             "call_ambulance",
             "secure_area",
-            "record_incident",
             "notify_supervisor"
           ],
           "similarity": 0.003,
@@ -2276,8 +2249,7 @@
           ],
           "action_hints": [
             "sound_alarm",
-            "notify_supervisor",
-            "record_incident"
+            "notify_supervisor"
           ],
           "similarity": 0.001,
           "evidence_status": "structural_candidate",
@@ -2306,8 +2278,7 @@
           ],
           "action_hints": [
             "sound_alarm",
-            "notify_supervisor",
-            "record_incident"
+            "notify_supervisor"
           ],
           "similarity": 0.001,
           "evidence_status": "structural_candidate",
@@ -2335,8 +2306,7 @@
           ],
           "action_hints": [
             "notify_supervisor",
-            "call_health_team",
-            "record_incident"
+            "call_health_team"
           ],
           "similarity": 0.0,
           "evidence_status": "structural_candidate",
@@ -2363,8 +2333,7 @@
           ],
           "action_hints": [
             "sound_alarm",
-            "notify_supervisor",
-            "record_incident"
+            "notify_supervisor"
           ],
           "similarity": 0.002,
           "evidence_status": "structural_candidate",

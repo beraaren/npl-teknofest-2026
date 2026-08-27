@@ -25,7 +25,6 @@ patterns:
       - "call_health_team"
       - "call_ambulance"
       - "secure_area"
-      - "record_incident"
       - "notify_supervisor"
       - "stop_forklift"
 
@@ -49,7 +48,6 @@ patterns:
       - "call_health_team"
       - "call_ambulance"
       - "secure_area"
-      - "record_incident"
       - "notify_supervisor"
 
   gathering:
@@ -70,7 +68,6 @@ patterns:
     mock_tool_hints:
       - "notify_supervisor"
       - "sound_alarm"
-      - "record_incident"
 
   immobile_person:
     description: "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi."
@@ -89,7 +86,6 @@ patterns:
     mock_tool_hints:
       - "call_health_team"
       - "call_ambulance"
-      - "record_incident"
       - "notify_supervisor"
 
   ppe_missing:
@@ -109,7 +105,6 @@ patterns:
     mock_tool_hints:
       - "sound_alarm"
       - "notify_supervisor"
-      - "record_incident"
 
   dangerous_proximity:
     description: "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski."
@@ -131,7 +126,6 @@ patterns:
       - "sound_alarm"
       - "call_health_team"
       - "call_ambulance"
-      - "record_incident"
       - "notify_supervisor"
 
   fire_smoke:
@@ -156,7 +150,6 @@ patterns:
       - "call_health_team"
       - "call_ambulance"
       - "activate_cbrn_protocol"
-      - "record_incident"
       - "broadcast_evacuation"
       - "dispatch_drone"
 
@@ -179,7 +172,6 @@ patterns:
       - "activate_cbrn_protocol"
       - "secure_area"
       - "notify_supervisor"
-      - "record_incident"
 
   pallet_collapse:
     description: "Palet yükünün devrilmesi, çökmesi veya tehlikeli pozisyonda olması."
@@ -199,7 +191,6 @@ patterns:
     mock_tool_hints:
       - "secure_area"
       - "notify_supervisor"
-      - "record_incident"
 
   electrical_hazard:
     description: "Açık pano, kablo veya elektrik tehlikesi barındıran durum."
@@ -217,7 +208,6 @@ patterns:
     mock_tool_hints:
       - "secure_area"
       - "sound_alarm"
-      - "record_incident"
       - "notify_supervisor"
       - "isolate_electrical_grid"
 
@@ -236,7 +226,6 @@ patterns:
     mock_tool_hints:
       - "sound_alarm"
       - "notify_supervisor"
-      - "record_incident"
 
   blocked_emergency_exit:
     description: "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması."
@@ -252,7 +241,6 @@ patterns:
       - "Toplu panik"
     mock_tool_hints:
       - "notify_supervisor"
-      - "record_incident"
 
   spill_slip_hazard:
     description: "Zeminde dökülmüş sıvı, yağ veya su kaynaklı kayma tehlikesi."
@@ -270,7 +258,6 @@ patterns:
     mock_tool_hints:
       - "secure_area"
       - "notify_supervisor"
-      - "record_incident"
 
   cluttered_workspace:
     description: "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski)."
@@ -287,7 +274,6 @@ patterns:
       - "Forklift manevra engeli"
     mock_tool_hints:
       - "notify_supervisor"
-      - "record_incident"
 
   running_in_facility:
     description: "Tesis içinde koşan personel (çarpışma/kayma riski)."
@@ -305,7 +291,6 @@ patterns:
     mock_tool_hints:
       - "sound_alarm"
       - "notify_supervisor"
-      - "record_incident"
 
   blind_spot_movement:
     description: "Kavşak veya kör noktalarda kontrolsüz hareket."
@@ -323,7 +308,6 @@ patterns:
     mock_tool_hints:
       - "stop_forklift"
       - "sound_alarm"
-      - "record_incident"
 
   overhead_hazard:
     description: "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük)."
@@ -339,7 +323,6 @@ patterns:
     mock_tool_hints:
       - "sound_alarm"
       - "secure_area"
-      - "record_incident"
 
   fatigue_detection:
     description: "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski)."
@@ -356,7 +339,6 @@ patterns:
     mock_tool_hints:
       - "notify_supervisor"
       - "call_health_team"
-      - "record_incident"
 
   vehicle_speeding:
     description: "Forkliftin veya aracın tesis içi hız limitini aşması."
@@ -388,4 +370,3 @@ patterns:
     mock_tool_hints:
       - "sound_alarm"
       - "notify_supervisor"
-      - "record_incident"

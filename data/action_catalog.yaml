@@ -57,7 +57,6 @@ actions:
   Orta:
     default:
       - "Alan sorumlusunu derhal bilgilendir."
-      - "Durumu güvenlik kayıtlarına ekle."
       - "Önleyici tedbirleri gözden geçir ve uygula."
     ppe_missing:
       - "İlgili personele KKD (baret/yelek) kullanımı konusunda uyarı ver."
@@ -101,7 +100,6 @@ actions:
 
   Düşük:
     default:
-      - "Durumu rutin İSG kontrol listesine kaydet."
       - "Gerekirse gözetim altında çalışmaya devam et."
       - "Bir sonraki düzenli denetimde değerlendir."
     cluttered_workspace:

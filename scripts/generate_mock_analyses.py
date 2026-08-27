@@ -148,8 +148,7 @@ def generate_analysis(idx: int, rng: random.Random, patterns: dict, catalog: dic
         summary = f"{label} bölgesinde anlamlı bir risk tespit edilmedi; rutin operasyon."
         reasoning = "Olay motoru anlamlı sinyal üretmedi; sahnede yalnızca normal faaliyet gözlendi."
         actions = _pick_actions(catalog, "Düşük", [])
-        tools = [{"tool_name": "record_incident",
-                  "params": {"location": label, "reason": "Rutin kontrol kaydı"}}]
+        tools = []
         confidence = round(rng.uniform(0.7, 0.95), 2)
 
     return {

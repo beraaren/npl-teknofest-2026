@@ -31,13 +31,6 @@
         "location": "saha",
         "reason": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski)."
       }
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "saha",
-        "reason": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski)."
-      }
     }
   ],
   "metadata": {

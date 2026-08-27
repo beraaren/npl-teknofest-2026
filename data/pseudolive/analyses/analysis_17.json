@@ -31,13 +31,6 @@
         "location": "saha",
         "reason": "Üç veya daha fazla personelin tehlikeli bölgede toplanması."
       }
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "saha",
-        "reason": "Üç veya daha fazla personelin tehlikeli bölgede toplanması."
-      }
     }
   ],
   "metadata": {

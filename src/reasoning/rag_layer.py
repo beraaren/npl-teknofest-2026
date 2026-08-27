@@ -493,10 +493,7 @@ class RAGLayer:
                     "reason": match.get("hazard_mechanism", match.get("description", pattern_name))[:120],
                 }
                 # Tool'a özgü zorunlu parametreler
-                if tool_name == "record_incident":
-                    params["incident_type"] = pattern_name
-                    params["timestamp"] = match.get("matched_signal", {}).get("timestamp", "00:00")
-                elif tool_name == "trigger_fire_suppression":
+                if tool_name == "trigger_fire_suppression":
                     params["zone_id"] = "saha"
                     params["agent_type"] = "FM200"
                 elif tool_name == "lockdown_facility":

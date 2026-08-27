@@ -450,7 +450,11 @@ function fillAssignEventSelect(stamps) {
  * doğrudan kilitli çizilir; WS tazelemesi bu kilidi silmez.
  */
 function renderSuggestedActions(analysis, cameraId) {
-  const tools = analysis.triggered_mock_tools || [];
+  // Eski analizlerde kalmış ancak güncel katalogda bulunmayan araçları
+  // çalıştırılabilir buton olarak gösterme.
+  const availableTools = new Set(toolCatalog.map((tool) => tool.tool_name));
+  const tools = (analysis.triggered_mock_tools || [])
+    .filter((call) => availableTools.has(call.tool_name));
   const locked = executedTools.get(cameraId) || new Set();
   el.suggestedActions.innerHTML = '';
 

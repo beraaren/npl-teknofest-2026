@@ -51,6 +51,7 @@ let currentEvents = [];
 let vlmInterpretation = null;
 let decisionPayload = null;
 let wsClient = null;
+let pollInterval = null;
 let completedSteps = new Set();
 
 // ---------------------------------------------------------------------------
@@ -195,28 +196,39 @@ function nextPendingStep() {
   return STEP_ORDER.find((s) => !completedSteps.has(s));
 }
 
+function stopPolling() {
+  if (pollInterval) {
+    clearInterval(pollInterval);
+    pollInterval = null;
+  }
+}
+
 function startWatching(jobId) {
   if (wsClient) {
-    wsClient.disconnect();
+    wsClient.close();
+    wsClient = null;
   }
+  stopPolling();
 
   const proto = location.protocol === 'https:' ? 'wss' : 'ws';
   wsClient = new WsClient(`${proto}://${location.host}/ws`);
   wsClient.connect();
   wsClient.onMessage(handleWsMessage);
 
-  // Güvenlik ağı: decision.final kaçırılırsa polling ile sonucu çek
-  const pollInterval = setInterval(async () => {
-    if (decisionPayload || !currentJobId) {
-      clearInterval(pollInterval);
+  // Güvenlik ağı: decision.final kaçırılırsa polling ile sonucu çek.
+  // jobId kapanışta tutulur; önceki bir upload'ın zamanlayıcısı yeni işi
+  // yanlışlıkla tamamlayamaz.
+  pollInterval = setInterval(async () => {
+    if (decisionPayload || currentJobId !== jobId) {
+      stopPolling();
       return;
     }
     try {
-      const analysis = await api(`/analyses/${currentJobId}`);
+      const analysis = await api(`/analyses/${jobId}`);
       if (analysis) {
-        const events = await api(`/analyses/${currentJobId}/events`);
-        finalize(analysis, events || []);
-        clearInterval(pollInterval);
+        const response = await api(`/analyses/${jobId}/events`);
+        finalize(analysis, response.events || []);
+        stopPolling();
       }
     } catch { /* henüz hazır değil */ }
   }, 2500);
@@ -271,6 +283,10 @@ async function fetchAndFinalize() {
 
 function finalize(analysis, events) {
   if (!analysis) return;
+
+  // WebSocket kaçırılırsa REST yedeğinden gelen olayları da overlay ve
+  // zaman çizelgesinin kullandığı kanonik koleksiyona al.
+  currentEvents = Array.isArray(events) ? events : [];
 
   // Yerel video kaynağı (upload edilen dosya)
   if (uploadedFile) {

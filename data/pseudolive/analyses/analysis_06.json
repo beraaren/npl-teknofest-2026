@@ -31,13 +31,6 @@
         "location": "saha",
         "reason": "Tesis içinde koşan personel (çarpışma/kayma riski)."
       }
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "saha",
-        "reason": "Tesis içinde koşan personel (çarpışma/kayma riski)."
-      }
     }
   ],
   "metadata": {

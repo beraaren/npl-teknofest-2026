@@ -1,0 +1,86 @@
+{
+  "packet_id": "aae40e77-c256-4663-a983-313ae3959699",
+  "video_id": "industrial-worker-makes-one-mistake-on-t-60f439",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "İki işçi, büyük bir torna makinesi gibi görünen bir makine üzerinde çalışırken, dönen bir parçaya el ile dokunarak işlem yapmaktadır. İşçiler koruyucu ekipman kullanmamaktadır. 04:18'de üçüncü bir işçi sahneye girer ve makinenin yanında durur. İşçiler, makinenin kontrolüne tam olarak sahip olmamakta ve dönen parçaya yakalanma riski oluşturuyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İki işçi makine başında, üçüncü işçi 04:18'de sahneye girer."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük, dönen bir parçaya sahip torna makinesi benzeri bir makine."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Makinenin üzerinde işlenen metalik bir parça."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Sahnenin sol tarafında yer alan metalik yapılar."
+    }
+  ],
+  "detected_actions_tr": [
+    "İki işçi, makinenin dönen parçasına el ile dokunarak işlem yapmaktadır.",
+    "İşçiler, makinenin kontrolüne tam olarak sahip olmamakta ve dönen parçaya yakalanma riski oluşturuyor.",
+    "04:18'de üçüncü bir işçi sahneye girer ve makinenin yanında durur.",
+    "İşçiler, koruyucu ekipman (eldiven, kask vb.) kullanmamaktadır."
+  ],
+  "confidence_overall": 0.88,
+  "inference": {
+    "latency_ms": 14837.70640000148,
+    "tokens_generated": 812
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"İki işçi, büyük bir torna makinesi gibi görünen bir makine üzerinde çalışırken, dönen bir parçaya el ile dokunarak işlem yapmaktadır. İşçiler koruyucu ekipman kullanmamaktadır. 04:18'de üçüncü bir işçi sahneye girer ve makinenin yanında durur. İşçiler, makinenin kontrolüne tam olarak sahip olmamakta ve dönen parçaya yakalanma riski oluşturuyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki işçi makine başında, üçüncü işçi 04:18'de sahneye girer.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, dönen bir parçaya sahip torna makinesi benzeri bir makine.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinenin üzerinde işlenen metalik bir parça.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sahnenin sol tarafında yer alan metalik yapılar.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İki işçi, makinenin dönen parçasına el ile dokunarak işlem yapmaktadır.\",\n    \"İşçiler, makinenin kontrolüne tam olarak sahip olmamakta ve dönen parçaya yakalanma riski oluşturuyor.\",\n    \"04:18'de üçüncü bir işçi sahneye girer ve makinenin yanında durur.\",\n    \"İşçiler, koruyucu ekipman (eldiven, kask vb.) kullanmamaktadır.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, dönen makine parçasına el ile dokunarak işlem yapmaktadır. Bu, dönen parçaya yakalanma ve ciddi yaralanma riski oluşturur.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 240.0\n    },\n    {\n      \"description_tr\": \"İşçiler, dönen makine parçasına el ile dokunurken koruyucu eldiven veya kask kullanmamaktadır. Bu, yaralanma riskini artırır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 240.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin dönen parçasına el ile dokunarak işlem yaparken, makinenin kontrolüne tam olarak sahip olmamaktadır. Bu, beklenmedik hareketlerle yaralanma riski oluşturur.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 240.0\n    },\n    {\n      \"description_tr\": \"Üçüncü işçi, makinenin yanında dururken, ilk işçi dönen parçaya el ile dokunmaya devam eder. Bu, ikinci işçi için de potansiyel bir risk oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 258.0\n    }\n  ],\n  \"confidence_overall\": 0.88\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçiler, dönen makine parçasına el ile dokunarak işlem yapmaktadır. Bu, dönen parçaya yakalanma ve ciddi yaralanma riski oluşturur.",
+      "severity": "critical",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 240.0
+    },
+    {
+      "description_tr": "İşçiler, dönen makine parçasına el ile dokunurken koruyucu eldiven veya kask kullanmamaktadır. Bu, yaralanma riskini artırır.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 240.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin dönen parçasına el ile dokunarak işlem yaparken, makinenin kontrolüne tam olarak sahip olmamaktadır. Bu, beklenmedik hareketlerle yaralanma riski oluşturur.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 240.0
+    },
+    {
+      "description_tr": "Üçüncü işçi, makinenin yanında dururken, ilk işçi dönen parçaya el ile dokunmaya devam eder. Bu, ikinci işçi için de potansiyel bir risk oluşturur.",
+      "severity": "high",
+      "confidence": 0.8,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 258.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçiler, dönen makine parçasına el ile dokunarak işlem yapmaktadır. Bu, dönen parçaya yakalanma ve ciddi yaralanma riski oluşturur.",
+    "İşçiler, dönen makine parçasına el ile dokunurken koruyucu eldiven veya kask kullanmamaktadır. Bu, yaralanma riskini artırır.",
+    "İşçiler, makinenin dönen parçasına el ile dokunarak işlem yaparken, makinenin kontrolüne tam olarak sahip olmamaktadır. Bu, beklenmedik hareketlerle yaralanma riski oluşturur.",
+    "Üçüncü işçi, makinenin yanında dururken, ilk işçi dönen parçaya el ile dokunmaya devam eder. Bu, ikinci işçi için de potansiyel bir risk oluşturur."
+  ],
+  "computed_confidence": 0.6913,
+  "reasoning_trace": "",
+  "segment_start_sec": 240.0,
+  "segment_end_sec": 300.0,
+  "created_at": "2026-08-27T18:11:50.336315+00:00"
+}

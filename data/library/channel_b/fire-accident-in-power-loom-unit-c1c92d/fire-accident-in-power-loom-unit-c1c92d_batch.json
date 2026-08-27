@@ -1,9 +1,9 @@
 {
   "video_id": "fire-accident-in-power-loom-unit-c1c92d",
   "total_segments": 3,
-  "total_risk_events": 9,
+  "total_risk_events": 6,
   "most_critical_segment_index": 1,
-  "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Bir tekstil atölyesinde, çok sayıda dokuma makinesi sıralanmış durumda. Makineler çalışır halde olup, bir işçi 00:30'dan itibaren atölyenin derinliklerinden yaklaşarak bir makineye doğru hareket eder ve 00:40'dan itibaren makinenin başında \n  - [00:00] görülen varlıklar: load, machine, person, rack/structure\n  - [00:48] Bir tekstil atölyesinde, çalışan bir işçi makineye yakın bir mesafede çalışırken, makinede ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. İşçi yangın sonrası panikle kaçar ve tekrar dönerken\n  - [00:48] görülen varlıklar: machine, person, rack/structure, smoke or flame\n  - [01:48] Bir tekstil atölyesinde, yangın sonrası yoğun dumanlı bir ortamda çalışan bir işçi, kırmızı bir yangın söndürücü ile makineye müdahale eder. İşçi, yangın söndürücüyü kullanırken duman nedeniyle görüşü kısıtlı olup, daha sonra başka bir kişi\n  - [01:48] görülen varlıklar: load, machine, person, rack/structure, smoke or flame\nZaman damgalı olaylar:\n  - 00:40 — İşçi, hareket halindeki dokuma makinesinin çok yakın mesafesinde çalışmaktadır. Bu, makinenin hareketli parçalarına temas riski oluşturur ve ciddi yaralanmaya yol açabilir. [high, güven 0.90]\n  - 00:00 — Atölye, makine ve malzeme yığınları nedeniyle dar ve düzenli olmayan bir yapıdadır. Bu, acil durumlarda kaçış yollarının engellenmesi ve işçinin hareket özgürlüğünün kısıtlanması riskini artırır. [medium, güven 0.85]\n  - 01:39 — Makinede ani bir yangın patlaması meydana gelir. Alevler ve duman, çalışanın sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder. Yangın, elektriksel arıza veya malzeme yanması sonucu olabilir. [critical, güven 0.95]\n  - 01:44 — Yangın sonrası, işçinin panikle kaçması ve tekrar dönmek için yangın söndürme ekipmanı kullanmaya çalışması, yangın kontrolü açısından gecikmeye neden olabilir. Bu, yangının yayılmasına ve daha büyük bir yangın tehlikesine yol açabilir. [high, güven 0.88]\n  - 01:47 — Atölye, yoğun dumanla dolup, acil durumda kaçış yollarının engellenmesi ve çalışanların solunum sağlığına zarar verme riski oluşur. Duman, görüşü tamamen engeller ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır. [high, güven 0.90]\n  - 01:50 — Yangın söndürücü kullanılırken, duman nedeniyle görüşü tamamen engellenmiş olup, işçi yangın söndürme ekipmanını doğru şekilde kullanamayabilir. Bu, yangının kontrol edilmesinde gecikmeye ve daha büyük bir yangın tehlikesine yol açabilir. [high, güven 0.88]\n  - 01:52 — Atölye, yoğun dumanla dolup, çalışanların solunum sağlığına zarar verme riski oluşur. Duman, acil durumda kaçış yollarının engellenmesi ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır. [high, güven 0.90]\n  - 01:58 — İkinci bir kişi, dumanlı ortamda sahneye girerken, yangın bölgesindeki sıcaklık ve duman nedeniyle ciddi yaralanma veya solunum problemleri riski taşır. Bu, acil durumda uygun koruyucu ekipman olmaması nedeniyle daha da tehlikeli hâle gelir. [high, güven 0.85]\n  - 02:05 — Makinenin hâlâ küçük alevler ve duman çıkarması, yangının tamamen söndürülmemiş olduğunu gösterir. Bu, yangının yeniden patlaması veya yayılması riskini artırır. [critical, güven 0.92]",
+  "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Bir tekstil atölyesinde, birkaç dokuma makinesi çalışırken, bir işçi makinelere yaklaşarak onlara müdahale ediyor. İşçi, makineye yakın bir mesafede hareket ederken, güvenlik ekipmanı takmadığı görülmektedir. Atölye, düzenli bir şekilde ayd\n  - [00:00] görülen varlıklar: load, machine, person, rack/structure\n  - [00:48] Bir tekstil atölyesinde, bir işçi dokuma makinesi başında çalışırken, makinede ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. İşçi, yangın başladığında makineden uzaklaşır ve daha sonra yang\n  - [00:48] görülen varlıklar: machine, person, rack/structure, smoke or flame\n  - [01:48] Bir tekstil atölyesinde, yangın sonrası dumanlı bir ortamda bir işçi kırmızı bir yangın söndürücü ile müdahale ederken, daha sonra başka bir işçi dumanlı alanda hareket eder. Makineler hâlâ duman üretirken, ortamda yüksek tehlike seviyesi d\n  - [01:48] görülen varlıklar: machine, person, rack/structure, smoke or flame\nZaman damgalı olaylar:\n  - 00:40 — İşçi, hareket halindeki dokuma makinesine yakın bir mesafede çalışırken, güvenlik ekipmanı (örneğin eldiven, koruyucu gözlük, kask) takmamıştır. Bu, makine parçalarına temas halinde ciddi yaralanma riski oluşturur. [high, güven 0.90]\n  - 01:39 — Dokuma makinesinde ani yangın patlaması meydana gelir. Alevler makinenin alt kısmından başlar ve hızla yayılır. Bu durum, çalışanların ve atölyenin diğer bölümlerinin ciddi tehlikede olduğunu gösterir. [critical, güven 0.95]\n  - 01:44 — Yangın sonrası, işçinin yangın söndürme ekipmanı ile müdahale etmesi, ancak dumanın yoğunluğu ve yangının yayılması, hala yüksek tehlike seviyesini korumaktadır. [high, güven 0.90]\n  - 01:50 — Yangın söndürücü ile müdahale eden işçi, dumanlı ve potansiyel olarak yanıcı ortamda çalışmaktadır. Bu, solunum yolu zararları ve yanma riski oluşturur. [high, güven 0.90]\n  - 02:00 — İkinci işçi, dumanlı alanda ve yangın sonrası sıcaklıkta hareket ederken, yanma veya boğulma riski altında bulunmaktadır. [high, güven 0.88]\n  - 02:10 — Makine hâlâ duman ve alevler üretmekte olup, yangının tamamen söndürülmemiş olduğu ve yeniden patlama riski olduğu anlaşılmaktadır. [critical, güven 0.92]",
   "segments": [
     {
       "segment_index": 0,
@@ -12,72 +12,63 @@
       "time_range": "00:00-00:48",
       "max_severity": "high",
       "interpretation": {
-        "packet_id": "0b9d5277-a5ef-495e-b2f7-3e74df4a28df",
+        "packet_id": "5f175c2a-c92d-4b82-a94f-671cdf644d37",
         "video_id": "fire-accident-in-power-loom-unit-c1c92d",
         "model_name": "vlm",
         "model_backend": "server",
-        "scene_summary_tr": "Bir tekstil atölyesinde, çok sayıda dokuma makinesi sıralanmış durumda. Makineler çalışır halde olup, bir işçi 00:30'dan itibaren atölyenin derinliklerinden yaklaşarak bir makineye doğru hareket eder ve 00:40'dan itibaren makinenin başında durarak işlem yapmaya başlar. İşçi, makineye yakın bir mesafede çalışırken, çevredeki alanlar oldukça dar ve düzenli olmayan bir şekilde doldurulmuştur.",
+        "scene_summary_tr": "Bir tekstil atölyesinde, birkaç dokuma makinesi çalışırken, bir işçi makinelere yaklaşarak onlara müdahale ediyor. İşçi, makineye yakın bir mesafede hareket ederken, güvenlik ekipmanı takmadığı görülmektedir. Atölye, düzenli bir şekilde aydınlatılmış olup, makine ve malzeme yığınları mevcuttur.",
         "detected_entities": [
           {
             "label": "person",
             "confidence_hint": "high",
-            "notes_tr": "İşçi, beyaz gömlek ve kısa etek giymiş, 00:30'dan itibaren görünür ve makineye yaklaşır."
+            "notes_tr": "İşçi, beyaz gömlek ve kısa etek giymiş, makineye yaklaşarak müdahale ediyor. Güvenlik ekipmanı takmamış görünüyor."
           },
           {
             "label": "machine",
             "confidence_hint": "high",
-            "notes_tr": "Çok sayıda dokuma makinesi, yeşil renkli, uzun ve geniş yapıda, atölyenin büyük kısmını kaplamaktadır."
+            "notes_tr": "Çok sayıda dokuma makinesi, bazıları çalışırken, bazıları duruyor. Makinelerin bazılarında kumaş rulosu mevcut."
           },
           {
             "label": "load",
             "confidence_hint": "medium",
-            "notes_tr": "Makinelere yakın yerlerde, kumaş veya ham madde olarak görünen büyük beyaz rulo ve kumaş yığınları bulunmaktadır."
+            "notes_tr": "Makinelerin etrafında kumaş, rulo ve diğer malzemeler yığılmış durumda."
           },
           {
             "label": "rack/structure",
-            "confidence_hint": "medium",
-            "notes_tr": "Duvarlara ve makinelere bağlı kablolar, borular ve destek yapıları mevcuttur."
+            "confidence_hint": "high",
+            "notes_tr": "Duvarlara ve makinelere bağlı kablolar, borular ve destek yapıları mevcut."
           }
         ],
         "detected_actions_tr": [
-          "İşçi, atölyenin derinliklerinden yaklaşarak bir dokuma makinesine doğru yürür.",
-          "İşçi, makinenin başında durarak makineyi kontrol eder ve ayarlar yapar.",
-          "Dokuma makineleri, sürekli olarak çalışır halde olup, kumaş üretimi devam eder.",
-          "İşçi, makineye yakın bir mesafede çalışırken, el hareketleriyle makineyi yönetir."
+          "İşçi, atölyenin derinliklerinden yaklaşarak bir dokuma makinesine doğru yürüyor.",
+          "İşçi, makinenin üzerindeki bir parçayı elleriyle ayarlıyor veya kontrol ediyor.",
+          "Makineler, kumaş üretimi için çalışırken, bazıları duruyor.",
+          "İşçi, makineye yakın bir mesafede hareket ederken, güvenlik ekipmanı takmamış."
         ],
         "confidence_overall": 0.9,
         "inference": {
-          "latency_ms": 17313.500500000373,
-          "tokens_generated": 716
+          "latency_ms": 11635.310300000128,
+          "tokens_generated": 592
         },
-        "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, çok sayıda dokuma makinesi sıralanmış durumda. Makineler çalışır halde olup, bir işçi 00:30'dan itibaren atölyenin derinliklerinden yaklaşarak bir makineye doğru hareket eder ve 00:40'dan itibaren makinenin başında durarak işlem yapmaya başlar. İşçi, makineye yakın bir mesafede çalışırken, çevredeki alanlar oldukça dar ve düzenli olmayan bir şekilde doldurulmuştur.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, beyaz gömlek ve kısa etek giymiş, 00:30'dan itibaren görünür ve makineye yaklaşır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çok sayıda dokuma makinesi, yeşil renkli, uzun ve geniş yapıda, atölyenin büyük kısmını kaplamaktadır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinelere yakın yerlerde, kumaş veya ham madde olarak görünen büyük beyaz rulo ve kumaş yığınları bulunmaktadır.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Duvarlara ve makinelere bağlı kablolar, borular ve destek yapıları mevcuttur.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, atölyenin derinliklerinden yaklaşarak bir dokuma makinesine doğru yürür.\",\n    \"İşçi, makinenin başında durarak makineyi kontrol eder ve ayarlar yapar.\",\n    \"Dokuma makineleri, sürekli olarak çalışır halde olup, kumaş üretimi devam eder.\",\n    \"İşçi, makineye yakın bir mesafede çalışırken, el hareketleriyle makineyi yönetir.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, hareket halindeki dokuma makinesinin çok yakın mesafesinde çalışmaktadır. Bu, makinenin hareketli parçalarına temas riski oluşturur ve ciddi yaralanmaya yol açabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 40.0\n    },\n    {\n      \"description_tr\": \"Atölye, makine ve malzeme yığınları nedeniyle dar ve düzenli olmayan bir yapıdadır. Bu, acil durumlarda kaçış yollarının engellenmesi ve işçinin hareket özgürlüğünün kısıtlanması riskini artırır.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 0.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+        "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, birkaç dokuma makinesi çalışırken, bir işçi makinelere yaklaşarak onlara müdahale ediyor. İşçi, makineye yakın bir mesafede hareket ederken, güvenlik ekipmanı takmadığı görülmektedir. Atölye, düzenli bir şekilde aydınlatılmış olup, makine ve malzeme yığınları mevcuttur.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, beyaz gömlek ve kısa etek giymiş, makineye yaklaşarak müdahale ediyor. Güvenlik ekipmanı takmamış görünüyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çok sayıda dokuma makinesi, bazıları çalışırken, bazıları duruyor. Makinelerin bazılarında kumaş rulosu mevcut.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinelerin etrafında kumaş, rulo ve diğer malzemeler yığılmış durumda.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Duvarlara ve makinelere bağlı kablolar, borular ve destek yapıları mevcut.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, atölyenin derinliklerinden yaklaşarak bir dokuma makinesine doğru yürüyor.\",\n    \"İşçi, makinenin üzerindeki bir parçayı elleriyle ayarlıyor veya kontrol ediyor.\",\n    \"Makineler, kumaş üretimi için çalışırken, bazıları duruyor.\",\n    \"İşçi, makineye yakın bir mesafede hareket ederken, güvenlik ekipmanı takmamış.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, hareket halindeki dokuma makinesine yakın bir mesafede çalışırken, güvenlik ekipmanı (örneğin eldiven, koruyucu gözlük, kask) takmamıştır. Bu, makine parçalarına temas halinde ciddi yaralanma riski oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 40.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
         "risk_events": [
           {
-            "description_tr": "İşçi, hareket halindeki dokuma makinesinin çok yakın mesafesinde çalışmaktadır. Bu, makinenin hareketli parçalarına temas riski oluşturur ve ciddi yaralanmaya yol açabilir.",
+            "description_tr": "İşçi, hareket halindeki dokuma makinesine yakın bir mesafede çalışırken, güvenlik ekipmanı (örneğin eldiven, koruyucu gözlük, kask) takmamıştır. Bu, makine parçalarına temas halinde ciddi yaralanma riski oluşturur.",
             "severity": "high",
             "confidence": 0.9,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
             "timestamp_sec": 40.0
-          },
-          {
-            "description_tr": "Atölye, makine ve malzeme yığınları nedeniyle dar ve düzenli olmayan bir yapıdadır. Bu, acil durumlarda kaçış yollarının engellenmesi ve işçinin hareket özgürlüğünün kısıtlanması riskini artırır.",
-            "severity": "medium",
-            "confidence": 0.85,
-            "supporting_frame_count": 1,
-            "supporting_frame_positions": [],
-            "timestamp_sec": 0.0
           }
         ],
         "risk_flags_tr": [
-          "İşçi, hareket halindeki dokuma makinesinin çok yakın mesafesinde çalışmaktadır. Bu, makinenin hareketli parçalarına temas riski oluşturur ve ciddi yaralanmaya yol açabilir.",
-          "Atölye, makine ve malzeme yığınları nedeniyle dar ve düzenli olmayan bir yapıdadır. Bu, acil durumlarda kaçış yollarının engellenmesi ve işçinin hareket özgürlüğünün kısıtlanması riskini artırır."
+          "İşçi, hareket halindeki dokuma makinesine yakın bir mesafede çalışırken, güvenlik ekipmanı (örneğin eldiven, koruyucu gözlük, kask) takmamıştır. Bu, makine parçalarına temas halinde ciddi yaralanma riski oluşturur."
         ],
-        "computed_confidence": 0.64,
+        "computed_confidence": 0.6775,
         "reasoning_trace": "",
         "segment_start_sec": 0.0,
         "segment_end_sec": 48.4,
-        "created_at": "2026-08-27T12:37:01.383376+00:00"
+        "created_at": "2026-08-27T18:01:08.903833+00:00"
       }
     },
     {
@@ -87,49 +78,49 @@
       "time_range": "00:48-01:48",
       "max_severity": "critical",
       "interpretation": {
-        "packet_id": "9ad16aee-3767-4709-a169-a6a740f60095",
+        "packet_id": "2ca9746f-a7b0-4660-9ca1-a50438168aaf",
         "video_id": "fire-accident-in-power-loom-unit-c1c92d",
         "model_name": "vlm",
         "model_backend": "server",
-        "scene_summary_tr": "Bir tekstil atölyesinde, çalışan bir işçi makineye yakın bir mesafede çalışırken, makinede ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. İşçi yangın sonrası panikle kaçar ve tekrar dönerken yangın söndürme ekipmanı kullanmaya çalışır. Atölye, yoğun dumanla dolup, görüş alanını ciddi şekilde engeller.",
+        "scene_summary_tr": "Bir tekstil atölyesinde, bir işçi dokuma makinesi başında çalışırken, makinede ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. İşçi, yangın başladığında makineden uzaklaşır ve daha sonra yangın söndürme ekipmanı ile müdahale eder. Atölye, yoğun dumanla dolup, görüş alanını azaltır.",
         "detected_entities": [
           {
             "label": "person",
             "confidence_hint": "high",
-            "notes_tr": "İşçi, beyaz tank top ve kısa pantolon giymiş, makineye yakın çalışır ve yangın sonrası hareket eder."
+            "notes_tr": "İşçi, beyaz tank top ve kısa pantolon giymiş, makine başında ve yangın sonrası müdahale eder."
           },
           {
             "label": "machine",
             "confidence_hint": "high",
-            "notes_tr": "Çalışan dokuma makineleri, yangın sırasında alevler ve duman üretir."
+            "notes_tr": "Çalışan dokuma makineleri, yangın başladığında hareket halindedir."
           },
           {
             "label": "smoke or flame",
             "confidence_hint": "high",
-            "notes_tr": "Yangın, makinenin alt kısmından başlar ve duman üretir; alevler net bir şekilde görülür."
+            "notes_tr": "Makinenin alt kısmından çıkan alevler ve ardından yoğun duman oluşumu gözlemlenir."
           },
           {
             "label": "rack/structure",
             "confidence_hint": "medium",
-            "notes_tr": "Atölyenin sağ tarafında malzeme yığınları ve yapısal unsurlar mevcuttur."
+            "notes_tr": "Atölyenin sağ tarafında, malzeme depolama için kullanılan raf yapıları görülmektedir."
           }
         ],
         "detected_actions_tr": [
-          "İşçi, makinenin başında çalışır.",
-          "Makinede ani bir yangın patlaması meydana gelir.",
-          "İşçi panikle kaçar.",
-          "İşçi yangın söndürme ekipmanı kullanmaya çalışır.",
-          "Atölye yoğun dumanla doldurulur."
+          "İşçi, makineye müdahale ederken makinede yangın patlaması olur.",
+          "İşçi, yangın başladığında makineden uzaklaşır.",
+          "Yangın, makinenin alt kısmından başlayarak hızla yayılır.",
+          "İşçi, yangın söndürme ekipmanı ile müdahale eder.",
+          "Atölye, yoğun dumanla dolup görüş alanını azaltır."
         ],
         "confidence_overall": 0.92,
         "inference": {
-          "latency_ms": 22411.140899999737,
-          "tokens_generated": 778
+          "latency_ms": 13081.810600000608,
+          "tokens_generated": 655
         },
-        "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, çalışan bir işçi makineye yakın bir mesafede çalışırken, makinede ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. İşçi yangın sonrası panikle kaçar ve tekrar dönerken yangın söndürme ekipmanı kullanmaya çalışır. Atölye, yoğun dumanla dolup, görüş alanını ciddi şekilde engeller.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, beyaz tank top ve kısa pantolon giymiş, makineye yakın çalışır ve yangın sonrası hareket eder.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çalışan dokuma makineleri, yangın sırasında alevler ve duman üretir.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yangın, makinenin alt kısmından başlar ve duman üretir; alevler net bir şekilde görülür.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Atölyenin sağ tarafında malzeme yığınları ve yapısal unsurlar mevcuttur.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, makinenin başında çalışır.\",\n    \"Makinede ani bir yangın patlaması meydana gelir.\",\n    \"İşçi panikle kaçar.\",\n    \"İşçi yangın söndürme ekipmanı kullanmaya çalışır.\",\n    \"Atölye yoğun dumanla doldurulur.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinede ani bir yangın patlaması meydana gelir. Alevler ve duman, çalışanın sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder. Yangın, elektriksel arıza veya malzeme yanması sonucu olabilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 50.4\n    },\n    {\n      \"description_tr\": \"Yangın sonrası, işçinin panikle kaçması ve tekrar dönmek için yangın söndürme ekipmanı kullanmaya çalışması, yangın kontrolü açısından gecikmeye neden olabilir. Bu, yangının yayılmasına ve daha büyük bir yangın tehlikesine yol açabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 55.4\n    },\n    {\n      \"description_tr\": \"Atölye, yoğun dumanla dolup, acil durumda kaçış yollarının engellenmesi ve çalışanların solunum sağlığına zarar verme riski oluşur. Duman, görüşü tamamen engeller ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 58.4\n    }\n  ],\n  \"confidence_overall\": 0.92\n}",
+        "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, bir işçi dokuma makinesi başında çalışırken, makinede ani bir yangın patlaması meydana gelir. Yangın, makinenin alt kısmından başlar ve hızla yayılır. İşçi, yangın başladığında makineden uzaklaşır ve daha sonra yangın söndürme ekipmanı ile müdahale eder. Atölye, yoğun dumanla dolup, görüş alanını azaltır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, beyaz tank top ve kısa pantolon giymiş, makine başında ve yangın sonrası müdahale eder.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çalışan dokuma makineleri, yangın başladığında hareket halindedir.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin alt kısmından çıkan alevler ve ardından yoğun duman oluşumu gözlemlenir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Atölyenin sağ tarafında, malzeme depolama için kullanılan raf yapıları görülmektedir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, makineye müdahale ederken makinede yangın patlaması olur.\",\n    \"İşçi, yangın başladığında makineden uzaklaşır.\",\n    \"Yangın, makinenin alt kısmından başlayarak hızla yayılır.\",\n    \"İşçi, yangın söndürme ekipmanı ile müdahale eder.\",\n    \"Atölye, yoğun dumanla dolup görüş alanını azaltır.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Dokuma makinesinde ani yangın patlaması meydana gelir. Alevler makinenin alt kısmından başlar ve hızla yayılır. Bu durum, çalışanların ve atölyenin diğer bölümlerinin ciddi tehlikede olduğunu gösterir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 50.4\n    },\n    {\n      \"description_tr\": \"Yangın sonrası, işçinin yangın söndürme ekipmanı ile müdahale etmesi, ancak dumanın yoğunluğu ve yangının yayılması, hala yüksek tehlike seviyesini korumaktadır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 55.4\n    }\n  ],\n  \"confidence_overall\": 0.92\n}",
         "risk_events": [
           {
-            "description_tr": "Makinede ani bir yangın patlaması meydana gelir. Alevler ve duman, çalışanın sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder. Yangın, elektriksel arıza veya malzeme yanması sonucu olabilir.",
+            "description_tr": "Dokuma makinesinde ani yangın patlaması meydana gelir. Alevler makinenin alt kısmından başlar ve hızla yayılır. Bu durum, çalışanların ve atölyenin diğer bölümlerinin ciddi tehlikede olduğunu gösterir.",
             "severity": "critical",
             "confidence": 0.95,
             "supporting_frame_count": 1,
@@ -137,32 +128,23 @@
             "timestamp_sec": 98.8
           },
           {
-            "description_tr": "Yangın sonrası, işçinin panikle kaçması ve tekrar dönmek için yangın söndürme ekipmanı kullanmaya çalışması, yangın kontrolü açısından gecikmeye neden olabilir. Bu, yangının yayılmasına ve daha büyük bir yangın tehlikesine yol açabilir.",
-            "severity": "high",
-            "confidence": 0.88,
-            "supporting_frame_count": 1,
-            "supporting_frame_positions": [],
-            "timestamp_sec": 103.8
-          },
-          {
-            "description_tr": "Atölye, yoğun dumanla dolup, acil durumda kaçış yollarının engellenmesi ve çalışanların solunum sağlığına zarar verme riski oluşur. Duman, görüşü tamamen engeller ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır.",
+            "description_tr": "Yangın sonrası, işçinin yangın söndürme ekipmanı ile müdahale etmesi, ancak dumanın yoğunluğu ve yangının yayılması, hala yüksek tehlike seviyesini korumaktadır.",
             "severity": "high",
             "confidence": 0.9,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
-            "timestamp_sec": 106.8
+            "timestamp_sec": 103.8
           }
         ],
         "risk_flags_tr": [
-          "Makinede ani bir yangın patlaması meydana gelir. Alevler ve duman, çalışanın sağlığını ve atölyenin güvenliğini ciddi şekilde tehdit eder. Yangın, elektriksel arıza veya malzeme yanması sonucu olabilir.",
-          "Yangın sonrası, işçinin panikle kaçması ve tekrar dönmek için yangın söndürme ekipmanı kullanmaya çalışması, yangın kontrolü açısından gecikmeye neden olabilir. Bu, yangının yayılmasına ve daha büyük bir yangın tehlikesine yol açabilir.",
-          "Atölye, yoğun dumanla dolup, acil durumda kaçış yollarının engellenmesi ve çalışanların solunum sağlığına zarar verme riski oluşur. Duman, görüşü tamamen engeller ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır."
+          "Dokuma makinesinde ani yangın patlaması meydana gelir. Alevler makinenin alt kısmından başlar ve hızla yayılır. Bu durum, çalışanların ve atölyenin diğer bölümlerinin ciddi tehlikede olduğunu gösterir.",
+          "Yangın sonrası, işçinin yangın söndürme ekipmanı ile müdahale etmesi, ancak dumanın yoğunluğu ve yangının yayılması, hala yüksek tehlike seviyesini korumaktadır."
         ],
-        "computed_confidence": 0.7135,
+        "computed_confidence": 0.7288,
         "reasoning_trace": "",
         "segment_start_sec": 48.4,
         "segment_end_sec": 108.4,
-        "created_at": "2026-08-27T12:37:23.811620+00:00"
+        "created_at": "2026-08-27T18:01:22.020719+00:00"
       }
     },
     {
@@ -172,99 +154,84 @@
       "time_range": "01:48-02:25",
       "max_severity": "critical",
       "interpretation": {
-        "packet_id": "11aa0f18-5d73-4f1c-aee3-4ebecea0dd5a",
+        "packet_id": "69acf299-1770-438e-a9bb-148bb0414657",
         "video_id": "fire-accident-in-power-loom-unit-c1c92d",
         "model_name": "vlm",
         "model_backend": "server",
-        "scene_summary_tr": "Bir tekstil atölyesinde, yangın sonrası yoğun dumanlı bir ortamda çalışan bir işçi, kırmızı bir yangın söndürücü ile makineye müdahale eder. İşçi, yangın söndürücüyü kullanırken duman nedeniyle görüşü kısıtlı olup, daha sonra başka bir kişi de sahneye girer ve durumu kontrol etmeye çalışır.",
+        "scene_summary_tr": "Bir tekstil atölyesinde, yangın sonrası dumanlı bir ortamda bir işçi kırmızı bir yangın söndürücü ile müdahale ederken, daha sonra başka bir işçi dumanlı alanda hareket eder. Makineler hâlâ duman üretirken, ortamda yüksek tehlike seviyesi devam etmektedir.",
         "detected_entities": [
           {
             "label": "person",
             "confidence_hint": "high",
-            "notes_tr": "İşçi, beyaz gömlek ve kısa pantolon giymiş, yangın söndürücü ile müdahale eder. Daha sonra başka bir kişi, koyu renkli kıyafetlerle sahneye girer."
+            "notes_tr": "İki farklı işçi görülür: biri kırmızı yangın söndürücüyle, diğeri dumanlı alanda hareket eder."
           },
           {
             "label": "machine",
             "confidence_hint": "high",
-            "notes_tr": "Dokuma makinesi, yangın sonrası duman içinde görünür. Makinenin alt kısmında küçük alevler ve duman devam eder."
+            "notes_tr": "Dokuma makinesi gibi büyük endüstriyel makineler mevcuttur."
           },
           {
             "label": "smoke or flame",
             "confidence_hint": "high",
-            "notes_tr": "Yangın sonrası yoğun duman, sahnenin büyük kısmını kaplar. Makinenin alt kısmında hâlâ küçük alevler ve duman görülmektedir."
+            "notes_tr": "Makinelere yakın bölgede yoğun duman ve küçük alevler gözlemlenir."
           },
           {
             "label": "rack/structure",
             "confidence_hint": "medium",
-            "notes_tr": "Atölyenin sağ tarafında malzeme yığınları ve metal yapılar yer alır. Bu yapılar, acil durumda kaçış yollarını engelleyebilir."
-          },
-          {
-            "label": "load",
-            "confidence_hint": "medium",
-            "notes_tr": "Makineye yakın yerde büyük bir malzeme yığını (muhtemelen kumaş veya ham madde) bulunur. Yangın sırasında bu malzeme yanabilir."
+            "notes_tr": "Arka planda malzeme rafı veya yapısal destekler görülebilir."
           }
         ],
         "detected_actions_tr": [
-          "İşçi, kırmızı bir yangın söndürücü ile yangın çıkan makineye doğru ilerler.",
-          "İşçi, yangın söndürücüyü makineye doğrudan kullanmaya çalışır.",
-          "Yangın söndürücü kullanıldıktan sonra, işçi geri çekilir ve dumanlı ortamda durumu değerlendirir.",
-          "İkinci bir kişi, sahneye girer ve yangın bölgesinde durumu kontrol etmeye çalışır.",
-          "Duman, sahnenin büyük kısmını kaplar ve görüşü ciddi şekilde engeller."
+          "İşçi, kırmızı bir yangın söndürücüyle yangına müdahale eder.",
+          "İşçi, yangın söndürücüyü kullanırken dumanlı alanda hareket eder.",
+          "İkinci bir işçi, dumanlı alanda makineye yaklaşır ve çevresini kontrol eder.",
+          "Makine, duman ve küçük alevler üretmeye devam eder."
         ],
-        "confidence_overall": 0.87,
+        "confidence_overall": 0.9,
         "inference": {
-          "latency_ms": 27433.73799999972,
-          "tokens_generated": 1051
+          "latency_ms": 12039.382800001476,
+          "tokens_generated": 678
         },
-        "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, yangın sonrası yoğun dumanlı bir ortamda çalışan bir işçi, kırmızı bir yangın söndürücü ile makineye müdahale eder. İşçi, yangın söndürücüyü kullanırken duman nedeniyle görüşü kısıtlı olup, daha sonra başka bir kişi de sahneye girer ve durumu kontrol etmeye çalışır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, beyaz gömlek ve kısa pantolon giymiş, yangın söndürücü ile müdahale eder. Daha sonra başka bir kişi, koyu renkli kıyafetlerle sahneye girer.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Dokuma makinesi, yangın sonrası duman içinde görünür. Makinenin alt kısmında küçük alevler ve duman devam eder.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yangın sonrası yoğun duman, sahnenin büyük kısmını kaplar. Makinenin alt kısmında hâlâ küçük alevler ve duman görülmektedir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Atölyenin sağ tarafında malzeme yığınları ve metal yapılar yer alır. Bu yapılar, acil durumda kaçış yollarını engelleyebilir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makineye yakın yerde büyük bir malzeme yığını (muhtemelen kumaş veya ham madde) bulunur. Yangın sırasında bu malzeme yanabilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, kırmızı bir yangın söndürücü ile yangın çıkan makineye doğru ilerler.\",\n    \"İşçi, yangın söndürücüyü makineye doğrudan kullanmaya çalışır.\",\n    \"Yangın söndürücü kullanıldıktan sonra, işçi geri çekilir ve dumanlı ortamda durumu değerlendirir.\",\n    \"İkinci bir kişi, sahneye girer ve yangın bölgesinde durumu kontrol etmeye çalışır.\",\n    \"Duman, sahnenin büyük kısmını kaplar ve görüşü ciddi şekilde engeller.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yangın söndürücü kullanılırken, duman nedeniyle görüşü tamamen engellenmiş olup, işçi yangın söndürme ekipmanını doğru şekilde kullanamayabilir. Bu, yangının kontrol edilmesinde gecikmeye ve daha büyük bir yangın tehlikesine yol açabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 110.4\n    },\n    {\n      \"description_tr\": \"Atölye, yoğun dumanla dolup, çalışanların solunum sağlığına zarar verme riski oluşur. Duman, acil durumda kaçış yollarının engellenmesi ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 112.0\n    },\n    {\n      \"description_tr\": \"İkinci bir kişi, dumanlı ortamda sahneye girerken, yangın bölgesindeki sıcaklık ve duman nedeniyle ciddi yaralanma veya solunum problemleri riski taşır. Bu, acil durumda uygun koruyucu ekipman olmaması nedeniyle daha da tehlikeli hâle gelir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 118.0\n    },\n    {\n      \"description_tr\": \"Makinenin hâlâ küçük alevler ve duman çıkarması, yangının tamamen söndürülmemiş olduğunu gösterir. Bu, yangının yeniden patlaması veya yayılması riskini artırır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.92,\n      \"timestamp_sec\": 125.0\n    }\n  ],\n  \"confidence_overall\": 0.87\n}",
+        "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, yangın sonrası dumanlı bir ortamda bir işçi kırmızı bir yangın söndürücü ile müdahale ederken, daha sonra başka bir işçi dumanlı alanda hareket eder. Makineler hâlâ duman üretirken, ortamda yüksek tehlike seviyesi devam etmektedir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki farklı işçi görülür: biri kırmızı yangın söndürücüyle, diğeri dumanlı alanda hareket eder.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Dokuma makinesi gibi büyük endüstriyel makineler mevcuttur.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinelere yakın bölgede yoğun duman ve küçük alevler gözlemlenir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda malzeme rafı veya yapısal destekler görülebilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, kırmızı bir yangın söndürücüyle yangına müdahale eder.\",\n    \"İşçi, yangın söndürücüyü kullanırken dumanlı alanda hareket eder.\",\n    \"İkinci bir işçi, dumanlı alanda makineye yaklaşır ve çevresini kontrol eder.\",\n    \"Makine, duman ve küçük alevler üretmeye devam eder.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yangın söndürücü ile müdahale eden işçi, dumanlı ve potansiyel olarak yanıcı ortamda çalışmaktadır. Bu, solunum yolu zararları ve yanma riski oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 110.4\n    },\n    {\n      \"description_tr\": \"İkinci işçi, dumanlı alanda ve yangın sonrası sıcaklıkta hareket ederken, yanma veya boğulma riski altında bulunmaktadır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 120.0\n    },\n    {\n      \"description_tr\": \"Makine hâlâ duman ve alevler üretmekte olup, yangının tamamen söndürülmemiş olduğu ve yeniden patlama riski olduğu anlaşılmaktadır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.92,\n      \"timestamp_sec\": 130.0\n    }\n  ],\n  \"confidence_overall\": 0.90\n}",
         "risk_events": [
           {
-            "description_tr": "Yangın söndürücü kullanılırken, duman nedeniyle görüşü tamamen engellenmiş olup, işçi yangın söndürme ekipmanını doğru şekilde kullanamayabilir. Bu, yangının kontrol edilmesinde gecikmeye ve daha büyük bir yangın tehlikesine yol açabilir.",
+            "description_tr": "Yangın söndürücü ile müdahale eden işçi, dumanlı ve potansiyel olarak yanıcı ortamda çalışmaktadır. Bu, solunum yolu zararları ve yanma riski oluşturur.",
             "severity": "high",
-            "confidence": 0.88,
+            "confidence": 0.9,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
             "timestamp_sec": 110.4
           },
           {
-            "description_tr": "Atölye, yoğun dumanla dolup, çalışanların solunum sağlığına zarar verme riski oluşur. Duman, acil durumda kaçış yollarının engellenmesi ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır.",
+            "description_tr": "İkinci işçi, dumanlı alanda ve yangın sonrası sıcaklıkta hareket ederken, yanma veya boğulma riski altında bulunmaktadır.",
             "severity": "high",
-            "confidence": 0.9,
+            "confidence": 0.88,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
-            "timestamp_sec": 112.0
+            "timestamp_sec": 120.0
           },
           {
-            "description_tr": "İkinci bir kişi, dumanlı ortamda sahneye girerken, yangın bölgesindeki sıcaklık ve duman nedeniyle ciddi yaralanma veya solunum problemleri riski taşır. Bu, acil durumda uygun koruyucu ekipman olmaması nedeniyle daha da tehlikeli hâle gelir.",
-            "severity": "high",
-            "confidence": 0.85,
-            "supporting_frame_count": 1,
-            "supporting_frame_positions": [],
-            "timestamp_sec": 118.0
-          },
-          {
-            "description_tr": "Makinenin hâlâ küçük alevler ve duman çıkarması, yangının tamamen söndürülmemiş olduğunu gösterir. Bu, yangının yeniden patlaması veya yayılması riskini artırır.",
+            "description_tr": "Makine hâlâ duman ve alevler üretmekte olup, yangının tamamen söndürülmemiş olduğu ve yeniden patlama riski olduğu anlaşılmaktadır.",
             "severity": "critical",
             "confidence": 0.92,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
-            "timestamp_sec": 125.0
+            "timestamp_sec": 130.0
           }
         ],
         "risk_flags_tr": [
-          "Yangın söndürücü kullanılırken, duman nedeniyle görüşü tamamen engellenmiş olup, işçi yangın söndürme ekipmanını doğru şekilde kullanamayabilir. Bu, yangının kontrol edilmesinde gecikmeye ve daha büyük bir yangın tehlikesine yol açabilir.",
-          "Atölye, yoğun dumanla dolup, çalışanların solunum sağlığına zarar verme riski oluşur. Duman, acil durumda kaçış yollarının engellenmesi ve yangın söndürme ekiplerinin müdahale etmesini zorlaştırır.",
-          "İkinci bir kişi, dumanlı ortamda sahneye girerken, yangın bölgesindeki sıcaklık ve duman nedeniyle ciddi yaralanma veya solunum problemleri riski taşır. Bu, acil durumda uygun koruyucu ekipman olmaması nedeniyle daha da tehlikeli hâle gelir.",
-          "Makinenin hâlâ küçük alevler ve duman çıkarması, yangının tamamen söndürülmemiş olduğunu gösterir. Bu, yangının yeniden patlaması veya yayılması riskini artırır."
+          "Yangın söndürücü ile müdahale eden işçi, dumanlı ve potansiyel olarak yanıcı ortamda çalışmaktadır. Bu, solunum yolu zararları ve yanma riski oluşturur.",
+          "İkinci işçi, dumanlı alanda ve yangın sonrası sıcaklıkta hareket ederken, yanma veya boğulma riski altında bulunmaktadır.",
+          "Makine hâlâ duman ve alevler üretmekte olup, yangının tamamen söndürülmemiş olduğu ve yeniden patlama riski olduğu anlaşılmaktadır."
         ],
-        "computed_confidence": 0.6769,
+        "computed_confidence": 0.7005,
         "reasoning_trace": "",
         "segment_start_sec": 108.4,
         "segment_end_sec": 144.96,
-        "created_at": "2026-08-27T12:37:51.257528+00:00"
+        "created_at": "2026-08-27T18:01:34.084264+00:00"
       }
     }
   ],
   "failed_segments": [],
-  "created_at": "2026-08-27T12:37:51.259059+00:00"
+  "created_at": "2026-08-27T18:01:34.086283+00:00"
 }

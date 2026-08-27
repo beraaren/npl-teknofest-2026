@@ -242,7 +242,6 @@ def main() -> None:
     guardrail = OutputGuardrail(config.output.guardrail)
     final_output = guardrail.validate(
         decision_raw["raw_text"], decision_raw["retry_fn"],
-        rag_risk_level=decision_raw["rag_risk_level"],
     )
     pj(final_output)
 

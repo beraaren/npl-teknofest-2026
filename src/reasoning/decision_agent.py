@@ -24,6 +24,7 @@ from ..config import DecisionAgentConfig, VLMConfig
 # anlaşılır biçimde bildirilir.
 from ..models.vlm_backend import VLMBackend, create_backend
 from ..utils.logger import get_logger
+from .context_builder import build_candidate_observations, build_scene_context
 from .memory import ShortTermMemory
 from .mock_tools import MockToolRegistry
 from .rag_layer import RAGLayer
@@ -158,7 +159,13 @@ class DecisionAgent:
         """Kanıt paketini VLM'e verir; guardrail hazır decision_raw döner."""
         backend = self._ensure_backend()
         vlm = vlm_interpretation or self._empty_vlm()
-        prompt = self._build_prompt(event_signals, scene_graphs, rag_context, vlm)
+        scene_context = build_scene_context(scene_graphs, vlm)
+        candidate_observations = build_candidate_observations(event_signals, vlm)
+        prompt = self._build_prompt(
+            event_signals, scene_graphs, rag_context, vlm,
+            scene_context=scene_context,
+            candidate_observations=candidate_observations,
+        )
         self.logger.debug(f"Karar promptu uzunluğu: {len(prompt)} karakter")
 
         temperature, max_tokens = self._generation_params(backend)
@@ -170,8 +177,9 @@ class DecisionAgent:
 
         return {
             "raw_text": raw,
-            "rag_risk_level": rag_context.get("risk_level", "Düşük"),
             "retry_fn": retry_fn,
+            "scene_context": scene_context,
+            "candidate_observations": candidate_observations,
         }
 
     def _generation_params(self, backend: VLMBackend) -> tuple[float, int]:
@@ -193,19 +201,22 @@ class DecisionAgent:
         scene_graphs: List[Dict[str, Any]],
         rag_context: Dict[str, Any],
         vlm: Dict[str, Any],
+        scene_context: Dict[str, Any] | None = None,
+        candidate_observations: List[Dict[str, Any]] | None = None,
     ) -> str:
         parts = [self.config.system_prompt]
 
-        parts.append("\n--- ALGI KATMANI OLAY SİNYALLERİ (YOLO + kural motoru) ---")
-        if event_signals:
-            parts.append(json.dumps(event_signals, ensure_ascii=False, indent=2))
-        else:
-            parts.append("Geometrik olay sinyali tespit edilmedi.")
+        parts.append("\n--- SAHNE / FAALİYET BAĞLAMI (gözlenebilir veriler) ---")
+        parts.append(json.dumps(scene_context or build_scene_context(scene_graphs, vlm), ensure_ascii=False, indent=2))
 
-        parts.append("\n--- RAG KONTEXTİ (risk kataloğu eşleşmeleri) ---")
+        parts.append("\n--- KÜMELENMİŞ ADAY GÖZLEMLER (risk kararı değildir) ---")
+        candidates = candidate_observations or build_candidate_observations(event_signals, vlm)
+        parts.append(json.dumps(candidates, ensure_ascii=False, indent=2) if candidates else "Aday geometrik gözlem yok.")
+
+        parts.append("\n--- RAG TEHLİKE HİPOTEZLERİ (kanıt değil) ---")
         parts.append(json.dumps(rag_context, ensure_ascii=False, indent=2))
 
-        parts.append("\n--- VLM KARE YORUMU (bağımsız kanal) ---")
+        parts.append("\n--- VLM GÖRSEL YORUMU (bağımsız kanal) ---")
         parts.append(json.dumps(vlm, ensure_ascii=False, indent=2))
 
         if self.config.include_scene_graph and scene_graphs:
@@ -220,24 +231,24 @@ class DecisionAgent:
         parts.append(self._tool_catalog_text())
 
         parts.append(
-            "\nZAMAN ALANLARI: 'time' olayın başladığı MM:SS'tir. 'timestamp_sec' "
-            "videonun başından itibaren başlangıç saniyesidir. 'duration' olayın "
-            "sürdüğü saniyedir (bilinmiyorsa 0). 'end_time' olayın bittiği MM:SS'tir "
-            "(bilinmiyorsa time ile aynı).\n"
-            "\nKanıtları düşünce akışıyla değerlendir, çelişkileri çöz ve SADECE "
-            "aşağıdaki JSON şemasına uygun Türkçe yanıt ver. Açıklama ekleme:\n"
+            "\nZAMAN ALANLARI: 'time' başlangıç MM:SS, 'timestamp_sec' videonun başından "
+            "itibaren saniye, 'duration' gözlenen sonuç süresidir. Zamanı bilmiyorsan "
+            "0 kullan ve uncertainty_reason içinde nedenini yaz.\n"
+            "\nKanıtları bağlam içinde değerlendir ve SADECE aşağıdaki JSON şemasına uygun "
+            "Türkçe yanıt ver. 'results' kanoniktir: RAG hipotezi tek başına kanıt değildir; "
+            "overall_risk hiçbir result severity'sine kopyalanamaz. Açıklama ekleme:\n"
             '{\n'
-            '  "summary": "Olayın nerede geçtiğini, kimlerin dahil olduğunu ve tam olarak ne yaşandığını anlatan, akıcı, açıklayıcı ve detaylı Türkçe özet",\n'
-            '  "events": [\n'
-            '    {"time": "MM:SS", "end_time": "MM:SS", "timestamp_sec": 0.0, "duration": 0.0, "event": "olay açıklaması", "event_type": "forklift_tip_over|person_fall|gathering|immobile_person|ppe_missing|dangerous_proximity|fire_smoke|leakage|...", "confidence": 0.0-1.0}\n'
+            '  "summary": "Mekân, faaliyet, doğrulanmış sonuçlar ve belirsizliklerin Türkçe özeti",\n'
+            '  "scene_context": {"environment": {}, "activities": [], "zones": [], "context_uncertainties": []},\n'
+            '  "results": [\n'
+            '    {"result_id": "result-1", "result_type": "incident|contextual_finding|uncertain_observation", "time": "MM:SS", "end_time": "MM:SS", "timestamp_sec": 0.0, "duration": 0.0, "event": "açıklama", "event_type": "...", "subjects": [], "zone": "unknown", "hazard_mechanism": "zarar zinciri", "severity": "critical|high|medium|low|unknown", "evidence": {"geometric": {"supports": false, "observations": [], "limitations": []}, "visual": {"supports": false, "observations": [], "limitations": []}, "rag": {"supports": false, "observations": [], "limitations": []}, "agreement": "corroborated|single_source|conflicting|insufficient|unknown", "resolution": "kanıt/çelişki açıklaması"}, "uncertain": false, "uncertainty_reason": "", "confidence": 0.0}\n'
             '  ],\n'
             '  "risk": "Düşük|Orta|Yüksek",\n'
-            '  "actions": ["aksiyon 1", "aksiyon 2"],\n'
-            '  "reasoning": "Karara nasıl ulaştığın: hangi kanıta neden güvendiğin, çelişkileri nasıl çözdüğün",\n'
-            '  "confidence": 0.0-1.0,\n'
-            '  "triggered_mock_tools": [\n'
-            '    {"tool_name": "katalogdaki_araç_adı", "params": {"location": "...", "urgency": "Yüksek"}}\n'
-            '  ]\n'
+            '  "overall_risk": "critical|high|medium|low|unknown",\n'
+            '  "actions": ["yalnız doğrulanmış sonuca uygun aksiyon"],\n'
+            '  "reasoning": "bağlam, mekanizma ve kanıt harmanlama gerekçesi",\n'
+            '  "uncertain": false, "uncertainty_reason": "",\n'
+            '  "triggered_mock_tools": []\n'
             '}'
         )
         return "\n".join(parts)

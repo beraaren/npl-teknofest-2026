@@ -210,11 +210,9 @@ def main(args=None) -> None:
         # Ana sorgu: Observer raporu; event_signals ikincil filtre/boost
         rag_context = rag.build_context(observations, event_signals)
         logger.info(
-            "RAG çıktısı: "
-            f"risk_level={rag_context.get('risk_level')}, "
-            f"risk_score={rag_context.get('risk_score')}, "
-            f"matched_patterns={rag_context.get('matched_patterns', [])}, "
-            f"actions={rag_context.get('actions', [])}"
+            "RAG hipotezleri: "
+            f"candidates={len(rag_context.get('hypotheses', []))}, "
+            f"unverified={len(rag_context.get('unverified_hypotheses', []))}"
         )
 
     # ------------------------------------------------------------------
@@ -285,7 +283,6 @@ def main(args=None) -> None:
         final_output = guardrail.validate(
             decision_raw["raw_text"],
             decision_raw["retry_fn"],
-            rag_risk_level=decision_raw["rag_risk_level"],
         )
         logger.info(
             "Guardrail çıktısı: "
@@ -302,7 +299,7 @@ def main(args=None) -> None:
     # ------------------------------------------------------------------
     triggered = final_output.get("triggered_mock_tools", [])
     if not triggered:
-        suggested = tools.suggest_tools(final_output["risk"], [e.get("event_type", "") for e in final_output.get("events", [])])
+        suggested = tools.suggest_tools_for_results(final_output.get("results", []))
         final_output["triggered_mock_tools"] = [
             {"tool_name": s["tool_name"], "params": {"location": "saha", "reason": final_output["summary"][:100]}}
             for s in suggested
@@ -330,18 +327,25 @@ def main(args=None) -> None:
         "vlm_backend": backend.name(),
         "vlm_interpretation": vlm_interpretation,
         "geometric_signals": event_signals,
-        # Olay zaman damgalarını öne çıkar; karar ajanının ürettiği
-        # duration / end_time / timestamp_sec alanlarını koru.
+        # Replay yalnız doğrulanmış incident sonuçlarını kullanır; genel risk ve
+        # bağlamsal/belirsiz bulgular event severity'sine dönüştürülmez.
         "event_timestamps": [
             {
-                "event_type": ev.get("event_type", ""),
-                "timestamp": ev.get("time", ""),
-                "end_time": ev.get("end_time", ""),
-                "seconds": float(ev.get("timestamp_sec", _time_to_seconds(ev.get("time", "00:00")))),
-                "timestamp_sec": float(ev.get("timestamp_sec", _time_to_seconds(ev.get("time", "00:00")))),
-                "duration": float(ev.get("duration", 0.0)),
+                "result_id": result.get("result_id", ""),
+                "result_type": "incident",
+                "event_type": result.get("event_type", ""),
+                "timestamp": result.get("time", ""),
+                "end_time": result.get("end_time", ""),
+                "seconds": float(result.get("timestamp_sec", _time_to_seconds(result.get("time", "00:00")))),
+                "timestamp_sec": float(result.get("timestamp_sec", _time_to_seconds(result.get("time", "00:00")))),
+                "duration": float(result.get("duration", 0.0)),
+                "severity": result.get("severity", "unknown"),
+                "evidence_agreement": (result.get("evidence") or {}).get("agreement", "unknown"),
             }
-            for ev in final_output.get("events", [])
+            for result in final_output.get("results", [])
+            if result.get("result_type") == "incident"
+            and not result.get("uncertain")
+            and result.get("severity") != "unknown"
         ],
     }
 

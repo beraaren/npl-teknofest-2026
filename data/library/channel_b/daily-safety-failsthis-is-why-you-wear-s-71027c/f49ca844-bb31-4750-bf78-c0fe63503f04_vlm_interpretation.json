@@ -1,0 +1,59 @@
+{
+  "packet_id": "f49ca844-bb31-4750-bf78-c0fe63503f04",
+  "video_id": "daily-safety-failsthis-is-why-you-wear-s-71027c",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir depo veya üretim alanındaki güvenlik kamerası görüntüsü. Birden fazla kişi, büyük ahşap konteynerler veya raflar gibi yükleri taşımak için el ile itme ve çekme hareketleri yapıyor. Alanın sağ tarafında bir forklift duruyor. İşçiler, yüklerin yanından geçerken ve hareket ettirirken dikkatli olmaya çalışıyor gibi görünüyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "En az 3 kişi göze çarpıyor; bazıları yükleri itiyor, bazıları hareket ediyor."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük ahşap konteynerler veya raflar, yük olarak tanımlanabilir."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Sağ tarafta duran forklift, iş yerinde kullanılan bir makinedir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Yüklerin arkasında ve yanlarında yüksek raf yapıları var."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler, büyük ahşap konteynerleri el ile itiyor ve çekiyor.",
+    "Bir kişi, yükün yanından geçerken dengesini kaybediyor ve yere düşüyor.",
+    "Diğer işçiler, yüklerin yerleştirilmesiyle ilgileniyor.",
+    "Forklift, hareketsiz duruyor."
+  ],
+  "confidence_overall": 0.85,
+  "inference": {
+    "latency_ms": 9341.346799999883,
+    "tokens_generated": 501
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir depo veya üretim alanındaki güvenlik kamerası görüntüsü. Birden fazla kişi, büyük ahşap konteynerler veya raflar gibi yükleri taşımak için el ile itme ve çekme hareketleri yapıyor. Alanın sağ tarafında bir forklift duruyor. İşçiler, yüklerin yanından geçerken ve hareket ettirirken dikkatli olmaya çalışıyor gibi görünüyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az 3 kişi göze çarpıyor; bazıları yükleri itiyor, bazıları hareket ediyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük ahşap konteynerler veya raflar, yük olarak tanımlanabilir.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sağ tarafta duran forklift, iş yerinde kullanılan bir makinedir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Yüklerin arkasında ve yanlarında yüksek raf yapıları var.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, büyük ahşap konteynerleri el ile itiyor ve çekiyor.\",\n    \"Bir kişi, yükün yanından geçerken dengesini kaybediyor ve yere düşüyor.\",\n    \"Diğer işçiler, yüklerin yerleştirilmesiyle ilgileniyor.\",\n    \"Forklift, hareketsiz duruyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"00:28-00:30 saniyeler arasında, bir işçi yükün yanından geçerken dengesini kaybederek yere düşüyor. Bu, yaralanma riski oluşturabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 28.5\n    }\n  ],\n  \"confidence_overall\": 0.85\n}",
+  "risk_events": [
+    {
+      "description_tr": "00:28-00:30 saniyeler arasında, bir işçi yükün yanından geçerken dengesini kaybederek yere düşüyor. Bu, yaralanma riski oluşturabilir.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 28.5
+    }
+  ],
+  "risk_flags_tr": [
+    "00:28-00:30 saniyeler arasında, bir işçi yükün yanından geçerken dengesini kaybederek yere düşüyor. Bu, yaralanma riski oluşturabilir."
+  ],
+  "computed_confidence": 0.6525,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 32.36566666666667,
+  "created_at": "2026-08-27T17:56:10.460309+00:00"
+}

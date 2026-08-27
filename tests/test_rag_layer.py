@@ -1,4 +1,4 @@
-"""RAGLayer vektörel arama testleri (plan/04)."""
+"""RAGLayer'ın hipotez üretim sözleşmesi testleri."""
 from pathlib import Path
 
 from src.reasoning.rag_layer import RAGLayer
@@ -13,42 +13,42 @@ def make_rag() -> RAGLayer:
     )
 
 
-def test_signal_boosts_matching_pattern():
-    """dangerous_proximity sinyali ilgili pattern'i doğrudan işaretler (isim uyumu düzeltildi)."""
+def test_signal_creates_candidate_hypothesis_without_risk_score():
     rag = make_rag()
-    ctx = rag.build_context("sıradan bir saha görüntüsü", [
+    context = rag.build_context("sıradan bir saha görüntüsü", [
         {"event_type": "dangerous_proximity", "timestamp": "00:05", "description": "", "confidence": 0.9,
          "involved_track_ids": [1, 2], "metadata": {}},
     ])
-    names = [m["pattern"] for m in ctx["matched_patterns"]]
+    names = [item["pattern"] for item in context["hypotheses"]]
     assert "dangerous_proximity" in names
-    assert ctx["risk_level"] == "Yüksek"
-    assert ctx["risk_score"] == 80
+    candidate = next(item for item in context["hypotheses"] if item["pattern"] == "dangerous_proximity")
+    assert candidate["evidence_status"] == "signal_candidate"
+    assert "risk_level" not in candidate
+    assert "risk_score" not in candidate
 
 
-def test_empty_inputs_return_safe_default():
+def test_empty_inputs_return_empty_hypothesis_contract():
     rag = make_rag()
-    ctx = rag.build_context("", [])
-    assert ctx == {"risk_level": "Düşük", "risk_score": 0, "actions": [], "matched_patterns": []}
+    context = rag.build_context("", [])
+    assert context["hypotheses"] == []
+    assert context["unverified_hypotheses"] == []
+    assert context["recommended_actions"] == []
+    assert context["matched_patterns"] == []
 
 
-def test_vector_search_matches_smoke_report():
-    """Ana sorgu (Observer raporu) 'duman' içerdiğinde fire_smoke pattern'i vektör benzerliğiyle eşleşir."""
+def test_vector_search_is_unverified_hypothesis_not_risk_decision():
     rag = make_rag()
-    ctx = rag.build_context("sahada yoğun duman görülüyor", [])
-    names = [m["pattern"] for m in ctx["matched_patterns"]]
+    context = rag.build_context("sahada yoğun duman görülüyor", [])
+    names = [item["pattern"] for item in context["unverified_hypotheses"]]
     assert "fire_smoke" in names
-    smoke = next(m for m in ctx["matched_patterns"] if m["pattern"] == "fire_smoke")
-    assert smoke["similarity"] >= 0.1
-    assert ctx["risk_level"] == "Yüksek"
+    smoke = next(item for item in context["unverified_hypotheses"] if item["pattern"] == "fire_smoke")
+    assert smoke["evidence_status"] == "unverified"
+    assert smoke["similarity"] > 0
 
 
-def test_output_contract_keys():
+def test_gathering_structural_match_requires_three_people():
     rag = make_rag()
-    ctx = rag.build_context("forklift devrilmiş olabilir", [
-        {"event_type": "forklift_tip_over", "timestamp": "00:02", "description": "", "confidence": 0.9,
-         "involved_track_ids": [5], "metadata": {}},
-    ])
-    assert set(ctx.keys()) == {"risk_level", "risk_score", "actions", "matched_patterns"}
-    assert isinstance(ctx["actions"], list)
-    assert ctx["risk_score"] == 95  # tip_over en yüksek skorlu eşleşme
+    one_person = [{"detections": [{"class": "insan"}], "tracks": []}]
+    three_people = [{"detections": [{"class": "insan"}, {"class": "insan"}, {"class": "insan"}], "tracks": []}]
+    assert "gathering" not in rag.match_patterns([], one_person)
+    assert "gathering" in rag.match_patterns([], three_people)

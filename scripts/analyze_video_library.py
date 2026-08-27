@@ -166,78 +166,46 @@ def build_event_timestamps(
     vlm_interpretation: dict,
     duration_sec: float,
 ) -> list[dict]:
-    """Replay motorunun uyarı zamanlamasında kullanacağı olay listesini kurar.
+    """Yalnız doğrulanmış incident sonuçlarından replay zaman damgası üretir.
 
-    Karar ajanının doğrulanmış olayları esas alınır (kanıt birleştirmesi orada
-    yapılmıştır). Şiddet (``severity``) bilgisi, zamanı en yakın olan Kanal B
-    risk olayından ödünç alınır; Kanal B'de karşılığı yoksa risk seviyesinden
-    türetilir.
-
-    Zaman damgaları video süresine kırpılır: model bazen süre dışına taşan
-    damga üretebiliyor ve bu, uyarının hiç tetiklenmemesine yol açar.
-
-    Args:
-        final_output: Guardrail'den geçmiş nihai karar çıktısı.
-        vlm_interpretation: Kanal B (S8) yorumu.
-        duration_sec: Videonun toplam süresi.
-
-    Returns:
-        ``seconds`` alanına göre sıralı olay sözlükleri.
+    Genel video riski ve Kanal-B'nin yakın zamandaki severity'si bu fonksiyonda
+    kesinlikle event severity'sine kopyalanmaz. VLM yalnız karar anındaki kanıt
+    izinde yer alır; incident severity'si karar çıktısının kendi alanıdır.
     """
-    vlm_events = [
-        {
-            "seconds": time_to_seconds(ev.get("timestamp_sec")),
-            "severity": str(ev.get("severity") or "medium"),
-            "description": str(ev.get("description_tr") or ""),
-        }
-        for ev in (vlm_interpretation or {}).get("risk_events", [])
-        if isinstance(ev, dict)
-    ]
-
-    risk = str(final_output.get("risk") or "Düşük")
-    default_severity = {"Yüksek": "high", "Orta": "medium", "Düşük": "low"}.get(risk, "medium")
-
+    del vlm_interpretation  # API uyumluluğu: karar kanıtı zaten results içindedir.
     out: list[dict] = []
-    for ev in final_output.get("events", []):
-        if not isinstance(ev, dict):
+    for result in final_output.get("results", []):
+        if not isinstance(result, dict) or result.get("result_type") != "incident":
             continue
-        seconds = time_to_seconds(ev.get("time"))
+        severity = str(result.get("severity") or "unknown")
+        # Belirsiz ve severity'siz sonuçlar alarm/zaman çizelgesi olamaz.
+        if result.get("uncertain") or severity == "unknown":
+            continue
+        timestamp_sec = float(result.get("timestamp_sec") or time_to_seconds(result.get("time")))
         if duration_sec > 0:
-            # Süreyi aşan damgayı sona çek; aksi hâlde uyarı hiç tetiklenmez.
-            seconds = min(seconds, max(0.0, duration_sec - 0.5))
-
-        # VLM risk olaylarından en yakın olayı bul; duration ve detay ödünç al.
-        severity = default_severity
-        detail = ""
-        event_duration = 0.0
-        if vlm_events:
-            nearest = min(vlm_events, key=lambda v: abs(v["seconds"] - seconds))
-            if abs(nearest["seconds"] - seconds) <= 5.0:
-                severity = nearest["severity"]
-                detail = nearest["description"]
-
-        # Karar ajanı zaten duration/end_time/timestamp_sec üretmişse onları kullan;
-        # yoksa VLM'den ödünç al veya varsayılan bırak.
-        event_duration = float(ev.get("duration") or event_duration)
-        timestamp_sec = float(ev.get("timestamp_sec") or seconds)
-        end_time = str(ev.get("end_time") or "")
-        if not end_time and event_duration > 0:
-            end_time = mmss(timestamp_sec + event_duration)
-
+            timestamp_sec = min(max(0.0, timestamp_sec), max(0.0, duration_sec - 0.5))
+        duration = max(0.0, float(result.get("duration") or 0.0))
+        end_time = str(result.get("end_time") or "")
+        if not end_time and duration > 0:
+            end_time = mmss(timestamp_sec + duration)
+        evidence = result.get("evidence") if isinstance(result.get("evidence"), dict) else {}
         out.append({
+            "result_id": str(result.get("result_id") or ""),
+            "result_type": "incident",
             "seconds": round(timestamp_sec, 2),
             "timestamp": mmss(timestamp_sec),
             "end_time": end_time,
             "timestamp_sec": round(timestamp_sec, 2),
-            "duration": round(event_duration, 2),
-            "event_type": str(ev.get("event_type") or ""),
-            "event": str(ev.get("event") or ""),
-            "confidence": float(ev.get("confidence") or 0.0),
+            "duration": round(duration, 2),
+            "event_type": str(result.get("event_type") or ""),
+            "event": str(result.get("event") or ""),
+            "hazard_mechanism": str(result.get("hazard_mechanism") or ""),
+            "confidence": float(result.get("confidence") or 0.0),
             "severity": severity,
-            "vlm_detail": detail,
+            "evidence_agreement": str(evidence.get("agreement") or "unknown"),
+            "uncertain": bool(result.get("uncertain")),
         })
-
-    out.sort(key=lambda e: e["seconds"])
+    out.sort(key=lambda item: item["seconds"])
     return out
 
 
@@ -421,16 +389,12 @@ def analyze_video(video_path: Path, out_dir: Path, config_path: str) -> dict:
     final_output = guardrail.validate(
         decision_raw["raw_text"],
         decision_raw["retry_fn"],
-        rag_risk_level=decision_raw["rag_risk_level"],
     )
 
     # --- Mock araçları çalıştır ---------------------------------------
     triggered = final_output.get("triggered_mock_tools") or []
     if not triggered:
-        suggested = tools.suggest_tools(
-            final_output["risk"],
-            [e.get("event_type", "") for e in final_output.get("events", [])],
-        )
+        suggested = tools.suggest_tools_for_results(final_output.get("results", []))
         triggered = [
             {
                 "tool_name": s["tool_name"],
@@ -465,6 +429,12 @@ def analyze_video(video_path: Path, out_dir: Path, config_path: str) -> dict:
         "summary": final_output.get("summary", ""),
         "headline": build_headline(events, str(final_output.get("risk") or "Düşük")),
         "risk": final_output.get("risk", "Düşük"),
+        "overall_risk": final_output.get("overall_risk", "unknown"),
+        "scene_context": final_output.get("scene_context", {}),
+        "results": final_output.get("results", []),
+        "uncertain": final_output.get("uncertain", False),
+        "uncertainty_reason": final_output.get("uncertainty_reason", ""),
+        # Legacy incident projeksiyonu; eski tüketiciler için korunur.
         "confidence": final_output.get("confidence", 0.0),
         "reasoning": final_output.get("reasoning", ""),
         "actions": final_output.get("actions", []),

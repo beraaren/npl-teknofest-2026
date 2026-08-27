@@ -2,142 +2,44 @@
   "slug": "kaos-and-the-hands-of-fate-machine-shop-a34463",
   "video_file": "videos/Kaos and the hands of fate.  Machine shop accident.mp4",
   "video_name": "Kaos and the hands of fate.  Machine shop accident",
-  "analyzed_at": "2026-08-27T12:47:57.829628+00:00",
-  "analysis_seconds": 38.2,
+  "analyzed_at": "2026-08-27T18:16:52.131495+00:00",
+  "analysis_seconds": 98.2,
   "video": {
     "duration_sec": 15.82,
     "fps": 29.97,
     "width": 640,
     "height": 360
   },
-  "summary": "Endüstriyel bir üretim tesisinde, metal işleme makinesi üzerinde uzun bir silindirik yükün işlendiği bir sahne izlenmektedir. Olayın başlangıcında, 00:04 ve 00:13-00:14 saatleri arasında insan_4, insan_6, insan_16 ve insan_17 olarak etiketlenen personel gruplarının baret ve yelek gibi temel kişisel koruyucu donanımları (KKD) eksik olduğu tespit edilmiştir. 00:08'de insan_6 ve bir araç (muhtemelen forklift) arasında tehlikeli bir yakınlık yaşanmış, ancak bu durumun güvenliği tehdit eden kritik bir seviyeye ulaşıp ulaşmadığı belirsiz kalmıştır. Olayın en kritik anı 00:14'te yaşanmıştır; bu anda insan_16, ani bir düşme hareketi sergilemiştir. Bağımsız Görüntü İşleme Modeli (VLM) tarafından yapılan analizde, sahne genelinde makinede ani bir patlama veya basınç salınımı sonucu yoğun duman ve parçacık yayılması olduğu, personelin bu durumdan kaçış hareketi yaptığı belirtilmiştir. VLM'nin yüksek güven skoruna sahip bu görsel tanımı, algı katmanındaki düşme sinyaliyle örtüşerek olayın ciddiyetini artırmaktadır. Sahne, personel güvenliği ihlalleri, potansiyel bir makine arızası/patlaması ve buna bağlı yaralanma riski ile karakterize edilen yüksek riskli bir durumdadır.",
-  "headline": "Yangın / duman (00:14)",
-  "risk": "Yüksek",
-  "confidence": 0.88,
-  "reasoning": "Karar, üç farklı kanaldan gelen verilerin entegrasyonu ile verilmiştir. Algı katmanı (YOLO), 00:14'te insan_16'nın düşme hareketi yaptığını (güven: 0.548) ve birden fazla personelin KKD eksik olduğunu tespit etmiştir. Ancak, düşme olayının tek başına nedenini açıklamak yetersizdir. Bağımsız VLM kanalı, sahne genelinde makinede bir patlama/basınç salınımı ve yoğun duman oluştuğunu (güven: 0.9) ve personelin kaçış yaptığını raporlamıştır. Bu VLM raporu, YOLO'nun tespit ettiği düşme olayını (muhtemelen patlama veya panik sonucu) destekleyen en güçlü kanıttır. RAG kataloğundaki 'person_fall' ve 'fire_smoke' kalıpları ile uyumludur. Tehlikeli yakınlık olayı (00:08) düşük güven skoruna (0.111) sahip olduğu için ikincil bir risk olarak değerlendirilmiş, asıl odak noktası patlama ve düşme olayına kaydırılmıştır. KKD eksiklikleri, olayın ciddiyetini artıran önleyici ihlaller olarak eklenmiştir. Sonuç olarak, insan hayatını doğrudan tehdit eden patlama ve düşme olayları önceliklendirilerek risk seviyesi 'Yüksek' olarak belirlenmiştir.",
+  "summary": "Bilmiyorum",
+  "headline": "Olağan operasyon",
+  "risk": "Düşük",
+  "overall_risk": "unknown",
+  "scene_context": {},
+  "results": [
+    {
+      "result_id": "null-response",
+      "result_type": "uncertain_observation",
+      "time": "00:00",
+      "event": "Karar üretilemedi.",
+      "event_type": "unknown",
+      "severity": "unknown",
+      "uncertain": true,
+      "uncertainty_reason": "Model çıktısı şemaya uymadı.",
+      "evidence": {
+        "agreement": "insufficient"
+      }
+    }
+  ],
+  "uncertain": true,
+  "uncertainty_reason": "Model çıktısı şemaya uymadı.",
+  "confidence": 0.0,
+  "reasoning": "Model çıktısı şemaya uymadı.",
   "actions": [
-    "Acil durum ekibini ve sağlık personelini derhal çağır.",
-    "Olay bölgesini güvenlik şeridi ile izole et.",
-    "Yaralıyı hareket ettirmeden sağlık ekibini bekle.",
-    "Bölgedeki tüm personeli tahliye et.",
-    "Makinede yangın veya sızıntı riskine karşı kontrol et.",
-    "İlgili alan sorumlusunu prosedür ihlali hakkında uyar."
+    "İnsan gözetiminde tekrar analiz yap."
   ],
-  "events": [
-    {
-      "time": "00:04",
-      "event": "Personel insan_4 ve insan_6 baret ve yelek eksikliği ile tespit edildi.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7,
-      "timestamp_sec": 4.0,
-      "duration": 0.0,
-      "end_time": "00:04"
-    },
-    {
-      "time": "00:08",
-      "event": "insan_6 ve araç arasında tehlikeli yakınlık (düşük güven skoru ile).",
-      "event_type": "dangerous_proximity",
-      "confidence": 0.111,
-      "timestamp_sec": 8.0,
-      "duration": 0.0,
-      "end_time": "00:08"
-    },
-    {
-      "time": "00:13",
-      "event": "Personel insan_16 ve insan_17 baret ve yelek eksikliği ile tespit edildi.",
-      "event_type": "ppe_missing",
-      "confidence": 0.7,
-      "timestamp_sec": 13.0,
-      "duration": 1.0,
-      "end_time": "00:14"
-    },
-    {
-      "time": "00:14",
-      "event": "Personel (insan_16) ani düşme hareketi gösterdi; VLM tarafından makinede patlama/duman olayı ve kaçış hareketi doğrulandı.",
-      "event_type": "person_fall",
-      "confidence": 0.85,
-      "timestamp_sec": 14.0,
-      "duration": 0.0,
-      "end_time": "00:14"
-    },
-    {
-      "time": "00:14",
-      "event": "Makinede patlama/basınç salınımı sonucu yoğun duman ve parçacık yayılması (VLM doğrulaması).",
-      "event_type": "fire_smoke",
-      "confidence": 0.9,
-      "timestamp_sec": 14.0,
-      "duration": 0.0,
-      "end_time": "00:14"
-    }
-  ],
-  "triggered_mock_tools": [
-    {
-      "tool_name": "call_health_team",
-      "params": {
-        "location": "Üretim Tesisi - Makine Bölümü",
-        "urgency": "Yüksek"
-      }
-    },
-    {
-      "tool_name": "secure_area",
-      "params": {
-        "location": "Üretim Tesisi - Makine Bölümü",
-        "urgency": "Yüksek"
-      }
-    },
-    {
-      "tool_name": "notify_supervisor",
-      "params": {
-        "location": "Üretim Tesisi - Makine Bölümü",
-        "urgency": "Yüksek"
-      }
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "Üretim Tesisi - Makine Bölümü",
-        "urgency": "Yüksek"
-      }
-    }
-  ],
-  "tool_execution_results": [
-    {
-      "status": "success",
-      "tool": "call_health_team",
-      "params": {
-        "location": "Üretim Tesisi - Makine Bölümü",
-        "urgency": "Yüksek"
-      },
-      "mock_result": "call_health_team başarıyla simüle edildi."
-    },
-    {
-      "status": "success",
-      "tool": "secure_area",
-      "params": {
-        "location": "Üretim Tesisi - Makine Bölümü",
-        "urgency": "Yüksek"
-      },
-      "mock_result": "secure_area başarıyla simüle edildi."
-    },
-    {
-      "status": "success",
-      "tool": "notify_supervisor",
-      "params": {
-        "location": "Üretim Tesisi - Makine Bölümü",
-        "urgency": "Yüksek"
-      },
-      "mock_result": "notify_supervisor başarıyla simüle edildi."
-    },
-    {
-      "status": "success",
-      "tool": "record_incident",
-      "params": {
-        "location": "Üretim Tesisi - Makine Bölümü",
-        "urgency": "Yüksek"
-      },
-      "mock_result": "record_incident başarıyla simüle edildi."
-    }
-  ],
+  "events": [],
+  "triggered_mock_tools": [],
+  "tool_execution_results": [],
   "metadata": {
     "vlm_backend": "server",
     "channel_b_mode": "video",
@@ -198,8 +100,8 @@
           10
         ],
         "metadata": {
-          "estimated_distance_pixels": 167.5574138168765,
-          "effective_limit_pixels": 188.47770244279747
+          "estimated_distance_pixels": 167.56514628645184,
+          "effective_limit_pixels": 188.4900301072567
         }
       },
       {
@@ -241,60 +143,61 @@
           16
         ],
         "metadata": {
-          "vertical_displacement_pixels": 56.754999999999995,
-          "scale_pixels": 129.44958722678462,
-          "drop_ratio": 0.43843322497869447
+          "vertical_displacement_pixels": 56.76999999999998,
+          "scale_pixels": 129.45824017155,
+          "drop_ratio": 0.4385197877305602
         }
       }
     ],
     "vlm_interpretation": {
-      "packet_id": "9fafacfc-7c88-4b83-adb5-fb01daef955d",
+      "packet_id": "9cd6c45e-6231-4b8d-a239-aea92251da66",
       "video_id": "kaos-and-the-hands-of-fate-machine-shop-a34463",
       "model_name": "vlm",
       "model_backend": "server",
-      "scene_summary_tr": "Bir endüstriyel üretim tesisi içinde, uzun bir metal çubuk veya rulonun bir makine üzerinde işleme sırasında olduğu görülüyor. 07:20:38 saniyede bir patlama veya şiddetli basınç salınımı meydana gelir ve bu, büyük miktarda duman, toz ve parçacıkların havaya fırlamasına neden olur. Personel, olaydan hemen sonra kaçış hareketi yapar.",
+      "scene_summary_tr": "Bir endüstriyel üretim tesisi içinde, uzun bir metal çubuk veya rulonun bir makine üzerinde işleme sırasında olduğu görülüyor. 00:08'de bir kişi makinenin yakınından geçerken, 00:09'da ani bir patlama veya basınç salınımı meydana gelir ve yoğun bir duman veya sıvı bulutu ortaya çıkar. Bu olay, çevredeki personelin kaçışına neden olur.",
       "detected_entities": [
         {
           "label": "person",
           "confidence_hint": "high",
-          "notes_tr": "İşçi, koyu renkli kıyafetler içinde, makineye yakın bir alanda yürüyor ve olaydan sonra kaçış hareketi yapar."
+          "notes_tr": "00:05-00:08 arasında makinenin yakınında yürüyen bir kişi görülüyor. 00:09'dan sonra kaçış hareketi yapar."
         },
         {
           "label": "machine",
           "confidence_hint": "high",
-          "notes_tr": "Uzun, mavi ve kırmızı renkli büyük bir işleme makinesi, muhtemelen bir rulo veya çubuk işleme ünitesi."
+          "notes_tr": "Uzun metal çubuk veya rulonun yerleştirildiği büyük mavi ve kırmızı renkli bir işleme makinesi."
         },
         {
           "label": "load",
           "confidence_hint": "high",
-          "notes_tr": "Uzun, metalik, silindirik bir yük (muhtemelen rulo veya çubuk) makinenin üzerinde yer alıyor."
+          "notes_tr": "Makinede işleme altındaki uzun, sarmal şeklinde metal rulon veya çubuk."
         },
         {
           "label": "smoke or flame",
           "confidence_hint": "high",
-          "notes_tr": "07:20:38'den itibaren yoğun duman ve parçacıkların havaya yayıldığı net bir şekilde görülüyor."
+          "notes_tr": "00:09'da ani bir duman veya sıvı bulutu patlama şeklinde yayılır ve sahneyi kaplar."
         },
         {
           "label": "rack/structure",
           "confidence_hint": "medium",
-          "notes_tr": "Arka planda, malzeme depolama için kullanılan raf ve yapılar görülebiliyor."
+          "notes_tr": "Arka planda malzeme depolama rafı veya yapılar görülebilir."
         }
       ],
       "detected_actions_tr": [
-        "İşçi, makinenin yanında yürüyor.",
-        "Makinede bir patlama veya basınç salınımı meydana gelir.",
-        "Duman ve parçacıklar havaya fırlar.",
-        "İşçi, olaydan kaçış hareketi yapar."
+        "Kişi, makinenin yakınından yürüyor.",
+        "Makine, uzun bir metal yükü işliyor.",
+        "Ani bir patlama veya basınç salınımı meydana gelir.",
+        "Duman veya sıvı bulutu hızla yayılır.",
+        "Kişi, olaydan kaçar."
       ],
       "confidence_overall": 0.9,
       "inference": {
-        "latency_ms": 10424.787200001447,
-        "tokens_generated": 644
+        "latency_ms": 11314.925000006042,
+        "tokens_generated": 627
       },
-      "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir endüstriyel üretim tesisi içinde, uzun bir metal çubuk veya rulonun bir makine üzerinde işleme sırasında olduğu görülüyor. 07:20:38 saniyede bir patlama veya şiddetli basınç salınımı meydana gelir ve bu, büyük miktarda duman, toz ve parçacıkların havaya fırlamasına neden olur. Personel, olaydan hemen sonra kaçış hareketi yapar.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, koyu renkli kıyafetler içinde, makineye yakın bir alanda yürüyor ve olaydan sonra kaçış hareketi yapar.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun, mavi ve kırmızı renkli büyük bir işleme makinesi, muhtemelen bir rulo veya çubuk işleme ünitesi.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun, metalik, silindirik bir yük (muhtemelen rulo veya çubuk) makinenin üzerinde yer alıyor.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"07:20:38'den itibaren yoğun duman ve parçacıkların havaya yayıldığı net bir şekilde görülüyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda, malzeme depolama için kullanılan raf ve yapılar görülebiliyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, makinenin yanında yürüyor.\",\n    \"Makinede bir patlama veya basınç salınımı meydana gelir.\",\n    \"Duman ve parçacıklar havaya fırlar.\",\n    \"İşçi, olaydan kaçış hareketi yapar.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinede ani bir patlama veya basınç salınımı meydana gelmiş, bu da yoğun duman ve parçacıkların yayılmasına neden olmuştur. İşçi, olaydan hemen sonra kaçış hareketi yapmıştır, ancak bu tür bir olayda yaralanma riski yüksek ve hemen müdahale gerektirir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 9.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+      "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir endüstriyel üretim tesisi içinde, uzun bir metal çubuk veya rulonun bir makine üzerinde işleme sırasında olduğu görülüyor. 00:08'de bir kişi makinenin yakınından geçerken, 00:09'da ani bir patlama veya basınç salınımı meydana gelir ve yoğun bir duman veya sıvı bulutu ortaya çıkar. Bu olay, çevredeki personelin kaçışına neden olur.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:05-00:08 arasında makinenin yakınında yürüyen bir kişi görülüyor. 00:09'dan sonra kaçış hareketi yapar.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun metal çubuk veya rulonun yerleştirildiği büyük mavi ve kırmızı renkli bir işleme makinesi.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinede işleme altındaki uzun, sarmal şeklinde metal rulon veya çubuk.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:09'da ani bir duman veya sıvı bulutu patlama şeklinde yayılır ve sahneyi kaplar.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda malzeme depolama rafı veya yapılar görülebilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Kişi, makinenin yakınından yürüyor.\",\n    \"Makine, uzun bir metal yükü işliyor.\",\n    \"Ani bir patlama veya basınç salınımı meydana gelir.\",\n    \"Duman veya sıvı bulutu hızla yayılır.\",\n    \"Kişi, olaydan kaçar.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"00:09'da makinede ani bir patlama veya basınç salınımı meydana gelir ve yoğun duman/sıvı bulutu ortaya çıkar. Bu, çalışanın hemen kaçışına neden olur ve ciddi yaralanma veya ölüme yol açabilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 9.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
       "risk_events": [
         {
-          "description_tr": "Makinede ani bir patlama veya basınç salınımı meydana gelmiş, bu da yoğun duman ve parçacıkların yayılmasına neden olmuştur. İşçi, olaydan hemen sonra kaçış hareketi yapmıştır, ancak bu tür bir olayda yaralanma riski yüksek ve hemen müdahale gerektirir.",
+          "description_tr": "00:09'da makinede ani bir patlama veya basınç salınımı meydana gelir ve yoğun duman/sıvı bulutu ortaya çıkar. Bu, çalışanın hemen kaçışına neden olur ve ciddi yaralanma veya ölüme yol açabilir.",
           "severity": "critical",
           "confidence": 0.95,
           "supporting_frame_count": 1,
@@ -303,78 +206,46 @@
         }
       ],
       "risk_flags_tr": [
-        "Makinede ani bir patlama veya basınç salınımı meydana gelmiş, bu da yoğun duman ve parçacıkların yayılmasına neden olmuştur. İşçi, olaydan hemen sonra kaçış hareketi yapmıştır, ancak bu tür bir olayda yaralanma riski yüksek ve hemen müdahale gerektirir."
+        "00:09'da makinede ani bir patlama veya basınç salınımı meydana gelir ve yoğun duman/sıvı bulutu ortaya çıkar. Bu, çalışanın hemen kaçışına neden olur ve ciddi yaralanma veya ölüme yol açabilir."
       ],
       "computed_confidence": 0.76,
       "reasoning_trace": "",
       "segment_start_sec": 0.0,
       "segment_end_sec": 15.815815815815816,
-      "created_at": "2026-08-27T12:47:44.047617+00:00"
+      "created_at": "2026-08-27T18:15:25.276858+00:00"
     },
     "rag_context": {
-      "risk_level": "Yüksek",
-      "risk_score": 100,
-      "actions": [
-        "Forklift operatörünün durumunu kontrol et, ilk yardım sağla.",
-        "Forklifti ve çevresini yangın/sızıntı riskine karşı kontrol et.",
-        "Forklift operasyonlarını bölgede durdur.",
-        "Yaralıyı hareket ettirmeden sağlık ekibini bekle.",
-        "Düşme nedenini (kaygan zemin, engel, yükseklik) tespit et.",
-        "Çevredeki personeli bölgeden uzaklaştır.",
-        "Forklift operatörünü acil olarak durdur.",
-        "Yaya trafiğini alternatif güzergaha yönlendir.",
-        "Çarpışmaya karışan personelin durumunu kontrol et.",
-        "Yangın söndürme sistemini derhal devreye al.",
-        "Bölgedeki tüm personeli tahliye et.",
-        "İtfaiye ve acil müdahale ekiplerini çağır.",
-        "Yakıt veya kimyasal kaynakları kapatmaya çalış (güvenlik varsa).",
-        "Çöken palet çevresindeki personelin durumunu kontrol et.",
-        "Dengesiz palet yüklerini güvenli şekilde kaldır veya sabitle.",
-        "Depo/saha bölümünü erişime kapat.",
-        "Bölgenin ana şalterden elektriğini kes.",
-        "Kıvılcım veya yangın ihtimaline karşı alanı izole et.",
-        "Acil bakım/onarım ekibine derhal bilgi ver.",
-        "Acil çıkış yolundaki engelleri (palet, kutu) acilen kaldır.",
-        "Yangın söndürme ekipmanının erişilebilirliğini kontrol et.",
-        "İlgili alan sorumlusunu prosedür ihlali hakkında uyar.",
-        "Forklift operatörünü uyar ve hızını düşürmesini sağla.",
-        "Yayaları kör noktalara girmemeleri konusunda sesli ikaz et.",
-        "Bölgedeki uyarı aynalarının açısını kontrol et.",
-        "Vinci acil durdur ve operatörle telsiz iletişimi kur.",
-        "Yük altındaki personeli sesli sirenle uyar.",
-        "Riskli alanı güvenlik şeridiyle kapat.",
-        "Forkliftin hızını uzaktan sınırlandır (IoT entegrasyonu ile).",
-        "Sürücüye hız limitini aştığına dair kabin içi uyarı gönder.",
-        "Bölgedeki yayaları olası kazaya karşı uyar.",
-        "Acil durum ekibini ve sağlık personelini derhal çağır.",
-        "Olay bölgesini güvenlik şeridi ile izole et.",
-        "Güvenlik kameralarını ve kayıtları sakla, yetkililere bildir.",
-        "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
-      ],
-      "matched_patterns": [
-        {
-          "pattern": "forklift_tip_over",
-          "description": "Forkliftin yan yatması, devrilmesi veya tekerleklerinin yerden kesilmesi.",
-          "risk_score": 95,
-          "risk_level": "Yüksek",
-          "potential_hazards": [
-            "Yakıt sızıntısı ve yangın",
-            "Sürücü travması",
-            "Operasyon durması"
-          ],
-          "similarity": 0.711
-        },
+      "hypotheses": [
         {
           "pattern": "person_fall",
-          "description": "Personelin ani düşüşü veya zemine çökmesi.",
-          "risk_score": 90,
-          "risk_level": "Yüksek",
+          "hazard_mechanism": "Personelin ani düşüşü veya zemine çökmesi.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
+          ],
+          "required_evidence": [
+            "insan merkezi dikeyde ani düşüş (yüksek hız)",
+            "hız vektörü yukarıdan aşağıya ani değişim",
+            "insan bbox yüksekliği aniden küçüldü",
+            "insan hareketsiz zemin seviyesinde",
+            "çevresinde toplanma veya koşuşturma"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
           "potential_hazards": [
             "Ciddi yaralanma",
             "Kanama",
             "Bilinç kaybı"
           ],
-          "similarity": 0.699,
+          "action_hints": [
+            "call_health_team",
+            "call_ambulance",
+            "secure_area",
+            "record_incident",
+            "notify_supervisor"
+          ],
+          "similarity": 0.037,
+          "evidence_status": "signal_candidate",
           "matched_signal": {
             "event_type": "person_fall",
             "timestamp": "00:14",
@@ -384,53 +255,38 @@
               16
             ],
             "metadata": {
-              "vertical_displacement_pixels": 56.754999999999995,
-              "scale_pixels": 129.44958722678462,
-              "drop_ratio": 0.43843322497869447
+              "vertical_displacement_pixels": 56.76999999999998,
+              "scale_pixels": 129.45824017155,
+              "drop_ratio": 0.4385197877305602
             }
           }
         },
         {
-          "pattern": "gathering",
-          "description": "Üç veya daha fazla personelin tehlikeli bölgede toplanması.",
-          "risk_score": 50,
-          "risk_level": "Orta",
-          "potential_hazards": [
-            "Toplu kaza riski",
-            "Tahliye güçlüğü",
-            "İş verimi kaybı"
-          ],
-          "similarity": 0.77,
-          "matched_signal": {
-            "event_type": "structural_match",
-            "source": "scene_graph"
-          }
-        },
-        {
-          "pattern": "immobile_person",
-          "description": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
-          "risk_score": 70,
-          "risk_level": "Orta",
-          "potential_hazards": [
-            "Hayati tehlike",
-            "Tıbbi müdahale gecikmesi"
-          ],
-          "similarity": 0.674,
-          "matched_signal": {
-            "event_type": "structural_match",
-            "source": "scene_graph"
-          }
-        },
-        {
           "pattern": "ppe_missing",
-          "description": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği.",
-          "risk_score": 45,
-          "risk_level": "Orta",
+          "hazard_mechanism": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
+          ],
+          "required_evidence": [
+            "insan yakınında baret/yelek tespit edilmedi",
+            "kafa koruyucu yok",
+            "reflektif yelek görünmüyor",
+            "KKD sınıfı tespit skoru düşük"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
           "potential_hazards": [
             "Kafa travması",
             "Görünmezlik kaynaklı ezilme"
           ],
-          "similarity": 0.639,
+          "action_hints": [
+            "sound_alarm",
+            "notify_supervisor",
+            "record_incident"
+          ],
+          "similarity": 0.115,
+          "evidence_status": "signal_candidate",
           "matched_signal": {
             "event_type": "ppe_missing",
             "timestamp": "00:14",
@@ -449,15 +305,34 @@
         },
         {
           "pattern": "dangerous_proximity",
-          "description": "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski.",
-          "risk_score": 80,
-          "risk_level": "Yüksek",
+          "hazard_mechanism": "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: forklift, insan?"
+          ],
+          "required_evidence": [
+            "forklift ve insan merkezi arası mesafe < güvenli eşik",
+            "forklift hareket yönü insana doğru",
+            "insan forklift güvenlik koridorunda",
+            "manevra sırasında insan yakın"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
           "potential_hazards": [
             "Çarpışma",
             "Ezilme",
             "Ölümcül kaza"
           ],
-          "similarity": 0.845,
+          "action_hints": [
+            "stop_forklift",
+            "sound_alarm",
+            "call_health_team",
+            "call_ambulance",
+            "record_incident",
+            "notify_supervisor"
+          ],
+          "similarity": 0.546,
+          "evidence_status": "signal_candidate",
           "matched_signal": {
             "event_type": "dangerous_proximity",
             "timestamp": "00:08",
@@ -468,182 +343,588 @@
               10
             ],
             "metadata": {
-              "estimated_distance_pixels": 167.5574138168765,
-              "effective_limit_pixels": 188.47770244279747
+              "estimated_distance_pixels": 167.56514628645184,
+              "effective_limit_pixels": 188.4900301072567
             }
           }
         },
         {
-          "pattern": "fire_smoke",
-          "description": "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir.",
-          "risk_score": 100,
-          "risk_level": "Yüksek",
-          "potential_hazards": [
-            "Tesis yangını",
-            "Zehirli gaz soluma",
-            "Patlama"
+          "pattern": "gathering",
+          "hazard_mechanism": "Üç veya daha fazla personelin tehlikeli bölgede toplanması.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan, insan, insan?"
           ],
-          "similarity": 0.395
-        },
-        {
-          "pattern": "leakage",
-          "description": "Sıvı/kimyasal sızıntı veya birikintisi — kayma ve zehirlenme riski.",
-          "risk_score": 60,
-          "risk_level": "Orta",
-          "potential_hazards": [
-            "Kayma ve düşme",
-            "Kimyasal yanık",
-            "Yangın (yanıcı madde ise)"
+          "required_evidence": [
+            "≥3 insan merkezi arası mesafe < eşik",
+            "insan sayısı yüksek dar alanda",
+            "hareket yönleri merkeze doğru",
+            "toplanma aktif çalışma bölgesinde"
           ],
-          "similarity": 0.366
-        },
-        {
-          "pattern": "pallet_collapse",
-          "description": "Palet yükünün devrilmesi, çökmesi veya tehlikeli pozisyonda olması.",
-          "risk_score": 75,
-          "risk_level": "Yüksek",
-          "potential_hazards": [
-            "Çalışanların ezilmesi",
-            "Acil çıkış yollarının kapanması"
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
           ],
-          "similarity": 0.319
-        },
-        {
-          "pattern": "electrical_hazard",
-          "description": "Açık pano, kablo veya elektrik tehlikesi barındıran durum.",
-          "risk_score": 85,
-          "risk_level": "Yüksek",
           "potential_hazards": [
-            "Elektrik çarpması",
-            "Elektrik kaynaklı yangın"
+            "Toplu kaza riski",
+            "Tahliye güçlüğü",
+            "İş verimi kaybı"
           ],
-          "similarity": 0.39
-        },
-        {
-          "pattern": "unauthorized_access",
-          "description": "Yetkisiz personelin tehlikeli veya kısıtlı alana girişi.",
-          "risk_score": 65,
-          "risk_level": "Orta",
-          "potential_hazards": [
-            "Sabotaj",
-            "Eğitimsiz personel kazası"
+          "action_hints": [
+            "notify_supervisor",
+            "sound_alarm",
+            "record_incident"
           ],
-          "similarity": 0.323,
+          "similarity": 0.088,
+          "evidence_status": "structural_candidate",
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
           }
         },
         {
-          "pattern": "blocked_emergency_exit",
-          "description": "Acil çıkış yollarının veya yangın tüplerinin önünün kapanması.",
-          "risk_score": 75,
-          "risk_level": "Yüksek",
-          "potential_hazards": [
-            "Tahliye engeli",
-            "Toplu panik"
+          "pattern": "immobile_person",
+          "hazard_mechanism": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
           ],
-          "similarity": 0.448
+          "required_evidence": [
+            "insan merkezi 2.5 sn'den fazla sabit",
+            "insan bbox değişmiyor",
+            "çevresinde yardım hareketi yok",
+            "insan zemin seviyesinde hareketsiz"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Hayati tehlike",
+            "Tıbbi müdahale gecikmesi"
+          ],
+          "action_hints": [
+            "call_health_team",
+            "call_ambulance",
+            "record_incident",
+            "notify_supervisor"
+          ],
+          "similarity": 0.021,
+          "evidence_status": "structural_candidate",
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
         },
         {
-          "pattern": "spill_slip_hazard",
-          "description": "Zeminde dökülmüş sıvı, yağ veya su kaynaklı kayma tehlikesi.",
-          "risk_score": 55,
-          "risk_level": "Orta",
-          "potential_hazards": [
-            "Başını çarpma",
-            "Kırık/Çıkık",
-            "Kimyasal reaksiyon"
+          "pattern": "unauthorized_access",
+          "hazard_mechanism": "Yetkisiz personelin tehlikeli veya kısıtlı alana girişi.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
           ],
-          "similarity": 0.462
-        },
-        {
-          "pattern": "cluttered_workspace",
-          "description": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski).",
-          "risk_score": 40,
-          "risk_level": "Düşük",
-          "potential_hazards": [
-            "Takılma ve düşme",
-            "Acil müdahale gecikmesi",
-            "Forklift manevra engeli"
+          "required_evidence": [
+            "yetkisiz bölgede insan tespiti",
+            "güvenlik ihlali çizgisi aşıldı"
           ],
-          "similarity": 0.288
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Sabotaj",
+            "Eğitimsiz personel kazası"
+          ],
+          "action_hints": [
+            "sound_alarm",
+            "notify_supervisor",
+            "record_incident"
+          ],
+          "similarity": 0.021,
+          "evidence_status": "structural_candidate",
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
         },
         {
           "pattern": "running_in_facility",
-          "description": "Tesis içinde koşan personel (çarpışma/kayma riski).",
-          "risk_score": 60,
-          "risk_level": "Orta",
+          "hazard_mechanism": "Tesis içinde koşan personel (çarpışma/kayma riski).",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
+          ],
+          "required_evidence": [
+            "insan hız vektörü yüksek",
+            "koşma tespiti"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
           "potential_hazards": [
             "Kör noktada forkliftle çarpışma",
             "Kayma ve düşme",
             "Panik yaratma"
           ],
-          "similarity": 0.671,
+          "action_hints": [
+            "sound_alarm",
+            "notify_supervisor",
+            "record_incident"
+          ],
+          "similarity": 0.005,
+          "evidence_status": "structural_candidate",
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
           }
         },
         {
-          "pattern": "blind_spot_movement",
-          "description": "Kavşak veya kör noktalarda kontrolsüz hareket.",
-          "risk_score": 75,
-          "risk_level": "Yüksek",
-          "potential_hazards": [
-            "Ani çarpışma",
-            "Fren mesafesi yetersizliği",
-            "Ölümcül kaza"
-          ],
-          "similarity": 0.34
-        },
-        {
-          "pattern": "overhead_hazard",
-          "description": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük).",
-          "risk_score": 85,
-          "risk_level": "Yüksek",
-          "potential_hazards": [
-            "Kafa travması",
-            "Ölümcül ezilme"
-          ],
-          "similarity": 0.518
-        },
-        {
           "pattern": "fatigue_detection",
-          "description": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski).",
-          "risk_score": 50,
-          "risk_level": "Orta",
+          "hazard_mechanism": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski).",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
+          ],
+          "required_evidence": [
+            "personel çok uzun süre hareketsiz",
+            "duruş anomalisi"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
           "potential_hazards": [
             "İş kazası potansiyeli artışı",
             "Bayılma öncülü"
           ],
-          "similarity": 0.493,
+          "action_hints": [
+            "notify_supervisor",
+            "call_health_team",
+            "record_incident"
+          ],
+          "similarity": 0.02,
+          "evidence_status": "structural_candidate",
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        }
+      ],
+      "unverified_hypotheses": [
+        {
+          "pattern": "forklift_tip_over",
+          "hazard_mechanism": "Forkliftin yan yatması, devrilmesi veya tekerleklerinin yerden kesilmesi.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: forklift?"
+          ],
+          "required_evidence": [
+            "forklift bbox en/boy oranı anormal (yatay)",
+            "forklift açısı > 20° eğik",
+            "forklift merkezi ani yatay kayma",
+            "forklift hareketsiz ve anormal pozisyonda",
+            "çevresinde insan toplanması"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Yakıt sızıntısı ve yangın",
+            "Sürücü travması",
+            "Operasyon durması"
+          ],
+          "action_hints": [
+            "call_health_team",
+            "call_ambulance",
+            "secure_area",
+            "record_incident",
+            "notify_supervisor",
+            "stop_forklift"
+          ],
+          "similarity": 0.303,
+          "evidence_status": "unverified"
+        },
+        {
+          "pattern": "vehicle_speeding",
+          "hazard_mechanism": "Forkliftin veya aracın tesis içi hız limitini aşması.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: forklift?"
+          ],
+          "required_evidence": [
+            "araç hız vektörü > limit"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Manevra kaybı",
+            "Ani çarpışma"
+          ],
+          "action_hints": [
+            "sound_alarm",
+            "stop_forklift",
+            "notify_supervisor"
+          ],
+          "similarity": 0.091,
+          "evidence_status": "unverified"
+        },
+        {
+          "pattern": "pallet_collapse",
+          "hazard_mechanism": "Palet yükünün devrilmesi, çökmesi veya tehlikeli pozisyonda olması.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: palet?"
+          ],
+          "required_evidence": [
+            "palet bbox eğimli veya anormal",
+            "palet yüksekte dengesiz pozisyon",
+            "palet üzerindeki yük dağılımı bozulmuş",
+            "palet çevresinde insan varlığı",
+            "istif yüksekliği güvenli sınırı aşıyor"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Çalışanların ezilmesi",
+            "Acil çıkış yollarının kapanması"
+          ],
+          "action_hints": [
+            "secure_area",
+            "notify_supervisor",
+            "record_incident"
+          ],
+          "similarity": 0.073,
+          "evidence_status": "unverified"
+        },
+        {
+          "pattern": "electrical_hazard",
+          "hazard_mechanism": "Açık pano, kablo veya elektrik tehlikesi barındıran durum.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: pano?"
+          ],
+          "required_evidence": [
+            "açık elektrik panosu",
+            "yerde uzanan izolesiz kablo",
+            "kıvılcım veya ark tespiti"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Elektrik çarpması",
+            "Elektrik kaynaklı yangın"
+          ],
+          "action_hints": [
+            "secure_area",
+            "sound_alarm",
+            "record_incident",
+            "notify_supervisor",
+            "isolate_electrical_grid"
+          ],
+          "similarity": 0.07,
+          "evidence_status": "unverified"
+        },
+        {
+          "pattern": "leakage",
+          "hazard_mechanism": "Sıvı/kimyasal sızıntı veya birikintisi — kayma ve zehirlenme riski.",
+          "applicability_questions": [
+            "Bu mekanizma için görüntü ve faaliyet bağlamında yeterli kanıt var mı?"
+          ],
+          "required_evidence": [
+            "VLM tarafından sıvı birikintisi tespiti",
+            "zemin yansıması veya ıslak görünüm",
+            "garip renkte sıvı birikimi",
+            "insan kayma riski bölgede"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Kayma ve düşme",
+            "Kimyasal yanık",
+            "Yangın (yanıcı madde ise)"
+          ],
+          "action_hints": [
+            "activate_cbrn_protocol",
+            "secure_area",
+            "notify_supervisor",
+            "record_incident"
+          ],
+          "similarity": 0.056,
+          "evidence_status": "unverified"
+        }
+      ],
+      "recommended_actions": [],
+      "matched_patterns": [
+        {
+          "pattern": "person_fall",
+          "hazard_mechanism": "Personelin ani düşüşü veya zemine çökmesi.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
+          ],
+          "required_evidence": [
+            "insan merkezi dikeyde ani düşüş (yüksek hız)",
+            "hız vektörü yukarıdan aşağıya ani değişim",
+            "insan bbox yüksekliği aniden küçüldü",
+            "insan hareketsiz zemin seviyesinde",
+            "çevresinde toplanma veya koşuşturma"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Ciddi yaralanma",
+            "Kanama",
+            "Bilinç kaybı"
+          ],
+          "action_hints": [
+            "call_health_team",
+            "call_ambulance",
+            "secure_area",
+            "record_incident",
+            "notify_supervisor"
+          ],
+          "similarity": 0.037,
+          "evidence_status": "signal_candidate",
+          "matched_signal": {
+            "event_type": "person_fall",
+            "timestamp": "00:14",
+            "description": "Personel (track 16) düşme hareketi gösteriyor.",
+            "confidence": 0.548,
+            "involved_track_ids": [
+              16
+            ],
+            "metadata": {
+              "vertical_displacement_pixels": 56.76999999999998,
+              "scale_pixels": 129.45824017155,
+              "drop_ratio": 0.4385197877305602
+            }
+          }
+        },
+        {
+          "pattern": "ppe_missing",
+          "hazard_mechanism": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
+          ],
+          "required_evidence": [
+            "insan yakınında baret/yelek tespit edilmedi",
+            "kafa koruyucu yok",
+            "reflektif yelek görünmüyor",
+            "KKD sınıfı tespit skoru düşük"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Kafa travması",
+            "Görünmezlik kaynaklı ezilme"
+          ],
+          "action_hints": [
+            "sound_alarm",
+            "notify_supervisor",
+            "record_incident"
+          ],
+          "similarity": 0.115,
+          "evidence_status": "signal_candidate",
+          "matched_signal": {
+            "event_type": "ppe_missing",
+            "timestamp": "00:14",
+            "description": "Personel insan_17 eksik KKD: baret, yelek.",
+            "confidence": 0.7,
+            "involved_track_ids": [
+              17
+            ],
+            "metadata": {
+              "missing_ppe": [
+                "baret",
+                "yelek"
+              ]
+            }
+          }
+        },
+        {
+          "pattern": "dangerous_proximity",
+          "hazard_mechanism": "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: forklift, insan?"
+          ],
+          "required_evidence": [
+            "forklift ve insan merkezi arası mesafe < güvenli eşik",
+            "forklift hareket yönü insana doğru",
+            "insan forklift güvenlik koridorunda",
+            "manevra sırasında insan yakın"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Çarpışma",
+            "Ezilme",
+            "Ölümcül kaza"
+          ],
+          "action_hints": [
+            "stop_forklift",
+            "sound_alarm",
+            "call_health_team",
+            "call_ambulance",
+            "record_incident",
+            "notify_supervisor"
+          ],
+          "similarity": 0.546,
+          "evidence_status": "signal_candidate",
+          "matched_signal": {
+            "event_type": "dangerous_proximity",
+            "timestamp": "00:08",
+            "description": "insan ve arac arasında tehlikeli yakınlık (~168 piksel).",
+            "confidence": 0.111,
+            "involved_track_ids": [
+              6,
+              10
+            ],
+            "metadata": {
+              "estimated_distance_pixels": 167.56514628645184,
+              "effective_limit_pixels": 188.4900301072567
+            }
+          }
+        },
+        {
+          "pattern": "gathering",
+          "hazard_mechanism": "Üç veya daha fazla personelin tehlikeli bölgede toplanması.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan, insan, insan?"
+          ],
+          "required_evidence": [
+            "≥3 insan merkezi arası mesafe < eşik",
+            "insan sayısı yüksek dar alanda",
+            "hareket yönleri merkeze doğru",
+            "toplanma aktif çalışma bölgesinde"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Toplu kaza riski",
+            "Tahliye güçlüğü",
+            "İş verimi kaybı"
+          ],
+          "action_hints": [
+            "notify_supervisor",
+            "sound_alarm",
+            "record_incident"
+          ],
+          "similarity": 0.088,
+          "evidence_status": "structural_candidate",
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
           }
         },
         {
-          "pattern": "vehicle_speeding",
-          "description": "Forkliftin veya aracın tesis içi hız limitini aşması.",
-          "risk_score": 75,
-          "risk_level": "Yüksek",
-          "potential_hazards": [
-            "Manevra kaybı",
-            "Ani çarpışma"
+          "pattern": "immobile_person",
+          "hazard_mechanism": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
           ],
-          "similarity": 0.544
+          "required_evidence": [
+            "insan merkezi 2.5 sn'den fazla sabit",
+            "insan bbox değişmiyor",
+            "çevresinde yardım hareketi yok",
+            "insan zemin seviyesinde hareketsiz"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Hayati tehlike",
+            "Tıbbi müdahale gecikmesi"
+          ],
+          "action_hints": [
+            "call_health_team",
+            "call_ambulance",
+            "record_incident",
+            "notify_supervisor"
+          ],
+          "similarity": 0.021,
+          "evidence_status": "structural_candidate",
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
         },
         {
-          "pattern": "restricted_time_access",
-          "description": "Mesai saatleri dışında veya izinsiz zamanda bölgede yaya tespiti.",
-          "risk_score": 65,
-          "risk_level": "Orta",
-          "potential_hazards": [
-            "Hırsızlık/Sabotaj",
-            "Yalnız çalışma kazası"
+          "pattern": "unauthorized_access",
+          "hazard_mechanism": "Yetkisiz personelin tehlikeli veya kısıtlı alana girişi.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
           ],
-          "similarity": 0.442,
+          "required_evidence": [
+            "yetkisiz bölgede insan tespiti",
+            "güvenlik ihlali çizgisi aşıldı"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Sabotaj",
+            "Eğitimsiz personel kazası"
+          ],
+          "action_hints": [
+            "sound_alarm",
+            "notify_supervisor",
+            "record_incident"
+          ],
+          "similarity": 0.021,
+          "evidence_status": "structural_candidate",
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "running_in_facility",
+          "hazard_mechanism": "Tesis içinde koşan personel (çarpışma/kayma riski).",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
+          ],
+          "required_evidence": [
+            "insan hız vektörü yüksek",
+            "koşma tespiti"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Kör noktada forkliftle çarpışma",
+            "Kayma ve düşme",
+            "Panik yaratma"
+          ],
+          "action_hints": [
+            "sound_alarm",
+            "notify_supervisor",
+            "record_incident"
+          ],
+          "similarity": 0.005,
+          "evidence_status": "structural_candidate",
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "fatigue_detection",
+          "hazard_mechanism": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski).",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
+          ],
+          "required_evidence": [
+            "personel çok uzun süre hareketsiz",
+            "duruş anomalisi"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "İş kazası potansiyeli artışı",
+            "Bayılma öncülü"
+          ],
+          "action_hints": [
+            "notify_supervisor",
+            "call_health_team",
+            "record_incident"
+          ],
+          "similarity": 0.02,
+          "evidence_status": "structural_candidate",
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -651,67 +932,6 @@
         }
       ]
     },
-    "event_timestamps": [
-      {
-        "seconds": 4.0,
-        "timestamp": "00:04",
-        "end_time": "00:04",
-        "timestamp_sec": 4.0,
-        "duration": 0.0,
-        "event_type": "ppe_missing",
-        "event": "Personel insan_4 ve insan_6 baret ve yelek eksikliği ile tespit edildi.",
-        "confidence": 0.7,
-        "severity": "critical",
-        "vlm_detail": "Makinede ani bir patlama veya basınç salınımı meydana gelmiş, bu da yoğun duman ve parçacıkların yayılmasına neden olmuştur. İşçi, olaydan hemen sonra kaçış hareketi yapmıştır, ancak bu tür bir olayda yaralanma riski yüksek ve hemen müdahale gerektirir."
-      },
-      {
-        "seconds": 8.0,
-        "timestamp": "00:08",
-        "end_time": "00:08",
-        "timestamp_sec": 8.0,
-        "duration": 0.0,
-        "event_type": "dangerous_proximity",
-        "event": "insan_6 ve araç arasında tehlikeli yakınlık (düşük güven skoru ile).",
-        "confidence": 0.111,
-        "severity": "critical",
-        "vlm_detail": "Makinede ani bir patlama veya basınç salınımı meydana gelmiş, bu da yoğun duman ve parçacıkların yayılmasına neden olmuştur. İşçi, olaydan hemen sonra kaçış hareketi yapmıştır, ancak bu tür bir olayda yaralanma riski yüksek ve hemen müdahale gerektirir."
-      },
-      {
-        "seconds": 13.0,
-        "timestamp": "00:13",
-        "end_time": "00:14",
-        "timestamp_sec": 13.0,
-        "duration": 1.0,
-        "event_type": "ppe_missing",
-        "event": "Personel insan_16 ve insan_17 baret ve yelek eksikliği ile tespit edildi.",
-        "confidence": 0.7,
-        "severity": "critical",
-        "vlm_detail": "Makinede ani bir patlama veya basınç salınımı meydana gelmiş, bu da yoğun duman ve parçacıkların yayılmasına neden olmuştur. İşçi, olaydan hemen sonra kaçış hareketi yapmıştır, ancak bu tür bir olayda yaralanma riski yüksek ve hemen müdahale gerektirir."
-      },
-      {
-        "seconds": 14.0,
-        "timestamp": "00:14",
-        "end_time": "00:14",
-        "timestamp_sec": 14.0,
-        "duration": 0.0,
-        "event_type": "person_fall",
-        "event": "Personel (insan_16) ani düşme hareketi gösterdi; VLM tarafından makinede patlama/duman olayı ve kaçış hareketi doğrulandı.",
-        "confidence": 0.85,
-        "severity": "critical",
-        "vlm_detail": "Makinede ani bir patlama veya basınç salınımı meydana gelmiş, bu da yoğun duman ve parçacıkların yayılmasına neden olmuştur. İşçi, olaydan hemen sonra kaçış hareketi yapmıştır, ancak bu tür bir olayda yaralanma riski yüksek ve hemen müdahale gerektirir."
-      },
-      {
-        "seconds": 14.0,
-        "timestamp": "00:14",
-        "end_time": "00:14",
-        "timestamp_sec": 14.0,
-        "duration": 0.0,
-        "event_type": "fire_smoke",
-        "event": "Makinede patlama/basınç salınımı sonucu yoğun duman ve parçacık yayılması (VLM doğrulaması).",
-        "confidence": 0.9,
-        "severity": "critical",
-        "vlm_detail": "Makinede ani bir patlama veya basınç salınımı meydana gelmiş, bu da yoğun duman ve parçacıkların yayılmasına neden olmuştur. İşçi, olaydan hemen sonra kaçış hareketi yapmıştır, ancak bu tür bir olayda yaralanma riski yüksek ve hemen müdahale gerektirir."
-      }
-    ]
+    "event_timestamps": []
   }
 }

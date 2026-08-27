@@ -294,11 +294,11 @@ class RAGLayer:
         return {tok: x / norm for tok, x in v.items()}
 
     def match_patterns(self, event_signals: List[Dict[str, Any]], observation_report: Any = None) -> Dict[str, Dict[str, Any]]:
-        """Sinyal event_type'larıyla pattern adı eşleşmesi (ikincil filtre/boost) ve yapısal eşleşme.
+        """Sinyal adaylarını katalog hipotezleriyle eşleştirir.
 
-        event_signals: EventSignal.to_dict() listesi veya EventSignal nesneleri.
-        İçerdeki involved_track_ids, signal sözlüğüne taşınır — recommend_tools()
-        bunu stop_forklift gibi araçların forklift_id parametresi için kullanır.
+        Eşleşme olayın gerçekleştiğinin veya risk seviyesinin kanıtı değildir.
+        Özellikle yapısal eşleşme yalnız sahnede gerekli sınıfların bulunduğunu
+        söyler; nihai karar ajanı bu hipotezi bağlam ve diğer kanıtlarla sınar.
         """
         matched: Dict[str, Dict[str, Any]] = {}
         for sig in event_signals:
@@ -318,23 +318,26 @@ class RAGLayer:
 
         # Yapısal eşleştirme: detection sınıfları + track sınıfları birlikte kontrol
         if observation_report and isinstance(observation_report, list):
-            detected_classes: List[str] = []
+            from collections import Counter
+
+            detected_counts: Counter[str] = Counter()
             for obs in observation_report:
                 if not isinstance(obs, dict):
                     continue
                 for det in obs.get("detections", []):
-                    detected_classes.append(det.get("class", "nesne").lower())
-                # tracks'teki class bilgisi de değerlendir
+                    detected_counts[str(det.get("class", "nesne")).lower()] += 1
+                # Track sınıfları duplicate detection sayısını şişirmeden ek bağlamdır.
                 for trk in obs.get("tracks", []):
-                    cls = trk.get("class", "").lower()
-                    if cls and cls not in detected_classes:
-                        detected_classes.append(cls)
+                    cls = str(trk.get("class", "")).lower()
+                    if cls and cls not in detected_counts:
+                        detected_counts[cls] += 1
 
             for name, pattern_data in self.patterns.get("patterns", {}).items():
                 if name in matched:
-                    continue  # Zaten sinyalden yakalandı
-                required = pattern_data.get("required_nodes", [])
-                if required and all(req in detected_classes for req in required):
+                    continue
+                required = [str(item).lower() for item in pattern_data.get("required_nodes", [])]
+                required_counts = Counter(required)
+                if required_counts and all(detected_counts[key] >= count for key, count in required_counts.items()):
                     matched[name] = {"signal": {"event_type": "structural_match", "source": "scene_graph"}}
         return matched
 
@@ -343,98 +346,79 @@ class RAGLayer:
         observation_report: Any,
         event_signals: List[Dict[str, Any]],
         vlm_flags: List[str] | None = None,
-        threshold: float = 0.1,
+        top_k: int = 5,
         boost: float = 1.5,
     ) -> Dict[str, Any]:
-        """Karar ajanına verilecek RAG kontekstini oluşturur.
+        """Karar için katalog hipotezleri üretir; risk seviyesi üretmez.
 
-        Ana sorgu: observation_report — list ise _observations_to_natural_language()
-        ile Türkçe metne çevrilir; string ise doğrudan kullanılır.
-
-        vlm_flags: VLM'in ürettiği risk_flags_tr listesi. Sorguya eklenir;
-        fire_smoke, leakage gibi VLM kaynaklı tespitler pattern'lerle eşleşir.
-
-        İkincil filtre: event_signals — sinyalle eşleşen pattern'ler boost'lanır.
+        Sinyal eşleşmesi aday mekanizmanın araştırılmasını gerektirir, olayın
+        gerçekleştiğini kanıtlamaz. Vektör eşleşmeleri ayrı
+        ``unverified_hypotheses`` alanında tutulur; böylece promptta kanıt gibi
+        görünmezler.
         """
-        # Ana sorgu oluştur
         if isinstance(observation_report, list):
             query = _observations_to_natural_language(observation_report)
         elif isinstance(observation_report, str):
             query = observation_report
         else:
             query = json.dumps(observation_report, ensure_ascii=False)
-
-        # VLM risk flag'lerini sorguya ekle (v2)
         if vlm_flags:
-            flag_text = " ".join(str(f) for f in vlm_flags)
-            query = f"{query} {flag_text}"
+            query = f"{query} {' '.join(str(flag) for flag in vlm_flags)}".strip()
 
-        qv = None
-        if not getattr(self, "_use_tf_idf", True):
-            qv = self.embedder.encode(query)
-        else:
-            qv = self._query_vector(query)
-
-        boosted = self.match_patterns(event_signals, observation_report)
-
-        matches: List[Dict[str, Any]] = []
+        qv = self.embedder.encode(query) if not getattr(self, "_use_tf_idf", True) else self._query_vector(query)
+        signal_matches = self.match_patterns(event_signals, observation_report)
+        ranked: List[Dict[str, Any]] = []
         for name, pattern in self.patterns.get("patterns", {}).items():
             if not getattr(self, "_use_tf_idf", True):
                 import numpy as np
-                doc_v = self.doc_embeddings.get(name)
-                # Cosine similarity for numpy arrays
-                norm_qv = np.linalg.norm(qv)
-                norm_doc = np.linalg.norm(doc_v)
-                if norm_qv > 0 and norm_doc > 0:
-                    sim = float(np.dot(qv, doc_v) / (norm_qv * norm_doc))
-                else:
-                    sim = 0.0
+                document = self.doc_embeddings.get(name)
+                denominator = np.linalg.norm(qv) * np.linalg.norm(document)
+                similarity = float(np.dot(qv, document) / denominator) if denominator else 0.0
             else:
-                sim = _cosine(qv, self._index.get(name, {}))
-            signal_hit = boosted.get(name)
-            if signal_hit:
-                sim = max(sim * boost, threshold)  # sinyal doğrudan pattern'i işaret ediyor
-            if sim < threshold:
-                continue
-            entry = {
+                similarity = _cosine(qv, self._index.get(name, {}))
+
+            signal_match = signal_matches.get(name)
+            if signal_match:
+                similarity *= boost
+            required_nodes = pattern.get("required_nodes", [])
+            entry: Dict[str, Any] = {
                 "pattern": name,
-                "description": pattern.get("description", ""),
-                "risk_score": pattern.get("risk_score", 0),
-                "risk_level": pattern.get("risk_level", "Düşük"),
+                "hazard_mechanism": pattern.get("description", ""),
+                "applicability_questions": [
+                    f"Aktif faaliyette şu varlıklar/koşullar mevcut mu: {', '.join(required_nodes)}?"
+                ] if required_nodes else ["Bu mekanizma için görüntü ve faaliyet bağlamında yeterli kanıt var mı?"],
+                "required_evidence": pattern.get("indicators", []),
+                "disconfirming_evidence": ["Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"],
                 "potential_hazards": pattern.get("potential_hazards", []),
-                "similarity": round(sim, 3),
+                "action_hints": pattern.get("mock_tool_hints", []),
+                "similarity": round(similarity, 3),
+                "evidence_status": "unverified",
             }
-            if signal_hit:
-                entry["matched_signal"] = signal_hit["signal"]
-            matches.append(entry)
+            if signal_match:
+                signal = signal_match["signal"]
+                entry["matched_signal"] = signal
+                entry["evidence_status"] = (
+                    "structural_candidate"
+                    if signal.get("event_type") == "structural_match"
+                    else "signal_candidate"
+                )
+            ranked.append(entry)
 
-        import time
-        current_time = time.time()
-        self.history = [h for h in self.history if current_time - h["timestamp"] < 300] # 5 dk sliding window
-
-        for match in matches:
-            past_occurrences = sum(1 for h in self.history if h["pattern"] == match["pattern"])
-            if past_occurrences >= 2: # 3. kez görüldüğünde boost et
-                if match["risk_level"] == "Orta":
-                    match["risk_level"] = "Yüksek"
-                    match["risk_score"] = min(match["risk_score"] + 20, 100)
-                elif match["risk_level"] == "Düşük":
-                    match["risk_level"] = "Orta"
-                    match["risk_score"] = min(match["risk_score"] + 30, 100)
-
-        if not matches:
-            return {"risk_level": "Düşük", "risk_score": 0, "actions": [], "matched_patterns": []}
-
-        top = max(matches, key=lambda m: m.get("risk_score", 0))
-        self.history.append({"timestamp": current_time, "pattern": top["pattern"]})
-        risk_level = top.get("risk_level", "Düşük")
-        actions = self.recommend_actions(risk_level, [m["pattern"] for m in matches])
-
+        signal_hypotheses = [entry for entry in ranked if entry["evidence_status"] == "signal_candidate"]
+        structural_hypotheses = [entry for entry in ranked if entry["evidence_status"] == "structural_candidate"]
+        retrieval_hypotheses = sorted(
+            (entry for entry in ranked if entry["evidence_status"] == "unverified" and entry["similarity"] > 0),
+            key=lambda entry: entry["similarity"],
+            reverse=True,
+        )[:top_k]
+        # Yapısal adaylar kanıt değildir; bağlam incelemesi için sınırlı sayıda taşınır.
+        hypotheses = signal_hypotheses + structural_hypotheses[:top_k]
         return {
-            "risk_level": risk_level,
-            "risk_score": top.get("risk_score", 0),
-            "actions": actions,
-            "matched_patterns": matches,
+            "hypotheses": hypotheses,
+            "unverified_hypotheses": retrieval_hypotheses,
+            "recommended_actions": [],
+            # Eski tool/audit çağrıları için risk puansız alias.
+            "matched_patterns": hypotheses,
         }
 
     def recommend_actions(self, risk_level: str, event_types: List[str]) -> List[str]:
@@ -480,10 +464,11 @@ class RAGLayer:
         Returns:
             [{"tool_name": "...", "params": {...}}, ...] formatında liste.
         """
-        # Risk skoruna göre sırala — en yüksek riskli pattern'in tool'ları önce gelir
+        # Katalog risk puanı karar otoritesi değildir; yalnız kanıtlı hipotezlerin
+        # retrieval benzerliğiyle sıralanması, aksiyon ipuçlarını sunmak için yeterlidir.
         sorted_patterns = sorted(
             matched_patterns,
-            key=lambda m: m.get("risk_score", 0),
+            key=lambda match: float(match.get("similarity", 0.0) or 0.0),
             reverse=True,
         )
 
@@ -505,7 +490,7 @@ class RAGLayer:
                 # Temel parametreleri pattern bağlamından türet
                 params: Dict[str, Any] = {
                     "location": "saha",
-                    "reason": match.get("description", pattern_name)[:120],
+                    "reason": match.get("hazard_mechanism", match.get("description", pattern_name))[:120],
                 }
                 # Tool'a özgü zorunlu parametreler
                 if tool_name == "record_incident":

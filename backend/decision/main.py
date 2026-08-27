@@ -96,7 +96,6 @@ def _run_decision_sync(events: list[dict], vlm_interpretations: list[dict]) -> d
 
         raw_text = decision_raw.get("raw_text", "") if isinstance(decision_raw, dict) else str(decision_raw)
         retry_fn = decision_raw.get("retry_fn", lambda temp: raw_text) if isinstance(decision_raw, dict) else (lambda temp: raw_text)
-        rag_risk_level = decision_raw.get("rag_risk_level", "Düşük") if isinstance(decision_raw, dict) else "Düşük"
 
         if single_source:
             # §2.9: VLM yokken "tek kaynak" notu
@@ -109,7 +108,6 @@ def _run_decision_sync(events: list[dict], vlm_interpretations: list[dict]) -> d
         result = guardrail.validate(
             raw_text=raw_text,
             generate_fn=retry_fn,
-            rag_risk_level=rag_risk_level,
         )
         # Guardrail başarısız olduğunda ÖZET BOŞ DÖNMEZ; yapılandırılmış
         # null_response metnini ("Bilmiyorum") döndürür. Bu yüzden çağıran
@@ -190,6 +188,11 @@ async def maybe_decide(job_id: str, camera_id: str, redis_client):
         reasoning=result.get("reasoning", ""),
         confidence=float(result.get("confidence", 0.0)),
         triggered_mock_tools=result.get("triggered_mock_tools", []),
+        scene_context=result.get("scene_context", {}),
+        results=result.get("results", []),
+        overall_risk=result.get("overall_risk", "unknown"),
+        uncertain=bool(result.get("uncertain", False)),
+        uncertainty_reason=result.get("uncertainty_reason", ""),
     )
     await redis_helper.publish_message(redis_client, "decision.final", decision)
     logger.info(f"Published decision.final for job {job_id} — risk={decision.risk}")

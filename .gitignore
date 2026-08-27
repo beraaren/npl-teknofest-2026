@@ -58,3 +58,4 @@ Thumbs.db
 # Kaynak videolar (telif / boyut nedeniyle commit edilmez)
 Videos/
 videos/
+conftest.py

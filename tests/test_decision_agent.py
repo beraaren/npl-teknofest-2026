@@ -59,7 +59,7 @@ def sample_inputs():
         "involved_track_ids": [2], "metadata": {"aspect_ratio": 1.8},
     }]
     graphs = [{"frame_idx": 0, "timestamp": 3.0, "nodes": [], "edges": []}]
-    rag_ctx = {"risk_level": "Yüksek", "risk_score": 95, "actions": ["Alanı güvenliğe al"], "matched_patterns": []}
+    rag_ctx = {"hypotheses": [], "unverified_hypotheses": [], "recommended_actions": [], "matched_patterns": []}
     vlm = {"scene_summary_tr": "devrilmiş araç", "detected_entities": [], "detected_actions_tr": [],
            "risk_flags_tr": ["araç devrilmesi"], "confidence_overall": 0.8, "notable_frames": [1]}
     return signals, graphs, rag_ctx, vlm
@@ -71,10 +71,10 @@ def test_decide_contract_and_guardrail_passthrough():
     signals, graphs, rag_ctx, vlm = sample_inputs()
     raw = agent.decide(event_signals=signals, scene_graphs=graphs, rag_context=rag_ctx, vlm_interpretation=vlm)
 
-    assert set(raw.keys()) == {"raw_text", "rag_risk_level", "retry_fn"}
-    assert raw["rag_risk_level"] == "Yüksek"
+    assert set(raw.keys()) == {"raw_text", "retry_fn", "scene_context", "candidate_observations"}
+    assert raw["candidate_observations"][0]["event_type"] == "forklift_tip_over"
 
-    out = OutputGuardrail(GuardrailConfig()).validate(raw["raw_text"], raw["retry_fn"], rag_risk_level=raw["rag_risk_level"])
+    out = OutputGuardrail(GuardrailConfig()).validate(raw["raw_text"], raw["retry_fn"])
     assert out["summary"] != "Bilmiyorum"
     assert out["risk"] == "Yüksek"
 
@@ -132,7 +132,7 @@ def test_garbage_vlm_output_falls_to_guardrail_null_response():
     agent, _ = make_agent(response="bu bir json değil")
     signals, graphs, rag_ctx, vlm = sample_inputs()
     raw = agent.decide(event_signals=signals, scene_graphs=graphs, rag_context=rag_ctx, vlm_interpretation=vlm)
-    out = OutputGuardrail(GuardrailConfig()).validate(raw["raw_text"], raw["retry_fn"], rag_risk_level=raw["rag_risk_level"])
+    out = OutputGuardrail(GuardrailConfig()).validate(raw["raw_text"], raw["retry_fn"])
     assert out["summary"] == "Bilmiyorum"
     validated = AnalysisOutput.model_validate(out)
     assert validated.risk == "Düşük"

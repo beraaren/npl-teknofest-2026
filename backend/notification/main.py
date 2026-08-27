@@ -65,8 +65,7 @@ async def process_decision(decision_data: dict, redis_client):
                 tools_to_run.append({"tool_name": name, "params": params})
     # Model araç seçmediyse → kural tabanlı öneri
     elif registry:
-        event_types = [e.get("event_type", "") for e in decision.events]
-        suggested = registry.suggest_tools(decision.risk, event_types)
+        suggested = registry.suggest_tools_for_results(decision.results)
         tools_to_run = suggested
         logger.info(
             f"Model araç seçmedi; kural tabanlı öneri: "
@@ -102,7 +101,11 @@ async def process_decision(decision_data: dict, redis_client):
         _metrics["tools_executed"] += 1
 
     # §2.3.5: notification.push — "00:15 Forklift devrildi" formatında headline
-    first_event = decision.events[0] if decision.events else {}
+    first_event = next(
+        (result for result in decision.results
+         if result.get("result_type") == "incident" and not result.get("uncertain")),
+        decision.events[0] if decision.events else {},
+    )
     time_str = first_event.get("time", "00:00")
     event_desc = first_event.get("event", first_event.get("event_type", "Olay tespit edildi"))
     headline = f"{time_str} {event_desc}"
@@ -110,7 +113,9 @@ async def process_decision(decision_data: dict, redis_client):
     notification = NotificationPush(
         job_id=decision.job_id,
         camera_id=decision.camera_id,
-        risk=decision.risk,
+        risk={"critical": "Yüksek", "high": "Yüksek", "medium": "Orta", "low": "Düşük"}.get(
+            str(first_event.get("severity") or "unknown"), "Düşük"
+        ),
         headline=headline,
         summary=decision.summary,
         actions=decision.actions,

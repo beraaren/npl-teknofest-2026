@@ -3,7 +3,7 @@
   "total_segments": 2,
   "total_risk_events": 6,
   "most_critical_segment_index": 0,
-  "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Bir endüstriyel üretim tesisi içinde, birkaç işçi büyük bir makineye yakın çalışmaktadır. İşçiler, büyük bir rulo veya yükü makineye yerleştirmek veya onarmak için birlikte çalışırken, biri mavi gömlek, diğeri beyaz gömlek giymektedir. İş y\n  - [00:00] görülen varlıklar: liquid/substance, load, machine, person, rack/structure, smoke or flame\n  - [01:00] Endüstriyel bir üretim tesisi içinde, birkaç işçi büyük bir makineye yakın bir platformda ağır bir yükü yerleştirmek veya onarmak için birlikte çalışıyor. İşçiler, koruyucu ekipman kullanmadan, yere serilmiş kablolar ve malzemeler arasında \n  - [01:00] görülen varlıklar: liquid/substance, load, machine, person, rack/structure, smoke or flame\nZaman damgalı olaylar:\n  - 00:15 — İşçiler, büyük bir yükü manuel olarak taşırken, makineye yakın ve kablolarla dolu bir alanda çalışmaktadır. Bu, düşme, sıkışma veya yükün düşmesi riskini artırır. Özellikle 00:15-00:25 saniyeler arasında yükün kontrolsüz hareketi ve işçilerin yakın mesafede çalışması yüksek risk oluşturur. [high, güven 0.85]\n  - 00:28 — Yere serilmiş kablolar ve malzemeler, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle 00:28-00:35 saniyeler arasında bir işçi kabloların üzerinden geçerken dengesini kaybetme riski vardır. [medium, güven 0.75]\n  - 00:00 — İşçiler, koruyucu ekipman (örneğin, kask, eldiven, koruyucu ayakkabı) kullanmadıkları gözlemlenmektedir. Bu, özellikle yüksek yüklerle çalışırken ciddi yaralanmaları artırır. 00:00-01:00 arası tüm işçilerde koruyucu ekipman eksikliği gözlemlenmiştir. [high, güven 0.90]\n  - 01:00 — İşçiler, koruyucu ekipman (kask, eldiven, koruyucu ayakkabı) kullanmadan ağır yüklerle çalışmaktadır. Bu, özellikle yükün düşmesi veya işçilerin makineye sıkışması durumunda ciddi yaralanmaları artırır. [high, güven 0.90]\n  - 01:05 — Yere serilmiş kablolar ve malzemeler, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle 01:05-01:15 saniyeler arasında bir işçi kabloların üzerinden geçerken dengesini kaybetme riski vardır. [medium, güven 0.75]\n  - 01:10 — İşçiler, yüksek bir platformda çalışırken, kenar koruması olmaksızın dikkatsiz hareket ediyor. Bu, düşme riskini artırır ve özellikle 01:10-01:20 saniyeler arasında bir işçi platformun kenarına çok yakın duruyor. [high, güven 0.80]",
+  "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Bir endüstriyel üretim tesisi içinde, birkaç işçi büyük bir makineye yakın çalışmaktadır. İşçiler, büyük bir rulo veya yükü makineye yerleştirmek veya onarmak için birlikte çalışırken, biri mavi gömlek, diğeri beyaz gömlek giymektedir. İş y\n  - [00:00] görülen varlıklar: cable/wire, liquid/substance, load, machine, person, rack/structure\n  - [01:00] Endüstriyel bir üretim tesisi içinde, birkaç işçi büyük bir makineye yakın bir platformda bir yükü yerleştirmeye çalışırken görülüyor. İşçiler, yükü el ile iterek ve çekerek hareket ettiriyor. Zeminde kablolar, ahşap parçalar ve diğer malze\n  - [01:00] görülen varlıklar: cable/wire, liquid/substance, load, machine, person, rack/structure\nZaman damgalı olaylar:\n  - 00:15 — İşçiler, büyük bir yükü el ile taşırken ve yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski yüksek. Ayrıca, zemindeki kablolar ve malzemeler kayma veya düşme riski oluşturuyor. [high, güven 0.90]\n  - 00:20 — İşçilerin bazıları koruyucu ekipman (örneğin, kask, eldiven) kullanmadığı gözlemleniyor. Bu, makineleme sırasında yaralanma riskini artırıyor. [medium, güven 0.85]\n  - 00:30 — Zemindeki kablolar ve malzemeler, hareket halindeki işçiler için kayma veya düşme tehlikesi oluşturuyor. Özellikle 30.0 saniyeden itibaren bir işçi kabloların üzerinden geçerken dengesini kaybetme riski var. [medium, güven 0.80]\n  - 01:05 — İşçiler, büyük bir yükü el ile taşırken ve yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski yüksek. Yükün ağırlığı ve işçilerin koordinasyonu nedeniyle kontrol kaybı olabilir. [high, güven 0.90]\n  - 01:07 — Zemindeki kablolar ve malzemeler, hareket halindeki işçiler için kayma veya düşme tehlikesi oluşturuyor. Özellikle 67.0 saniyeden itibaren bir işçi kabloların üzerinden geçerken dengesini kaybetme riski var. [medium, güven 0.80]\n  - 01:10 — İşçilerin bazıları koruyucu ekipman (örneğin, kask, eldiven) kullanmadığı gözlemleniyor. Bu, makineleme sırasında yaralanma riskini artırıyor. [medium, güven 0.85]",
   "segments": [
     {
       "segment_index": 0,
@@ -12,92 +12,92 @@
       "time_range": "00:00-01:00",
       "max_severity": "high",
       "interpretation": {
-        "packet_id": "9d29c281-2ba0-419d-b186-4e33c8008b83",
+        "packet_id": "6a16bd94-6386-442e-a6bd-e76e983c5cbf",
         "video_id": "18-cctv-footage-of-man-caught-on-a-paper-03a4c6",
         "model_name": "vlm",
         "model_backend": "server",
-        "scene_summary_tr": "Bir endüstriyel üretim tesisi içinde, birkaç işçi büyük bir makineye yakın çalışmaktadır. İşçiler, büyük bir rulo veya yükü makineye yerleştirmek veya onarmak için birlikte çalışırken, biri mavi gömlek, diğeri beyaz gömlek giymektedir. İş yerinde çeşitli malzemeler, kablolar ve makineler yer almaktadır. İşçilerin bazıları makineye yakın, bazıları ise hareket halindedir. İş yerinde genel olarak kargaşa ve yoğun çalışma ortamı hakimdir.",
+        "scene_summary_tr": "Bir endüstriyel üretim tesisi içinde, birkaç işçi büyük bir makineye yakın çalışmaktadır. İşçiler, büyük bir rulo veya yükü makineye yerleştirmek veya onarmak için birlikte çalışırken, biri mavi gömlek, diğeri beyaz gömlek giymektedir. İş yerinde çeşitli malzemeler, kablolar ve makineler yer almaktadır. İşçilerin bazıları makineye yakın, bazıları ise hareket halindedir.",
         "detected_entities": [
           {
             "label": "person",
             "confidence_hint": "high",
-            "notes_tr": "En az 4 kişi göze çarpmaktadır; mavi, beyaz, koyu renkli ve kırmızı gömlek giyenler."
+            "notes_tr": "En az üç kişi göze çarpmaktadır; biri mavi gömlek, biri beyaz gömlek, biri koyu renk üst giymektedir. Hareket halindedirler."
           },
           {
             "label": "machine",
             "confidence_hint": "high",
-            "notes_tr": "Büyük, yeşil renkli endüstriyel makine, rulo veya yükü işleyen yapı."
+            "notes_tr": "Büyük, yeşil renkli bir üretim makinesi merkezde yer almaktadır. Rulo veya yük yerleştirmek için kullanılıyor gibi görünmektedir."
           },
           {
             "label": "load",
             "confidence_hint": "high",
-            "notes_tr": "Büyük, beyaz rulo veya malzeme, makineye yerleştirilmektedir."
+            "notes_tr": "Büyük, beyaz bir rulo veya malzeme makineye yerleştirilmektedir. Bu yük, işçiler tarafından taşınmaktadır."
           },
           {
             "label": "rack/structure",
             "confidence_hint": "medium",
-            "notes_tr": "Arka planda yüksek raf veya yapılar, malzeme depolama alanı gibi görünmektedir."
+            "notes_tr": "Arka planda yüksek bir raf veya yapı yer almaktadır. Üzerinde malzeme veya ürünler durmaktadır."
           },
           {
             "label": "liquid/substance",
             "confidence_hint": "low",
-            "notes_tr": "Mavi bir konteynerde sıvı veya toz gibi bir madde olabilir, ancak net değil."
+            "notes_tr": "Mavi bir konteynerde sıvı veya madde olabilecek bir şey bulunuyor, ancak net bir tanımlama yapılamamaktadır."
           },
           {
-            "label": "smoke or flame",
-            "confidence_hint": "low",
-            "notes_tr": "Bazı anlarda hafif duman veya toz bulutu oluşumu gözlemlenmektedir, ancak ateş veya alev yoktur."
+            "label": "cable/wire",
+            "confidence_hint": "high",
+            "notes_tr": "Zeminde çok sayıda kablo veya boru yığılmış durumdadır. Bu, çalışma alanını tehlikeli hale getirebilir."
           }
         ],
         "detected_actions_tr": [
-          "İşçiler büyük bir rulo veya yükü makineye yerleştirmek için birlikte çalışmaktadır.",
-          "Bir işçi mavi gömlek giyerek makinenin yanında dururken, diğerleri yükü itmek veya çekmek için yardım eder.",
-          "İşçilerin bazıları makineye yakın hareket ederken, bazıları da hızlıca geçiş yapar.",
-          "Yere serilmiş kablolar ve malzemeler arasında dikkatli hareket edilmektedir.",
-          "Bir işçi makinenin üzerine çıkarak yükü yönlendirirken, diğerleri destek verir."
+          "İşçiler büyük bir yükü makineye yerleştirmek için birlikte çalışıyor.",
+          "Bir işçi mavi gömlek giymiş, makinenin yanında duruyor ve yükü tutuyor.",
+          "Beyaz gömlekli işçi yükün diğer tarafını tutuyor ve yerleştiriyor.",
+          "Diğer işçiler de yükün yerleştirilmesine yardım ediyor.",
+          "Zemindeki kablolar ve malzemeler hareket halindeki işçiler için engel olabilir."
         ],
-        "confidence_overall": 0.85,
+        "confidence_overall": 0.88,
         "inference": {
-          "latency_ms": 19926.232899997558,
-          "tokens_generated": 1028
+          "latency_ms": 22064.619899996615,
+          "tokens_generated": 955
         },
-        "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir endüstriyel üretim tesisi içinde, birkaç işçi büyük bir makineye yakın çalışmaktadır. İşçiler, büyük bir rulo veya yükü makineye yerleştirmek veya onarmak için birlikte çalışırken, biri mavi gömlek, diğeri beyaz gömlek giymektedir. İş yerinde çeşitli malzemeler, kablolar ve makineler yer almaktadır. İşçilerin bazıları makineye yakın, bazıları ise hareket halindedir. İş yerinde genel olarak kargaşa ve yoğun çalışma ortamı hakimdir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az 4 kişi göze çarpmaktadır; mavi, beyaz, koyu renkli ve kırmızı gömlek giyenler.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, yeşil renkli endüstriyel makine, rulo veya yükü işleyen yapı.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, beyaz rulo veya malzeme, makineye yerleştirilmektedir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda yüksek raf veya yapılar, malzeme depolama alanı gibi görünmektedir.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Mavi bir konteynerde sıvı veya toz gibi bir madde olabilir, ancak net değil.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Bazı anlarda hafif duman veya toz bulutu oluşumu gözlemlenmektedir, ancak ateş veya alev yoktur.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler büyük bir rulo veya yükü makineye yerleştirmek için birlikte çalışmaktadır.\",\n    \"Bir işçi mavi gömlek giyerek makinenin yanında dururken, diğerleri yükü itmek veya çekmek için yardım eder.\",\n    \"İşçilerin bazıları makineye yakın hareket ederken, bazıları da hızlıca geçiş yapar.\",\n    \"Yere serilmiş kablolar ve malzemeler arasında dikkatli hareket edilmektedir.\",\n    \"Bir işçi makinenin üzerine çıkarak yükü yönlendirirken, diğerleri destek verir.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, büyük bir yükü manuel olarak taşırken, makineye yakın ve kablolarla dolu bir alanda çalışmaktadır. Bu, düşme, sıkışma veya yükün düşmesi riskini artırır. Özellikle 00:15-00:25 saniyeler arasında yükün kontrolsüz hareketi ve işçilerin yakın mesafede çalışması yüksek risk oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 15.0\n    },\n    {\n      \"description_tr\": \"Yere serilmiş kablolar ve malzemeler, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle 00:28-00:35 saniyeler arasında bir işçi kabloların üzerinden geçerken dengesini kaybetme riski vardır.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.75,\n      \"timestamp_sec\": 28.0\n    },\n    {\n      \"description_tr\": \"İşçiler, koruyucu ekipman (örneğin, kask, eldiven, koruyucu ayakkabı) kullanmadıkları gözlemlenmektedir. Bu, özellikle yüksek yüklerle çalışırken ciddi yaralanmaları artırır. 00:00-01:00 arası tüm işçilerde koruyucu ekipman eksikliği gözlemlenmiştir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 0.0\n    }\n  ],\n  \"confidence_overall\": 0.85\n}",
+        "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir endüstriyel üretim tesisi içinde, birkaç işçi büyük bir makineye yakın çalışmaktadır. İşçiler, büyük bir rulo veya yükü makineye yerleştirmek veya onarmak için birlikte çalışırken, biri mavi gömlek, diğeri beyaz gömlek giymektedir. İş yerinde çeşitli malzemeler, kablolar ve makineler yer almaktadır. İşçilerin bazıları makineye yakın, bazıları ise hareket halindedir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az üç kişi göze çarpmaktadır; biri mavi gömlek, biri beyaz gömlek, biri koyu renk üst giymektedir. Hareket halindedirler.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, yeşil renkli bir üretim makinesi merkezde yer almaktadır. Rulo veya yük yerleştirmek için kullanılıyor gibi görünmektedir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, beyaz bir rulo veya malzeme makineye yerleştirilmektedir. Bu yük, işçiler tarafından taşınmaktadır.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda yüksek bir raf veya yapı yer almaktadır. Üzerinde malzeme veya ürünler durmaktadır.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Mavi bir konteynerde sıvı veya madde olabilecek bir şey bulunuyor, ancak net bir tanımlama yapılamamaktadır.\"\n    },\n    {\n      \"label\": \"cable/wire\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Zeminde çok sayıda kablo veya boru yığılmış durumdadır. Bu, çalışma alanını tehlikeli hale getirebilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler büyük bir yükü makineye yerleştirmek için birlikte çalışıyor.\",\n    \"Bir işçi mavi gömlek giymiş, makinenin yanında duruyor ve yükü tutuyor.\",\n    \"Beyaz gömlekli işçi yükün diğer tarafını tutuyor ve yerleştiriyor.\",\n    \"Diğer işçiler de yükün yerleştirilmesine yardım ediyor.\",\n    \"Zemindeki kablolar ve malzemeler hareket halindeki işçiler için engel olabilir.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, büyük bir yükü el ile taşırken ve yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski yüksek. Ayrıca, zemindeki kablolar ve malzemeler kayma veya düşme riski oluşturuyor.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 15.0\n    },\n    {\n      \"description_tr\": \"İşçilerin bazıları koruyucu ekipman (örneğin, kask, eldiven) kullanmadığı gözlemleniyor. Bu, makineleme sırasında yaralanma riskini artırıyor.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 20.0\n    },\n    {\n      \"description_tr\": \"Zemindeki kablolar ve malzemeler, hareket halindeki işçiler için kayma veya düşme tehlikesi oluşturuyor. Özellikle 30.0 saniyeden itibaren bir işçi kabloların üzerinden geçerken dengesini kaybetme riski var.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.8,\n      \"timestamp_sec\": 30.0\n    }\n  ],\n  \"confidence_overall\": 0.88\n}",
         "risk_events": [
           {
-            "description_tr": "İşçiler, büyük bir yükü manuel olarak taşırken, makineye yakın ve kablolarla dolu bir alanda çalışmaktadır. Bu, düşme, sıkışma veya yükün düşmesi riskini artırır. Özellikle 00:15-00:25 saniyeler arasında yükün kontrolsüz hareketi ve işçilerin yakın mesafede çalışması yüksek risk oluşturur.",
+            "description_tr": "İşçiler, büyük bir yükü el ile taşırken ve yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski yüksek. Ayrıca, zemindeki kablolar ve malzemeler kayma veya düşme riski oluşturuyor.",
             "severity": "high",
-            "confidence": 0.85,
+            "confidence": 0.9,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
             "timestamp_sec": 15.0
           },
           {
-            "description_tr": "Yere serilmiş kablolar ve malzemeler, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle 00:28-00:35 saniyeler arasında bir işçi kabloların üzerinden geçerken dengesini kaybetme riski vardır.",
+            "description_tr": "İşçilerin bazıları koruyucu ekipman (örneğin, kask, eldiven) kullanmadığı gözlemleniyor. Bu, makineleme sırasında yaralanma riskini artırıyor.",
             "severity": "medium",
-            "confidence": 0.75,
+            "confidence": 0.85,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
-            "timestamp_sec": 28.0
+            "timestamp_sec": 20.0
           },
           {
-            "description_tr": "İşçiler, koruyucu ekipman (örneğin, kask, eldiven, koruyucu ayakkabı) kullanmadıkları gözlemlenmektedir. Bu, özellikle yüksek yüklerle çalışırken ciddi yaralanmaları artırır. 00:00-01:00 arası tüm işçilerde koruyucu ekipman eksikliği gözlemlenmiştir.",
-            "severity": "high",
-            "confidence": 0.9,
+            "description_tr": "Zemindeki kablolar ve malzemeler, hareket halindeki işçiler için kayma veya düşme tehlikesi oluşturuyor. Özellikle 30.0 saniyeden itibaren bir işçi kabloların üzerinden geçerken dengesini kaybetme riski var.",
+            "severity": "medium",
+            "confidence": 0.8,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
-            "timestamp_sec": 0.0
+            "timestamp_sec": 30.0
           }
         ],
         "risk_flags_tr": [
-          "İşçiler, büyük bir yükü manuel olarak taşırken, makineye yakın ve kablolarla dolu bir alanda çalışmaktadır. Bu, düşme, sıkışma veya yükün düşmesi riskini artırır. Özellikle 00:15-00:25 saniyeler arasında yükün kontrolsüz hareketi ve işçilerin yakın mesafede çalışması yüksek risk oluşturur.",
-          "Yere serilmiş kablolar ve malzemeler, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle 00:28-00:35 saniyeler arasında bir işçi kabloların üzerinden geçerken dengesini kaybetme riski vardır.",
-          "İşçiler, koruyucu ekipman (örneğin, kask, eldiven, koruyucu ayakkabı) kullanmadıkları gözlemlenmektedir. Bu, özellikle yüksek yüklerle çalışırken ciddi yaralanmaları artırır. 00:00-01:00 arası tüm işçilerde koruyucu ekipman eksikliği gözlemlenmiştir."
+          "İşçiler, büyük bir yükü el ile taşırken ve yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski yüksek. Ayrıca, zemindeki kablolar ve malzemeler kayma veya düşme riski oluşturuyor.",
+          "İşçilerin bazıları koruyucu ekipman (örneğin, kask, eldiven) kullanmadığı gözlemleniyor. Bu, makineleme sırasında yaralanma riskini artırıyor.",
+          "Zemindeki kablolar ve malzemeler, hareket halindeki işçiler için kayma veya düşme tehlikesi oluşturuyor. Özellikle 30.0 saniyeden itibaren bir işçi kabloların üzerinden geçerken dengesini kaybetme riski var."
         ],
-        "computed_confidence": 0.6188,
+        "computed_confidence": 0.615,
         "reasoning_trace": "",
         "segment_start_sec": 0.0,
         "segment_end_sec": 60.0,
-        "created_at": "2026-08-27T12:51:11.415769+00:00"
+        "created_at": "2026-08-27T18:24:00.857816+00:00"
       }
     },
     {
@@ -107,94 +107,94 @@
       "time_range": "01:00-01:29",
       "max_severity": "high",
       "interpretation": {
-        "packet_id": "a5e34265-5a7c-454e-8a31-b87b89f170e6",
+        "packet_id": "e9ff3c08-6a7a-42ff-9837-82bed1dbb3cb",
         "video_id": "18-cctv-footage-of-man-caught-on-a-paper-03a4c6",
         "model_name": "vlm",
         "model_backend": "server",
-        "scene_summary_tr": "Endüstriyel bir üretim tesisi içinde, birkaç işçi büyük bir makineye yakın bir platformda ağır bir yükü yerleştirmek veya onarmak için birlikte çalışıyor. İşçiler, koruyucu ekipman kullanmadan, yere serilmiş kablolar ve malzemeler arasında hareket ediyor. Arka planda, çeşitli malzemelerin yığıldığı raf ve yapılar görülmektedir.",
+        "scene_summary_tr": "Endüstriyel bir üretim tesisi içinde, birkaç işçi büyük bir makineye yakın bir platformda bir yükü yerleştirmeye çalışırken görülüyor. İşçiler, yükü el ile iterek ve çekerek hareket ettiriyor. Zeminde kablolar, ahşap parçalar ve diğer malzemeler dağılmış durumda. Ayrıca, diğer işçilerin de sahneye yaklaşarak yardım etmeye çalıştığı veya çevrede dolaştığı gözlemleniyor.",
         "detected_entities": [
           {
             "label": "person",
             "confidence_hint": "high",
-            "notes_tr": "Birden fazla işçi, farklı renkli gömlekler giymiş, platformda ve etrafında hareket ediyor."
+            "notes_tr": "En az 6 işçi sahnede görülüyor; bazıları platformda, bazıları zeminde hareket ediyor."
           },
           {
             "label": "machine",
             "confidence_hint": "high",
-            "notes_tr": "Büyük, endüstriyel bir makine, işçilerin etrafında yer alıyor."
+            "notes_tr": "Büyük, endüstriyel bir makine, muhtemelen bir pres veya rulo işleme cihazı."
           },
           {
             "label": "load",
             "confidence_hint": "high",
-            "notes_tr": "Büyük, koyu renkli bir yük, işçiler tarafından makineye yerleştiriliyor."
+            "notes_tr": "Büyük, beyaz kaplı bir yük, işçiler tarafından makineye yerleştiriliyor."
+          },
+          {
+            "label": "cable/wire",
+            "confidence_hint": "high",
+            "notes_tr": "Zeminde çok sayıda kablo ve hattan oluşan bir grup, özellikle sol alt köşede yoğun."
           },
           {
             "label": "rack/structure",
             "confidence_hint": "high",
-            "notes_tr": "Arka planda, malzemelerin yığıldığı metal raf ve yapılar var."
+            "notes_tr": "Yükün yerleştirildiği ahşap platform ve arka plandaki metal raf yapıları."
           },
           {
             "label": "liquid/substance",
             "confidence_hint": "medium",
-            "notes_tr": "Mavi bir konteynerde sıvı veya maddelerin bulunduğu tahmin ediliyor."
-          },
-          {
-            "label": "smoke or flame",
-            "confidence_hint": "low",
-            "notes_tr": "Ateş veya duman belirtisi görülmemektedir, ancak bazı noktalarda küçük toz veya buhar oluşumu olabilir."
+            "notes_tr": "Mavi bir konteynerde sıvı veya toz gibi bir madde bulunuyor, ancak net bir tanımlama yapılamıyor."
           }
         ],
         "detected_actions_tr": [
-          "İşçiler, büyük bir yükü birlikte taşımak ve makineye yerleştirmek için platformda çalışmaktadır.",
-          "Yere serilmiş kablolar ve malzemeler arasında hareket eden işçiler, dengesizlik riski taşıyor.",
-          "Bazı işçiler, platformun kenarında dikkatsiz hareket ederken, düşme riski ortaya çıkıyor.",
-          "Yeni gelen işçiler, mevcut ekipmanlara müdahale etmeden önce duruyor ve izliyor."
+          "İşçiler, büyük bir yükü birlikte iterek ve çekerek makineye yerleştiriyor.",
+          "Bazı işçiler platformda, bazıları zeminde hareket ediyor.",
+          "Zemindeki kablolar ve malzemeler, işçilerin geçişini zorlaştırıyor.",
+          "Yardımcı işçiler, sahneye yaklaşarak müdahale ediyor veya izliyor."
         ],
-        "confidence_overall": 0.85,
+        "confidence_overall": 0.88,
         "inference": {
-          "latency_ms": 15021.12599999964,
-          "tokens_generated": 903
+          "latency_ms": 17080.487400002312,
+          "tokens_generated": 858
         },
-        "raw_model_output": "{\n  \"scene_summary_tr\": \"Endüstriyel bir üretim tesisi içinde, birkaç işçi büyük bir makineye yakın bir platformda ağır bir yükü yerleştirmek veya onarmak için birlikte çalışıyor. İşçiler, koruyucu ekipman kullanmadan, yere serilmiş kablolar ve malzemeler arasında hareket ediyor. Arka planda, çeşitli malzemelerin yığıldığı raf ve yapılar görülmektedir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Birden fazla işçi, farklı renkli gömlekler giymiş, platformda ve etrafında hareket ediyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, endüstriyel bir makine, işçilerin etrafında yer alıyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, koyu renkli bir yük, işçiler tarafından makineye yerleştiriliyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Arka planda, malzemelerin yığıldığı metal raf ve yapılar var.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Mavi bir konteynerde sıvı veya maddelerin bulunduğu tahmin ediliyor.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Ateş veya duman belirtisi görülmemektedir, ancak bazı noktalarda küçük toz veya buhar oluşumu olabilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, büyük bir yükü birlikte taşımak ve makineye yerleştirmek için platformda çalışmaktadır.\",\n    \"Yere serilmiş kablolar ve malzemeler arasında hareket eden işçiler, dengesizlik riski taşıyor.\",\n    \"Bazı işçiler, platformun kenarında dikkatsiz hareket ederken, düşme riski ortaya çıkıyor.\",\n    \"Yeni gelen işçiler, mevcut ekipmanlara müdahale etmeden önce duruyor ve izliyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, koruyucu ekipman (kask, eldiven, koruyucu ayakkabı) kullanmadan ağır yüklerle çalışmaktadır. Bu, özellikle yükün düşmesi veya işçilerin makineye sıkışması durumunda ciddi yaralanmaları artırır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 60.0\n    },\n    {\n      \"description_tr\": \"Yere serilmiş kablolar ve malzemeler, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle 01:05-01:15 saniyeler arasında bir işçi kabloların üzerinden geçerken dengesini kaybetme riski vardır.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.75,\n      \"timestamp_sec\": 65.0\n    },\n    {\n      \"description_tr\": \"İşçiler, yüksek bir platformda çalışırken, kenar koruması olmaksızın dikkatsiz hareket ediyor. Bu, düşme riskini artırır ve özellikle 01:10-01:20 saniyeler arasında bir işçi platformun kenarına çok yakın duruyor.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 70.0\n    }\n  ],\n  \"confidence_overall\": 0.85\n}",
+        "raw_model_output": "{\n  \"scene_summary_tr\": \"Endüstriyel bir üretim tesisi içinde, birkaç işçi büyük bir makineye yakın bir platformda bir yükü yerleştirmeye çalışırken görülüyor. İşçiler, yükü el ile iterek ve çekerek hareket ettiriyor. Zeminde kablolar, ahşap parçalar ve diğer malzemeler dağılmış durumda. Ayrıca, diğer işçilerin de sahneye yaklaşarak yardım etmeye çalıştığı veya çevrede dolaştığı gözlemleniyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az 6 işçi sahnede görülüyor; bazıları platformda, bazıları zeminde hareket ediyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, endüstriyel bir makine, muhtemelen bir pres veya rulo işleme cihazı.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, beyaz kaplı bir yük, işçiler tarafından makineye yerleştiriliyor.\"\n    },\n    {\n      \"label\": \"cable/wire\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Zeminde çok sayıda kablo ve hattan oluşan bir grup, özellikle sol alt köşede yoğun.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yükün yerleştirildiği ahşap platform ve arka plandaki metal raf yapıları.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Mavi bir konteynerde sıvı veya toz gibi bir madde bulunuyor, ancak net bir tanımlama yapılamıyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, büyük bir yükü birlikte iterek ve çekerek makineye yerleştiriyor.\",\n    \"Bazı işçiler platformda, bazıları zeminde hareket ediyor.\",\n    \"Zemindeki kablolar ve malzemeler, işçilerin geçişini zorlaştırıyor.\",\n    \"Yardımcı işçiler, sahneye yaklaşarak müdahale ediyor veya izliyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, büyük bir yükü el ile taşırken ve yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski yüksek. Yükün ağırlığı ve işçilerin koordinasyonu nedeniyle kontrol kaybı olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 65.0\n    },\n    {\n      \"description_tr\": \"Zemindeki kablolar ve malzemeler, hareket halindeki işçiler için kayma veya düşme tehlikesi oluşturuyor. Özellikle 67.0 saniyeden itibaren bir işçi kabloların üzerinden geçerken dengesini kaybetme riski var.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 67.0\n    },\n    {\n      \"description_tr\": \"İşçilerin bazıları koruyucu ekipman (örneğin, kask, eldiven) kullanmadığı gözlemleniyor. Bu, makineleme sırasında yaralanma riskini artırıyor.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 70.0\n    }\n  ],\n  \"confidence_overall\": 0.88\n}",
         "risk_events": [
           {
-            "description_tr": "İşçiler, koruyucu ekipman (kask, eldiven, koruyucu ayakkabı) kullanmadan ağır yüklerle çalışmaktadır. Bu, özellikle yükün düşmesi veya işçilerin makineye sıkışması durumunda ciddi yaralanmaları artırır.",
+            "description_tr": "İşçiler, büyük bir yükü el ile taşırken ve yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski yüksek. Yükün ağırlığı ve işçilerin koordinasyonu nedeniyle kontrol kaybı olabilir.",
             "severity": "high",
             "confidence": 0.9,
-            "supporting_frame_count": 1,
-            "supporting_frame_positions": [],
-            "timestamp_sec": 60.0
-          },
-          {
-            "description_tr": "Yere serilmiş kablolar ve malzemeler, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle 01:05-01:15 saniyeler arasında bir işçi kabloların üzerinden geçerken dengesini kaybetme riski vardır.",
-            "severity": "medium",
-            "confidence": 0.75,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
             "timestamp_sec": 65.0
           },
           {
-            "description_tr": "İşçiler, yüksek bir platformda çalışırken, kenar koruması olmaksızın dikkatsiz hareket ediyor. Bu, düşme riskini artırır ve özellikle 01:10-01:20 saniyeler arasında bir işçi platformun kenarına çok yakın duruyor.",
-            "severity": "high",
+            "description_tr": "Zemindeki kablolar ve malzemeler, hareket halindeki işçiler için kayma veya düşme tehlikesi oluşturuyor. Özellikle 67.0 saniyeden itibaren bir işçi kabloların üzerinden geçerken dengesini kaybetme riski var.",
+            "severity": "medium",
             "confidence": 0.8,
+            "supporting_frame_count": 1,
+            "supporting_frame_positions": [],
+            "timestamp_sec": 67.0
+          },
+          {
+            "description_tr": "İşçilerin bazıları koruyucu ekipman (örneğin, kask, eldiven) kullanmadığı gözlemleniyor. Bu, makineleme sırasında yaralanma riskini artırıyor.",
+            "severity": "medium",
+            "confidence": 0.85,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
             "timestamp_sec": 70.0
           }
         ],
         "risk_flags_tr": [
-          "İşçiler, koruyucu ekipman (kask, eldiven, koruyucu ayakkabı) kullanmadan ağır yüklerle çalışmaktadır. Bu, özellikle yükün düşmesi veya işçilerin makineye sıkışması durumunda ciddi yaralanmaları artırır.",
-          "Yere serilmiş kablolar ve malzemeler, işçilerin dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle 01:05-01:15 saniyeler arasında bir işçi kabloların üzerinden geçerken dengesini kaybetme riski vardır.",
-          "İşçiler, yüksek bir platformda çalışırken, kenar koruması olmaksızın dikkatsiz hareket ediyor. Bu, düşme riskini artırır ve özellikle 01:10-01:20 saniyeler arasında bir işçi platformun kenarına çok yakın duruyor."
+          "İşçiler, büyük bir yükü el ile taşırken ve yerleştirirken, yükün düşmesi veya kayması durumunda yaralanma riski yüksek. Yükün ağırlığı ve işçilerin koordinasyonu nedeniyle kontrol kaybı olabilir.",
+          "Zemindeki kablolar ve malzemeler, hareket halindeki işçiler için kayma veya düşme tehlikesi oluşturuyor. Özellikle 67.0 saniyeden itibaren bir işçi kabloların üzerinden geçerken dengesini kaybetme riski var.",
+          "İşçilerin bazıları koruyucu ekipman (örneğin, kask, eldiven) kullanmadığı gözlemleniyor. Bu, makineleme sırasında yaralanma riskini artırıyor."
         ],
         "computed_confidence": 0.615,
         "reasoning_trace": "",
         "segment_start_sec": 60.0,
         "segment_end_sec": 88.68,
-        "created_at": "2026-08-27T12:51:26.449673+00:00"
+        "created_at": "2026-08-27T18:24:17.952624+00:00"
       }
     }
   ],
   "failed_segments": [],
-  "created_at": "2026-08-27T12:51:26.451549+00:00"
+  "created_at": "2026-08-27T18:24:17.953624+00:00"
 }

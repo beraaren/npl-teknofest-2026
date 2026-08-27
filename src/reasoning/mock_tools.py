@@ -56,3 +56,24 @@ class MockToolRegistry:
                     "params": tool.get("params", {}),
                 })
         return suggestions
+
+    def suggest_tools_for_results(self, results: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Yalnız eyleme geçirilebilir incident sonuçlarından araç önerir.
+
+        Genel analiz riski veya bağlamsal bulgu burada araç tetiklemez. Kararın
+        kendi incident severity'si araç seçiminin tek risk girdisidir.
+        """
+        actionable = [
+            result for result in results
+            if isinstance(result, dict)
+            and result.get("result_type") == "incident"
+            and not result.get("uncertain")
+            and result.get("severity") in {"critical", "high", "medium", "low"}
+            and (result.get("evidence") or {}).get("agreement") not in {"insufficient", "unknown"}
+        ]
+        if not actionable:
+            return []
+        order = {"low": 1, "medium": 2, "high": 3, "critical": 4}
+        top = max(actionable, key=lambda result: order.get(str(result.get("severity")), 0))
+        risk_level = {"critical": "Yüksek", "high": "Yüksek", "medium": "Orta", "low": "Düşük"}[top["severity"]]
+        return self.suggest_tools(risk_level, [str(result.get("event_type") or "") for result in actionable])

@@ -2,6 +2,8 @@ from pydantic import BaseModel
 from typing import Literal
 from datetime import datetime
 
+from pydantic import BaseModel, Field
+
 class FrameChunk(BaseModel):
     job_id: str
     camera_id: str
@@ -41,6 +43,12 @@ class DecisionFinal(BaseModel):
     reasoning: str
     confidence: float
     triggered_mock_tools: list[dict]
+    # Yeni kanonik karar sözleşmesi; eski tüketiciler events/risk alanlarıyla çalışmaya devam eder.
+    scene_context: dict = Field(default_factory=dict)
+    results: list[dict] = Field(default_factory=list)
+    overall_risk: str = "unknown"
+    uncertain: bool = False
+    uncertainty_reason: str = ""
 
 class ToolExecuted(BaseModel):
     job_id: str

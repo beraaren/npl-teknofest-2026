@@ -152,7 +152,9 @@ async def create_assignment_endpoint(body: AssignmentCreate, request: Request, r
         analysis_slug=body.analysis_slug,
         role=role,
         camera_id=body.camera_id,
-        risk=str(analysis.get("risk") or ""),
+        risk={"critical": "Yüksek", "high": "Yüksek", "medium": "Orta", "low": "Düşük"}.get(
+            str(event.get("severity") or "unknown"), "Düşük"
+        ),
         headline=str(analysis.get("headline") or ""),
         # Karar ajanının yazdığı olay özeti — iki ekranda da aynı metin.
         summary=str(analysis.get("summary") or ""),
@@ -342,7 +344,9 @@ async def execute_tool(body: ToolExecuteRequest, request: Request):
                 analysis_slug=body.analysis_slug,
                 role=role,
                 camera_id=body.camera_id,
-                risk=str(analysis.get("risk") or ""),
+                risk={"critical": "Yüksek", "high": "Yüksek", "medium": "Orta", "low": "Düşük"}.get(
+            str(event.get("severity") or "unknown"), "Düşük"
+        ),
                 headline=str(analysis.get("headline") or ""),
                 summary=str(analysis.get("summary") or ""),
                 reasoning=str(analysis.get("reasoning") or ""),

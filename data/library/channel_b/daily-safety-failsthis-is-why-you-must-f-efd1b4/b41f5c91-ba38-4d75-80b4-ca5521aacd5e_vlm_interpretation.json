@@ -1,0 +1,64 @@
+{
+  "packet_id": "b41f5c91-ba38-4d75-80b4-ca5521aacd5e",
+  "video_id": "daily-safety-failsthis-is-why-you-must-f-efd1b4",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir metal işleme fabrikasında, çalışanlar büyük metal levhaların arasında hareket ediyor. Arka planda bir kumanda ile hareket eden sarı renkli bir taşıma aracı (muhtemelen bir kumandalı taşıyıcı veya kran) ve çeşitli metal yığınları mevcut. 00:12'den itibaren bir metal levha düşer ve toz bulutu oluşturur.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Birden fazla işçi, bazıları kask takıyor, bazıları hareket halinde."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Sarı renkli, kumandalı bir taşıma aracı (muhtemelen kran veya taşıyıcı) göze çarpar."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Yığın halindeki büyük metal levhalar, bazıları tahta destekler üzerinde."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "00:12'den itibaren metal levha düşerken oluşan toz bulutu."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Metal levhaların yığıldığı ve desteklendiği yapılar."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçilerin metal levhalar arasında yürüdüğü",
+    "Sarı taşıma aracının hareket ettiği",
+    "Bir metal levhanın düşmesi ve toz bulutu oluşturması",
+    "İşçilerin düşen levha sonrası durup durumun değerlendirildiği"
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 9205.150000001595,
+    "tokens_generated": 546
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir metal işleme fabrikasında, çalışanlar büyük metal levhaların arasında hareket ediyor. Arka planda bir kumanda ile hareket eden sarı renkli bir taşıma aracı (muhtemelen bir kumandalı taşıyıcı veya kran) ve çeşitli metal yığınları mevcut. 00:12'den itibaren bir metal levha düşer ve toz bulutu oluşturur.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Birden fazla işçi, bazıları kask takıyor, bazıları hareket halinde.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli, kumandalı bir taşıma aracı (muhtemelen kran veya taşıyıcı) göze çarpar.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yığın halindeki büyük metal levhalar, bazıları tahta destekler üzerinde.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:12'den itibaren metal levha düşerken oluşan toz bulutu.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Metal levhaların yığıldığı ve desteklendiği yapılar.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçilerin metal levhalar arasında yürüdüğü\",\n    \"Sarı taşıma aracının hareket ettiği\",\n    \"Bir metal levhanın düşmesi ve toz bulutu oluşturması\",\n    \"İşçilerin düşen levha sonrası durup durumun değerlendirildiği\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Bir metal levha düşerek toz bulutu oluşturdu ve yakın çevredeki işçilerin güvenliği tehlikeye girdi. Bu, düşen yük ve toz maruziyeti riskini içerir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 12.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Bir metal levha düşerek toz bulutu oluşturdu ve yakın çevredeki işçilerin güvenliği tehlikeye girdi. Bu, düşen yük ve toz maruziyeti riskini içerir.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 12.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Bir metal levha düşerek toz bulutu oluşturdu ve yakın çevredeki işçilerin güvenliği tehlikeye girdi. Bu, düşen yük ve toz maruziyeti riskini içerir."
+  ],
+  "computed_confidence": 0.6775,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 21.77175,
+  "created_at": "2026-08-27T17:53:46.547969+00:00"
+}

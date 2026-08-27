@@ -57,6 +57,30 @@ def test_guardrail_normalizes_malformed_events():
     assert result["events"][1]["confidence"] == 0.9
 
 
+def test_guardrail_normalizes_string_mock_tool_calls():
+    raw = '''
+    {
+        "summary": "Doğrulanmış olay",
+        "events": [],
+        "risk": "Düşük",
+        "actions": [],
+        "reasoning": "r",
+        "confidence": 0.8,
+        "triggered_mock_tools": [
+            "secure_area",
+            {"tool_name": "notify_supervisor", "params": {"priority": "high"}}
+        ]
+    }
+    '''
+    guardrail = OutputGuardrail(GuardrailConfig())
+    result = guardrail.validate(raw, lambda t: raw)
+
+    assert result["triggered_mock_tools"] == [
+        {"tool_name": "secure_area", "params": {}},
+        {"tool_name": "notify_supervisor", "params": {"priority": "high"}},
+    ]
+
+
 def test_normalize_time_variants():
     assert OutputGuardrail._normalize_time("0:01-0:04") == "00:01"
     assert OutputGuardrail._normalize_time("12:34") == "12:34"

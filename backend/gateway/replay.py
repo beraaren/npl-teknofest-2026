@@ -101,7 +101,13 @@ def active_risk_window(stamps: list[dict], position_sec: float) -> Optional[dict
             continue
         if not (start <= position_sec <= end):
             continue
-        severity = str(stamp.get("severity") or "low")
+        if str(stamp.get("result_type") or "incident") != "incident":
+            continue
+        if bool(stamp.get("uncertain")):
+            continue
+        severity = str(stamp.get("severity") or "unknown")
+        if severity == "unknown":
+            continue
         rank = SEVERITY_RANK.get(severity, 1)
         if rank > best_rank:
             best_rank = rank
@@ -416,8 +422,9 @@ class ReplayEngine:
             "job_id": cam.job_id,
             "camera_id": cam.camera_id,
             "analysis_slug": analysis.get("slug"),
-            "risk": analysis.get("risk", "Orta"),
-            "severity": stamp.get("severity", "high"),
+            "risk": SEVERITY_TO_RISK.get(str(stamp.get("severity") or "unknown"), "Düşük"),
+            "overall_risk": analysis.get("overall_risk", "unknown"),
+            "severity": stamp.get("severity", "unknown"),
             "headline": analysis.get("headline") or "Riskli durum",
             "summary": analysis.get("summary", ""),
             "actions": analysis.get("actions", []),

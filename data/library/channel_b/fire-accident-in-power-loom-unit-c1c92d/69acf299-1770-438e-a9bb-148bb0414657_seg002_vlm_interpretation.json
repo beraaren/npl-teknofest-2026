@@ -1,0 +1,77 @@
+{
+  "packet_id": "69acf299-1770-438e-a9bb-148bb0414657",
+  "video_id": "fire-accident-in-power-loom-unit-c1c92d",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir tekstil atölyesinde, yangın sonrası dumanlı bir ortamda bir işçi kırmızı bir yangın söndürücü ile müdahale ederken, daha sonra başka bir işçi dumanlı alanda hareket eder. Makineler hâlâ duman üretirken, ortamda yüksek tehlike seviyesi devam etmektedir.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İki farklı işçi görülür: biri kırmızı yangın söndürücüyle, diğeri dumanlı alanda hareket eder."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Dokuma makinesi gibi büyük endüstriyel makineler mevcuttur."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Makinelere yakın bölgede yoğun duman ve küçük alevler gözlemlenir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda malzeme rafı veya yapısal destekler görülebilir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, kırmızı bir yangın söndürücüyle yangına müdahale eder.",
+    "İşçi, yangın söndürücüyü kullanırken dumanlı alanda hareket eder.",
+    "İkinci bir işçi, dumanlı alanda makineye yaklaşır ve çevresini kontrol eder.",
+    "Makine, duman ve küçük alevler üretmeye devam eder."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 12039.382800001476,
+    "tokens_generated": 678
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, yangın sonrası dumanlı bir ortamda bir işçi kırmızı bir yangın söndürücü ile müdahale ederken, daha sonra başka bir işçi dumanlı alanda hareket eder. Makineler hâlâ duman üretirken, ortamda yüksek tehlike seviyesi devam etmektedir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki farklı işçi görülür: biri kırmızı yangın söndürücüyle, diğeri dumanlı alanda hareket eder.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Dokuma makinesi gibi büyük endüstriyel makineler mevcuttur.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinelere yakın bölgede yoğun duman ve küçük alevler gözlemlenir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda malzeme rafı veya yapısal destekler görülebilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, kırmızı bir yangın söndürücüyle yangına müdahale eder.\",\n    \"İşçi, yangın söndürücüyü kullanırken dumanlı alanda hareket eder.\",\n    \"İkinci bir işçi, dumanlı alanda makineye yaklaşır ve çevresini kontrol eder.\",\n    \"Makine, duman ve küçük alevler üretmeye devam eder.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yangın söndürücü ile müdahale eden işçi, dumanlı ve potansiyel olarak yanıcı ortamda çalışmaktadır. Bu, solunum yolu zararları ve yanma riski oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 110.4\n    },\n    {\n      \"description_tr\": \"İkinci işçi, dumanlı alanda ve yangın sonrası sıcaklıkta hareket ederken, yanma veya boğulma riski altında bulunmaktadır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 120.0\n    },\n    {\n      \"description_tr\": \"Makine hâlâ duman ve alevler üretmekte olup, yangının tamamen söndürülmemiş olduğu ve yeniden patlama riski olduğu anlaşılmaktadır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.92,\n      \"timestamp_sec\": 130.0\n    }\n  ],\n  \"confidence_overall\": 0.90\n}",
+  "risk_events": [
+    {
+      "description_tr": "Yangın söndürücü ile müdahale eden işçi, dumanlı ve potansiyel olarak yanıcı ortamda çalışmaktadır. Bu, solunum yolu zararları ve yanma riski oluşturur.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 110.4
+    },
+    {
+      "description_tr": "İkinci işçi, dumanlı alanda ve yangın sonrası sıcaklıkta hareket ederken, yanma veya boğulma riski altında bulunmaktadır.",
+      "severity": "high",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    },
+    {
+      "description_tr": "Makine hâlâ duman ve alevler üretmekte olup, yangının tamamen söndürülmemiş olduğu ve yeniden patlama riski olduğu anlaşılmaktadır.",
+      "severity": "critical",
+      "confidence": 0.92,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 130.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Yangın söndürücü ile müdahale eden işçi, dumanlı ve potansiyel olarak yanıcı ortamda çalışmaktadır. Bu, solunum yolu zararları ve yanma riski oluşturur.",
+    "İkinci işçi, dumanlı alanda ve yangın sonrası sıcaklıkta hareket ederken, yanma veya boğulma riski altında bulunmaktadır.",
+    "Makine hâlâ duman ve alevler üretmekte olup, yangının tamamen söndürülmemiş olduğu ve yeniden patlama riski olduğu anlaşılmaktadır."
+  ],
+  "computed_confidence": 0.7005,
+  "reasoning_trace": "",
+  "segment_start_sec": 108.4,
+  "segment_end_sec": 144.96,
+  "created_at": "2026-08-27T18:01:34.084264+00:00"
+}

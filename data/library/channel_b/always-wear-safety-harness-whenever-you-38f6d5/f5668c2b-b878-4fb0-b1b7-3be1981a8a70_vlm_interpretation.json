@@ -1,0 +1,74 @@
+{
+  "packet_id": "f5668c2b-b878-4fb0-b1b7-3be1981a8a70",
+  "video_id": "always-wear-safety-harness-whenever-you-38f6d5",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Yapı sitesinde, bir kırık kolu (boom) ile çalışan bir yükseklikte çalışma makinesi (kuleli kırık kolu) göze çarpmaktadır. Makine, bir bina inşaatının yanında yer alırken, bir kişi makinenin kolu üzerinde yükseklikte çalışmaktadır. Zamanla makine devrilmeye başlar ve sonunda tamamen yere devrilmektedir. Bu sırada, birkaç işçi makinenin etrafında ve yol üzerinde hareket etmektedir.",
+  "detected_entities": [
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Kırmızı ve siyah renkli, yükseklikte çalışma için kullanılan bir kırık kolu (boom) makinesi. Tipi belirsiz ama inşaat işlerinde yaygın olarak kullanılan bir türdür."
+    },
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Makinenin kolu üzerinde çalışan bir işçi ve yere inen başka bir işçi. Ayrıca, yol üzerinde yürüyen birkaç işçi daha görülmektedir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Yapı sitesindeki betonarme yapı ve iskeleler. İnşaatın ilerlemiş bir aşamasında olduğu anlaşılıyor."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "low",
+      "notes_tr": "Makinenin alt kısmında bir araç gövdesi belirsiz şekilde görülebilir, ancak tam olarak tanımlanamamıştır."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "low",
+      "notes_tr": "Makinenin kolu üzerinde çalışan işçi, yük olarak değerlendirilebilir ama bu bir insan olduğu için 'load' etiketi tartışmalıdır."
+    }
+  ],
+  "detected_actions_tr": [
+    "Yükseklikte çalışan işçi, makinenin kolu üzerinde hareket eder.",
+    "Makine, yavaşça eğilerek devrilmeye başlar.",
+    "İşçi, makinenin devrilmesi sırasında kolu üzerinde kayar ve düşer.",
+    "Diğer işçiler, makinenin devrilmesini izler ve kaçar.",
+    "Makine tamamen yere devrilir ve kırık kolu yere düşer."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 16220.829400001094,
+    "tokens_generated": 745
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Yapı sitesinde, bir kırık kolu (boom) ile çalışan bir yükseklikte çalışma makinesi (kuleli kırık kolu) göze çarpmaktadır. Makine, bir bina inşaatının yanında yer alırken, bir kişi makinenin kolu üzerinde yükseklikte çalışmaktadır. Zamanla makine devrilmeye başlar ve sonunda tamamen yere devrilmektedir. Bu sırada, birkaç işçi makinenin etrafında ve yol üzerinde hareket etmektedir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kırmızı ve siyah renkli, yükseklikte çalışma için kullanılan bir kırık kolu (boom) makinesi. Tipi belirsiz ama inşaat işlerinde yaygın olarak kullanılan bir türdür.\"\n    },\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin kolu üzerinde çalışan bir işçi ve yere inen başka bir işçi. Ayrıca, yol üzerinde yürüyen birkaç işçi daha görülmektedir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Yapı sitesindeki betonarme yapı ve iskeleler. İnşaatın ilerlemiş bir aşamasında olduğu anlaşılıyor.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Makinenin alt kısmında bir araç gövdesi belirsiz şekilde görülebilir, ancak tam olarak tanımlanamamıştır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Makinenin kolu üzerinde çalışan işçi, yük olarak değerlendirilebilir ama bu bir insan olduğu için 'load' etiketi tartışmalıdır.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Yükseklikte çalışan işçi, makinenin kolu üzerinde hareket eder.\",\n    \"Makine, yavaşça eğilerek devrilmeye başlar.\",\n    \"İşçi, makinenin devrilmesi sırasında kolu üzerinde kayar ve düşer.\",\n    \"Diğer işçiler, makinenin devrilmesini izler ve kaçar.\",\n    \"Makine tamamen yere devrilir ve kırık kolu yere düşer.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yükseklikte çalışan işçi, makinenin devrilmesi sırasında kolu üzerinde kayarak düşer. Bu, ciddi yaralanma veya ölüm riski taşır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 45.0\n    },\n    {\n      \"description_tr\": \"Makine, stabilite kaybı nedeniyle devrilmektedir. Bu, çevredeki diğer işçiler için de ciddi bir çarpma ve ezilme riski oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 40.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Yükseklikte çalışan işçi, makinenin devrilmesi sırasında kolu üzerinde kayarak düşer. Bu, ciddi yaralanma veya ölüm riski taşır.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 45.0
+    },
+    {
+      "description_tr": "Makine, stabilite kaybı nedeniyle devrilmektedir. Bu, çevredeki diğer işçiler için de ciddi bir çarpma ve ezilme riski oluşturur.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 40.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Yükseklikte çalışan işçi, makinenin devrilmesi sırasında kolu üzerinde kayarak düşer. Bu, ciddi yaralanma veya ölüm riski taşır.",
+    "Makine, stabilite kaybı nedeniyle devrilmektedir. Bu, çevredeki diğer işçiler için de ciddi bir çarpma ve ezilme riski oluşturur."
+  ],
+  "computed_confidence": 0.7188,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 52.6,
+  "created_at": "2026-08-27T17:49:40.885996+00:00"
+}

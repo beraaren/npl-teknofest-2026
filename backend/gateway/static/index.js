@@ -21,11 +21,13 @@ const el = {
   modalVideo: document.getElementById('modal-video'),
   modalTitle: document.getElementById('modal-title'),
   modalRisk: document.getElementById('modal-risk'),
-  modalConfidence: document.getElementById('modal-confidence'),
+  modalEvidence: document.getElementById('modal-evidence'),
   modalProgress: document.getElementById('modal-progress'),
   modalSummary: document.getElementById('modal-summary'),
   modalReasoning: document.getElementById('modal-reasoning'),
   modalEvents: document.getElementById('modal-events'),
+  modalFindings: document.getElementById('modal-findings'),
+  modalUncertain: document.getElementById('modal-uncertain'),
   suggestedActions: document.getElementById('suggested-actions'),
   manualTool: document.getElementById('manual-tool'),
   manualNote: document.getElementById('manual-note'),
@@ -278,7 +280,11 @@ function renderModal(cameraId, active, analysis) {
   const cls = riskClass(analysis.risk);
   el.modalRisk.textContent = analysis.risk || '—';
   el.modalRisk.className = `risk-badge ${cls}`;
-  el.modalConfidence.textContent = `Güven: ${(Number(analysis.confidence) || 0).toFixed(2)}`;
+  const results = analysis.results || [];
+  const agreements = [...new Set(results.map((r) => r?.evidence?.agreement).filter(Boolean))];
+  el.modalEvidence.textContent = analysis.uncertain
+    ? `İnceleme gerekli: ${analysis.uncertainty_reason || 'Kanıt yetersiz.'}`
+    : `Kanıt: ${agreements.length ? agreements.join(', ') : 'eski analiz kaydı'}`;
   el.modalProgress.textContent =
     `${mmss(active.position_sec)} / ${mmss(active.duration_sec)} · ${active.fired_count}/${active.total_events} uyarı`;
 
@@ -298,6 +304,7 @@ function renderModal(cameraId, active, analysis) {
   }
 
   renderTimeline(analysis.event_timestamps || []);
+  renderContextualResults(results);
   renderSuggestedActions(analysis, cameraId);
   fillAssignEventSelect(analysis.event_timestamps || []);
 
@@ -326,8 +333,9 @@ function renderTimeline(stamps) {
         <li class="timeline-item severity-${SEVERITY_CLASS[s.severity] || 'low'}" data-seconds="${s.timestamp_sec ?? s.seconds}">
           <span class="timeline-time">${escapeHtml(s.timestamp)}</span>
           <span class="timeline-type">${escapeHtml(s.event_type)}</span>
-          <span class="timeline-sev ${SEVERITY_CLASS[s.severity] || 'low'}">${SEVERITY_LABEL[s.severity] || ''}</span>
-          <span class="meta">${escapeHtml(s.event || s.vlm_detail || '')}</span>
+          <span class="timeline-sev ${SEVERITY_CLASS[s.severity] || 'low'}">${SEVERITY_LABEL[s.severity] || 'Belirsiz'}</span>
+          <span class="meta">${escapeHtml(s.event || s.hazard_mechanism || '')}</span>
+          <span class="meta">Kanıt: ${escapeHtml(s.evidence_agreement || 'bilinmiyor')}</span>
         </li>`).join('')
     : '<li class="empty-state">Bu videoda uyarı üretilmedi.</li>';
 
@@ -341,6 +349,30 @@ function renderTimeline(stamps) {
       } catch { /* seek mümkün değil */ }
     });
   });
+}
+
+function renderContextualResults(results) {
+  const findings = results.filter((result) => result?.result_type === 'contextual_finding');
+  const uncertain = results.filter((result) => result?.result_type === 'uncertain_observation');
+  const render = (target, rows, emptyText) => {
+    target.innerHTML = rows.length
+      ? rows.map((result) => {
+        const agreement = result?.evidence?.agreement || 'bilinmiyor';
+        const detail = result.uncertain
+          ? (result.uncertainty_reason || 'Kanıt yetersiz.')
+          : (result.hazard_mechanism || result.event || 'Açıklama yok.');
+        return `<li class="timeline-item severity-${SEVERITY_CLASS[result.severity] || 'low'}">
+          <span class="timeline-time">${escapeHtml(result.time || '—')}</span>
+          <span class="timeline-type">${escapeHtml(result.event_type || result.result_type)}</span>
+          <span class="timeline-sev ${SEVERITY_CLASS[result.severity] || 'low'}">${SEVERITY_LABEL[result.severity] || 'Belirsiz'}</span>
+          <span class="meta">${escapeHtml(detail)}</span>
+          <span class="meta">Kanıt: ${escapeHtml(agreement)}</span>
+        </li>`;
+      }).join('')
+      : `<li class="empty-state">${escapeHtml(emptyText)}</li>`;
+  };
+  render(el.modalFindings, findings, 'Bağlama uygun sürekli bulgu yok.');
+  render(el.modalUncertain, uncertain, 'İnsan incelemesi gereken belirsiz gözlem yok.');
 }
 
 function fillAssignEventSelect(stamps) {

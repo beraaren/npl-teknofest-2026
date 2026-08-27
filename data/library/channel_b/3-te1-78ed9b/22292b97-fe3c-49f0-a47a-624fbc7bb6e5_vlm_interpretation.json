@@ -1,0 +1,73 @@
+{
+  "packet_id": "22292b97-fe3c-49f0-a47a-624fbc7bb6e5",
+  "video_id": "3-te1-78ed9b",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir üretim tesisinde, bir forklift yüksek bir yükü taşıyarak hareket ediyor. Tesisin içinde çeşitli makineler, raf ve paletler yer alıyor. Forklift, sağa doğru ilerlerken yükü kaldırıyor ve bir makineye yaklaşırken duruyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "medium",
+      "notes_tr": "Forkliftin içinde bir sürücü belirgin şekilde görülmektedir. Sağ tarafta bir makine başında oturan başka bir kişi de mevcuttur."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "high",
+      "notes_tr": "Forklift, açık turuncu renkli ve yük taşıyor. Tipi net bir şekilde forklift olarak tanımlanabilir."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Forkliftin üzerinde üç adet turuncu plastik konteyner üst üste yüklenmiş durumda. Yük yüksekliği forkliftin kabininden fazladır."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Tesisin ortasında ve sağında büyük makineler (muhtemelen pres veya montaj makineleri) yer alıyor. Makinelerin bazılarında uyarı etiketleri var."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Sol tarafta paletler ve karton kutuları yerleştirilmiş raf yapıları mevcut. Arka planda da metal raf sistemleri görülmektedir."
+    }
+  ],
+  "detected_actions_tr": [
+    "Forklift, yükü taşıyarak sağa doğru ilerliyor.",
+    "Forklift, yükü kaldırırken yavaşlıyor ve duruyor.",
+    "Forklift sürücüsü, makineye yaklaşırken kontrol ediyor.",
+    "Sağ tarafta bir işçi, makine başında oturuyor ve hareketsiz duruyor."
+  ],
+  "confidence_overall": 0.88,
+  "inference": {
+    "latency_ms": 14366.797500057146,
+    "tokens_generated": 683
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir üretim tesisinde, bir forklift yüksek bir yükü taşıyarak hareket ediyor. Tesisin içinde çeşitli makineler, raf ve paletler yer alıyor. Forklift, sağa doğru ilerlerken yükü kaldırıyor ve bir makineye yaklaşırken duruyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Forkliftin içinde bir sürücü belirgin şekilde görülmektedir. Sağ tarafta bir makine başında oturan başka bir kişi de mevcuttur.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Forklift, açık turuncu renkli ve yük taşıyor. Tipi net bir şekilde forklift olarak tanımlanabilir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Forkliftin üzerinde üç adet turuncu plastik konteyner üst üste yüklenmiş durumda. Yük yüksekliği forkliftin kabininden fazladır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Tesisin ortasında ve sağında büyük makineler (muhtemelen pres veya montaj makineleri) yer alıyor. Makinelerin bazılarında uyarı etiketleri var.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sol tarafta paletler ve karton kutuları yerleştirilmiş raf yapıları mevcut. Arka planda da metal raf sistemleri görülmektedir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Forklift, yükü taşıyarak sağa doğru ilerliyor.\",\n    \"Forklift, yükü kaldırırken yavaşlıyor ve duruyor.\",\n    \"Forklift sürücüsü, makineye yaklaşırken kontrol ediyor.\",\n    \"Sağ tarafta bir işçi, makine başında oturuyor ve hareketsiz duruyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Forklift, yükü kabinin üzerinde yüksek bir noktaya kaldırırken, dengesizlik ve devrilme riski taşıyor. Yük yüksekliği, forkliftin güvenli çalışma sınırını aşabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 5.0\n    },\n    {\n      \"description_tr\": \"Forklift, sağ taraftaki oturan işçinin yakın geçiş yaparken, işçinin dikkatini çekmemesi durumunda çarpışma riski mevcut.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.75,\n      \"timestamp_sec\": 3.0\n    }\n  ],\n  \"confidence_overall\": 0.88\n}",
+  "risk_events": [
+    {
+      "description_tr": "Forklift, yükü kabinin üzerinde yüksek bir noktaya kaldırırken, dengesizlik ve devrilme riski taşıyor. Yük yüksekliği, forkliftin güvenli çalışma sınırını aşabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 5.0
+    },
+    {
+      "description_tr": "Forklift, sağ taraftaki oturan işçinin yakın geçiş yaparken, işçinin dikkatini çekmemesi durumunda çarpışma riski mevcut.",
+      "severity": "medium",
+      "confidence": 0.75,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 3.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Forklift, yükü kabinin üzerinde yüksek bir noktaya kaldırırken, dengesizlik ve devrilme riski taşıyor. Yük yüksekliği, forkliftin güvenli çalışma sınırını aşabilir.",
+    "Forklift, sağ taraftaki oturan işçinin yakın geçiş yaparken, işçinin dikkatini çekmemesi durumunda çarpışma riski mevcut."
+  ],
+  "computed_confidence": 0.6169,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 10.0,
+  "created_at": "2026-08-27T13:16:04.103432+00:00"
+}

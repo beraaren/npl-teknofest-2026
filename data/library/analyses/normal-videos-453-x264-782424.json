@@ -1,0 +1,2642 @@
+{
+  "slug": "normal-videos-453-x264-782424",
+  "video_file": "videos/Normal_Videos_453_x264.mp4",
+  "video_name": "Normal_Videos_453_x264",
+  "analyzed_at": "2026-08-27T13:25:59.303445+00:00",
+  "analysis_seconds": 182.0,
+  "video": {
+    "duration_sec": 177.4,
+    "fps": 30.0,
+    "width": 320,
+    "height": 240
+  },
+  "summary": "Görüntüleme süresi boyunca, bir iş yerinin giriş ve ofis alanında, baret ve yelek gibi temel kişisel koruyucu donanımları (KKD) eksik olan çok sayıda personelin tehlikeli bölgede toplandığı ve hareket ettiği gözlemlenmiştir. Özellikle 00:00 ile 01:21 saatleri arasında, insan_1, insan_2 ve insan_14 gibi personeller uzun süre hareketsiz kalmış, bu durumun ardından 01:28'de insan_14'ün düşme hareketi gösterdiği tespit edilmiştir. Olayın en kritik anı 01:57 ve 01:59'da yaşanmış; bu sırada insan_1 ve insan_39 personelleri sırasıyla düşme hareketi sergilemiş ve ardından uzun süre hareketsiz kalarak bayılma veya ciddi yaralanma belirtisi göstermişlerdir. VLM analizi sahneyi genel olarak bir ofis girişi ve araç olarak tanımlasa da, algı katmanının geometrik verileri ve kural motoru, çoklu düşme olaylarını ve ardından gelen uzun süreli hareketsizlikleri (bazı personeller için 40 saniyeyi aşan süreler) net bir şekilde ortaya koymaktadır. Personellerin KKD eksikliği, düşme riskini ve olası yaralanmaların şiddetini artıran belirleyici bir faktör olmuştur. Sahne, acil tıbbi müdahale gerektiren çoklu yaralanma ve bayılma senaryosu ile karakterize edilmektedir.",
+  "headline": "Hareketsiz personel (00:13)",
+  "risk": "Yüksek",
+  "confidence": 0.95,
+  "reasoning": "Karar, üç kanaldan gelen verilerin entegrasyonu ile verilmiştir. Algı katmanı (YOLO + Kural Motoru), çoklu 'person_fall' (düşme) ve uzun süreli 'immobile_person' (hareketsizlik) olaylarını yüksek güvenle (0.50-1.0 arası) raporlamıştır. Özellikle 01:57 ve 01:59'daki düşme olayları, ardından gelen 40 saniyeyi aşan hareketsizlikler, ciddi bir tıbbi acil durumu işaret etmektedir. RAG kataloğu, 'person_fall' desenini 'Yüksek' risk (skor 90) olarak eşleştirmiştir. VLM yorumu genel sahne tanımını (ofis girişi, araç) yapmış ancak düşme gibi ani ve spesifik olayları doğrudan tespit edememiştir; bu durumda, geometrik verilerin (düşme algısı) ve zaman serisi analizinin (uzun süreli hareketsizlik) VLM'nin genel görsel yorumundan daha güvenilir olduğu değerlendirilmiştir. KKD eksikliği (baret, yelek) riski artıran bir faktör olarak eklenmiştir. Çelişki yoktur; VLM'nin olayı kaçırması, algı katmanının hassasiyeti ile giderilmiştir. Risk seviyesi, çoklu düşme ve bayılma şüphesi nedeniyle 'Yüksek' olarak belirlenmiştir.",
+  "actions": [
+    "Acil durum ekibini ve sağlık personelini derhal çağır.",
+    "Yaralıyı hareket ettirmeden sağlık ekibini bekle.",
+    "Olay bölgesini güvenlik şeridi ile izole et.",
+    "Çevredeki personeli bölgeden uzaklaştır.",
+    "Düşme nedenini (kaygan zemin, engel, yükseklik) tespit et.",
+    "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
+  ],
+  "events": [
+    {
+      "time": "00:00",
+      "event": "Çok sayıda personelin (insan_1, insan_2, insan_4, insan_6, insan_9, insan_10, insan_12, insan_13, insan_14, insan_16, insan_18, insan_19, insan_21, insan_24, insan_25, insan_26, insan_27, insan_28, insan_32, insan_36, insan_37, insan_38, insan_39, insan_40, insan_41, insan_43, insan_47, insan_48, insan_49, insan_53) baret ve yelek takmadığı tespit edildi.",
+      "event_type": "ppe_missing",
+      "confidence": 0.7,
+      "timestamp_sec": 0.0,
+      "duration": 177.0,
+      "end_time": "02:57"
+    },
+    {
+      "time": "00:05",
+      "event": "Tehlikeli bölgede 3 ila 5 personel arasında sürekli toplanma ve kalabalıklaşma olayları yaşandı.",
+      "event_type": "gathering",
+      "confidence": 0.8,
+      "timestamp_sec": 5.0,
+      "duration": 154.0,
+      "end_time": "02:39"
+    },
+    {
+      "time": "00:13",
+      "event": "Personel (track 1) ve personel (track 2) uzun süreli hareketsizlik sergiledi; track 1 yaklaşık 83 saniye, track 2 ise 13 saniye boyunca hareketsiz kaldı.",
+      "event_type": "immobile_person",
+      "confidence": 1.0,
+      "timestamp_sec": 13.0,
+      "duration": 91.0,
+      "end_time": "01:44"
+    },
+    {
+      "time": "01:28",
+      "event": "Personel (track 14) düşme hareketi gösterdi.",
+      "event_type": "person_fall",
+      "confidence": 0.507,
+      "timestamp_sec": 88.0,
+      "duration": 0.0,
+      "end_time": "01:28"
+    },
+    {
+      "time": "01:57",
+      "event": "Personel (track 1) düşme hareketi gösterdi.",
+      "event_type": "person_fall",
+      "confidence": 0.512,
+      "timestamp_sec": 117.0,
+      "duration": 0.0,
+      "end_time": "01:57"
+    },
+    {
+      "time": "01:59",
+      "event": "Personel (track 39) düşme hareketi gösterdi.",
+      "event_type": "person_fall",
+      "confidence": 0.597,
+      "timestamp_sec": 119.0,
+      "duration": 0.0,
+      "end_time": "01:59"
+    },
+    {
+      "time": "02:00",
+      "event": "Düşme sonrası personel (track 1), (track 26), (track 39), (track 43) ve (track 53) uzun süreli hareketsizlik (bayılma şüphesi) sergiledi.",
+      "event_type": "immobile_person",
+      "confidence": 1.0,
+      "timestamp_sec": 120.0,
+      "duration": 57.0,
+      "end_time": "02:57"
+    }
+  ],
+  "triggered_mock_tools": [
+    {
+      "tool_name": "call_health_team",
+      "params": {
+        "location": "İş Yeri Giriş Alanı",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "secure_area",
+      "params": {
+        "location": "Olay Bölgesi",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "notify_supervisor",
+      "params": {
+        "location": "Tüm Alan",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "Olay Bölgesi",
+        "urgency": "Yüksek"
+      }
+    }
+  ],
+  "tool_execution_results": [
+    {
+      "status": "success",
+      "tool": "call_health_team",
+      "params": {
+        "location": "İş Yeri Giriş Alanı",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "call_health_team başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "secure_area",
+      "params": {
+        "location": "Olay Bölgesi",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "secure_area başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "notify_supervisor",
+      "params": {
+        "location": "Tüm Alan",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "notify_supervisor başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "record_incident",
+      "params": {
+        "location": "Olay Bölgesi",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "record_incident başarıyla simüle edildi."
+    }
+  ],
+  "metadata": {
+    "vlm_backend": "server",
+    "channel_b_mode": "video",
+    "segment_count": 3,
+    "failed_segments": [],
+    "channel_a_fps": 15.0,
+    "total_frames": 2661,
+    "sampled_indices": [
+      0,
+      590,
+      2954,
+      3546,
+      4136,
+      4728,
+      1182,
+      1772,
+      2364,
+      5320
+    ],
+    "geometric_signals": [
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:00",
+        "description": "Personel insan_1 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:00",
+        "description": "Personel insan_2 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:00",
+        "description": "Personel insan_4 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          4
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:03",
+        "description": "Personel (track 1) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.4669624095260332,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:03",
+        "description": "Personel insan_6 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          6
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "00:05",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          2,
+          6
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:06",
+        "description": "Personel (track 2) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.34581772784019976,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:07",
+        "description": "Personel insan_9 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          9
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:09",
+        "description": "Personel insan_10 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          10
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:10",
+        "description": "Personel insan_1 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:10",
+        "description": "Personel insan_2 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:13",
+        "description": "Personel (track 1) 13.1 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "stationary_seconds": 13.066666666666666,
+          "aspect_ratio": 0.450727358047865,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "00:13",
+        "description": "4 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.8,
+        "involved_track_ids": [
+          1,
+          2,
+          6,
+          12
+        ],
+        "metadata": {
+          "person_count": 4
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:13",
+        "description": "Personel insan_12 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          12
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:13",
+        "description": "Personel insan_6 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          6
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "person_fall",
+        "timestamp": "00:14",
+        "description": "Personel (track 6) düşme hareketi gösteriyor.",
+        "confidence": 0.622,
+        "involved_track_ids": [
+          6
+        ],
+        "metadata": {
+          "vertical_displacement_pixels": 52.535000000000025,
+          "scale_pixels": 105.61946375504354,
+          "drop_ratio": 0.49739885180482535
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:20",
+        "description": "Personel insan_1 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:20",
+        "description": "Personel insan_2 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:23",
+        "description": "Personel (track 1) 23.1 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "stationary_seconds": 23.133333333333333,
+          "aspect_ratio": 0.49564918708495526,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:23",
+        "description": "Personel (track 2) 1.5 saniyedir hareketsiz (yatık pozisyonda).",
+        "confidence": 0.353,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "stationary_seconds": 1.5333333333333334,
+          "aspect_ratio": 1.0912990196078434,
+          "is_lying": true
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:30",
+        "description": "Personel insan_1 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:30",
+        "description": "Personel insan_2 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:33",
+        "description": "Personel (track 1) 33.2 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "stationary_seconds": 33.2,
+          "aspect_ratio": 0.4925938684119877,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:33",
+        "description": "Personel (track 2) 4.1 saniyedir hareketsiz (yatık pozisyonda).",
+        "confidence": 0.607,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "stationary_seconds": 4.066666666666666,
+          "aspect_ratio": 1.0087073007367717,
+          "is_lying": true
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "00:35",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          2,
+          13
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:35",
+        "description": "Personel insan_13 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          13
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:38",
+        "description": "Personel insan_14 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          14
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:39",
+        "description": "Personel insan_15 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          15
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "00:39",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          2,
+          14
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "00:39",
+        "description": "4 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.8,
+        "involved_track_ids": [
+          1,
+          2,
+          14,
+          16
+        ],
+        "metadata": {
+          "person_count": 4
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:39",
+        "description": "Personel insan_16 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          16
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:40",
+        "description": "Personel insan_1 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:40",
+        "description": "Personel insan_2 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "00:40",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          14,
+          16
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:43",
+        "description": "Personel (track 1) 43.3 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "stationary_seconds": 43.266666666666666,
+          "aspect_ratio": 0.4700834879406308,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:48",
+        "description": "Personel insan_14 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          14
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "00:49",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          2,
+          14
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "00:50",
+        "description": "4 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.8,
+        "involved_track_ids": [
+          1,
+          2,
+          14,
+          18
+        ],
+        "metadata": {
+          "person_count": 4
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:50",
+        "description": "Personel insan_1 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:50",
+        "description": "Personel insan_2 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:50",
+        "description": "Personel insan_18 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          18
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:50",
+        "description": "Personel (track 14) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          14
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.4551164616592511,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:53",
+        "description": "Personel (track 2) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.581167350661195,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:53",
+        "description": "Personel (track 1) 53.3 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "stationary_seconds": 53.333333333333336,
+          "aspect_ratio": 0.4648328690807801,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "00:56",
+        "description": "4 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.8,
+        "involved_track_ids": [
+          1,
+          2,
+          14,
+          19
+        ],
+        "metadata": {
+          "person_count": 4
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:56",
+        "description": "Personel insan_19 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          19
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:58",
+        "description": "Personel insan_14 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          14
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "00:59",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          2,
+          14
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:00",
+        "description": "Personel insan_1 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:00",
+        "description": "Personel insan_2 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "01:00",
+        "description": "Personel (track 14) 13.1 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          14
+        ],
+        "metadata": {
+          "stationary_seconds": 13.066666666666666,
+          "aspect_ratio": 0.5422339722405815,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:01",
+        "description": "4 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.8,
+        "involved_track_ids": [
+          1,
+          2,
+          14,
+          21
+        ],
+        "metadata": {
+          "person_count": 4
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:01",
+        "description": "Personel insan_21 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          21
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "01:03",
+        "description": "Personel (track 2) 13.1 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "stationary_seconds": 13.066666666666666,
+          "aspect_ratio": 0.5896559580770105,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "01:03",
+        "description": "Personel (track 1) 63.4 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "stationary_seconds": 63.4,
+          "aspect_ratio": 0.46359223300970887,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:06",
+        "description": "4 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.8,
+        "involved_track_ids": [
+          1,
+          2,
+          14,
+          24
+        ],
+        "metadata": {
+          "person_count": 4
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:06",
+        "description": "Personel insan_24 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          24
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:08",
+        "description": "Personel insan_14 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          14
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:09",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          2,
+          14
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:10",
+        "description": "Personel insan_1 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:10",
+        "description": "Personel insan_2 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:12",
+        "description": "4 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.8,
+        "involved_track_ids": [
+          1,
+          2,
+          14,
+          25
+        ],
+        "metadata": {
+          "person_count": 4
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:12",
+        "description": "Personel insan_25 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          25
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "01:13",
+        "description": "Personel (track 1) 73.4 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "stationary_seconds": 73.4,
+          "aspect_ratio": 0.5922727272727273,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "01:15",
+        "description": "Personel (track 2) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.7320546352804418,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "01:15",
+        "description": "Personel (track 14) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          14
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.4205920205920207,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:18",
+        "description": "Personel insan_14 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          14
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:19",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          2,
+          14
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:20",
+        "description": "Personel insan_1 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:20",
+        "description": "Personel insan_2 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:21",
+        "description": "4 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.8,
+        "involved_track_ids": [
+          1,
+          2,
+          14,
+          26
+        ],
+        "metadata": {
+          "person_count": 4
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:21",
+        "description": "Personel insan_26 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:21",
+        "description": "5 personel tehlikeli bölgede toplanmış.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          1,
+          2,
+          14,
+          26,
+          27
+        ],
+        "metadata": {
+          "person_count": 5
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:21",
+        "description": "Personel insan_27 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          27
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:22",
+        "description": "4 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.8,
+        "involved_track_ids": [
+          1,
+          14,
+          26,
+          27
+        ],
+        "metadata": {
+          "person_count": 4
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:22",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          14,
+          26
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:23",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          14,
+          27
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "01:23",
+        "description": "Personel (track 1) 83.5 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "stationary_seconds": 83.46666666666667,
+          "aspect_ratio": 0.4456398640996606,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "01:25",
+        "description": "Personel (track 14) 13.1 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          14
+        ],
+        "metadata": {
+          "stationary_seconds": 13.066666666666666,
+          "aspect_ratio": 0.44607676630434806,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "person_fall",
+        "timestamp": "01:28",
+        "description": "Personel (track 14) düşme hareketi gösteriyor.",
+        "confidence": 0.507,
+        "involved_track_ids": [
+          14
+        ],
+        "metadata": {
+          "vertical_displacement_pixels": 31.709999999999994,
+          "scale_pixels": 78.12018315336488,
+          "drop_ratio": 0.4059130268262069
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:28",
+        "description": "Personel insan_14 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          14
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:30",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          26,
+          28
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:30",
+        "description": "Personel insan_28 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          28
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:30",
+        "description": "Personel insan_1 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:31",
+        "description": "Personel insan_26 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "01:33",
+        "description": "Personel (track 1) 93.5 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "stationary_seconds": 93.53333333333333,
+          "aspect_ratio": 0.4567062818336166,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "01:34",
+        "description": "Personel (track 26) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.5853734118376206,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:37",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          26,
+          32
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:37",
+        "description": "Personel insan_32 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          32
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:40",
+        "description": "Personel insan_1 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:41",
+        "description": "Personel insan_26 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "01:43",
+        "description": "Personel (track 1) 103.6 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "stationary_seconds": 103.6,
+          "aspect_ratio": 0.4530304759730625,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "01:44",
+        "description": "Personel (track 26) 13.1 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "stationary_seconds": 13.066666666666666,
+          "aspect_ratio": 0.6820557491289193,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:46",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          26,
+          36
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:46",
+        "description": "Personel insan_36 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          36
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:50",
+        "description": "Personel insan_1 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:51",
+        "description": "Personel insan_26 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:54",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          26,
+          37
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:54",
+        "description": "Personel insan_37 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          37
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:54",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          1,
+          26,
+          38
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:54",
+        "description": "Personel insan_38 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          38
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "01:54",
+        "description": "4 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.8,
+        "involved_track_ids": [
+          1,
+          26,
+          38,
+          39
+        ],
+        "metadata": {
+          "person_count": 4
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:54",
+        "description": "Personel insan_39 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          39
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "01:56",
+        "description": "Personel (track 26) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.7438835552802728,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "01:57",
+        "description": "Personel insan_40 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          40
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "person_fall",
+        "timestamp": "01:57",
+        "description": "Personel (track 1) düşme hareketi gösteriyor.",
+        "confidence": 0.512,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "vertical_displacement_pixels": 42.32499999999999,
+          "scale_pixels": 103.34846052506136,
+          "drop_ratio": 0.4095368212063153
+        }
+      },
+      {
+        "event_type": "person_fall",
+        "timestamp": "01:59",
+        "description": "Personel (track 39) düşme hareketi gösteriyor.",
+        "confidence": 0.597,
+        "involved_track_ids": [
+          39
+        ],
+        "metadata": {
+          "vertical_displacement_pixels": 34.14999999999999,
+          "scale_pixels": 71.48284113255785,
+          "drop_ratio": 0.47773702694150333
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:00",
+        "description": "Personel (track 40) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          40
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.7823862106113659,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:02",
+        "description": "Personel insan_26 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:03",
+        "description": "Personel insan_41 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          41
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:04",
+        "description": "Personel insan_39 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          39
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:05",
+        "description": "Personel insan_43 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          43
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:06",
+        "description": "Personel (track 26) 3.5 saniyedir hareketsiz.",
+        "confidence": 0.347,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "stationary_seconds": 3.466666666666667,
+          "aspect_ratio": 0.7066446098704163,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:07",
+        "description": "Personel (track 39) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          39
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.7268784105218972,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:12",
+        "description": "Personel insan_26 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:14",
+        "description": "Personel (track 43) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          43
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.43976473059552573,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:14",
+        "description": "Personel insan_39 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          39
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:15",
+        "description": "Personel insan_43 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          43
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:15",
+        "description": "Personel insan_47 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          47
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:17",
+        "description": "Personel (track 39) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          39
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.6019934462042604,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:18",
+        "description": "Personel insan_48 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          48
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:19",
+        "description": "Personel (track 26) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.6065573770491802,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:22",
+        "description": "Personel insan_26 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:24",
+        "description": "Personel (track 43) 13.1 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          43
+        ],
+        "metadata": {
+          "stationary_seconds": 13.066666666666666,
+          "aspect_ratio": 0.45809881175734823,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "02:24",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          26,
+          43,
+          49
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:24",
+        "description": "Personel insan_49 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          49
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:25",
+        "description": "Personel insan_39 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          39
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:25",
+        "description": "Personel insan_43 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          43
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:27",
+        "description": "Personel (track 39) 13.1 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          39
+        ],
+        "metadata": {
+          "stationary_seconds": 13.066666666666666,
+          "aspect_ratio": 0.580671806167401,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:32",
+        "description": "Personel insan_26 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:33",
+        "description": "Personel (track 26) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.7208985704560927,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:34",
+        "description": "Personel (track 43) 23.1 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          43
+        ],
+        "metadata": {
+          "stationary_seconds": 23.133333333333333,
+          "aspect_ratio": 0.4233909447566537,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:35",
+        "description": "Personel insan_39 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          39
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:35",
+        "description": "Personel insan_43 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          43
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:37",
+        "description": "Personel (track 39) 23.1 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          39
+        ],
+        "metadata": {
+          "stationary_seconds": 23.066666666666666,
+          "aspect_ratio": 0.6224168605446835,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "02:39",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          26,
+          43,
+          53
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:39",
+        "description": "Personel insan_53 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          53
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:42",
+        "description": "Personel insan_26 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:44",
+        "description": "Personel (track 26) 6.4 saniyedir hareketsiz.",
+        "confidence": 0.64,
+        "involved_track_ids": [
+          26
+        ],
+        "metadata": {
+          "stationary_seconds": 6.4,
+          "aspect_ratio": 0.9770569620253171,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:44",
+        "description": "Personel (track 43) 33.2 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          43
+        ],
+        "metadata": {
+          "stationary_seconds": 33.2,
+          "aspect_ratio": 0.44558607674564893,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:45",
+        "description": "Personel insan_43 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          43
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:47",
+        "description": "Personel (track 53) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          53
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.5647453083109919,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:49",
+        "description": "Personel insan_53 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          53
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:54",
+        "description": "Personel (track 43) 43.3 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          43
+        ],
+        "metadata": {
+          "stationary_seconds": 43.266666666666666,
+          "aspect_ratio": 0.45236371159615213,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "02:55",
+        "description": "Personel insan_43 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          43
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "02:57",
+        "description": "Personel (track 53) 13.1 saniyedir hareketsiz.",
+        "confidence": 1.0,
+        "involved_track_ids": [
+          53
+        ],
+        "metadata": {
+          "stationary_seconds": 13.066666666666666,
+          "aspect_ratio": 0.5827767514565865,
+          "is_lying": false
+        }
+      }
+    ],
+    "vlm_interpretation": {
+      "scene_summary_tr": "[00:00-01:00] Bir iş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve bir süre sonra içeriye giren başka bir kişiyle birlikte masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve güvenlik işaretleri görülmektedir. [01:00-02:00] İş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve bir süre sonra içeriye giren başka bir kişiyle birlikte masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve bir raf yapısı görülmektedir. [02:00-02:57] İş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve diğer ofis malzemeleri görülmektedir. İşçiler arasında bir etkileşim mevcuttur.",
+      "detected_entities": [
+        {
+          "label": "person",
+          "confidence_hint": "high",
+          "notes_tr": "İçeride masada çalışan bir kişi ve dışarıdan giren iki kişi görülmektedir."
+        },
+        {
+          "label": "vehicle",
+          "confidence_hint": "high",
+          "notes_tr": "Dışarıda duran açık renkli bir araç (muhtemelen hafif ticari araç veya minivan) net bir şekilde görülmektedir."
+        },
+        {
+          "label": "rack/structure",
+          "confidence_hint": "high",
+          "notes_tr": "Masanın arkasında ve yanlarında ürün sergileme rafı veya yapılar mevcuttur."
+        },
+        {
+          "label": "fire extinguisher",
+          "confidence_hint": "high",
+          "notes_tr": "Sol alt köşede kırmızı bir yangın söndürücü yer almaktadır."
+        },
+        {
+          "label": "smoke or flame",
+          "confidence_hint": "low",
+          "notes_tr": "Hiçbir duman veya alev gözlemlenmemiştir."
+        }
+      ],
+      "detected_actions_tr": [
+        "Bir kişi dışarıdan içeri girer.",
+        "İçerideki çalışan masada görev yapar.",
+        "İkinci bir kişi içeri girer ve masanın yanında durur.",
+        "İki kişi masanın etrafında kısa bir süre hareket eder.",
+        "Dışarıda duran araç hareket etmemiştir.",
+        "Çalışan masada belgelerle ilgileniyor.",
+        "Dışarıdan gelen kişi giriş yaparak masanın etrafında hareket ediyor.",
+        "İkinci bir kişi masanın arkasında görev yapıyor.",
+        "Bir kişi masanın etrafında geçerek dışarıya doğru hareket ediyor.",
+        "Bir çalışan masada oturuyor ve belki de bir cihazla çalışıyor.",
+        "Bir kişi dışarıdan girerek masanın önünde duruyor ve çalışanla etkileşime giriyor.",
+        "Bir başka kişi masanın yanından geçerek içeriye giriyor.",
+        "İşçiler arasında bir konuşma veya işlem gerçekleştiriliyor gibi görünüyor."
+      ],
+      "risk_events": [],
+      "risk_flags_tr": [],
+      "confidence_overall": 0.9166666666666666,
+      "computed_confidence": 0.4583333333333333,
+      "segment_count": 3,
+      "failed_segments": [],
+      "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Bir iş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve bir süre sonra içeriye giren başka bir kişiyle birlikte masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın sö\n  - [00:00] görülen varlıklar: fire extinguisher, person, rack/structure, smoke or flame, vehicle\n  - [01:00] İş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve bir süre sonra içeriye giren başka bir kişiyle birlikte masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndür\n  - [01:00] görülen varlıklar: fire extinguisher, person, rack/structure, smoke or flame, vehicle\n  - [02:00] İş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve diğer ofis malzemeleri görülmektedir. İşçiler ara\n  - [02:00] görülen varlıklar: fire extinguisher, person, rack/structure, smoke or flame, vehicle"
+    },
+    "rag_context": {
+      "risk_level": "Yüksek",
+      "risk_score": 90,
+      "actions": [
+        "Yaralıyı hareket ettirmeden sağlık ekibini bekle.",
+        "Düşme nedenini (kaygan zemin, engel, yükseklik) tespit et.",
+        "Çevredeki personeli bölgeden uzaklaştır.",
+        "Bölgenin ana şalterden elektriğini kes.",
+        "Kıvılcım veya yangın ihtimaline karşı alanı izole et.",
+        "Acil bakım/onarım ekibine derhal bilgi ver.",
+        "Acil durum ekibini ve sağlık personelini derhal çağır.",
+        "Olay bölgesini güvenlik şeridi ile izole et.",
+        "Güvenlik kameralarını ve kayıtları sakla, yetkililere bildir.",
+        "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
+      ],
+      "matched_patterns": [
+        {
+          "pattern": "person_fall",
+          "description": "Personelin ani düşüşü veya zemine çökmesi.",
+          "risk_score": 90,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Ciddi yaralanma",
+            "Kanama",
+            "Bilinç kaybı"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "person_fall",
+            "timestamp": "01:59",
+            "description": "Personel (track 39) düşme hareketi gösteriyor.",
+            "confidence": 0.597,
+            "involved_track_ids": [
+              39
+            ],
+            "metadata": {
+              "vertical_displacement_pixels": 34.14999999999999,
+              "scale_pixels": 71.48284113255785,
+              "drop_ratio": 0.47773702694150333
+            }
+          }
+        },
+        {
+          "pattern": "gathering",
+          "description": "Üç veya daha fazla personelin tehlikeli bölgede toplanması.",
+          "risk_score": 50,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Toplu kaza riski",
+            "Tahliye güçlüğü",
+            "İş verimi kaybı"
+          ],
+          "similarity": 0.269,
+          "matched_signal": {
+            "event_type": "gathering",
+            "timestamp": "02:39",
+            "description": "3 personel tehlikeli bölgede toplanmış.",
+            "confidence": 0.6,
+            "involved_track_ids": [
+              26,
+              43,
+              53
+            ],
+            "metadata": {
+              "person_count": 3
+            }
+          }
+        },
+        {
+          "pattern": "immobile_person",
+          "description": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
+          "risk_score": 70,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Hayati tehlike",
+            "Tıbbi müdahale gecikmesi"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "immobile_person",
+            "timestamp": "02:57",
+            "description": "Personel (track 53) 13.1 saniyedir hareketsiz.",
+            "confidence": 1.0,
+            "involved_track_ids": [
+              53
+            ],
+            "metadata": {
+              "stationary_seconds": 13.066666666666666,
+              "aspect_ratio": 0.5827767514565865,
+              "is_lying": false
+            }
+          }
+        },
+        {
+          "pattern": "ppe_missing",
+          "description": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği.",
+          "risk_score": 45,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Kafa travması",
+            "Görünmezlik kaynaklı ezilme"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "ppe_missing",
+            "timestamp": "02:55",
+            "description": "Personel insan_43 eksik KKD: baret, yelek.",
+            "confidence": 0.7,
+            "involved_track_ids": [
+              43
+            ],
+            "metadata": {
+              "missing_ppe": [
+                "baret",
+                "yelek"
+              ]
+            }
+          }
+        },
+        {
+          "pattern": "electrical_hazard",
+          "description": "Açık pano, kablo veya elektrik tehlikesi barındıran durum.",
+          "risk_score": 85,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Elektrik çarpması",
+            "Elektrik kaynaklı yangın"
+          ],
+          "similarity": 0.199
+        },
+        {
+          "pattern": "unauthorized_access",
+          "description": "Yetkisiz personelin tehlikeli veya kısıtlı alana girişi.",
+          "risk_score": 65,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Sabotaj",
+            "Eğitimsiz personel kazası"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "running_in_facility",
+          "description": "Tesis içinde koşan personel (çarpışma/kayma riski).",
+          "risk_score": 60,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Kör noktada forkliftle çarpışma",
+            "Kayma ve düşme",
+            "Panik yaratma"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "fatigue_detection",
+          "description": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski).",
+          "risk_score": 50,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "İş kazası potansiyeli artışı",
+            "Bayılma öncülü"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "restricted_time_access",
+          "description": "Mesai saatleri dışında veya izinsiz zamanda bölgede yaya tespiti.",
+          "risk_score": 65,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Hırsızlık/Sabotaj",
+            "Yalnız çalışma kazası"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        }
+      ]
+    },
+    "event_timestamps": [
+      {
+        "seconds": 0.0,
+        "timestamp": "00:00",
+        "end_time": "02:57",
+        "timestamp_sec": 0.0,
+        "duration": 177.0,
+        "event_type": "ppe_missing",
+        "event": "Çok sayıda personelin (insan_1, insan_2, insan_4, insan_6, insan_9, insan_10, insan_12, insan_13, insan_14, insan_16, insan_18, insan_19, insan_21, insan_24, insan_25, insan_26, insan_27, insan_28, insan_32, insan_36, insan_37, insan_38, insan_39, insan_40, insan_41, insan_43, insan_47, insan_48, insan_49, insan_53) baret ve yelek takmadığı tespit edildi.",
+        "confidence": 0.7,
+        "severity": "high",
+        "vlm_detail": ""
+      },
+      {
+        "seconds": 5.0,
+        "timestamp": "00:05",
+        "end_time": "02:39",
+        "timestamp_sec": 5.0,
+        "duration": 154.0,
+        "event_type": "gathering",
+        "event": "Tehlikeli bölgede 3 ila 5 personel arasında sürekli toplanma ve kalabalıklaşma olayları yaşandı.",
+        "confidence": 0.8,
+        "severity": "high",
+        "vlm_detail": ""
+      },
+      {
+        "seconds": 13.0,
+        "timestamp": "00:13",
+        "end_time": "01:44",
+        "timestamp_sec": 13.0,
+        "duration": 91.0,
+        "event_type": "immobile_person",
+        "event": "Personel (track 1) ve personel (track 2) uzun süreli hareketsizlik sergiledi; track 1 yaklaşık 83 saniye, track 2 ise 13 saniye boyunca hareketsiz kaldı.",
+        "confidence": 1.0,
+        "severity": "high",
+        "vlm_detail": ""
+      },
+      {
+        "seconds": 88.0,
+        "timestamp": "01:28",
+        "end_time": "01:28",
+        "timestamp_sec": 88.0,
+        "duration": 0.0,
+        "event_type": "person_fall",
+        "event": "Personel (track 14) düşme hareketi gösterdi.",
+        "confidence": 0.507,
+        "severity": "high",
+        "vlm_detail": ""
+      },
+      {
+        "seconds": 117.0,
+        "timestamp": "01:57",
+        "end_time": "01:57",
+        "timestamp_sec": 117.0,
+        "duration": 0.0,
+        "event_type": "person_fall",
+        "event": "Personel (track 1) düşme hareketi gösterdi.",
+        "confidence": 0.512,
+        "severity": "high",
+        "vlm_detail": ""
+      },
+      {
+        "seconds": 119.0,
+        "timestamp": "01:59",
+        "end_time": "01:59",
+        "timestamp_sec": 119.0,
+        "duration": 0.0,
+        "event_type": "person_fall",
+        "event": "Personel (track 39) düşme hareketi gösterdi.",
+        "confidence": 0.597,
+        "severity": "high",
+        "vlm_detail": ""
+      },
+      {
+        "seconds": 120.0,
+        "timestamp": "02:00",
+        "end_time": "02:57",
+        "timestamp_sec": 120.0,
+        "duration": 57.0,
+        "event_type": "immobile_person",
+        "event": "Düşme sonrası personel (track 1), (track 26), (track 39), (track 43) ve (track 53) uzun süreli hareketsizlik (bayılma şüphesi) sergiledi.",
+        "confidence": 1.0,
+        "severity": "high",
+        "vlm_detail": ""
+      }
+    ]
+  }
+}

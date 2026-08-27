@@ -1,0 +1,53 @@
+{
+  "packet_id": "690d3f7c-82dd-4974-b213-9fd6697677bc",
+  "video_id": "normal-videos-453-x264-782424",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "İş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve diğer ofis malzemeleri görülmektedir. İşçiler arasında bir etkileşim mevcuttur.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İç mekanda üç kişi görülmektedir: biri masada oturuyor, biri masanın önünde duruyor, biri de masanın yanından geçiyor."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "high",
+      "notes_tr": "Dışarıda açık renkli bir araç (muhtemelen hafif ticari araç veya van) durmaktadır. Araç türü kesin olarak belirlenemese de, iş yerinin önünde park etmiş durumdadır."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Masanın yanında ve duvarda ofis malzemelerini tutan raf veya yapılar görülmektedir."
+    },
+    {
+      "label": "fire extinguisher",
+      "confidence_hint": "high",
+      "notes_tr": "Sol alt köşede kırmızı bir yangın söndürücü yer almaktadır."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "low",
+      "notes_tr": "Görüntüde herhangi bir duman veya alev izlenmemektedir. Önceki segmentlerde belirtilmiş olabilir, ancak bu segmentte görünmüyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "Bir çalışan masada oturuyor ve belki de bir cihazla çalışıyor.",
+    "Bir kişi dışarıdan girerek masanın önünde duruyor ve çalışanla etkileşime giriyor.",
+    "Bir başka kişi masanın yanından geçerek içeriye giriyor.",
+    "İşçiler arasında bir konuşma veya işlem gerçekleştiriliyor gibi görünüyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 10035.957799991593,
+    "tokens_generated": 536
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"İş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve diğer ofis malzemeleri görülmektedir. İşçiler arasında bir etkileşim mevcuttur.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İç mekanda üç kişi görülmektedir: biri masada oturuyor, biri masanın önünde duruyor, biri de masanın yanından geçiyor.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Dışarıda açık renkli bir araç (muhtemelen hafif ticari araç veya van) durmaktadır. Araç türü kesin olarak belirlenemese de, iş yerinin önünde park etmiş durumdadır.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Masanın yanında ve duvarda ofis malzemelerini tutan raf veya yapılar görülmektedir.\"\n    },\n    {\n      \"label\": \"fire extinguisher\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sol alt köşede kırmızı bir yangın söndürücü yer almaktadır.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Görüntüde herhangi bir duman veya alev izlenmemektedir. Önceki segmentlerde belirtilmiş olabilir, ancak bu segmentte görünmüyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Bir çalışan masada oturuyor ve belki de bir cihazla çalışıyor.\",\n    \"Bir kişi dışarıdan girerek masanın önünde duruyor ve çalışanla etkileşime giriyor.\",\n    \"Bir başka kişi masanın yanından geçerek içeriye giriyor.\",\n    \"İşçiler arasında bir konuşma veya işlem gerçekleştiriliyor gibi görünüyor.\"\n  ],\n  \"risk_events\": [],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [],
+  "risk_flags_tr": [],
+  "computed_confidence": 0.45,
+  "reasoning_trace": "",
+  "segment_start_sec": 120.0,
+  "segment_end_sec": 177.4,
+  "created_at": "2026-08-27T13:25:39.559868+00:00"
+}

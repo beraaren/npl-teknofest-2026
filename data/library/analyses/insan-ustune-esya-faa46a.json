@@ -1,0 +1,486 @@
+{
+  "slug": "insan-ustune-esya-faa46a",
+  "video_file": "videos/insan_ustune_esya.mp4",
+  "video_name": "insan_ustune_esya",
+  "analyzed_at": "2026-08-27T14:02:28.007782+00:00",
+  "analysis_seconds": 31.5,
+  "video": {
+    "duration_sec": 13.87,
+    "fps": 30.0,
+    "width": 1280,
+    "height": 720
+  },
+  "summary": "Sanayi ortamında, büyük metal boruların kesimi sırasında kritik bir güvenlik ihlali ve fiziksel tehlike yaşanmıştır. Mavi üniformalı ve turuncu baretli iki işçi, büyük boyutlu bir kesme makinesinin yanında çalışmaktadır. İşlem sırasında makineden kıvılcımlar ve dumanlar yükselirken, kesim altındaki büyük metal boru kontrolsüz bir şekilde devrilerek yere düşmüştür. Bu durum, borunun yakınında bulunan personelin ezilme veya ciddi yaralanma riski altında kalmasına neden olmuştur. Sahne, yüksek sıcaklıkta metal işleme ve düşen yük tehlikesi içeren dinamik ve tehlikeli bir çalışma ortamını yansıtmaktadır.",
+  "headline": "yüksekten_düşen_yük",
+  "risk": "Yüksek",
+  "confidence": 0.85,
+  "reasoning": "Geometrik olay sinyalleri (YOLO + kural motoru) herhangi bir olay tespit etmemiş olsa da, bağımsız VLM kanalı yüksek güven (0.88 genel, 0.9 olay güveni) ile 'kontrolsüz devrilme ve düşme' ve 'duman/kıvılcım' olaylarını raporlamıştır. YOLO'nun 'arac' ve 'baret' gibi nesneleri tespit etmesi, sahnenin sanayi ortamı olduğunu doğrulamaktadır ancak düşen yük gibi ani ve dinamik olayları kaçırmış olabilir. RAG kataloğundaki 'overhead_hazard' (yüksekten düşen yük) deseni, VLM'nin tespit ettiği düşen boru olayıyla %155 benzerlik göstererek riski 'Yüksek' seviyesine taşımaktadır. Tek bir karede tespit edilmiş olsa da, düşen yükün yaratacağı fiziksel zarar potansiyeli (ezilme, ölüm) doğrudan insan hayatını tehdit ettiği için, tek kaynaklı olmasına rağmen bu olayı kritik kabul edip risk seviyesini en üst düzeye çıkardım. VLM'nin 'critical' olarak işaretlediği bu durum, RAG'deki katalog verisiyle örtüşmektedir.",
+  "actions": [
+    "Vinci acil durdur ve operatörle telsiz iletişimi kur.",
+    "Yük altındaki personeli sesli sirenle uyar.",
+    "Riskli alanı güvenlik şeridiyle kapat.",
+    "Acil durum ekibini ve sağlık personelini derhal çağır.",
+    "Olay bölgesini güvenlik şeridi ile izole et.",
+    "Güvenlik kameralarını ve kayıtları sakla, yetkililere bildir.",
+    "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
+  ],
+  "events": [
+    {
+      "time": "00:06",
+      "event": "yüksekten_düşen_yük",
+      "event_type": "unknown",
+      "confidence": 0.9,
+      "timestamp_sec": 6.0,
+      "duration": 0.0,
+      "end_time": "00:06"
+    },
+    {
+      "time": "00:04",
+      "event": "fire_smoke",
+      "event_type": "unknown",
+      "confidence": 0.85,
+      "timestamp_sec": 4.0,
+      "duration": 0.0,
+      "end_time": "00:04"
+    }
+  ],
+  "triggered_mock_tools": [
+    {
+      "tool_name": "sound_alarm",
+      "params": {
+        "location": "Kesim Alanı",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "call_health_team",
+      "params": {
+        "location": "Kesim Alanı",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "secure_area",
+      "params": {
+        "location": "Kesim Alanı",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "notify_supervisor",
+      "params": {
+        "location": "Kesim Alanı",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "Kesim Alanı",
+        "urgency": "Yüksek"
+      }
+    }
+  ],
+  "tool_execution_results": [
+    {
+      "status": "success",
+      "tool": "sound_alarm",
+      "params": {
+        "location": "Kesim Alanı",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "sound_alarm başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "call_health_team",
+      "params": {
+        "location": "Kesim Alanı",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "call_health_team başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "secure_area",
+      "params": {
+        "location": "Kesim Alanı",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "secure_area başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "notify_supervisor",
+      "params": {
+        "location": "Kesim Alanı",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "notify_supervisor başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "record_incident",
+      "params": {
+        "location": "Kesim Alanı",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "record_incident başarıyla simüle edildi."
+    }
+  ],
+  "metadata": {
+    "vlm_backend": "server",
+    "channel_b_mode": "video",
+    "segment_count": 1,
+    "failed_segments": [],
+    "channel_a_fps": 15.0,
+    "total_frames": 208,
+    "sampled_indices": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24,
+      26,
+      28,
+      30,
+      32,
+      34,
+      36,
+      38,
+      40,
+      42,
+      44,
+      46,
+      48,
+      50,
+      52,
+      54,
+      56,
+      58,
+      60,
+      62,
+      64,
+      66,
+      68,
+      70,
+      72,
+      74,
+      76,
+      78,
+      80,
+      82,
+      84,
+      86,
+      88,
+      90,
+      92,
+      94,
+      96,
+      98,
+      100,
+      102,
+      104,
+      106,
+      108,
+      110,
+      112,
+      114,
+      116,
+      118,
+      120,
+      122,
+      124,
+      126,
+      128,
+      130,
+      132,
+      134,
+      136,
+      138,
+      140,
+      142,
+      144,
+      146,
+      148,
+      150,
+      152,
+      154,
+      156,
+      158,
+      160,
+      162,
+      164,
+      166,
+      168,
+      170,
+      172,
+      174,
+      176,
+      178,
+      180,
+      182,
+      184,
+      186,
+      188,
+      190,
+      192,
+      194,
+      196,
+      198,
+      200,
+      202,
+      204,
+      206,
+      208,
+      210,
+      212,
+      214,
+      216,
+      218,
+      220,
+      222,
+      224,
+      226,
+      228,
+      230,
+      232,
+      234,
+      236,
+      238,
+      240,
+      242,
+      244,
+      246,
+      248,
+      250,
+      252,
+      254,
+      256,
+      258,
+      260,
+      262,
+      264,
+      266,
+      268,
+      270,
+      272,
+      274,
+      276,
+      278,
+      280,
+      282,
+      284,
+      286,
+      288,
+      290,
+      292,
+      294,
+      296,
+      298,
+      300,
+      302,
+      304,
+      306,
+      308,
+      310,
+      312,
+      314,
+      316,
+      318,
+      320,
+      322,
+      324,
+      326,
+      328,
+      330,
+      332,
+      334,
+      336,
+      338,
+      340,
+      342,
+      344,
+      346,
+      348,
+      350,
+      352,
+      354,
+      356,
+      358,
+      360,
+      362,
+      364,
+      366,
+      368,
+      370,
+      372,
+      374,
+      376,
+      378,
+      380,
+      382,
+      384,
+      386,
+      388,
+      390,
+      392,
+      394,
+      396,
+      398,
+      400,
+      402,
+      404,
+      406,
+      408,
+      410,
+      412,
+      414
+    ],
+    "geometric_signals": [],
+    "vlm_interpretation": {
+      "packet_id": "2a8eb071-b703-4cbb-9843-53a337594701",
+      "video_id": "insan-ustune-esya-faa46a",
+      "model_name": "vlm",
+      "model_backend": "server",
+      "scene_summary_tr": "Sanayi bir ortamda, büyük metal boruların bir makine tarafından kesildiği görülüyor. İşçiler, mavi üniformalar ve turuncu kasklar giyerek makinenin etrafında hareket ediyor. İşlem sırasında metal parçaları ve kıvılcımlar oluşuyor.",
+      "detected_entities": [
+        {
+          "label": "person",
+          "confidence_hint": "high",
+          "notes_tr": "İki işçi, mavi üniforma ve turuncu kask giyiyor. Birisi makinenin yanında, diğeri borunun yakınında hareket ediyor."
+        },
+        {
+          "label": "machine",
+          "confidence_hint": "high",
+          "notes_tr": "Mavi renkli, büyük boyutlu bir kesme makinesi. Boruları kesmek için kullanılıyor."
+        },
+        {
+          "label": "load",
+          "confidence_hint": "high",
+          "notes_tr": "Büyük çaplı metal borular, makine üzerinde yerleştirilmiş durumda. Bir tanesi kesim işlemi sırasında devriliyor."
+        },
+        {
+          "label": "smoke or flame",
+          "confidence_hint": "high",
+          "notes_tr": "Kesim sırasında kıvılcımlar ve duman oluşuyor. Bu, yüksek sıcaklıkta metal işleme olduğunu gösteriyor."
+        },
+        {
+          "label": "rack/structure",
+          "confidence_hint": "medium",
+          "notes_tr": "Sarı-kara çizgili güvenlik bariyeri ve metal yapılar, iş alanını çevreliyor."
+        }
+      ],
+      "detected_actions_tr": [
+        "İşçiler, makine etrafında hareket ediyor.",
+        "Bir metal boru, makine tarafından kesiliyor.",
+        "Kesim sırasında kıvılcımlar ve duman oluşuyor.",
+        "Bir boru, kesim sırasında devriliyor ve düşüyor."
+      ],
+      "confidence_overall": 0.88,
+      "inference": {
+        "latency_ms": 20673.234400106594,
+        "tokens_generated": 624
+      },
+      "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi bir ortamda, büyük metal boruların bir makine tarafından kesildiği görülüyor. İşçiler, mavi üniformalar ve turuncu kasklar giyerek makinenin etrafında hareket ediyor. İşlem sırasında metal parçaları ve kıvılcımlar oluşuyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki işçi, mavi üniforma ve turuncu kask giyiyor. Birisi makinenin yanında, diğeri borunun yakınında hareket ediyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Mavi renkli, büyük boyutlu bir kesme makinesi. Boruları kesmek için kullanılıyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük çaplı metal borular, makine üzerinde yerleştirilmiş durumda. Bir tanesi kesim işlemi sırasında devriliyor.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kesim sırasında kıvılcımlar ve duman oluşuyor. Bu, yüksek sıcaklıkta metal işleme olduğunu gösteriyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sarı-kara çizgili güvenlik bariyeri ve metal yapılar, iş alanını çevreliyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, makine etrafında hareket ediyor.\",\n    \"Bir metal boru, makine tarafından kesiliyor.\",\n    \"Kesim sırasında kıvılcımlar ve duman oluşuyor.\",\n    \"Bir boru, kesim sırasında devriliyor ve düşüyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Bir metal boru kesim sırasında kontrolsüz şekilde devriliyor ve düşüyor. Bu, yakın olan işçilere ciddi fiziksel zarar verebilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 6.0\n    },\n    {\n      \"description_tr\": \"İşçiler, kesim sırasında oluşan yüksek sıcaklık ve kıvılcımlar nedeniyle yanma veya yaralanma riski altında.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 4.0\n    }\n  ],\n  \"confidence_overall\": 0.88\n}",
+      "risk_events": [
+        {
+          "description_tr": "Bir metal boru kesim sırasında kontrolsüz şekilde devriliyor ve düşüyor. Bu, yakın olan işçilere ciddi fiziksel zarar verebilir.",
+          "severity": "critical",
+          "confidence": 0.9,
+          "supporting_frame_count": 1,
+          "supporting_frame_positions": [],
+          "timestamp_sec": 6.0
+        },
+        {
+          "description_tr": "İşçiler, kesim sırasında oluşan yüksek sıcaklık ve kıvılcımlar nedeniyle yanma veya yaralanma riski altında.",
+          "severity": "high",
+          "confidence": 0.85,
+          "supporting_frame_count": 1,
+          "supporting_frame_positions": [],
+          "timestamp_sec": 4.0
+        }
+      ],
+      "risk_flags_tr": [
+        "Bir metal boru kesim sırasında kontrolsüz şekilde devriliyor ve düşüyor. Bu, yakın olan işçilere ciddi fiziksel zarar verebilir.",
+        "İşçiler, kesim sırasında oluşan yüksek sıcaklık ve kıvılcımlar nedeniyle yanma veya yaralanma riski altında."
+      ],
+      "computed_confidence": 0.6956,
+      "reasoning_trace": "",
+      "segment_start_sec": 0.0,
+      "segment_end_sec": 13.866666666666667,
+      "created_at": "2026-08-27T14:02:17.269758+00:00"
+    },
+    "rag_context": {
+      "risk_level": "Yüksek",
+      "risk_score": 85,
+      "actions": [
+        "Vinci acil durdur ve operatörle telsiz iletişimi kur.",
+        "Yük altındaki personeli sesli sirenle uyar.",
+        "Riskli alanı güvenlik şeridiyle kapat.",
+        "Acil durum ekibini ve sağlık personelini derhal çağır.",
+        "Olay bölgesini güvenlik şeridi ile izole et.",
+        "Güvenlik kameralarını ve kayıtları sakla, yetkililere bildir.",
+        "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
+      ],
+      "matched_patterns": [
+        {
+          "pattern": "ppe_missing",
+          "description": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği.",
+          "risk_score": 45,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Kafa travması",
+            "Görünmezlik kaynaklı ezilme"
+          ],
+          "similarity": 0.244
+        },
+        {
+          "pattern": "overhead_hazard",
+          "description": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük).",
+          "risk_score": 85,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Kafa travması",
+            "Ölümcül ezilme"
+          ],
+          "similarity": 0.155
+        }
+      ]
+    },
+    "event_timestamps": [
+      {
+        "seconds": 4.0,
+        "timestamp": "00:04",
+        "end_time": "00:04",
+        "timestamp_sec": 4.0,
+        "duration": 0.0,
+        "event_type": "unknown",
+        "event": "fire_smoke",
+        "confidence": 0.85,
+        "severity": "high",
+        "vlm_detail": "İşçiler, kesim sırasında oluşan yüksek sıcaklık ve kıvılcımlar nedeniyle yanma veya yaralanma riski altında."
+      },
+      {
+        "seconds": 6.0,
+        "timestamp": "00:06",
+        "end_time": "00:06",
+        "timestamp_sec": 6.0,
+        "duration": 0.0,
+        "event_type": "unknown",
+        "event": "yüksekten_düşen_yük",
+        "confidence": 0.9,
+        "severity": "critical",
+        "vlm_detail": "Bir metal boru kesim sırasında kontrolsüz şekilde devriliyor ve düşüyor. Bu, yakın olan işçilere ciddi fiziksel zarar verebilir."
+      }
+    ]
+  }
+}

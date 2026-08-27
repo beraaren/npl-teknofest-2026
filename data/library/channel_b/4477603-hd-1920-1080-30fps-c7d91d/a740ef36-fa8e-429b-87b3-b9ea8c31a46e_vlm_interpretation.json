@@ -1,0 +1,58 @@
+{
+  "packet_id": "a740ef36-fa8e-429b-87b3-b9ea8c31a46e",
+  "video_id": "4477603-hd-1920-1080-30fps-c7d91d",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir depoda, bir kişi sarı güvenlik yeleği giymiş halde forklift ile palet üzerindeki kutuları taşıyor. Forklift, yüksek raf sistemlerinin arasında ilerliyor. Depo, yüksek raf ve paletlerle dolu, düzenli bir şekilde düzenlenmiş.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Sarı güvenlik yeleği giymiş, forkliftin üzerinde duruyor."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Forklift, palet üzerinde yük taşıyor. Marka belirsiz, ancak tipik bir forklift görünümüne sahip."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Palet üzerinde çeşitli boyutlarda kahverengi ve beyaz kutular yer alıyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Yüksek, kırmızı ve siyah metal raf sistemleri, depo boyunca uzanıyor ve kutularla dolu."
+    }
+  ],
+  "detected_actions_tr": [
+    "Forklift, depo içinde ilerliyor.",
+    "Kişi, forklifti kullanarak paleti taşıyor.",
+    "Forklift, raf sistemlerinin arasında hareket ediyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 9866.65549990721,
+    "tokens_generated": 442
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir depoda, bir kişi sarı güvenlik yeleği giymiş halde forklift ile palet üzerindeki kutuları taşıyor. Forklift, yüksek raf sistemlerinin arasında ilerliyor. Depo, yüksek raf ve paletlerle dolu, düzenli bir şekilde düzenlenmiş.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı güvenlik yeleği giymiş, forkliftin üzerinde duruyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Forklift, palet üzerinde yük taşıyor. Marka belirsiz, ancak tipik bir forklift görünümüne sahip.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Palet üzerinde çeşitli boyutlarda kahverengi ve beyaz kutular yer alıyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yüksek, kırmızı ve siyah metal raf sistemleri, depo boyunca uzanıyor ve kutularla dolu.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Forklift, depo içinde ilerliyor.\",\n    \"Kişi, forklifti kullanarak paleti taşıyor.\",\n    \"Forklift, raf sistemlerinin arasında hareket ediyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Forklift, yüksek raf sistemlerinin arasında dar bir geçitte ilerliyor; bu, çarpışma veya yük kayması riskini artırıyor.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 3.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Forklift, yüksek raf sistemlerinin arasında dar bir geçitte ilerliyor; bu, çarpışma veya yük kayması riskini artırıyor.",
+      "severity": "medium",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 3.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Forklift, yüksek raf sistemlerinin arasında dar bir geçitte ilerliyor; bu, çarpışma veya yük kayması riskini artırıyor."
+  ],
+  "computed_confidence": 0.6025,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 10.243333333333334,
+  "created_at": "2026-08-27T13:19:36.127282+00:00"
+}

@@ -1,0 +1,361 @@
+{
+  "slug": "3-te2-5ab809",
+  "video_file": "videos/3_te2.mp4",
+  "video_name": "3_te2",
+  "analyzed_at": "2026-08-27T13:16:52.607358+00:00",
+  "analysis_seconds": 35.9,
+  "video": {
+    "duration_sec": 11.0,
+    "fps": 25.0,
+    "width": 1920,
+    "height": 1080
+  },
+  "summary": "Bir endüstriyel üretim tesisinin iç kısmında, yüksek açılı bir güvenlik kamerası ile izlenen sahnede, sol tarafta paletli yükleri taşıyan bir forklift hareket halindeyken, sağ tarafta bir makine başında oturan personel gözlemlenmektedir. Zeminde iş güvenliği kurallarına uygun olarak sarı ve yeşil renkli yaya ve araç yolları çizgileri bulunmaktadır. Ancak, 00:02 zaman damgasında algı katmanı tarafından tespit edilen kritik bir güvenlik ihlali mevcuttur: Makine başında çalışan insan_1, zorunlu kişisel koruyucu donanımları olan baret ve yelek giymemektedir. VLM (Görsel Dil Modeli) analizi, forkliftin çalışanın bulunduğu makineye yakın bir mesafeden geçerken çarpışma riski oluşturduğunu belirtse de, bu durum tek bir karede tespit edilmiş olup sahne grafiği ve diğer kanallarda bu çarpışma veya düşme olayını doğrulayan bir kanıt bulunmamaktadır. Dolayısıyla, mevcut en somut ve doğrulanabilir risk, personelin koruyucu ekipman eksikliğidir.",
+  "headline": "KKD eksikliği (00:02)",
+  "risk": "Orta",
+  "confidence": 0.75,
+  "reasoning": "Karar sürecinde üç farklı kanaldan gelen veriler karşılaştırılmıştır. Algı katmanı (YOLO), 00:02'de insan_1 için baret ve yelek eksikliği (%70 güven) tespit etmiştir. RAG kataloğu bu durumu 'Orta' riskli 'ppe_missing' olarak eşleştirmiştir. VLM ise forklift ile personel arasında potansiyel bir çarpışma riski öne sürmüş olsa da, bu tespit tek bir kareye (supporting_frame_count: 1) dayanmakta ve sahne grafiği (nodes/edges boş) veya diğer kanallarla doğrulanmamıştır. Bu nedenle, VLM'nin çarpışma riski iddiası 'tek kaynak' olarak değerlendirilmiş ve düşük öncelikli bırakılmıştır. Zaman analizinde, KKD eksikliği tespitinin belirli bir anda gerçekleştiği, ancak forklift hareketinin sürekli bir durum olduğu görülmektedir; ancak çarpışma gerçekleşmediği için en somut ve eyleme geçirilebilir risk KKD ihlalidir. RAG kataloğundaki 'Yüksek' riskli düşme veya elektrik tehlikesi senaryoları için kanıt bulunmadığından, risk seviyesi kataloğun 'ppe_missing' eşleşmesine uygun olarak 'Orta' olarak belirlenmiştir.",
+  "actions": [
+    "Alan sorumlusunu bilgilendir.",
+    "Olayı İSG kayıt sistemine ekle.",
+    "Personeli KKD eksikliği konusunda uyar."
+  ],
+  "events": [
+    {
+      "time": "00:02",
+      "event": "Personel insan_1, makine başında çalışırken baret ve yelek gibi zorunlu kişisel koruyucu donanımları (KKD) eksik olarak tespit edildi.",
+      "event_type": "ppe_missing",
+      "confidence": 0.7,
+      "timestamp_sec": 2.0,
+      "duration": 0.0,
+      "end_time": "00:02"
+    }
+  ],
+  "triggered_mock_tools": [
+    {
+      "tool_name": "notify_supervisor",
+      "params": {
+        "location": "Üretim Alanı - Makine Bölümü",
+        "urgency": "Orta"
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "Üretim Alanı - Makine Bölümü",
+        "urgency": "Orta"
+      }
+    }
+  ],
+  "tool_execution_results": [
+    {
+      "status": "success",
+      "tool": "notify_supervisor",
+      "params": {
+        "location": "Üretim Alanı - Makine Bölümü",
+        "urgency": "Orta"
+      },
+      "mock_result": "notify_supervisor başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "record_incident",
+      "params": {
+        "location": "Üretim Alanı - Makine Bölümü",
+        "urgency": "Orta"
+      },
+      "mock_result": "record_incident başarıyla simüle edildi."
+    }
+  ],
+  "metadata": {
+    "vlm_backend": "server",
+    "channel_b_mode": "video",
+    "segment_count": 1,
+    "failed_segments": [],
+    "channel_a_fps": 12.5,
+    "total_frames": 138,
+    "sampled_indices": [
+      0,
+      30,
+      60,
+      90,
+      120,
+      152,
+      182,
+      212,
+      242,
+      274
+    ],
+    "geometric_signals": [
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:02",
+        "description": "Personel insan_1 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      }
+    ],
+    "vlm_interpretation": {
+      "packet_id": "b89ec83e-9527-445b-b0f0-39cdbcfbfbf5",
+      "video_id": "3-te2-5ab809",
+      "model_name": "vlm",
+      "model_backend": "server",
+      "scene_summary_tr": "Bir endüstriyel üretim tesisi içinde, yüksek açılı bir kameradan çekilen görüntüde, birkaç makine ve bir çalışan görülmektedir. Sağ tarafta bir çalışan makine başında otururken, sol tarafta bir forklift, paletlerle yüklenmiş kutuları taşıyarak hareket etmektedir. Zeminde sarı ve yeşil çizgilerle belirlenmiş yollar bulunmaktadır.",
+      "detected_entities": [
+        {
+          "label": "person",
+          "confidence_hint": "high",
+          "notes_tr": "Sağ tarafta makine başında oturan bir çalışan."
+        },
+        {
+          "label": "vehicle",
+          "confidence_hint": "high",
+          "notes_tr": "Sol tarafta paletli yükleri taşıyan forklift. Tipi net bir şekilde belirlenemese de, işlevi ve görünümüyle forklift olduğu anlaşılmaktadır."
+        },
+        {
+          "label": "machine",
+          "confidence_hint": "high",
+          "notes_tr": "Çeşitli büyük makineler, muhtemelen pres veya işleme makineleri, üretim alanının ortasında yer almaktadır."
+        },
+        {
+          "label": "load",
+          "confidence_hint": "high",
+          "notes_tr": "Forklift tarafından taşınan paletler üzerindeki kutular."
+        },
+        {
+          "label": "rack/structure",
+          "confidence_hint": "medium",
+          "notes_tr": "Arka planda yüksek raf sistemleri ve depolama yapıları görülmektedir."
+        }
+      ],
+      "detected_actions_tr": [
+        "Forklift, paletli yükleri taşıyarak hareket etmektedir.",
+        "Bir çalışan, makine başında oturarak çalışmaktadır.",
+        "Makinelerin bazılarında işlevsel hareketler (örneğin, ışık yanıp sönme) gözlemlenmektedir."
+      ],
+      "confidence_overall": 0.9,
+      "inference": {
+        "latency_ms": 13254.808199824765,
+        "tokens_generated": 568
+      },
+      "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir endüstriyel üretim tesisi içinde, yüksek açılı bir kameradan çekilen görüntüde, birkaç makine ve bir çalışan görülmektedir. Sağ tarafta bir çalışan makine başında otururken, sol tarafta bir forklift, paletlerle yüklenmiş kutuları taşıyarak hareket etmektedir. Zeminde sarı ve yeşil çizgilerle belirlenmiş yollar bulunmaktadır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sağ tarafta makine başında oturan bir çalışan.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sol tarafta paletli yükleri taşıyan forklift. Tipi net bir şekilde belirlenemese de, işlevi ve görünümüyle forklift olduğu anlaşılmaktadır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çeşitli büyük makineler, muhtemelen pres veya işleme makineleri, üretim alanının ortasında yer almaktadır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Forklift tarafından taşınan paletler üzerindeki kutular.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda yüksek raf sistemleri ve depolama yapıları görülmektedir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Forklift, paletli yükleri taşıyarak hareket etmektedir.\",\n    \"Bir çalışan, makine başında oturarak çalışmaktadır.\",\n    \"Makinelerin bazılarında işlevsel hareketler (örneğin, ışık yanıp sönme) gözlemlenmektedir.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Forklift, üretim alanının ortasından geçerken, çalışanın bulunduğu makineye yakın bir yolda hareket etmektedir. Bu, forkliftin çalışanla çarpışma riski oluşturabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 8.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+      "risk_events": [
+        {
+          "description_tr": "Forklift, üretim alanının ortasından geçerken, çalışanın bulunduğu makineye yakın bir yolda hareket etmektedir. Bu, forkliftin çalışanla çarpışma riski oluşturabilir.",
+          "severity": "high",
+          "confidence": 0.85,
+          "supporting_frame_count": 1,
+          "supporting_frame_positions": [],
+          "timestamp_sec": 8.0
+        }
+      ],
+      "risk_flags_tr": [
+        "Forklift, üretim alanının ortasından geçerken, çalışanın bulunduğu makineye yakın bir yolda hareket etmektedir. Bu, forkliftin çalışanla çarpışma riski oluşturabilir."
+      ],
+      "computed_confidence": 0.6663,
+      "reasoning_trace": "",
+      "segment_start_sec": 0.0,
+      "segment_end_sec": 11.0,
+      "created_at": "2026-08-27T13:16:45.843479+00:00"
+    },
+    "rag_context": {
+      "risk_level": "Yüksek",
+      "risk_score": 90,
+      "actions": [
+        "Yaralıyı hareket ettirmeden sağlık ekibini bekle.",
+        "Düşme nedenini (kaygan zemin, engel, yükseklik) tespit et.",
+        "Çevredeki personeli bölgeden uzaklaştır.",
+        "Bölgenin ana şalterden elektriğini kes.",
+        "Kıvılcım veya yangın ihtimaline karşı alanı izole et.",
+        "Acil bakım/onarım ekibine derhal bilgi ver.",
+        "Vinci acil durdur ve operatörle telsiz iletişimi kur.",
+        "Yük altındaki personeli sesli sirenle uyar.",
+        "Riskli alanı güvenlik şeridiyle kapat.",
+        "Acil durum ekibini ve sağlık personelini derhal çağır.",
+        "Olay bölgesini güvenlik şeridi ile izole et.",
+        "Güvenlik kameralarını ve kayıtları sakla, yetkililere bildir.",
+        "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
+      ],
+      "matched_patterns": [
+        {
+          "pattern": "person_fall",
+          "description": "Personelin ani düşüşü veya zemine çökmesi.",
+          "risk_score": 90,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Ciddi yaralanma",
+            "Kanama",
+            "Bilinç kaybı"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "gathering",
+          "description": "Üç veya daha fazla personelin tehlikeli bölgede toplanması.",
+          "risk_score": 50,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Toplu kaza riski",
+            "Tahliye güçlüğü",
+            "İş verimi kaybı"
+          ],
+          "similarity": 0.296,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "immobile_person",
+          "description": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
+          "risk_score": 70,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Hayati tehlike",
+            "Tıbbi müdahale gecikmesi"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "ppe_missing",
+          "description": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği.",
+          "risk_score": 45,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Kafa travması",
+            "Görünmezlik kaynaklı ezilme"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "ppe_missing",
+            "timestamp": "00:02",
+            "description": "Personel insan_1 eksik KKD: baret, yelek.",
+            "confidence": 0.7,
+            "involved_track_ids": [
+              1
+            ],
+            "metadata": {
+              "missing_ppe": [
+                "baret",
+                "yelek"
+              ]
+            }
+          }
+        },
+        {
+          "pattern": "electrical_hazard",
+          "description": "Açık pano, kablo veya elektrik tehlikesi barındıran durum.",
+          "risk_score": 85,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Elektrik çarpması",
+            "Elektrik kaynaklı yangın"
+          ],
+          "similarity": 0.193
+        },
+        {
+          "pattern": "unauthorized_access",
+          "description": "Yetkisiz personelin tehlikeli veya kısıtlı alana girişi.",
+          "risk_score": 65,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Sabotaj",
+            "Eğitimsiz personel kazası"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "running_in_facility",
+          "description": "Tesis içinde koşan personel (çarpışma/kayma riski).",
+          "risk_score": 60,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Kör noktada forkliftle çarpışma",
+            "Kayma ve düşme",
+            "Panik yaratma"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "overhead_hazard",
+          "description": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük).",
+          "risk_score": 85,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Kafa travması",
+            "Ölümcül ezilme"
+          ],
+          "similarity": 0.101
+        },
+        {
+          "pattern": "fatigue_detection",
+          "description": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski).",
+          "risk_score": 50,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "İş kazası potansiyeli artışı",
+            "Bayılma öncülü"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "restricted_time_access",
+          "description": "Mesai saatleri dışında veya izinsiz zamanda bölgede yaya tespiti.",
+          "risk_score": 65,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Hırsızlık/Sabotaj",
+            "Yalnız çalışma kazası"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        }
+      ]
+    },
+    "event_timestamps": [
+      {
+        "seconds": 2.0,
+        "timestamp": "00:02",
+        "end_time": "00:02",
+        "timestamp_sec": 2.0,
+        "duration": 0.0,
+        "event_type": "ppe_missing",
+        "event": "Personel insan_1, makine başında çalışırken baret ve yelek gibi zorunlu kişisel koruyucu donanımları (KKD) eksik olarak tespit edildi.",
+        "confidence": 0.7,
+        "severity": "medium",
+        "vlm_detail": ""
+      }
+    ]
+  }
+}

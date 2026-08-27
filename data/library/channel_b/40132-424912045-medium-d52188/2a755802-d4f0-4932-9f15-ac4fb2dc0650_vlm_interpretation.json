@@ -1,0 +1,78 @@
+{
+  "packet_id": "2a755802-d4f0-4932-9f15-ac4fb2dc0650",
+  "video_id": "40132-424912045-medium-d52188",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Inşaat alanında, bir kazıcı makinesi toprak kazıyor. Ön planda bir işçi mavi kask ve sarı reflektif yelek giymiş halde bir boru ile çalışırken, arka planda başka bir işçi kazı alanının kenarında yürüyor. Alanın sağ tarafında beton bir yapı ve diğer inşaat ekipmanları mevcut.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Ön planda mavi kasklı işçi, arka planda yeşil kasklı işçi ve sağ üstte başka bir işçi görülmektedir."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Sarı renkli kazıcı makinesi (excavator) merkezde yer alıyor. Marka adı 'LIEBHERR' okunabiliyor ancak genel olarak 'machine' olarak sınıflandırıldı."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Kazıcı makinesi tarafından hareket ettirilen toprak yığınları."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Alanın sol ve sağ kenarlarında beton duvarlar ve inşaat çitleri (orange metal bariyer) mevcut."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda başka bir sarı inşaat makinesi (muhtemelen kırıcı veya yükleyici) görünüyor ancak tam olarak tanımlanamadı."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "low",
+      "notes_tr": "Toprakta bazı nemli bölgeler ve hafif duman/çamur buharı gözlemleniyor ancak net bir sıvı veya kimyasal madde tespit edilemedi."
+    }
+  ],
+  "detected_actions_tr": [
+    "Kazıcı makinesi toprak kazıyor ve hareket ediyor.",
+    "Ön plandaki işçi bir boru ile çalışırken duruyor ve yürüyor.",
+    "Arka plandaki işçi kazı alanının kenarında yürüyor.",
+    "Sağ üstteki işçi beton yapı üzerinde duruyor ve etrafı izliyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 21413.882500026375,
+    "tokens_generated": 758
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Inşaat alanında, bir kazıcı makinesi toprak kazıyor. Ön planda bir işçi mavi kask ve sarı reflektif yelek giymiş halde bir boru ile çalışırken, arka planda başka bir işçi kazı alanının kenarında yürüyor. Alanın sağ tarafında beton bir yapı ve diğer inşaat ekipmanları mevcut.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Ön planda mavi kasklı işçi, arka planda yeşil kasklı işçi ve sağ üstte başka bir işçi görülmektedir.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli kazıcı makinesi (excavator) merkezde yer alıyor. Marka adı 'LIEBHERR' okunabiliyor ancak genel olarak 'machine' olarak sınıflandırıldı.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kazıcı makinesi tarafından hareket ettirilen toprak yığınları.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Alanın sol ve sağ kenarlarında beton duvarlar ve inşaat çitleri (orange metal bariyer) mevcut.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda başka bir sarı inşaat makinesi (muhtemelen kırıcı veya yükleyici) görünüyor ancak tam olarak tanımlanamadı.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Toprakta bazı nemli bölgeler ve hafif duman/çamur buharı gözlemleniyor ancak net bir sıvı veya kimyasal madde tespit edilemedi.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Kazıcı makinesi toprak kazıyor ve hareket ediyor.\",\n    \"Ön plandaki işçi bir boru ile çalışırken duruyor ve yürüyor.\",\n    \"Arka plandaki işçi kazı alanının kenarında yürüyor.\",\n    \"Sağ üstteki işçi beton yapı üzerinde duruyor ve etrafı izliyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Kazıcı makinesi, yakın mesafede çalışan işçinin güvenliğini tehdit edebilir. İşçi, makinenin hareketi sırasında makinenin kolu veya diğer parçalarına yaklaşıyor.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 10.0\n    },\n    {\n      \"description_tr\": \"Kazı alanı kenarında yürüyen işçi, toprak kayması veya makine hareketi sonucu düşme riski altında.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.75,\n      \"timestamp_sec\": 5.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Kazıcı makinesi, yakın mesafede çalışan işçinin güvenliğini tehdit edebilir. İşçi, makinenin hareketi sırasında makinenin kolu veya diğer parçalarına yaklaşıyor.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 10.0
+    },
+    {
+      "description_tr": "Kazı alanı kenarında yürüyen işçi, toprak kayması veya makine hareketi sonucu düşme riski altında.",
+      "severity": "medium",
+      "confidence": 0.75,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 5.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Kazıcı makinesi, yakın mesafede çalışan işçinin güvenliğini tehdit edebilir. İşçi, makinenin hareketi sırasında makinenin kolu veya diğer parçalarına yaklaşıyor.",
+    "Kazı alanı kenarında yürüyen işçi, toprak kayması veya makine hareketi sonucu düşme riski altında."
+  ],
+  "computed_confidence": 0.6269,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 21.6216,
+  "created_at": "2026-08-27T13:17:30.079334+00:00"
+}

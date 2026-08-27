@@ -644,13 +644,34 @@ def extract_video_segment(
             except av.AVError:
                 inp.seek(0)
 
+        # GPU NVENC donanım hızlandırma (NVIDIA), desteklenmezse CPU libx264 fallback
+        codec_name = "libx264"
+        codec_opts = {"crf": str(VLM_CLIP_CRF), "preset": VLM_CLIP_PRESET}
+        try:
+            if "h264_nvenc" in av.codecs_available:
+                codec_name = "h264_nvenc"
+                codec_opts = {
+                    "preset": "p4",
+                    "tune": "hq",
+                    "rc": "vbr",
+                    "cq": str(VLM_CLIP_CRF),
+                    "b": "2.5M",
+                    "maxrate": "5M",
+                }
+        except Exception:
+            pass
+
         out = av.open(out_path, mode="w")
         try:
-            ostream = out.add_stream("libx264", rate=rate)
+            try:
+                ostream = out.add_stream(codec_name, rate=rate)
+                ostream.options = codec_opts
+            except Exception:
+                ostream = out.add_stream("libx264", rate=rate)
+                ostream.options = {"crf": str(VLM_CLIP_CRF), "preset": VLM_CLIP_PRESET}
             ostream.width = out_w
             ostream.height = out_h
             ostream.pix_fmt = "yuv420p"
-            ostream.options = {"crf": str(VLM_CLIP_CRF), "preset": VLM_CLIP_PRESET}
             ostream.time_base = Fraction(1, 90000)
 
             written = 0

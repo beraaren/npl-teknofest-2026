@@ -294,9 +294,10 @@ function renderModal(cameraId, active, analysis) {
   // Video kaynağı sadece kamera fiilen değiştiğinde yeniden yüklenir; aynı
   // kamera için tekrarlanan renderModal çağrıları (WS tazelemesi) videoyu
   // yeniden başlatmaz.
-  if (el.modalVideo.dataset.camera !== cameraId) {
+  if (el.modalVideo.dataset.slug !== analysis.slug) {
     el.modalVideo.dataset.camera = cameraId;
-    el.modalVideo.src = `${API}/pseudolive/videos/${cameraId}`;
+    el.modalVideo.dataset.slug = analysis.slug;
+    el.modalVideo.src = `${API}/library/videos/${analysis.slug}`;
     el.modalVideo.addEventListener('loadedmetadata', () => {
       syncVideoTime(el.modalVideo, active.position_sec);
       el.modalVideo.play().catch(() => {});
@@ -425,11 +426,20 @@ function renderSuggestedActions(analysis, cameraId) {
 function startProgressWatch() {
   stopProgressWatch();
   progressTimer = setInterval(() => {
-    if (!openCameraId || !el.modal.classList.contains('open')) return;
-    const cam = cameraState.get(openCameraId);
-    if (!cam) return;
+    if (!openCameraId || !el.modal.classList.contains('open') || !currentAnalysis) return;
+    
+    const dur = el.modalVideo.duration || 0;
+    const currentSec = el.modalVideo.currentTime;
+    
+    const events = currentAnalysis.event_timestamps || [];
+    const totalEvents = events.length;
+    const firedCount = events.filter(e => {
+       const s = Number(e.timestamp_sec ?? e.seconds) || 0;
+       return s <= currentSec;
+    }).length;
+
     el.modalProgress.textContent =
-      `${mmss(el.modalVideo.currentTime)} / ${mmss(cam.duration_sec)} · ${cam.fired_count}/${cam.total_events} uyarı`;
+      `${mmss(currentSec)} / ${mmss(dur)} · ${firedCount}/${totalEvents} uyarı`;
   }, PROGRESS_TICK_MS);
 }
 
@@ -448,6 +458,7 @@ function closeModal() {
   el.modalVideo.pause();
   el.modalVideo.removeAttribute('src');
   el.modalVideo.dataset.camera = '';
+  el.modalVideo.dataset.slug = '';
 }
 
 // ---------------------------------------------------------------------------
@@ -680,6 +691,9 @@ function scheduleModalRefresh() {
     if (!openCameraId || !el.modal.classList.contains('open')) return;
     try {
       const detail = await api(`/pseudolive/cameras/${openCameraId}`);
+      if (currentAnalysis && detail.analysis && currentAnalysis.slug !== detail.analysis.slug) {
+        return; // Kamera bir sonraki videoya geçti, modaldaki şu anki analiz görünümünü bozma
+      }
       renderModal(openCameraId, detail.active, detail.analysis);
     } catch { /* modal kapanmış olabilir */ }
   }, 500);

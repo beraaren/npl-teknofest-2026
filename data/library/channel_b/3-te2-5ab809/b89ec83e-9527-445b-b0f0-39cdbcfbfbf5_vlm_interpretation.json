@@ -1,0 +1,63 @@
+{
+  "packet_id": "b89ec83e-9527-445b-b0f0-39cdbcfbfbf5",
+  "video_id": "3-te2-5ab809",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir endüstriyel üretim tesisi içinde, yüksek açılı bir kameradan çekilen görüntüde, birkaç makine ve bir çalışan görülmektedir. Sağ tarafta bir çalışan makine başında otururken, sol tarafta bir forklift, paletlerle yüklenmiş kutuları taşıyarak hareket etmektedir. Zeminde sarı ve yeşil çizgilerle belirlenmiş yollar bulunmaktadır.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Sağ tarafta makine başında oturan bir çalışan."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "high",
+      "notes_tr": "Sol tarafta paletli yükleri taşıyan forklift. Tipi net bir şekilde belirlenemese de, işlevi ve görünümüyle forklift olduğu anlaşılmaktadır."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Çeşitli büyük makineler, muhtemelen pres veya işleme makineleri, üretim alanının ortasında yer almaktadır."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Forklift tarafından taşınan paletler üzerindeki kutular."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda yüksek raf sistemleri ve depolama yapıları görülmektedir."
+    }
+  ],
+  "detected_actions_tr": [
+    "Forklift, paletli yükleri taşıyarak hareket etmektedir.",
+    "Bir çalışan, makine başında oturarak çalışmaktadır.",
+    "Makinelerin bazılarında işlevsel hareketler (örneğin, ışık yanıp sönme) gözlemlenmektedir."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 13254.808199824765,
+    "tokens_generated": 568
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir endüstriyel üretim tesisi içinde, yüksek açılı bir kameradan çekilen görüntüde, birkaç makine ve bir çalışan görülmektedir. Sağ tarafta bir çalışan makine başında otururken, sol tarafta bir forklift, paletlerle yüklenmiş kutuları taşıyarak hareket etmektedir. Zeminde sarı ve yeşil çizgilerle belirlenmiş yollar bulunmaktadır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sağ tarafta makine başında oturan bir çalışan.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sol tarafta paletli yükleri taşıyan forklift. Tipi net bir şekilde belirlenemese de, işlevi ve görünümüyle forklift olduğu anlaşılmaktadır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çeşitli büyük makineler, muhtemelen pres veya işleme makineleri, üretim alanının ortasında yer almaktadır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Forklift tarafından taşınan paletler üzerindeki kutular.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda yüksek raf sistemleri ve depolama yapıları görülmektedir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Forklift, paletli yükleri taşıyarak hareket etmektedir.\",\n    \"Bir çalışan, makine başında oturarak çalışmaktadır.\",\n    \"Makinelerin bazılarında işlevsel hareketler (örneğin, ışık yanıp sönme) gözlemlenmektedir.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Forklift, üretim alanının ortasından geçerken, çalışanın bulunduğu makineye yakın bir yolda hareket etmektedir. Bu, forkliftin çalışanla çarpışma riski oluşturabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 8.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Forklift, üretim alanının ortasından geçerken, çalışanın bulunduğu makineye yakın bir yolda hareket etmektedir. Bu, forkliftin çalışanla çarpışma riski oluşturabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 8.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Forklift, üretim alanının ortasından geçerken, çalışanın bulunduğu makineye yakın bir yolda hareket etmektedir. Bu, forkliftin çalışanla çarpışma riski oluşturabilir."
+  ],
+  "computed_confidence": 0.6663,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 11.0,
+  "created_at": "2026-08-27T13:16:45.843479+00:00"
+}

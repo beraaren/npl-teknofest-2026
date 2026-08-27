@@ -1,0 +1,78 @@
+{
+  "packet_id": "f7b6acf6-eba4-493f-b555-d7b66453ac18",
+  "video_id": "44889-440261137-medium-7adb2f",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Yüksek açıdan bir inşaat alanının görünümü. Beton temeller üzerinde çalışan işçiler, bir yükleyici ve bir kazıcı makinesi mevcut. Alanın etrafında toprak yığınları, malzeme stokları ve çevre binalar bulunuyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Birden fazla işçi, bazıları yükseklikte betonarme yapılar üzerinde, bazıları da toprak kazı alanında çalışıyor. Güvenlik elbiseleri giyiyorlar."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Sarı renkli bir yükleyici (front loader) ve arka planda bir kazıcı (excavator) görünüyor. Yükleyici, kameranın sol tarafında hareket ediyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Yeni inşa edilen beton temeller ve bazı yerlerde ahşap kalıplar (formwork) mevcut. Bu yapılar, bina temellerini oluşturuyor."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Kazıcı, toprak yığınlarından toprak alıyor ve temel alanına dolduruyor. Yükleyici de toprak taşıma işlemi yapıyor."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "medium",
+      "notes_tr": "Temel alanlarında bazı yerlerde su birikintileri veya nemli toprak görülmektedir, muhtemelen yağış veya su sızıntısı sonucu."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "high",
+      "notes_tr": "Yükleyici ve kazıcı, inşaat alanındaki ana makinelerdir. Yükleyici, kameranın sol tarafında hareket ediyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler, betonarme yapılar üzerinde çalışırken, bazıları toprak kazı alanında duruyor.",
+    "Kazıcı, toprak yığınlarından toprak alıyor ve temel alanına dolduruyor.",
+    "Yükleyici, toprak taşıma işlemi yaparken, kameranın sol tarafında ilerliyor.",
+    "İşçiler, malzeme taşıma ve kalıpların yerleştirilmesi gibi görevlerde bulunuyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 27151.310299988836,
+    "tokens_generated": 819
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Yüksek açıdan bir inşaat alanının görünümü. Beton temeller üzerinde çalışan işçiler, bir yükleyici ve bir kazıcı makinesi mevcut. Alanın etrafında toprak yığınları, malzeme stokları ve çevre binalar bulunuyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Birden fazla işçi, bazıları yükseklikte betonarme yapılar üzerinde, bazıları da toprak kazı alanında çalışıyor. Güvenlik elbiseleri giyiyorlar.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli bir yükleyici (front loader) ve arka planda bir kazıcı (excavator) görünüyor. Yükleyici, kameranın sol tarafında hareket ediyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yeni inşa edilen beton temeller ve bazı yerlerde ahşap kalıplar (formwork) mevcut. Bu yapılar, bina temellerini oluşturuyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kazıcı, toprak yığınlarından toprak alıyor ve temel alanına dolduruyor. Yükleyici de toprak taşıma işlemi yapıyor.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Temel alanlarında bazı yerlerde su birikintileri veya nemli toprak görülmektedir, muhtemelen yağış veya su sızıntısı sonucu.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yükleyici ve kazıcı, inşaat alanındaki ana makinelerdir. Yükleyici, kameranın sol tarafında hareket ediyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, betonarme yapılar üzerinde çalışırken, bazıları toprak kazı alanında duruyor.\",\n    \"Kazıcı, toprak yığınlarından toprak alıyor ve temel alanına dolduruyor.\",\n    \"Yükleyici, toprak taşıma işlemi yaparken, kameranın sol tarafında ilerliyor.\",\n    \"İşçiler, malzeme taşıma ve kalıpların yerleştirilmesi gibi görevlerde bulunuyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Kazıcı, temel alanına toprak doldururken, yanında duran işçiye yakın bir mesafede çalışmaktadır. İşçi, makinenin hareketi sırasında potansiyel bir çarpışma riski altında olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 10.0\n    },\n    {\n      \"description_tr\": \"Bazı işçiler, yükseklikte betonarme yapıların kenarında çalışırken, koruyucu güvenlik aletleri (örneğin, güvenlik kemeri) kullanılmadığı gözlemleniyor. Bu, düşme riskini artırıyor.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 12.0\n    }\n  ],\n  \"confidence_overall\": 0.90\n}",
+  "risk_events": [
+    {
+      "description_tr": "Kazıcı, temel alanına toprak doldururken, yanında duran işçiye yakın bir mesafede çalışmaktadır. İşçi, makinenin hareketi sırasında potansiyel bir çarpışma riski altında olabilir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 10.0
+    },
+    {
+      "description_tr": "Bazı işçiler, yükseklikte betonarme yapıların kenarında çalışırken, koruyucu güvenlik aletleri (örneğin, güvenlik kemeri) kullanılmadığı gözlemleniyor. Bu, düşme riskini artırıyor.",
+      "severity": "high",
+      "confidence": 0.8,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 12.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Kazıcı, temel alanına toprak doldururken, yanında duran işçiye yakın bir mesafede çalışmaktadır. İşçi, makinenin hareketi sırasında potansiyel bir çarpışma riski altında olabilir.",
+    "Bazı işçiler, yükseklikte betonarme yapıların kenarında çalışırken, koruyucu güvenlik aletleri (örneğin, güvenlik kemeri) kullanılmadığı gözlemleniyor. Bu, düşme riskini artırıyor."
+  ],
+  "computed_confidence": 0.6606,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 16.249566666666666,
+  "created_at": "2026-08-27T13:20:37.365363+00:00"
+}

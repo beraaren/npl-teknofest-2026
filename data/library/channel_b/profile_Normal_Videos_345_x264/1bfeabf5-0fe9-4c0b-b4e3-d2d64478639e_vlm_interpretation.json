@@ -1,0 +1,53 @@
+{
+  "packet_id": "1bfeabf5-0fe9-4c0b-b4e3-d2d64478639e",
+  "video_id": "profile_Normal_Videos_345_x264",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "İç mekanda, bir ofis veya resepsiyon alanına benzeyen bir alanda üç kişi görülüyor. Sol tarafta bir masada oturan bir kişi bilgisayarla çalışıyor, ortada duran bir kişi ona konuşuyor gibi görünüyor. Arka planda bir kişi daha yürüyor ve alanın sağ tarafında koltuklar, bir sehpa ve kitaplık gibi mobilyalar yer alıyor. Ortam genel olarak sakin ve işlevsel.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Üç kişi mevcut: biri masada oturuyor, biri duruyor, biri yürüyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Arka planda kitaplık veya dolap benzeri bir yapı var."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Masada bilgisayar ve muhtemelen yazıcı gibi cihazlar var."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "low",
+      "notes_tr": "Masada bazı belgeler ve nesneler var, ancak yük olarak değerlendirilmiyor."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "low",
+      "notes_tr": "Masada küçük bir bardak veya kupa gibi nesneler olabilir, ancak net bir sıvı tespit edilemedi."
+    }
+  ],
+  "detected_actions_tr": [
+    "Bir kişi masada oturuyor ve bilgisayar kullanıyor.",
+    "Bir kişi masanın önünde duruyor ve konuşuyor gibi görünüyor.",
+    "Bir kişi arka planda yürüyor.",
+    "Ortak alan sakin ve düzenli bir şekilde kullanılıyor."
+  ],
+  "confidence_overall": 0.95,
+  "inference": {
+    "latency_ms": 7995.873400010169,
+    "tokens_generated": 469
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"İç mekanda, bir ofis veya resepsiyon alanına benzeyen bir alanda üç kişi görülüyor. Sol tarafta bir masada oturan bir kişi bilgisayarla çalışıyor, ortada duran bir kişi ona konuşuyor gibi görünüyor. Arka planda bir kişi daha yürüyor ve alanın sağ tarafında koltuklar, bir sehpa ve kitaplık gibi mobilyalar yer alıyor. Ortam genel olarak sakin ve işlevsel.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Üç kişi mevcut: biri masada oturuyor, biri duruyor, biri yürüyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Arka planda kitaplık veya dolap benzeri bir yapı var.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Masada bilgisayar ve muhtemelen yazıcı gibi cihazlar var.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Masada bazı belgeler ve nesneler var, ancak yük olarak değerlendirilmiyor.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Masada küçük bir bardak veya kupa gibi nesneler olabilir, ancak net bir sıvı tespit edilemedi.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Bir kişi masada oturuyor ve bilgisayar kullanıyor.\",\n    \"Bir kişi masanın önünde duruyor ve konuşuyor gibi görünüyor.\",\n    \"Bir kişi arka planda yürüyor.\",\n    \"Ortak alan sakin ve düzenli bir şekilde kullanılıyor.\"\n  ],\n  \"risk_events\": [],\n  \"confidence_overall\": 0.95\n}",
+  "risk_events": [],
+  "risk_flags_tr": [],
+  "computed_confidence": 0.475,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 6.966666666666667,
+  "created_at": "2026-08-27T13:33:23.466481+00:00"
+}

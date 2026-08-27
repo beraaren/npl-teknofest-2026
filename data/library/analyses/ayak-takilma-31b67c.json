@@ -1,0 +1,1005 @@
+{
+  "slug": "ayak-takilma-31b67c",
+  "video_file": "videos/ayak_takilma.mp4",
+  "video_name": "ayak_takilma",
+  "analyzed_at": "2026-08-27T14:01:56.447830+00:00",
+  "analysis_seconds": 40.9,
+  "video": {
+    "duration_sec": 29.03,
+    "fps": 30.0,
+    "width": 1280,
+    "height": 720
+  },
+  "summary": "Depo ortamında, taşınabilir bir konveyör bandı yanında kutu yerleştirme işlemi yapan personel (insan_2), bir kutuyu geri almak için eğildiğinde hareket halindeki makine nedeniyle kayarak düşmüştür. Düşme anında (00:02) personelin baret ve yelek gibi temel kişisel koruyucu donanımları (KKD) eksik olduğu tespit edilmiştir. Düşüşün ardından personel yere yatmış ve hareketsiz kalmıştır. Olayın ardından bölgeye gelen diğer personeller (insan_13, insan_18, insan_22, insan_27) da benzer şekilde KKD eksikliği ile tespit edilmiş ve tehlikeli bölgede toplanarak riski artırmışlardır. Sahne grafiğinde, hareketsiz kalan personelin yakınında duman benzeri bir nesne tespit edilmiş olsa da bu durum tek bir karede ve düşük güvenle görülmüştür; asıl kritik durum, düşme sonucu hareketsiz kalan yaralı personel ve çevresindeki KKD'siz toplanma riskidir.",
+  "headline": "Personel düşmesi (00:00)",
+  "risk": "Yüksek",
+  "confidence": 0.91,
+  "reasoning": "Karar, üç kanaldan gelen verilerin entegrasyonu ile verilmiştir. 1) YOLO ve kural motoru, 00:02'de 'person_fall' (düşme) ve 00:25'te 'immobile_person' (hareketsizlik) olaylarını tespit etmiştir. Düşme olayının geometrik verileri (drop_ratio ~0.51) düşüşün gerçek olduğunu destekler. 2) VLM, sahneyi yüksek güvenle (0.9) yorumlayarak işçinin konveyör nedeniyle kayıp düştüğünü ve hareketsiz kaldığını doğrulamıştır; bu, YOLO'nun düşme tespitiyle çakışarak güveni artırmıştır. 3) RAG kataloğu, düşme ve hareketsizlik durumlarını 'Yüksek' risk olarak işaretlemiştir. 4) Çelişki çözümü: Sahne grafiğindeki 'duman' tespiti tek bir karede ve düşük güvenle (0.44) görülmüştür; VLM veya YOLO tarafından yangın/duman onayı gelmediği için bu durum 'tek kaynaklı' olarak değerlendirilmiş ve öncelik düşme/yaralanma riskine verilmiştir. 5) Zaman faktörü: Düşme anlık bir olayken, hareketsizlik ve KKD eksikliği süren bir durumdur; bu da riskin kalıcı ve artan olduğunu gösterir. 6) Önceliklendirme: İnsan sağlığını tehdit eden düşme ve hareketsizlik, ekipman veya çevresel risklerden (duman şüphesi) daha önceliklidir. Bu nedenle risk seviyesi 'Yüksek' olarak belirlenmiş ve sağlık ekibi çağrısı ilk aksiyon olarak seçilmiştir.",
+  "actions": [
+    "Acil durum ekibini ve sağlık personelini derhal çağır.",
+    "Yaralıyı hareket ettirmeden sağlık ekibini bekle.",
+    "Olay bölgesini güvenlik şeridi ile izole et ve çevredeki personeli uzaklaştır.",
+    "Düşme nedenini (kaygan zemin, engel, makine hareketi) tespit et.",
+    "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
+  ],
+  "events": [
+    {
+      "time": "00:00",
+      "event": "Personel (insan_2) baret ve yelek eksikliği ile konveyör bandı yanında çalışırken düşme hareketi gösterdi.",
+      "event_type": "person_fall",
+      "confidence": 0.92,
+      "timestamp_sec": 0.0,
+      "duration": 2.0,
+      "end_time": "00:02"
+    },
+    {
+      "time": "00:02",
+      "event": "Düşen personel (track 2) yere yatmış ve hareketsiz kaldı; bu durum ciddi yaralanma veya bilinç kaybı ihtimalini güçlendirdi.",
+      "event_type": "immobile_person",
+      "confidence": 0.85,
+      "timestamp_sec": 2.0,
+      "duration": 23.0,
+      "end_time": "00:25"
+    },
+    {
+      "time": "00:18",
+      "event": "Çevredeki diğer personeller (insan_13, insan_18, insan_22, insan_27) baret ve yelek takmadan tehlikeli bölgede toplanarak riski artırdı.",
+      "event_type": "gathering",
+      "confidence": 0.75,
+      "timestamp_sec": 18.0,
+      "duration": 11.0,
+      "end_time": "00:29"
+    },
+    {
+      "time": "00:29",
+      "event": "Sahne grafiğinde hareketsiz personelin yakınında duman benzeri bir nesne tespit edildi ancak bu tek kaynaklı ve düşük güvenlidir.",
+      "event_type": "fire_smoke",
+      "confidence": 0.44,
+      "timestamp_sec": 29.0,
+      "duration": 0.0,
+      "end_time": "00:29"
+    }
+  ],
+  "triggered_mock_tools": [
+    {
+      "tool_name": "call_health_team",
+      "params": {
+        "location": "Depo - Konveyör Bandı Bölgesi",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "secure_area",
+      "params": {
+        "location": "Depo - Konveyör Bandı Bölgesi",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "notify_supervisor",
+      "params": {
+        "location": "Depo - Konveyör Bandı Bölgesi",
+        "urgency": "Yüksek"
+      }
+    }
+  ],
+  "tool_execution_results": [
+    {
+      "status": "success",
+      "tool": "call_health_team",
+      "params": {
+        "location": "Depo - Konveyör Bandı Bölgesi",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "call_health_team başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "secure_area",
+      "params": {
+        "location": "Depo - Konveyör Bandı Bölgesi",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "secure_area başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "notify_supervisor",
+      "params": {
+        "location": "Depo - Konveyör Bandı Bölgesi",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "notify_supervisor başarıyla simüle edildi."
+    }
+  ],
+  "metadata": {
+    "vlm_backend": "server",
+    "channel_b_mode": "video",
+    "segment_count": 1,
+    "failed_segments": [],
+    "channel_a_fps": 15.0,
+    "total_frames": 436,
+    "sampled_indices": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24,
+      26,
+      28,
+      30,
+      32,
+      34,
+      36,
+      38,
+      40,
+      42,
+      44,
+      46,
+      48,
+      50,
+      52,
+      54,
+      56,
+      58,
+      60,
+      62,
+      64,
+      66,
+      68,
+      70,
+      72,
+      74,
+      76,
+      78,
+      80,
+      82,
+      84,
+      86,
+      88,
+      90,
+      92,
+      94,
+      96,
+      98,
+      100,
+      102,
+      104,
+      106,
+      108,
+      110,
+      112,
+      114,
+      116,
+      118,
+      120,
+      122,
+      124,
+      126,
+      128,
+      130,
+      132,
+      134,
+      136,
+      138,
+      140,
+      142,
+      144,
+      146,
+      148,
+      150,
+      152,
+      154,
+      156,
+      158,
+      160,
+      162,
+      164,
+      166,
+      168,
+      170,
+      172,
+      174,
+      176,
+      178,
+      180,
+      182,
+      184,
+      186,
+      188,
+      190,
+      192,
+      194,
+      196,
+      198,
+      200,
+      202,
+      204,
+      206,
+      208,
+      210,
+      212,
+      214,
+      216,
+      218,
+      220,
+      222,
+      224,
+      226,
+      228,
+      230,
+      232,
+      234,
+      236,
+      238,
+      240,
+      242,
+      244,
+      246,
+      248,
+      250,
+      252,
+      254,
+      256,
+      258,
+      260,
+      262,
+      264,
+      266,
+      268,
+      270,
+      272,
+      274,
+      276,
+      278,
+      280,
+      282,
+      284,
+      286,
+      288,
+      290,
+      292,
+      294,
+      296,
+      298,
+      300,
+      302,
+      304,
+      306,
+      308,
+      310,
+      312,
+      314,
+      316,
+      318,
+      320,
+      322,
+      324,
+      326,
+      328,
+      330,
+      332,
+      334,
+      336,
+      338,
+      340,
+      342,
+      344,
+      346,
+      348,
+      350,
+      352,
+      354,
+      356,
+      358,
+      360,
+      362,
+      364,
+      366,
+      368,
+      370,
+      372,
+      374,
+      376,
+      378,
+      380,
+      382,
+      384,
+      386,
+      388,
+      390,
+      392,
+      394,
+      396,
+      398,
+      400,
+      402,
+      404,
+      406,
+      408,
+      410,
+      412,
+      414,
+      416,
+      418,
+      420,
+      422,
+      424,
+      426,
+      428,
+      430,
+      432,
+      434,
+      436,
+      438,
+      440,
+      442,
+      444,
+      446,
+      448,
+      450,
+      452,
+      454,
+      456,
+      458,
+      460,
+      462,
+      464,
+      466,
+      468,
+      470,
+      472,
+      474,
+      476,
+      478,
+      480,
+      482,
+      484,
+      486,
+      488,
+      490,
+      492,
+      494,
+      496,
+      498,
+      500,
+      502,
+      504,
+      506,
+      508,
+      510,
+      512,
+      514,
+      516,
+      518,
+      520,
+      522,
+      524,
+      526,
+      528,
+      530,
+      532,
+      534,
+      536,
+      538,
+      540,
+      542,
+      544,
+      546,
+      548,
+      550,
+      552,
+      554,
+      556,
+      558,
+      560,
+      562,
+      564,
+      566,
+      568,
+      570,
+      572,
+      574,
+      576,
+      578,
+      580,
+      582,
+      584,
+      586,
+      588,
+      590,
+      592,
+      594,
+      596,
+      598,
+      600,
+      602,
+      604,
+      606,
+      608,
+      610,
+      612,
+      614,
+      616,
+      618,
+      620,
+      622,
+      624,
+      626,
+      628,
+      630,
+      632,
+      634,
+      636,
+      638,
+      640,
+      642,
+      644,
+      646,
+      648,
+      650,
+      652,
+      654,
+      656,
+      658,
+      660,
+      662,
+      664,
+      666,
+      668,
+      670,
+      672,
+      674,
+      676,
+      678,
+      680,
+      682,
+      684,
+      686,
+      688,
+      690,
+      692,
+      694,
+      696,
+      698,
+      700,
+      702,
+      704,
+      706,
+      708,
+      710,
+      712,
+      714,
+      716,
+      718,
+      720,
+      722,
+      724,
+      726,
+      728,
+      730,
+      732,
+      734,
+      736,
+      738,
+      740,
+      742,
+      744,
+      746,
+      748,
+      750,
+      752,
+      754,
+      756,
+      758,
+      760,
+      762,
+      764,
+      766,
+      768,
+      770,
+      772,
+      774,
+      776,
+      778,
+      780,
+      782,
+      784,
+      786,
+      788,
+      790,
+      792,
+      794,
+      796,
+      798,
+      800,
+      802,
+      804,
+      806,
+      808,
+      810,
+      812,
+      814,
+      816,
+      818,
+      820,
+      822,
+      824,
+      826,
+      828,
+      830,
+      832,
+      834,
+      836,
+      838,
+      840,
+      842,
+      844,
+      846,
+      848,
+      850,
+      852,
+      854,
+      856,
+      858,
+      860,
+      862,
+      864,
+      866,
+      868,
+      870
+    ],
+    "geometric_signals": [
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:00",
+        "description": "Personel insan_2 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "person_fall",
+        "timestamp": "00:02",
+        "description": "Personel (track 2) düşme hareketi gösteriyor.",
+        "confidence": 0.637,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "vertical_displacement_pixels": 149.76500000000001,
+          "scale_pixels": 293.68734223612205,
+          "drop_ratio": 0.5099470711256948
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:10",
+        "description": "Personel insan_2 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:18",
+        "description": "Personel insan_13 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          13
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:22",
+        "description": "Personel insan_18 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          18
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:25",
+        "description": "Personel (track 18) 1.5 saniyedir hareketsiz (yatık pozisyonda).",
+        "confidence": 0.353,
+        "involved_track_ids": [
+          18
+        ],
+        "metadata": {
+          "stationary_seconds": 1.5333333333333334,
+          "aspect_ratio": 1.1648132842437453,
+          "is_lying": true
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:26",
+        "description": "Personel insan_22 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          22
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "gathering",
+        "timestamp": "00:29",
+        "description": "3 personel tehlikeli bölgede toplanmış.",
+        "confidence": 0.6,
+        "involved_track_ids": [
+          18,
+          22,
+          27
+        ],
+        "metadata": {
+          "person_count": 3
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:29",
+        "description": "Personel insan_27 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          27
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      }
+    ],
+    "vlm_interpretation": {
+      "packet_id": "b50e65f6-0174-4610-83ab-9f0d63db8a2d",
+      "video_id": "ayak-takilma-31b67c",
+      "model_name": "vlm",
+      "model_backend": "server",
+      "scene_summary_tr": "Bir depo ortamında, bir işçi taşınabilir bir konveyör bandının yanında kutuları yerleştirirken, bir kutuyu yanlışlıkla konveyöre düşürür. İşçi, kutuyu geri almak için konveyöre doğru eğilirken, konveyörün hareketi nedeniyle kayar ve düşer. Düşüş sırasında yere yatırılır ve bir süre hareketsiz kalır. Daha sonra başka bir işçi yaklaşır.",
+      "detected_entities": [
+        {
+          "label": "person",
+          "confidence_hint": "high",
+          "notes_tr": "İşçi kırmızı yelek ve siyah pantolon giymiş, gözlük takmış durumda."
+        },
+        {
+          "label": "machine",
+          "confidence_hint": "high",
+          "notes_tr": "Uzun, taşınabilir konveyör bandı, kırmızı kenarlı, hareket halinde."
+        },
+        {
+          "label": "load",
+          "confidence_hint": "high",
+          "notes_tr": "Karton kutular, bazıları paletlerde, bazıları yere yığılmış."
+        },
+        {
+          "label": "vehicle",
+          "confidence_hint": "medium",
+          "notes_tr": "Sarı ve kırmızı renkli el paleti (pallet jack), arka planda duruyor; türü kesin değil."
+        },
+        {
+          "label": "rack/structure",
+          "confidence_hint": "high",
+          "notes_tr": "Kutuların yığıldığı paletler ve raf yapıları."
+        }
+      ],
+      "detected_actions_tr": [
+        "İşçi kutuları konveyöre yerleştirir.",
+        "İşçi bir kutuyu konveyöre düşürür.",
+        "İşçi konveyöre doğru eğilir.",
+        "İşçi konveyörün hareketiyle kayar ve düşer.",
+        "İşçi yere yatırılır.",
+        "İşçi hareketsiz kalır.",
+        "Diğer bir işçi yaklaşır."
+      ],
+      "confidence_overall": 0.9,
+      "inference": {
+        "latency_ms": 27570.14870014973,
+        "tokens_generated": 586
+      },
+      "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir depo ortamında, bir işçi taşınabilir bir konveyör bandının yanında kutuları yerleştirirken, bir kutuyu yanlışlıkla konveyöre düşürür. İşçi, kutuyu geri almak için konveyöre doğru eğilirken, konveyörün hareketi nedeniyle kayar ve düşer. Düşüş sırasında yere yatırılır ve bir süre hareketsiz kalır. Daha sonra başka bir işçi yaklaşır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi kırmızı yelek ve siyah pantolon giymiş, gözlük takmış durumda.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun, taşınabilir konveyör bandı, kırmızı kenarlı, hareket halinde.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Karton kutular, bazıları paletlerde, bazıları yere yığılmış.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sarı ve kırmızı renkli el paleti (pallet jack), arka planda duruyor; türü kesin değil.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kutuların yığıldığı paletler ve raf yapıları.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi kutuları konveyöre yerleştirir.\",\n    \"İşçi bir kutuyu konveyöre düşürür.\",\n    \"İşçi konveyöre doğru eğilir.\",\n    \"İşçi konveyörün hareketiyle kayar ve düşer.\",\n    \"İşçi yere yatırılır.\",\n    \"İşçi hareketsiz kalır.\",\n    \"Diğer bir işçi yaklaşır.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, hareket halindeki konveyöre doğru eğilirken kayar ve düşer. Bu, ciddi yaralanmaya neden olabilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 22.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+      "risk_events": [
+        {
+          "description_tr": "İşçi, hareket halindeki konveyöre doğru eğilirken kayar ve düşer. Bu, ciddi yaralanmaya neden olabilir.",
+          "severity": "critical",
+          "confidence": 0.95,
+          "supporting_frame_count": 1,
+          "supporting_frame_positions": [],
+          "timestamp_sec": 22.0
+        }
+      ],
+      "risk_flags_tr": [
+        "İşçi, hareket halindeki konveyöre doğru eğilirken kayar ve düşer. Bu, ciddi yaralanmaya neden olabilir."
+      ],
+      "computed_confidence": 0.76,
+      "reasoning_trace": "",
+      "segment_start_sec": 0.0,
+      "segment_end_sec": 29.033333333333335,
+      "created_at": "2026-08-27T14:01:43.339651+00:00"
+    },
+    "rag_context": {
+      "risk_level": "Yüksek",
+      "risk_score": 90,
+      "actions": [
+        "Yaralıyı hareket ettirmeden sağlık ekibini bekle.",
+        "Düşme nedenini (kaygan zemin, engel, yükseklik) tespit et.",
+        "Çevredeki personeli bölgeden uzaklaştır.",
+        "Bölgenin ana şalterden elektriğini kes.",
+        "Kıvılcım veya yangın ihtimaline karşı alanı izole et.",
+        "Acil bakım/onarım ekibine derhal bilgi ver.",
+        "Acil durum ekibini ve sağlık personelini derhal çağır.",
+        "Olay bölgesini güvenlik şeridi ile izole et.",
+        "Güvenlik kameralarını ve kayıtları sakla, yetkililere bildir.",
+        "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
+      ],
+      "matched_patterns": [
+        {
+          "pattern": "person_fall",
+          "description": "Personelin ani düşüşü veya zemine çökmesi.",
+          "risk_score": 90,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Ciddi yaralanma",
+            "Kanama",
+            "Bilinç kaybı"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "person_fall",
+            "timestamp": "00:02",
+            "description": "Personel (track 2) düşme hareketi gösteriyor.",
+            "confidence": 0.637,
+            "involved_track_ids": [
+              2
+            ],
+            "metadata": {
+              "vertical_displacement_pixels": 149.76500000000001,
+              "scale_pixels": 293.68734223612205,
+              "drop_ratio": 0.5099470711256948
+            }
+          }
+        },
+        {
+          "pattern": "gathering",
+          "description": "Üç veya daha fazla personelin tehlikeli bölgede toplanması.",
+          "risk_score": 50,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Toplu kaza riski",
+            "Tahliye güçlüğü",
+            "İş verimi kaybı"
+          ],
+          "similarity": 0.246,
+          "matched_signal": {
+            "event_type": "gathering",
+            "timestamp": "00:29",
+            "description": "3 personel tehlikeli bölgede toplanmış.",
+            "confidence": 0.6,
+            "involved_track_ids": [
+              18,
+              22,
+              27
+            ],
+            "metadata": {
+              "person_count": 3
+            }
+          }
+        },
+        {
+          "pattern": "immobile_person",
+          "description": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
+          "risk_score": 70,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Hayati tehlike",
+            "Tıbbi müdahale gecikmesi"
+          ],
+          "similarity": 0.13,
+          "matched_signal": {
+            "event_type": "immobile_person",
+            "timestamp": "00:25",
+            "description": "Personel (track 18) 1.5 saniyedir hareketsiz (yatık pozisyonda).",
+            "confidence": 0.353,
+            "involved_track_ids": [
+              18
+            ],
+            "metadata": {
+              "stationary_seconds": 1.5333333333333334,
+              "aspect_ratio": 1.1648132842437453,
+              "is_lying": true
+            }
+          }
+        },
+        {
+          "pattern": "ppe_missing",
+          "description": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği.",
+          "risk_score": 45,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Kafa travması",
+            "Görünmezlik kaynaklı ezilme"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "ppe_missing",
+            "timestamp": "00:29",
+            "description": "Personel insan_27 eksik KKD: baret, yelek.",
+            "confidence": 0.7,
+            "involved_track_ids": [
+              27
+            ],
+            "metadata": {
+              "missing_ppe": [
+                "baret",
+                "yelek"
+              ]
+            }
+          }
+        },
+        {
+          "pattern": "electrical_hazard",
+          "description": "Açık pano, kablo veya elektrik tehlikesi barındıran durum.",
+          "risk_score": 85,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Elektrik çarpması",
+            "Elektrik kaynaklı yangın"
+          ],
+          "similarity": 0.182
+        },
+        {
+          "pattern": "unauthorized_access",
+          "description": "Yetkisiz personelin tehlikeli veya kısıtlı alana girişi.",
+          "risk_score": 65,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Sabotaj",
+            "Eğitimsiz personel kazası"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "running_in_facility",
+          "description": "Tesis içinde koşan personel (çarpışma/kayma riski).",
+          "risk_score": 60,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Kör noktada forkliftle çarpışma",
+            "Kayma ve düşme",
+            "Panik yaratma"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "fatigue_detection",
+          "description": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski).",
+          "risk_score": 50,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "İş kazası potansiyeli artışı",
+            "Bayılma öncülü"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "restricted_time_access",
+          "description": "Mesai saatleri dışında veya izinsiz zamanda bölgede yaya tespiti.",
+          "risk_score": 65,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Hırsızlık/Sabotaj",
+            "Yalnız çalışma kazası"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        }
+      ]
+    },
+    "event_timestamps": [
+      {
+        "seconds": 0.0,
+        "timestamp": "00:00",
+        "end_time": "00:02",
+        "timestamp_sec": 0.0,
+        "duration": 2.0,
+        "event_type": "person_fall",
+        "event": "Personel (insan_2) baret ve yelek eksikliği ile konveyör bandı yanında çalışırken düşme hareketi gösterdi.",
+        "confidence": 0.92,
+        "severity": "high",
+        "vlm_detail": ""
+      },
+      {
+        "seconds": 2.0,
+        "timestamp": "00:02",
+        "end_time": "00:25",
+        "timestamp_sec": 2.0,
+        "duration": 23.0,
+        "event_type": "immobile_person",
+        "event": "Düşen personel (track 2) yere yatmış ve hareketsiz kaldı; bu durum ciddi yaralanma veya bilinç kaybı ihtimalini güçlendirdi.",
+        "confidence": 0.85,
+        "severity": "high",
+        "vlm_detail": ""
+      },
+      {
+        "seconds": 18.0,
+        "timestamp": "00:18",
+        "end_time": "00:29",
+        "timestamp_sec": 18.0,
+        "duration": 11.0,
+        "event_type": "gathering",
+        "event": "Çevredeki diğer personeller (insan_13, insan_18, insan_22, insan_27) baret ve yelek takmadan tehlikeli bölgede toplanarak riski artırdı.",
+        "confidence": 0.75,
+        "severity": "critical",
+        "vlm_detail": "İşçi, hareket halindeki konveyöre doğru eğilirken kayar ve düşer. Bu, ciddi yaralanmaya neden olabilir."
+      },
+      {
+        "seconds": 29.0,
+        "timestamp": "00:29",
+        "end_time": "00:29",
+        "timestamp_sec": 29.0,
+        "duration": 0.0,
+        "event_type": "fire_smoke",
+        "event": "Sahne grafiğinde hareketsiz personelin yakınında duman benzeri bir nesne tespit edildi ancak bu tek kaynaklı ve düşük güvenlidir.",
+        "confidence": 0.44,
+        "severity": "high",
+        "vlm_detail": ""
+      }
+    ]
+  }
+}

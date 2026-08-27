@@ -1,0 +1,54 @@
+{
+  "packet_id": "23682af9-c54d-496e-86ce-d4cd7836ad5e",
+  "video_id": "normal-videos-453-x264-782424",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir iş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve bir süre sonra içeriye giren başka bir kişiyle birlikte masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve güvenlik işaretleri görülmektedir.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İçeride masada çalışan bir kişi ve dışarıdan giren iki kişi görülmektedir."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "high",
+      "notes_tr": "Dışarıda duran açık renkli bir araç (muhtemelen hafif ticari araç veya minivan) net bir şekilde görülmektedir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Masanın arkasında ve yanlarında ürün sergileme rafı veya yapılar mevcuttur."
+    },
+    {
+      "label": "fire extinguisher",
+      "confidence_hint": "high",
+      "notes_tr": "Sol alt köşede kırmızı bir yangın söndürücü yer almaktadır."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "low",
+      "notes_tr": "Hiçbir duman veya alev gözlemlenmemiştir."
+    }
+  ],
+  "detected_actions_tr": [
+    "Bir kişi dışarıdan içeri girer.",
+    "İçerideki çalışan masada görev yapar.",
+    "İkinci bir kişi içeri girer ve masanın yanında durur.",
+    "İki kişi masanın etrafında kısa bir süre hareket eder.",
+    "Dışarıda duran araç hareket etmemiştir."
+  ],
+  "confidence_overall": 0.95,
+  "inference": {
+    "latency_ms": 9948.975499952212,
+    "tokens_generated": 468
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir iş yerinin girişinde, bir çalışan masada görev yaparken, dışarıdan gelen bir kişi giriş yapar ve bir süre sonra içeriye giren başka bir kişiyle birlikte masanın etrafında hareket eder. Dışarıda bir araç durmaktadır. İç mekanda yangın söndürücü ve güvenlik işaretleri görülmektedir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İçeride masada çalışan bir kişi ve dışarıdan giren iki kişi görülmektedir.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Dışarıda duran açık renkli bir araç (muhtemelen hafif ticari araç veya minivan) net bir şekilde görülmektedir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Masanın arkasında ve yanlarında ürün sergileme rafı veya yapılar mevcuttur.\"\n    },\n    {\n      \"label\": \"fire extinguisher\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sol alt köşede kırmızı bir yangın söndürücü yer almaktadır.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Hiçbir duman veya alev gözlemlenmemiştir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Bir kişi dışarıdan içeri girer.\",\n    \"İçerideki çalışan masada görev yapar.\",\n    \"İkinci bir kişi içeri girer ve masanın yanında durur.\",\n    \"İki kişi masanın etrafında kısa bir süre hareket eder.\",\n    \"Dışarıda duran araç hareket etmemiştir.\"\n  ],\n  \"risk_events\": [],\n  \"confidence_overall\": 0.95\n}",
+  "risk_events": [],
+  "risk_flags_tr": [],
+  "computed_confidence": 0.475,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 60.0,
+  "created_at": "2026-08-27T13:25:16.803182+00:00"
+}

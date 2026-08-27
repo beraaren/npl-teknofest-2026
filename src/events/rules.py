@@ -94,6 +94,16 @@ class RuleSet:
         """
         self.thresholds = thresholds
         self.fps = fps
+        # Aynı RuleSet/EventEngine oturumu içinde bir kişiye güvenilir biçimde
+        # baret veya yelek atanmışsa, ilgili KKD daha sonraki karelerde YOLO
+        # tarafından kaçırılsa bile o kişiyi o ekipmandan yoksun sayma. Hafıza
+        # yalnız kişi track ID'sine bağlıdır ve yeni RuleSet oluşturulduğunda
+        # sıfırlanır. ObserverAgent'ın kısa süreli `disappeared < 5` toleransı
+        # bundan bağımsız olarak çalışmaya devam eder.
+        self._confirmed_ppe_person_tracks: Dict[str, set[int]] = {
+            "baret": set(),
+            "yelek": set(),
+        }
 
     def evaluate(
         self,
@@ -445,6 +455,11 @@ class RuleSet:
         denetler. Gerekli sınıflardan (`baret`, `yelek`) herhangi biriyle `wearing`
         ilişkisi bulunamazsa KKD eksikliği sinyali üretir.
 
+        Bir kişi track ID'sine en az bir karede güvenilir bir `wearing:baret`
+        veya `wearing:yelek` ilişkisi kurulmuşsa bu bilgi mevcut kural motoru
+        oturumu boyunca korunur. YOLO'nun sonraki karelerde ilgili KKD'yi
+        kaçırması o kişiyi yeniden o ekipmandan yoksun yapmaz.
+
         Yalnızca ilgili personele **bağlı** kenarlar sayılır; başka bir personelin
         ekipman kenarı bu personeli KKD'li saymaz. Kenar yönü hoşgörülü okunur
         (kaynak veya hedef bu personel olabilir), ancak kenarın taraflarından biri
@@ -481,6 +496,22 @@ class RuleSet:
                 other = graph.nodes.get(other_id)
                 if other and other.class_name in ppe_classes:
                     has_ppe[other.class_name] = True
+
+            # Bir kez kişiyle güvenilir `wearing:baret` veya `wearing:yelek`
+            # ilişkisi kurulduğunda ilgili KKD'yi aynı track ID'sinin kalan ömrü
+            # boyunca pozitif kanıt olarak koru. Böylece uzun süren YOLO KKD
+            # kaçırmaları yanlış eksiklik üretmez. Track ID'si olmayan
+            # düğümlerde kişiler arası durum sızıntısını önlemek için hafıza
+            # kullanılmaz.
+            person_track_id = person.track_id
+            if person_track_id is not None:
+                for ppe_class, confirmed_tracks in self._confirmed_ppe_person_tracks.items():
+                    if ppe_class not in has_ppe:
+                        continue
+                    if has_ppe[ppe_class]:
+                        confirmed_tracks.add(person_track_id)
+                    elif person_track_id in confirmed_tracks:
+                        has_ppe[ppe_class] = True
 
             missing = [p for p, v in has_ppe.items() if not v]
             if missing:

@@ -220,12 +220,16 @@ class DecisionAgent:
         parts.append(self._tool_catalog_text())
 
         parts.append(
+            "\nZAMAN ALANLARI: 'time' olayın başladığı MM:SS'tir. 'timestamp_sec' "
+            "videonun başından itibaren başlangıç saniyesidir. 'duration' olayın "
+            "sürdüğü saniyedir (bilinmiyorsa 0). 'end_time' olayın bittiği MM:SS'tir "
+            "(bilinmiyorsa time ile aynı).\n"
             "\nKanıtları düşünce akışıyla değerlendir, çelişkileri çöz ve SADECE "
             "aşağıdaki JSON şemasına uygun Türkçe yanıt ver. Açıklama ekleme:\n"
             '{\n'
             '  "summary": "Olayın nerede geçtiğini, kimlerin dahil olduğunu ve tam olarak ne yaşandığını anlatan, akıcı, açıklayıcı ve detaylı Türkçe özet",\n'
             '  "events": [\n'
-            '    {"time": "MM:SS", "event": "olay açıklaması", "event_type": "forklift_tip_over|person_fall|gathering|immobile_person|ppe_missing|dangerous_proximity|fire_smoke|leakage|...", "confidence": 0.0-1.0}\n'
+            '    {"time": "MM:SS", "end_time": "MM:SS", "timestamp_sec": 0.0, "duration": 0.0, "event": "olay açıklaması", "event_type": "forklift_tip_over|person_fall|gathering|immobile_person|ppe_missing|dangerous_proximity|fire_smoke|leakage|...", "confidence": 0.0-1.0}\n'
             '  ],\n'
             '  "risk": "Düşük|Orta|Yüksek",\n'
             '  "actions": ["aksiyon 1", "aksiyon 2"],\n'

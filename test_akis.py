@@ -210,21 +210,16 @@ def main() -> None:
         config=config.decision_agent, vlm_config=config.vlm,
         rag=rag, memory=memory, tools=tools, backend=backend,
     )
-    vlm_interpretation = None
-    try:
-        kanal_b_dir = str(REPO / "Kanal_B")
-        if kanal_b_dir not in sys.path:
-            sys.path.insert(0, kanal_b_dir)
-        from pipeline import run_channel_b  # Kanal_B/pipeline.py
+    kanal_b_dir = str(REPO / "Kanal_B")
+    if kanal_b_dir not in sys.path:
+        sys.path.insert(0, kanal_b_dir)
+    from pipeline import run_channel_b  # Kanal_B/pipeline.py
 
-        vlm_interpretation = run_channel_b(
-            args.video, video_id=Path(args.video).stem,
-            output_dir=str(REPO / "outputs" / "channel_b"),
-        )
-        print("Kanal_B paketi kullanıldı (run_channel_b).")
-    except Exception as e:
-        print(f"Kanal_B paketi çalışmadı ({e}); interpret_frames'e düşülüyor.")
-        vlm_interpretation = agent.interpret_frames(sampled_frames)
+    vlm_interpretation = run_channel_b(
+        args.video, video_id=Path(args.video).stem,
+        output_dir=str(REPO / "outputs" / "channel_b"),
+    )
+    print("Kanal_B paketi kullanıldı (run_channel_b).")
     sub("S8 — ham model çıktısı")
     print(vlm_interpretation.get("raw_model_output", "(yok)")[:1500])
     sub("S8 — ayrıştırılmış yorum")

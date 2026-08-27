@@ -11,6 +11,10 @@ class EventEntry(BaseModel):
     event: str
     event_type: str = "unknown"
     confidence: float = Field(ge=0.0, le=1.0)
+    # VLM'den gelen zaman bilgilerini koru; UI ve atamalar için mutlak saniye gerekli.
+    timestamp_sec: float = Field(ge=0.0, default=0.0)
+    duration: float = Field(ge=0.0, default=0.0)
+    end_time: str = Field(default="", pattern=r"^$|^\d{2}:\d{2}$")
 
 
 class MockToolCall(BaseModel):

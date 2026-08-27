@@ -205,17 +205,30 @@ def build_event_timestamps(
             # Süreyi aşan damgayı sona çek; aksi hâlde uyarı hiç tetiklenmez.
             seconds = min(seconds, max(0.0, duration_sec - 0.5))
 
+        # VLM risk olaylarından en yakın olayı bul; duration ve detay ödünç al.
         severity = default_severity
         detail = ""
+        event_duration = 0.0
         if vlm_events:
             nearest = min(vlm_events, key=lambda v: abs(v["seconds"] - seconds))
             if abs(nearest["seconds"] - seconds) <= 5.0:
                 severity = nearest["severity"]
                 detail = nearest["description"]
 
+        # Karar ajanı zaten duration/end_time/timestamp_sec üretmişse onları kullan;
+        # yoksa VLM'den ödünç al veya varsayılan bırak.
+        event_duration = float(ev.get("duration") or event_duration)
+        timestamp_sec = float(ev.get("timestamp_sec") or seconds)
+        end_time = str(ev.get("end_time") or "")
+        if not end_time and event_duration > 0:
+            end_time = mmss(timestamp_sec + event_duration)
+
         out.append({
-            "seconds": round(seconds, 2),
-            "timestamp": mmss(seconds),
+            "seconds": round(timestamp_sec, 2),
+            "timestamp": mmss(timestamp_sec),
+            "end_time": end_time,
+            "timestamp_sec": round(timestamp_sec, 2),
+            "duration": round(event_duration, 2),
             "event_type": str(ev.get("event_type") or ""),
             "event": str(ev.get("event") or ""),
             "confidence": float(ev.get("confidence") or 0.0),
@@ -331,17 +344,12 @@ def analyze_video(video_path: Path, out_dir: Path, config_path: str) -> dict:
     )
 
     channel_b_dir = out_dir.parent / "channel_b" / slug
-    try:
-        from pipeline import run_channel_b  # Kanal_B/pipeline.py
+    from pipeline import run_channel_b  # Kanal_B/pipeline.py
 
-        vlm_interpretation = run_channel_b(
-            str(video_path), video_id=slug, output_dir=str(channel_b_dir)
-        )
-        channel_b_mode = "video"
-    except Exception as exc:
-        print(f"    ! Kanal B video yolu başarısız ({exc}); kare yoluna düşülüyor")
-        vlm_interpretation = agent.interpret_frames(sampled_frames)
-        channel_b_mode = "frames"
+    vlm_interpretation = run_channel_b(
+        str(video_path), video_id=slug, output_dir=str(channel_b_dir)
+    )
+    channel_b_mode = "video"
 
     # --- Karar + guardrail --------------------------------------------
     decision_raw = agent.decide(

@@ -5,7 +5,7 @@
   - Kanal B, videoyu EVREN'in video modeline (alias "vlm") BÜTÜN olarak gönderir;
     60 saniyeyi aşan videolar 720p/60sn segmentlere bölünüp sırayla incelenir ve
     segmentler arası bağlam metin tabanlı hafızayla taşınır (bkz. Kanal_B/pipeline.py)
-  - Video yolu yoksa (eski mesajlar) kritik karelerden grid üretilip fallback çalışır
+  - Video yolu yoksa veya video modu başarısız olursa HATA döner; mock/kare fallback yoktur.
   - Kanal B bağımsızlığı: RAG/sahne grafi VERİLMEZ (birleştirme decision'da)
   - Ağ/GPU bekleyen tek servis — run_in_executor ile non-blocking
 """
@@ -31,7 +31,6 @@ _metrics = {
     "vlm_calls": 0,
     "vlm_errors": 0,
     "video_mode": 0,
-    "frame_fallback": 0,
     "dlq_count": 0,
 }
 
@@ -59,19 +58,6 @@ def _ensure_kanal_b_on_path() -> str:
     return root
 
 
-def _load_frames_from_paths(frame_paths: list[str]) -> list:
-    """Frame yollarından RGB numpy dizilerini yükler."""
-    import cv2
-    frames = []
-    for fpath in frame_paths:
-        if not os.path.exists(fpath) or os.path.getsize(fpath) == 0:
-            continue
-        img = cv2.imread(fpath)
-        if img is not None:
-            frames.append(img[:, :, ::-1])  # BGR → RGB
-    return frames
-
-
 def _run_video_mode_sync(video_path: str, job_id: str) -> dict:
     """Kanal B'yi video modunda çalıştırır (birincil yol).
 
@@ -92,58 +78,6 @@ def _run_video_mode_sync(video_path: str, job_id: str) -> dict:
     return run_channel_b(video_path, video_id=job_id, output_dir=out_dir)
 
 
-def _run_frame_fallback_sync(
-    frame_paths: list[str],
-    sampled_indices: list[int],
-    event_signals: list[dict],
-    fps: float,
-    job_id: str,
-) -> dict:
-    """Video yolu yokken kritik karelerden yorum üretir (yedek yol).
-
-    Kareler tek bir grid görüntüsünde birleştirilip görüntü destekli modele
-    gönderilir; birleştirme ve sağlayıcı görüntü kısıtı
-    :mod:`src.models.vlm_backend` içinde şeffaf biçimde ele alınır.
-    """
-    root = _ensure_kanal_b_on_path()
-
-    from src.config import load_config
-    from src.preprocessing.critical_frames import select_critical_frames
-    from src.reasoning.decision_agent import DecisionAgent
-    from src.reasoning.memory import ShortTermMemory
-    from src.reasoning.mock_tools import MockToolRegistry
-    from src.reasoning.rag_layer import RAGLayer
-
-    cfg_path = os.environ.get("TEKNOFEST_CONFIG", str(Path(root) / "config.yaml"))
-    cfg = load_config(cfg_path)
-
-    frames_rgb = _load_frames_from_paths(frame_paths)
-    if not frames_rgb:
-        return {
-            "scene_summary_tr": "Kare yüklenemedi.",
-            "confidence_overall": 0.0,
-            "risk_flags_tr": [],
-            "risk_events": [],
-            "notable_frames": [],
-        }
-
-    max_count = cfg.preprocessing.critical_frame_count
-    critical_frames, critical_indices = select_critical_frames(
-        frames_rgb, sampled_indices, event_signals, fps, max_count=max_count
-    )
-    if not critical_frames:
-        critical_frames = frames_rgb[:max_count]
-        critical_indices = sampled_indices[:max_count]
-
-    agent = DecisionAgent(
-        cfg.decision_agent, cfg.vlm,
-        RAGLayer(), ShortTermMemory(), MockToolRegistry(),
-    )
-    out = agent.interpret_frames(critical_frames)
-    out["notable_frames"] = critical_indices
-    return out
-
-
 def _run_vlm_sync(
     video_path: str,
     frame_paths: list[str],
@@ -152,43 +86,21 @@ def _run_vlm_sync(
     fps: float,
     job_id: str,
 ) -> dict:
-    """Kanal B'yi çalıştırır: video modu birincil, kare/grid modu yedek.
+    """Kanal B'yi çalıştırır: yalnızca video modu.
 
-    Pipeline asla sessizce ölmez; her iki yol da başarısız olursa hata metnini
-    taşıyan bir yorum döner ve karar ajanı tek kaynakla çalıştığını bilir.
+    Video yolu yoksa veya video modu başarısız olursa exception yükseltir;
+    mock/kare fallback kullanılmaz. Çağıran bu hatayı dlq'ya veya log'a yazar.
     """
-    if video_path and os.path.exists(video_path):
-        try:
-            result = _run_video_mode_sync(video_path, job_id)
-            _metrics["video_mode"] += 1
-            logger.info(
-                f"Kanal B video modunda tamamlandı (job={job_id}, "
-                f"segment={result.get('segment_count', 1)})"
-            )
-            return result
-        except Exception as exc:
-            logger.warning(
-                f"Kanal B video modu başarısız ({exc}); kare/grid yoluna düşülüyor",
-                exc_info=True,
-            )
-    else:
-        logger.info("Video yolu yok; Kanal B kare/grid yolunda çalışacak.")
+    if not video_path or not os.path.exists(video_path):
+        raise FileNotFoundError(f"Video bulunamadı: {video_path}")
 
-    try:
-        result = _run_frame_fallback_sync(
-            frame_paths, sampled_indices, event_signals, fps, job_id
-        )
-        _metrics["frame_fallback"] += 1
-        return result
-    except Exception as exc:
-        logger.error(f"VLM pipeline hatası: {exc}", exc_info=True)
-        return {
-            "scene_summary_tr": f"VLM yorumu başarısız: {exc}",
-            "confidence_overall": 0.0,
-            "risk_flags_tr": [],
-            "risk_events": [],
-            "notable_frames": [],
-        }
+    result = _run_video_mode_sync(video_path, job_id)
+    _metrics["video_mode"] += 1
+    logger.info(
+        f"Kanal B video modunda tamamlandı (job={job_id}, "
+        f"segment={result.get('segment_count', 1)})"
+    )
+    return result
 
 
 async def process_event(event_data: dict, redis_client):
@@ -215,32 +127,24 @@ async def process_event(event_data: dict, redis_client):
         frame_paths = []
 
     if not event.video_path and not frame_paths:
-        logger.warning(f"Job {event.job_id}: ne video ne kare bulundu")
-        result = {
-            "scene_summary_tr": "Kaynak bulunamadı.",
-            "confidence_overall": 0.0,
-            "risk_flags_tr": [],
-            "risk_events": [],
-            "notable_frames": [],
-        }
-        critical_indices = []
-    else:
-        cfg = load_app_config()
-        fps = cfg.preprocessing.channel_a_fps if cfg else 12.0
+        raise FileNotFoundError(f"Job {event.job_id}: ne video ne kare bulundu")
 
-        loop = asyncio.get_event_loop()
-        result = await loop.run_in_executor(
-            None,
-            _run_vlm_sync,
-            event.video_path,
-            frame_paths,
-            list(range(len(frame_paths))),
-            [event_data],
-            fps,
-            event.job_id,
-        )
-        critical_indices = result.get("notable_frames", []) or []
-        _metrics["vlm_calls"] += 1
+    cfg = load_app_config()
+    fps = cfg.preprocessing.channel_a_fps if cfg else 12.0
+
+    loop = asyncio.get_event_loop()
+    result = await loop.run_in_executor(
+        None,
+        _run_vlm_sync,
+        event.video_path,
+        frame_paths,
+        list(range(len(frame_paths))),
+        [event_data],
+        fps,
+        event.job_id,
+    )
+    critical_indices = result.get("notable_frames", []) or []
+    _metrics["vlm_calls"] += 1
 
     # risk_flags_tr uyumluluğu: yeni üreticiler risk_events doldurur, eski
     # tüketiciler düz metin listesi okur.

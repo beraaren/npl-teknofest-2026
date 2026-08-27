@@ -248,28 +248,23 @@ def main(args=None) -> None:
         # Kanal B: bağımsız VLM kanalı (S8). Kanal_B paketi videoyu KENDİ
         # ön işlemesiyle işler — ona olay sinyali, RAG, kritik kare gibi
         # başka kanal çıktısı VERİLMEZ. Birleştirme yalnızca karar ajanında.
-        vlm_interpretation = None
-        try:
-            import sys
+        import sys
 
-            # Kanal_B modülleri birbirini paket öneki olmadan içe aktarır
-            # (`from vlm_backend import ...`), bu yüzden Kanal_B dizininin
-            # KENDİSİ sys.path'te olmalıdır — yalnızca proje kökü yetmez.
-            # test_akis.py de aynı deseni kullanır.
-            project_root = Path(__file__).resolve().parent.parent
-            for entry in (str(project_root), str(project_root / "Kanal_B")):
-                if entry not in sys.path:
-                    sys.path.insert(0, entry)
-            from pipeline import run_channel_b  # Kanal_B/pipeline.py
+        # Kanal_B modülleri birbirini paket öneki olmadan içe aktarır
+        # (`from vlm_backend import ...`), bu yüzden Kanal_B dizininin
+        # KENDİSİ sys.path'te olmalıdır — yalnızca proje kökü yetmez.
+        # test_akis.py de aynı deseni kullanır.
+        project_root = Path(__file__).resolve().parent.parent
+        for entry in (str(project_root), str(project_root / "Kanal_B")):
+            if entry not in sys.path:
+                sys.path.insert(0, entry)
+        from pipeline import run_channel_b  # Kanal_B/pipeline.py
 
-            vlm_interpretation = run_channel_b(
-                args.video,
-                video_id=Path(args.video).stem,
-                output_dir=str(out_dir / "channel_b"),
-            )
-        except Exception as e:
-            logger.warning(f"Kanal_B paketi çalışmadı ({e}); interpret_frames'e düşülüyor.")
-            vlm_interpretation = agent.interpret_frames(sampled_frames)
+        vlm_interpretation = run_channel_b(
+            args.video,
+            video_id=Path(args.video).stem,
+            output_dir=str(out_dir / "channel_b"),
+        )
 
         logger.info(f"Kanal B çıktısı: {_short_text(vlm_interpretation, limit=1200)}")
 
@@ -335,14 +330,18 @@ def main(args=None) -> None:
         "vlm_backend": backend.name(),
         "vlm_interpretation": vlm_interpretation,
         "geometric_signals": event_signals,
-        # Olay zaman damgalarını öne çıkar (deneme.py'deki başlangıç/bitiş mantığıyla uyumlu)
+        # Olay zaman damgalarını öne çıkar; karar ajanının ürettiği
+        # duration / end_time / timestamp_sec alanlarını koru.
         "event_timestamps": [
             {
-                "event_type": sig.get("event_type", ""),
-                "timestamp": sig.get("timestamp", ""),
-                "seconds": _time_to_seconds(sig.get("timestamp", "00:00")),
+                "event_type": ev.get("event_type", ""),
+                "timestamp": ev.get("time", ""),
+                "end_time": ev.get("end_time", ""),
+                "seconds": float(ev.get("timestamp_sec", _time_to_seconds(ev.get("time", "00:00")))),
+                "timestamp_sec": float(ev.get("timestamp_sec", _time_to_seconds(ev.get("time", "00:00")))),
+                "duration": float(ev.get("duration", 0.0)),
             }
-            for sig in event_signals
+            for ev in final_output.get("events", [])
         ],
     }
 

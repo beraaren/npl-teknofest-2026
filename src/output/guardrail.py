@@ -60,9 +60,10 @@ class OutputGuardrail:
     def _normalize(self, parsed: Dict[str, Any]) -> Dict[str, Any]:
         """Şemaya yakın ama formatı sapmış alanları kurtarır.
 
-        - events[].time: "0:01-0:04" gibi aralıklarda ilk zamanı alır,
+        - events[].time / end_time: "0:01-0:04" gibi aralıklarda ilk zamanı alır,
           tek haneli dakikayı sıfır doldurur ("0:01" -> "00:01").
         - events[].confidence: eksikse 0.5 varsayılır.
+        - events[].timestamp_sec / duration: sayıya çevrilir, eksikse 0.0.
         """
         events = parsed.get("events")
         if isinstance(events, list):
@@ -71,8 +72,18 @@ class OutputGuardrail:
                     continue
                 if "time" in ev:
                     ev["time"] = self._normalize_time(ev["time"])
+                if "end_time" in ev:
+                    ev["end_time"] = self._normalize_time(ev["end_time"])
                 if "confidence" not in ev:
                     ev["confidence"] = 0.5
+                for key in ("timestamp_sec", "duration"):
+                    if key in ev:
+                        try:
+                            ev[key] = float(ev[key])
+                        except (TypeError, ValueError):
+                            ev[key] = 0.0
+                    else:
+                        ev[key] = 0.0
         return parsed
 
     @staticmethod

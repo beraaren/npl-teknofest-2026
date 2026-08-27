@@ -1,0 +1,615 @@
+{
+  "slug": "normal-videos-345-x264-c22289",
+  "video_file": "videos/Normal_Videos_345_x264.mp4",
+  "video_name": "Normal_Videos_345_x264",
+  "analyzed_at": "2026-08-27T13:57:50.781992+00:00",
+  "analysis_seconds": 20.0,
+  "video": {
+    "duration_sec": 6.97,
+    "fps": 30.0,
+    "width": 320,
+    "height": 240
+  },
+  "summary": "İç mekanda, muhtemelen bir ofis veya resepsiyon alanı olarak görünen bir ortamda, dört adet personel (insan_1, insan_2, insan_3, insan_4) tespit edilmiştir. Sahne başlangıcında (00:00), tüm personelin başlık (baret) ve yelek gibi temel kişisel koruyucu donanımlarını (KKD) takmadığı, bu durumun YOLO tabanlı algılama sistemi tarafından yüksek güvenle (0.7) raporlandığı görülmüştür. Zamanla, sahnedeki personelin davranışlarında ciddi bir değişim yaşanmıştır. 00:03 itibarıyla insan_2 ve insan_3 track'leri, 00:06 itibarıyla ise insan_1 track'i, sırasıyla 3'er saniye boyunca hareketsiz kalmıştır. Bu hareketsizlik, personelin yere yattığını gösteren bir eğim verisi içermese de, ani duruş ve süreklilik açısından bayılma veya ciddi bir sağlık krizi belirtisi olarak değerlendirilmiştir. Bağımsız VLM analizi sahneyi genel olarak 'normal ofis etkileşimi' olarak yorumlasa da, bu yorumun hareketli ve konuşan bir senaryoya dayandığı, oysa algılama katmanının tespit ettiği 'hareketsizlik' durumunu yakalayamadığı veya bu durumu 'oturma/konuşma' olarak yanlış sınıflandırdığı anlaşılmaktadır. Geometrik ve kural tabanlı sinyallerin sürekliliği ve çoklu personel etkilenmesi, VLM'nin genel sahne yorumundan daha güvenilir bir acil durum göstergesi olarak öne çıkmaktadır. Durum, çoklu personelin aynı anda KKD eksikliğiyle birlikte ani hareketsizliğe geçmesi nedeniyle, potansiyel bir toplu sağlık krizi veya kaza senaryosu olarak kritik seviyededir.",
+  "headline": "KKD eksikliği (00:00)",
+  "risk": "Yüksek",
+  "confidence": 0.82,
+  "reasoning": "Karar, üç farklı kanaldan gelen verilerin çapraz doğrulamasına dayanmaktadır. 1) Algılama Katmanı (YOLO): Dört personelin KKD eksikliği (0.7 güven) ve üç farklı personelin sırasıyla 3 saniye boyunca hareketsiz kalması (0.3 güven) tespit edilmiştir. Hareketsizlik sinyallerinin düşük güveni, tek bir karede oluşmasından kaynaklanabilir ancak aynı track ID'nin sürekliliği ve çoklu personel etkilenmesi bu sinyallerin rastgele gürültü olmadığını gösterir. 2) VLM: Sahneyi 'normal ofis etkileşimi' olarak yorumlamış ve risk olayı tespit etmemiştir. Bu, VLM'nin hareketli bir sahne beklentisi içinde olması veya hareketsizliği 'oturma' olarak yanlış sınıflandırmasından kaynaklanmaktadır. 3) RAG Kataloğu: 'immobile_person' ve 'ppe_missing' kalıplarıyla eşleşmiştir. Çelişki çözümü: VLM'nin 'normal' yorumu, algılama katmanının çoklu ve süreklilik gösteren 'hareketsizlik' sinyalleri karşısında geçersiz kılınmıştır. Hareketsizlik, özellikle çoklu personel için, bayılma veya ciddi yaralanma riskini (Yüksek Risk) doğurur. KKD eksikliği ise riski artıran bir faktördür. Bu nedenle, RAG'deki 'Yüksek' risk seviyesi doğrulanmış ve sağlık ekibi çağrısı önceliklendirilmiştir.",
+  "actions": [
+    "Acil durum ekibini ve sağlık personelini derhal çağır.",
+    "Olay bölgesini güvenlik şeridi ile izole et.",
+    "Yaralıyı hareket ettirmeden sağlık ekibini bekle.",
+    "Alan sorumlusunu bilgilendir.",
+    ,
+  ],
+  "events": [
+    {
+      "time": "00:00",
+      "event": "Dört personel (insan_1, insan_2, insan_3, insan_4) baret ve yelek takmamaktadır.",
+      "event_type": "ppe_missing",
+      "confidence": 0.85,
+      "timestamp_sec": 0.0,
+      "duration": 6.0,
+      "end_time": "00:06"
+    },
+    {
+      "time": "00:03",
+      "event": "insan_2 ve insan_3 track'li personeller 3 saniyedir hareketsiz kalmıştır; bayılma veya yaralanma şüphesi.",
+      "event_type": "immobile_person",
+      "confidence": 0.75,
+      "timestamp_sec": 3.0,
+      "duration": 3.0,
+      "end_time": "00:06"
+    },
+    {
+      "time": "00:06",
+      "event": "insan_1 track'li personel 3 saniyedir hareketsiz kalmıştır; bayılma veya yaralanma şüphesi.",
+      "event_type": "immobile_person",
+      "confidence": 0.75,
+      "timestamp_sec": 6.0,
+      "duration": 0.0,
+      "end_time": "00:06"
+    }
+  ],
+  "triggered_mock_tools": [
+    {
+      "tool_name": "call_health_team",
+      "params": {
+        "location": "İç mekan ofis/resepsiyon alanı",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "secure_area",
+      "params": {
+        "location": "Olay bölgesi",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "notify_supervisor",
+      "params": {
+        "location": "Genel Alan",
+        "urgency": "Yüksek"
+      }
+    },
+    {
+      "tool_name": "record_incident",
+      "params": {
+        "location": "İSG Sistemi",
+        "urgency": "Orta"
+      }
+    }
+  ],
+  "tool_execution_results": [
+    {
+      "status": "success",
+      "tool": "call_health_team",
+      "params": {
+        "location": "İç mekan ofis/resepsiyon alanı",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "call_health_team başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "secure_area",
+      "params": {
+        "location": "Olay bölgesi",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "secure_area başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "notify_supervisor",
+      "params": {
+        "location": "Genel Alan",
+        "urgency": "Yüksek"
+      },
+      "mock_result": "notify_supervisor başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "record_incident",
+      "params": {
+        "location": "İSG Sistemi",
+        "urgency": "Orta"
+      },
+      "mock_result": "record_incident başarıyla simüle edildi."
+    }
+  ],
+  "metadata": {
+    "vlm_backend": "server",
+    "channel_b_mode": "video",
+    "segment_count": 1,
+    "failed_segments": [],
+    "channel_a_fps": 15.0,
+    "total_frames": 105,
+    "sampled_indices": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24,
+      26,
+      28,
+      30,
+      32,
+      34,
+      36,
+      38,
+      40,
+      42,
+      44,
+      46,
+      48,
+      50,
+      52,
+      54,
+      56,
+      58,
+      60,
+      62,
+      64,
+      66,
+      68,
+      70,
+      72,
+      74,
+      76,
+      78,
+      80,
+      82,
+      84,
+      86,
+      88,
+      90,
+      92,
+      94,
+      96,
+      98,
+      100,
+      102,
+      104,
+      106,
+      108,
+      110,
+      112,
+      114,
+      116,
+      118,
+      120,
+      122,
+      124,
+      126,
+      128,
+      130,
+      132,
+      134,
+      136,
+      138,
+      140,
+      142,
+      144,
+      146,
+      148,
+      150,
+      152,
+      154,
+      156,
+      158,
+      160,
+      162,
+      164,
+      166,
+      168,
+      170,
+      172,
+      174,
+      176,
+      178,
+      180,
+      182,
+      184,
+      186,
+      188,
+      190,
+      192,
+      194,
+      196,
+      198,
+      200,
+      202,
+      204,
+      206,
+      208
+    ],
+    "geometric_signals": [
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:00",
+        "description": "Personel insan_1 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:00",
+        "description": "Personel insan_2 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:00",
+        "description": "Personel insan_3 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          3
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "ppe_missing",
+        "timestamp": "00:00",
+        "description": "Personel insan_4 eksik KKD: baret, yelek.",
+        "confidence": 0.7,
+        "involved_track_ids": [
+          4
+        ],
+        "metadata": {
+          "missing_ppe": [
+            "baret",
+            "yelek"
+          ]
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:03",
+        "description": "Personel (track 2) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          2
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.3231601980882184,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:03",
+        "description": "Personel (track 3) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          3
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.450597329585383,
+          "is_lying": false
+        }
+      },
+      {
+        "event_type": "immobile_person",
+        "timestamp": "00:06",
+        "description": "Personel (track 1) 3.0 saniyedir hareketsiz.",
+        "confidence": 0.3,
+        "involved_track_ids": [
+          1
+        ],
+        "metadata": {
+          "stationary_seconds": 3.0,
+          "aspect_ratio": 0.34584593488703075,
+          "is_lying": false
+        }
+      }
+    ],
+    "vlm_interpretation": {
+      "packet_id": "1eb3b000-c533-485e-adb3-5ed9a81544b0",
+      "video_id": "normal-videos-345-x264-c22289",
+      "model_name": "vlm",
+      "model_backend": "server",
+      "scene_summary_tr": "İç mekanda, bir ofis veya resepsiyon alanına benzeyen bir alanda üç kişi görülüyor. Sol tarafta bir masada oturan bir kişi bilgisayarla çalışıyor, ortada duran bir kişiyle konuşuyor gibi görünüyor. Arka planda bir kişi daha yürüyor ve alanın sağ tarafında koltuklar, bir masanın ve kitaplık gibi mobilyalar var.",
+      "detected_entities": [
+        {
+          "label": "person",
+          "confidence_hint": "high",
+          "notes_tr": "Üç kişi mevcut; biri masada oturuyor, biri duruyor, biri yürüyor."
+        },
+        {
+          "label": "rack/structure",
+          "confidence_hint": "high",
+          "notes_tr": "Arka planda kitaplık veya raf benzeri bir yapı var."
+        },
+        {
+          "label": "machine",
+          "confidence_hint": "high",
+          "notes_tr": "Masada bilgisayar ve muhtemelen yazıcı gibi cihazlar var."
+        },
+        {
+          "label": "load",
+          "confidence_hint": "low",
+          "notes_tr": "Masada bazı belgeler ve nesneler var, ancak yük olarak değerlendirilmiyor."
+        }
+      ],
+      "detected_actions_tr": [
+        "Bir kişi masada oturuyor ve bilgisayar kullanıyor.",
+        "Bir kişi masanın önünde duruyor ve konuşuyor gibi görünüyor.",
+        "Bir kişi arka planda yürüyor.",
+        "Kişiler arasında etkileşim var."
+      ],
+      "confidence_overall": 0.9,
+      "inference": {
+        "latency_ms": 6678.957700030878,
+        "tokens_generated": 392
+      },
+      "raw_model_output": "{\n  \"scene_summary_tr\": \"İç mekanda, bir ofis veya resepsiyon alanına benzeyen bir alanda üç kişi görülüyor. Sol tarafta bir masada oturan bir kişi bilgisayarla çalışıyor, ortada duran bir kişiyle konuşuyor gibi görünüyor. Arka planda bir kişi daha yürüyor ve alanın sağ tarafında koltuklar, bir masanın ve kitaplık gibi mobilyalar var.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Üç kişi mevcut; biri masada oturuyor, biri duruyor, biri yürüyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Arka planda kitaplık veya raf benzeri bir yapı var.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Masada bilgisayar ve muhtemelen yazıcı gibi cihazlar var.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Masada bazı belgeler ve nesneler var, ancak yük olarak değerlendirilmiyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Bir kişi masada oturuyor ve bilgisayar kullanıyor.\",\n    \"Bir kişi masanın önünde duruyor ve konuşuyor gibi görünüyor.\",\n    \"Bir kişi arka planda yürüyor.\",\n    \"Kişiler arasında etkileşim var.\"\n  ],\n  \"risk_events\": [],\n  \"confidence_overall\": 0.9\n}",
+      "risk_events": [],
+      "risk_flags_tr": [],
+      "computed_confidence": 0.45,
+      "reasoning_trace": "",
+      "segment_start_sec": 0.0,
+      "segment_end_sec": 6.966666666666667,
+      "created_at": "2026-08-27T13:57:37.579609+00:00"
+    },
+    "rag_context": {
+      "risk_level": "Yüksek",
+      "risk_score": 90,
+      "actions": [
+        "Yaralıyı hareket ettirmeden sağlık ekibini bekle.",
+        "Düşme nedenini (kaygan zemin, engel, yükseklik) tespit et.",
+        "Çevredeki personeli bölgeden uzaklaştır.",
+        "Forklift operatörünü acil olarak durdur.",
+        "Yaya trafiğini alternatif güzergaha yönlendir.",
+        "Çarpışmaya karışan personelin durumunu kontrol et.",
+        "Vinci acil durdur ve operatörle telsiz iletişimi kur.",
+        "Yük altındaki personeli sesli sirenle uyar.",
+        "Riskli alanı güvenlik şeridiyle kapat.",
+        "Acil durum ekibini ve sağlık personelini derhal çağır.",
+        "Olay bölgesini güvenlik şeridi ile izole et.",
+        "Güvenlik kameralarını ve kayıtları sakla, yetkililere bildir.",
+        "Benzer kazaları önlemek için acil risk değerlendirmesi yap."
+      ],
+      "matched_patterns": [
+        {
+          "pattern": "person_fall",
+          "description": "Personelin ani düşüşü veya zemine çökmesi.",
+          "risk_score": 90,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Ciddi yaralanma",
+            "Kanama",
+            "Bilinç kaybı"
+          ],
+          "similarity": 0.179,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "gathering",
+          "description": "Üç veya daha fazla personelin tehlikeli bölgede toplanması.",
+          "risk_score": 50,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Toplu kaza riski",
+            "Tahliye güçlüğü",
+            "İş verimi kaybı"
+          ],
+          "similarity": 0.152,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "immobile_person",
+          "description": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
+          "risk_score": 70,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Hayati tehlike",
+            "Tıbbi müdahale gecikmesi"
+          ],
+          "similarity": 0.184,
+          "matched_signal": {
+            "event_type": "immobile_person",
+            "timestamp": "00:06",
+            "description": "Personel (track 1) 3.0 saniyedir hareketsiz.",
+            "confidence": 0.3,
+            "involved_track_ids": [
+              1
+            ],
+            "metadata": {
+              "stationary_seconds": 3.0,
+              "aspect_ratio": 0.34584593488703075,
+              "is_lying": false
+            }
+          }
+        },
+        {
+          "pattern": "ppe_missing",
+          "description": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği.",
+          "risk_score": 45,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Kafa travması",
+            "Görünmezlik kaynaklı ezilme"
+          ],
+          "similarity": 0.15,
+          "matched_signal": {
+            "event_type": "ppe_missing",
+            "timestamp": "00:00",
+            "description": "Personel insan_4 eksik KKD: baret, yelek.",
+            "confidence": 0.7,
+            "involved_track_ids": [
+              4
+            ],
+            "metadata": {
+              "missing_ppe": [
+                "baret",
+                "yelek"
+              ]
+            }
+          }
+        },
+        {
+          "pattern": "dangerous_proximity",
+          "description": "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski.",
+          "risk_score": 80,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Çarpışma",
+            "Ezilme",
+            "Ölümcül kaza"
+          ],
+          "similarity": 0.103
+        },
+        {
+          "pattern": "unauthorized_access",
+          "description": "Yetkisiz personelin tehlikeli veya kısıtlı alana girişi.",
+          "risk_score": 65,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Sabotaj",
+            "Eğitimsiz personel kazası"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "running_in_facility",
+          "description": "Tesis içinde koşan personel (çarpışma/kayma riski).",
+          "risk_score": 60,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Kör noktada forkliftle çarpışma",
+            "Kayma ve düşme",
+            "Panik yaratma"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "overhead_hazard",
+          "description": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük).",
+          "risk_score": 85,
+          "risk_level": "Yüksek",
+          "potential_hazards": [
+            "Kafa travması",
+            "Ölümcül ezilme"
+          ],
+          "similarity": 0.162
+        },
+        {
+          "pattern": "fatigue_detection",
+          "description": "Personelin uzun süre aynı noktada veya hatalı ergonomiyle beklemesi (Yorgunluk riski).",
+          "risk_score": 50,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "İş kazası potansiyeli artışı",
+            "Bayılma öncülü"
+          ],
+          "similarity": 0.1,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "restricted_time_access",
+          "description": "Mesai saatleri dışında veya izinsiz zamanda bölgede yaya tespiti.",
+          "risk_score": 65,
+          "risk_level": "Orta",
+          "potential_hazards": [
+            "Hırsızlık/Sabotaj",
+            "Yalnız çalışma kazası"
+          ],
+          "similarity": 0.132,
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        }
+      ]
+    },
+    "event_timestamps": [
+      {
+        "seconds": 0.0,
+        "timestamp": "00:00",
+        "end_time": "00:06",
+        "timestamp_sec": 0.0,
+        "duration": 6.0,
+        "event_type": "ppe_missing",
+        "event": "Dört personel (insan_1, insan_2, insan_3, insan_4) baret ve yelek takmamaktadır.",
+        "confidence": 0.85,
+        "severity": "high",
+        "vlm_detail": ""
+      },
+      {
+        "seconds": 3.0,
+        "timestamp": "00:03",
+        "end_time": "00:06",
+        "timestamp_sec": 3.0,
+        "duration": 3.0,
+        "event_type": "immobile_person",
+        "event": "insan_2 ve insan_3 track'li personeller 3 saniyedir hareketsiz kalmıştır; bayılma veya yaralanma şüphesi.",
+        "confidence": 0.75,
+        "severity": "high",
+        "vlm_detail": ""
+      },
+      {
+        "seconds": 6.0,
+        "timestamp": "00:06",
+        "end_time": "00:06",
+        "timestamp_sec": 6.0,
+        "duration": 0.0,
+        "event_type": "immobile_person",
+        "event": "insan_1 track'li personel 3 saniyedir hareketsiz kalmıştır; bayılma veya yaralanma şüphesi.",
+        "confidence": 0.75,
+        "severity": "high",
+        "vlm_detail": ""
+      }
+    ]
+  }
+}

@@ -269,6 +269,29 @@ function toolLabel(toolName) {
   return found?.description || toolName;
 }
 
+function parseSeconds(val) {
+  if (val == null) return 0;
+  if (typeof val === 'number') return val;
+  const str = String(val).trim();
+  if (str.includes(':')) {
+    const parts = str.split(':');
+    if (parts.length === 2) {
+      return (parseInt(parts[0], 10) || 0) * 60 + (parseFloat(parts[1]) || 0);
+    }
+  }
+  const num = parseFloat(str);
+  return isNaN(num) ? 0 : num;
+}
+
+function formatTimestampsInHtml(text) {
+  if (!text) return '';
+  const escaped = escapeHtml(text);
+  return escaped.replace(/\b(\d{2}:\d{2})\b/g, (match, timeStr) => {
+    const secs = parseSeconds(timeStr);
+    return `<span class="timestamp-link" data-seconds="${secs}" title="${timeStr} anına git">⏱ ${timeStr}</span>`;
+  });
+}
+
 function renderModal(cameraId, active, analysis) {
   if (!analysis) return;
 
@@ -288,8 +311,31 @@ function renderModal(cameraId, active, analysis) {
   el.modalProgress.textContent =
     `${mmss(active.position_sec)} / ${mmss(active.duration_sec)} · ${active.fired_count}/${active.total_events} uyarı`;
 
-  el.modalSummary.textContent = analysis.summary || 'Özet üretilmedi.';
-  el.modalReasoning.textContent = analysis.reasoning || 'Gerekçe kaydı yok.';
+  el.modalSummary.innerHTML = formatTimestampsInHtml(analysis.summary || 'Özet üretilmedi.');
+  el.modalSummary.querySelectorAll('.timestamp-link').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const secs = Number(link.dataset.seconds) || 0;
+      try {
+        el.modalVideo.currentTime = secs;
+        el.modalVideo.play().catch(() => {});
+        showToast(`${mmss(secs)} anına gidildi`);
+      } catch { /* seek */ }
+    });
+  });
+
+  el.modalReasoning.innerHTML = formatTimestampsInHtml(analysis.reasoning || 'Gerekçe kaydı yok.');
+  el.modalReasoning.querySelectorAll('.timestamp-link').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const secs = Number(link.dataset.seconds) || 0;
+      try {
+        el.modalVideo.currentTime = secs;
+        el.modalVideo.play().catch(() => {});
+        showToast(`${mmss(secs)} anına gidildi`);
+      } catch { /* seek */ }
+    });
+  });
 
   // Video kaynağı sadece kamera fiilen değiştiğinde yeniden yüklenir; aynı
   // kamera için tekrarlanan renderModal çağrıları (WS tazelemesi) videoyu
@@ -362,8 +408,10 @@ function renderContextualResults(results) {
         const detail = result.uncertain
           ? (result.uncertainty_reason || 'Kanıt yetersiz.')
           : (result.hazard_mechanism || result.event || 'Açıklama yok.');
-        return `<li class="timeline-item severity-${SEVERITY_CLASS[result.severity] || 'low'}">
-          <span class="timeline-time">${escapeHtml(result.time || '—')}</span>
+        const secs = result.timestamp_sec ?? result.seconds ?? result.start_sec ?? result.evidence?.start_sec ?? parseSeconds(result.time || result.timestamp);
+        const timeLabel = result.time || (secs ? mmss(secs) : '—');
+        return `<li class="timeline-item severity-${SEVERITY_CLASS[result.severity] || 'low'}" data-seconds="${secs}">
+          <span class="timeline-time">${escapeHtml(timeLabel)}</span>
           <span class="timeline-type">${escapeHtml(result.event_type || result.result_type)}</span>
           <span class="timeline-sev ${SEVERITY_CLASS[result.severity] || 'low'}">${SEVERITY_LABEL[result.severity] || 'Belirsiz'}</span>
           <span class="meta">${escapeHtml(detail)}</span>
@@ -371,6 +419,17 @@ function renderContextualResults(results) {
         </li>`;
       }).join('')
       : `<li class="empty-state">${escapeHtml(emptyText)}</li>`;
+
+    target.querySelectorAll('.timeline-item').forEach((item) => {
+      item.addEventListener('click', () => {
+        const secs = Number(item.dataset.seconds) || 0;
+        try {
+          el.modalVideo.currentTime = secs;
+          el.modalVideo.play().catch(() => {});
+          showToast(`${mmss(secs)} anına gidildi`);
+        } catch { /* seek mümkün değil */ }
+      });
+    });
   };
   render(el.modalFindings, findings, 'Bağlama uygun sürekli bulgu yok.');
   render(el.modalUncertain, uncertain, 'İnsan incelemesi gereken belirsiz gözlem yok.');

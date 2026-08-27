@@ -24,14 +24,6 @@ tools:
     enabled: true
     assigns_role: "guvenlik"
 
-  record_incident:
-    description: "Olayı İSG kayıt sistemine ekle."
-    params:
-      incident_type: "string"
-      timestamp: "string"
-      description: "string"
-    enabled: true
-
   notify_supervisor:
     description: "Alan sorumlusunu bilgilendir."
     params:

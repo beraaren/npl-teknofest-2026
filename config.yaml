@@ -80,7 +80,6 @@ events:
     - fall
     - gathering
     - immobility
-    - ppe_missing
     - proximity
     - fire_smoke
     - leakage

@@ -40,14 +40,6 @@ const el = {
   summaryText: document.getElementById('summary-text'),
   summaryReasoning: document.getElementById('summary-reasoning'),
   summaryActions: document.getElementById('summary-actions'),
-  detailAnalysis: document.getElementById('detail-analysis'),
-  tabButtons: document.querySelectorAll('.tab-btn'),
-  tabContents: document.querySelectorAll('.tab-content'),
-  yoloList: document.getElementById('yolo-list'),
-  vlmSummary: document.getElementById('vlm-summary'),
-  vlmFlags: document.getElementById('vlm-flags'),
-  ragList: document.getElementById('rag-list'),
-  eventTimeline: document.getElementById('event-timeline'),
   demoStatus: document.getElementById('demo-status'),
   toast: document.getElementById('toast'),
 };
@@ -283,17 +275,14 @@ function finalize(analysis, events) {
   // Yerel video kaynağı (upload edilen dosya)
   if (uploadedFile) {
     el.video.src = URL.createObjectURL(uploadedFile);
+    el.video.load();
+    el.video.play().catch(e => console.log('Oynatma hatası:', e));
   }
   el.videoSection.hidden = false;
   el.decisionSummary.hidden = false;
-  el.detailAnalysis.hidden = false;
   el.demoStatus.textContent = 'Analiz tamamlandı';
 
   renderDecision(analysis);
-  renderEvents(events);
-  renderYolo(events);
-  renderVlm(events, analysis);
-  renderRag(analysis);
 }
 
 function renderDecision(analysis) {
@@ -310,119 +299,7 @@ function renderDecision(analysis) {
     : '<li class="meta">Aksiyon önerisi yok.</li>';
 }
 
-function renderEvents(events) {
-  const eventRows = events
-    .filter((e) => e.stream === 'event.detected')
-    .map((e) => e.data);
 
-  el.eventTimeline.innerHTML = eventRows.length
-    ? eventRows.map((ev) => `
-        <li class="timeline-item severity-${ev.severity || 'low'}">
-          <span class="timeline-time">${escapeHtml(ev.timestamp || '00:00')}</span>
-          <span class="timeline-type">${escapeHtml(ev.event_type)}</span>
-          <span class="timeline-sev ${ev.severity || 'low'}">${escapeHtml(ev.severity || 'Belirsiz')}</span>
-          <span class="meta">${escapeHtml(ev.description || '')}</span>
-          <span class="meta">Güven: ${formatConfidence(ev.confidence)}</span>
-        </li>`).join('')
-    : '<li class="empty-state">Tespit edilen olay yok.</li>';
-}
-
-function renderYolo(events) {
-  const snapshots = events
-    .filter((e) => e.stream === 'event.detected')
-    .map((e) => e.data)
-    .filter((ev) => ev.snapshot?.detections?.length);
-
-  // Tüm unique tespit sınıflarını ve sayılarını topla
-  const counts = {};
-  const examples = [];
-  snapshots.forEach((ev) => {
-    ev.snapshot.detections.forEach((det) => {
-      const cls = det.class || 'unknown';
-      counts[cls] = (counts[cls] || 0) + 1;
-      if (examples.length < 12) {
-        examples.push({
-          cls,
-          confidence: det.confidence,
-          trackId: det.track_id,
-          timestamp: ev.timestamp,
-        });
-      }
-    });
-  });
-
-  let html = '';
-  if (Object.keys(counts).length) {
-    html += `<li class="timeline-item"><span class="timeline-time">SINIF</span><span class="timeline-type">Adet</span><span class="timeline-sev low">Renk</span><span class="meta">Örnek track</span></li>`;
-    Object.entries(counts).forEach(([cls, count]) => {
-      const color = CLASS_COLORS[cls] || CLASS_COLORS.unknown;
-      html += `
-        <li class="timeline-item">
-          <span class="timeline-type">${escapeHtml(cls.toUpperCase())}</span>
-          <span class="timeline-time">${count}</span>
-          <span class="timeline-sev low" style="background:${color};color:#000">${escapeHtml(cls.toUpperCase())}</span>
-          <span class="meta">YOLO tespiti</span>
-        </li>`;
-    });
-    html += `<li class="timeline-item" style="margin-top:0.6rem"><span class="timeline-time">ZAMAN</span><span class="timeline-type">NESNE</span><span class="timeline-sev low">GÜVEN</span><span class="meta">TRACK ID</span></li>`;
-    examples.forEach((ex) => {
-      html += `
-        <li class="timeline-item">
-          <span class="timeline-time">${escapeHtml(ex.timestamp)}</span>
-          <span class="timeline-type">${escapeHtml(ex.cls.toUpperCase())}</span>
-          <span class="timeline-sev low">${formatConfidence(ex.confidence)}</span>
-          <span class="meta">#${ex.trackId ?? '—'}</span>
-        </li>`;
-    });
-  } else {
-    html = '<li class="empty-state">YOLO snapshot kaydı yok.</li>';
-  }
-  el.yoloList.innerHTML = html;
-}
-
-function renderVlm(events, analysis) {
-  // VLM yorumunu event.detected / decision.final öncesinde gelen vlm.interpreted'dan al
-  const vlmEvents = events.filter((e) => e.stream === 'vlm.interpreted').map((e) => e.data);
-  const interp = vlmEvents[0]?.interpretation || vlmInterpretation || analysis.vlm_interpretation || {};
-
-  const summary = interp.summary_tr || interp.summary || interp.scene_description || '';
-  el.vlmSummary.textContent = summary || 'Kanal B yorumu alınamadı.';
-
-  const flags = interp.risk_flags_tr || interp.risk_flags || [];
-  if (flags.length) {
-    el.vlmFlags.innerHTML = flags
-      .map((f) => `<li class="timeline-item severity-medium"><span class="timeline-type">⚠ ${escapeHtml(f)}</span></li>`)
-      .join('');
-  } else if (interp.risk_events?.length) {
-    el.vlmFlags.innerHTML = interp.risk_events
-      .map((r) => `<li class="timeline-item severity-medium"><span class="timeline-type">⚠ ${escapeHtml(r.description_tr || r.description || '')}</span></li>`)
-      .join('');
-  } else {
-    el.vlmFlags.innerHTML = '<li class="empty-state">Risk bayrağı üretilmedi.</li>';
-  }
-}
-
-function renderRag(analysis) {
-  const results = analysis.results || [];
-  const ragRows = results.filter((r) => r?.evidence?.rag?.supports);
-
-  if (!ragRows.length) {
-    el.ragList.innerHTML = '<li class="empty-state">RAG eşleşmesi bulunamadı.</li>';
-    return;
-  }
-
-  el.ragList.innerHTML = ragRows.map((r) => {
-    const obs = (r.evidence.rag.observations || []).map((o) => `<span class="meta">• ${escapeHtml(o)}</span>`).join('');
-    return `
-      <li class="timeline-item severity-${r.severity || 'low'}">
-        <span class="timeline-time">${escapeHtml(r.time || '00:00')}</span>
-        <span class="timeline-type">${escapeHtml(r.event_type || 'RAG')}</span>
-        <span class="timeline-sev ${r.severity || 'low'}">${escapeHtml(r.severity || 'Düşük')}</span>
-        <span class="meta">${escapeHtml(r.hazard_mechanism || r.event || '')}</span>
-        ${obs ? `<div style="grid-column:1/-1">${obs}</div>` : ''}
-      </li>`;
-  }).join('');
-}
 
 // ---------------------------------------------------------------------------
 // Canvas overlay
@@ -514,21 +391,7 @@ function drawOverlay() {
   });
 }
 
-// ---------------------------------------------------------------------------
-// Tab geçişleri
-// ---------------------------------------------------------------------------
 
-function initTabs() {
-  el.tabButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const target = btn.dataset.tab;
-      el.tabButtons.forEach((b) => b.classList.remove('active'));
-      el.tabContents.forEach((c) => c.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById(`tab-${target}`)?.classList.add('active');
-    });
-  });
-}
 
 // ---------------------------------------------------------------------------
 // Başlatma
@@ -536,7 +399,6 @@ function initTabs() {
 
 function init() {
   initUpload();
-  initTabs();
 
   el.video.addEventListener('timeupdate', drawOverlay);
   el.video.addEventListener('resize', drawOverlay);

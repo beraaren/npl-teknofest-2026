@@ -46,7 +46,7 @@
       <!-- 3. Video oynatıcı + overlay -->
       <section class="video-section" id="video-section" hidden>
         <div class="video-wrapper">
-          <video id="demo-video" controls playsinline></video>
+          <video id="demo-video" controls playsinline autoplay muted></video>
           <canvas id="overlay-canvas"></canvas>
         </div>
         <div class="video-meta" id="video-meta"></div>
@@ -65,39 +65,6 @@
         </details>
         <h3>⚡ Önerilen Aksiyonlar</h3>
         <ul id="summary-actions" class="action-advice"></ul>
-      </section>
-
-      <!-- 5. Detay Analizi -->
-      <section class="detail-analysis" id="detail-analysis" hidden>
-        <h2>🔬 Detay Analizi</h2>
-
-        <div class="detail-tabs">
-          <button class="tab-btn active" data-tab="yolo">YOLO / ByteTrack</button>
-          <button class="tab-btn" data-tab="vlm">Kanal B (VLM)</button>
-          <button class="tab-btn" data-tab="rag">RAG Katmanı</button>
-          <button class="tab-btn" data-tab="events">Olay Motoru</button>
-        </div>
-
-        <div class="tab-content active" id="tab-yolo">
-          <h3>Nesne Tespitleri</h3>
-          <ul id="yolo-list" class="event-timeline"></ul>
-        </div>
-
-        <div class="tab-content" id="tab-vlm">
-          <h3>Kanal B Yorumu</h3>
-          <div id="vlm-summary" class="summary-box"></div>
-          <ul id="vlm-flags" class="event-timeline"></ul>
-        </div>
-
-        <div class="tab-content" id="tab-rag">
-          <h3>RAG Eşleşmeleri</h3>
-          <ul id="rag-list" class="event-timeline"></ul>
-        </div>
-
-        <div class="tab-content" id="tab-events">
-          <h3>Olay Zaman Çizelgesi</h3>
-          <ul id="event-timeline" class="event-timeline"></ul>
-        </div>
       </section>
 
     </main>

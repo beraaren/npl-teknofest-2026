@@ -10,13 +10,6 @@
   "reasoning": "Olay motoru anlamlı sinyal üretmedi; sahnede yalnızca normal faaliyet gözlendi.",
   "confidence": 0.77,
   "triggered_mock_tools": [
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "Üretim Hattı 1",
-        "reason": "Rutin kontrol kaydı"
-      }
-    }
   ],
   "metadata": {
     "video_file": "video_25.mp4",

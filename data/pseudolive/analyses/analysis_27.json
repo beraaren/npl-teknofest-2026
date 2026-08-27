@@ -43,13 +43,6 @@
         "location": "saha",
         "reason": "Palet yükünün devrilmesi, çökmesi veya tehlikeli pozisyonda olması."
       }
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "saha",
-        "reason": "Palet yükünün devrilmesi, çökmesi veya tehlikeli pozisyonda olması."
-      }
     }
   ],
   "metadata": {

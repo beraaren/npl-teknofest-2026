@@ -37,13 +37,6 @@
         "location": "Depo Saha Bölümü",
         "urgency": "Orta"
       }
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "Depo Saha Bölümü",
-        "urgency": "Orta"
-      }
     }
   ],
   "tool_execution_results": [
@@ -55,15 +48,6 @@
         "urgency": "Orta"
       },
       "mock_result": "notify_supervisor başarıyla simüle edildi."
-    },
-    {
-      "status": "success",
-      "tool": "record_incident",
-      "params": {
-        "location": "Depo Saha Bölümü",
-        "urgency": "Orta"
-      },
-      "mock_result": "record_incident başarıyla simüle edildi."
     }
   ],
   "metadata": {

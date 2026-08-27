@@ -24,13 +24,6 @@
         "location": "saha",
         "reason": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski)."
       }
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "saha",
-        "reason": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski)."
-      }
     }
   ],
   "metadata": {

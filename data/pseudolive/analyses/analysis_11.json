@@ -37,13 +37,6 @@
         "location": "saha",
         "reason": "Kavşak veya kör noktalarda kontrolsüz hareket."
       }
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "saha",
-        "reason": "Kavşak veya kör noktalarda kontrolsüz hareket."
-      }
     }
   ],
   "metadata": {

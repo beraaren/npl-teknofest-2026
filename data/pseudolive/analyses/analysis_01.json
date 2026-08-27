@@ -37,13 +37,6 @@
         "location": "saha",
         "reason": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük)."
       }
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "saha",
-        "reason": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük)."
-      }
     }
   ],
   "metadata": {

@@ -10,13 +10,6 @@
   "reasoning": "Olay motoru anlamlı sinyal üretmedi; sahnede yalnızca normal faaliyet gözlendi.",
   "confidence": 0.84,
   "triggered_mock_tools": [
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "Elektrik Panosu Odası",
-        "reason": "Rutin kontrol kaydı"
-      }
-    }
   ],
   "metadata": {
     "video_file": "video_04.mp4",

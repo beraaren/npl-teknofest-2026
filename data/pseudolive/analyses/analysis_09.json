@@ -37,13 +37,6 @@
         "location": "saha",
         "reason": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi."
       }
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "saha",
-        "reason": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi."
-      }
     }
   ],
   "metadata": {

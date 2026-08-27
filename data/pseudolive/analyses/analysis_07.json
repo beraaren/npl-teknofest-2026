@@ -37,13 +37,6 @@
         "location": "saha",
         "reason": "Mesai saatleri dışında veya izinsiz zamanda bölgede yaya tespiti."
       }
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {
-        "location": "saha",
-        "reason": "Mesai saatleri dışında veya izinsiz zamanda bölgede yaya tespiti."
-      }
     }
   ],
   "metadata": {

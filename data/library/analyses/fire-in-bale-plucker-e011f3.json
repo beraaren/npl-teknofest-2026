@@ -133,8 +133,7 @@
     "sound_alarm",
     "secure_area",
     "trigger_fire_suppression",
-    "notify_supervisor",
-    "record_incident"
+    "notify_supervisor"
   ],
   "events": [
     {
@@ -165,10 +164,6 @@
     {
       "tool_name": "notify_supervisor",
       "params": {}
-    },
-    {
-      "tool_name": "record_incident",
-      "params": {}
     }
   ],
   "tool_execution_results": [
@@ -195,12 +190,6 @@
       "tool": "notify_supervisor",
       "params": {},
       "mock_result": "notify_supervisor başarıyla simüle edildi."
-    },
-    {
-      "status": "success",
-      "tool": "record_incident",
-      "params": {},
-      "mock_result": "record_incident başarıyla simüle edildi."
     }
   ],
   "metadata": {
@@ -329,8 +318,7 @@
           ],
           "action_hints": [
             "secure_area",
-            "notify_supervisor",
-            "record_incident"
+            "notify_supervisor"
           ],
           "similarity": 0.636,
           "evidence_status": "structural_candidate",
@@ -359,8 +347,7 @@
           ],
           "action_hints": [
             "sound_alarm",
-            "secure_area",
-            "record_incident"
+            "secure_area"
           ],
           "similarity": 0.137,
           "evidence_status": "unverified"
@@ -383,8 +370,7 @@
             "Toplu panik"
           ],
           "action_hints": [
-            "notify_supervisor",
-            "record_incident"
+            "notify_supervisor"
           ],
           "similarity": 0.086,
           "evidence_status": "unverified"
@@ -410,8 +396,7 @@
           ],
           "action_hints": [
             "sound_alarm",
-            "notify_supervisor",
-            "record_incident"
+            "notify_supervisor"
           ],
           "similarity": 0.066,
           "evidence_status": "unverified"
@@ -434,8 +419,7 @@
           ],
           "action_hints": [
             "sound_alarm",
-            "notify_supervisor",
-            "record_incident"
+            "notify_supervisor"
           ],
           "similarity": 0.048,
           "evidence_status": "unverified"
@@ -465,8 +449,7 @@
           ],
           "action_hints": [
             "secure_area",
-            "notify_supervisor",
-            "record_incident"
+            "notify_supervisor"
           ],
           "similarity": 0.636,
           "evidence_status": "structural_candidate",

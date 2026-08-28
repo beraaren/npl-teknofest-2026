@@ -664,17 +664,49 @@ header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
   border-left: 3px solid var(--accent);
 }
 .suggestion-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.25rem; }
+.accepted-condition { border-left-color: var(--success); }
 
-/* Admin sidebar'daki yazılabilir durum hızlı seçimi. */
-.query-input-row { display: flex; gap: 0.5rem; }
+/* Tek yazılabilir durum combobox'ı: tıklanınca hızlı seçimler inputun altında açılır. */
+.query-input-row.condition-combobox {
+  position: relative;
+  display: block;
+}
 .query-input-row input {
-  flex: 1;
+  width: 100%;
   background: var(--bg);
   border: 1px solid var(--surface-2);
   border-radius: 6px;
   color: var(--text);
   padding: 0.5rem 0.75rem;
 }
+.condition-options {
+  display: none;
+  position: static;
+  z-index: 20;
+  margin-top: 0.3rem;
+  max-height: 15rem;
+  overflow-y: auto;
+  background: var(--bg);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+.condition-combobox:focus-within .condition-options,
+.condition-options.is-open { display: block; }
+.condition-option {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--surface-2);
+  background: transparent;
+  color: var(--text);
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+  cursor: pointer;
+}
+.condition-option:last-child { border-bottom: 0; }
+.condition-option:hover, .condition-option:focus { background: var(--surface-2); outline: none; }
+.condition-option-cost { color: var(--muted); font-size: 0.78rem; }
 .condition-cost {
   min-height: 2.35rem;
   margin: 0.45rem 0 0.7rem;

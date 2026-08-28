@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin | Video Risk Analizi</title>
   <link rel="stylesheet" href="styles.css" />
-  <script type="module" src="admin.js"></script>
+  <script type="module" src="admin.js?v=3"></script>
 </head>
 <body>
   <header>
@@ -60,10 +60,22 @@
     <aside class="sidebar" style="width:360px;">
       <h2>💡 Çalışma Alanı Önerileri</h2>
       <label class="meta" for="query-text">Durum tanımı</label>
-      <div class="query-input-row">
-        <input id="query-text" type="text" list="common-conditions"
+      <div class="query-input-row condition-combobox">
+        <input id="query-text" type="text" role="combobox" aria-autocomplete="list"
+          aria-expanded="false" aria-controls="common-conditions"
           placeholder="Bir durum seçin veya kendi durumunuzu yazın..." autocomplete="off" />
-        <datalist id="common-conditions"></datalist>
+        <div id="common-conditions" class="condition-options" role="listbox">
+          <button class="condition-option" type="button" role="option" data-condition-id="forklift_yaya_yakinligi"><div>Forklift-yaya tehlikeli yakınlığı</div><div class="condition-option-cost">Tahmini maliyet: 15.000 - 60.000 TRY</div></button>
+          <button class="condition-option" type="button" role="option" data-condition-id="kkd_eksikligi"><div>KKD eksikliği (baret/yelek)</div><div class="condition-option-cost">Tahmini maliyet: 8.000 - 35.000 TRY</div></button>
+          <button class="condition-option" type="button" role="option" data-condition-id="kaygan_zemin"><div>Kaygan veya ıslak zemin</div><div class="condition-option-cost">Tahmini maliyet: 3.000 - 12.000 TRY</div></button>
+          <button class="condition-option" type="button" role="option" data-condition-id="forklift_hiz_asimi"><div>Forklift hız aşımı</div><div class="condition-option-cost">Tahmini maliyet: 25.000 - 90.000 TRY</div></button>
+          <button class="condition-option" type="button" role="option" data-condition-id="forklift_devrilme_riski"><div>Forklift devrilme riski</div><div class="condition-option-cost">Tahmini maliyet: 20.000 - 75.000 TRY</div></button>
+          <button class="condition-option" type="button" role="option" data-condition-id="yuksekten_dusme_riski"><div>Yüksekten düşme riski</div><div class="condition-option-cost">Tahmini maliyet: 10.000 - 45.000 TRY</div></button>
+          <button class="condition-option" type="button" role="option" data-condition-id="yangin_veya_duman"><div>Yangın veya duman</div><div class="condition-option-cost">Tahmini maliyet: 30.000 - 120.000 TRY</div></button>
+          <button class="condition-option" type="button" role="option" data-condition-id="makine_sikisma_riski"><div>Makinede sıkışma/ezilme riski</div><div class="condition-option-cost">Tahmini maliyet: 15.000 - 80.000 TRY</div></button>
+          <button class="condition-option" type="button" role="option" data-condition-id="kalabalik_ve_ergonomi"><div>Çalışma alanında kalabalık/ergonomi sorunu</div><div class="condition-option-cost">Tahmini maliyet: 5.000 - 25.000 TRY</div></button>
+          <button class="condition-option" type="button" role="option" data-condition-id="yetkisiz_alana_giris"><div>Yetkisiz veya kısıtlı alana giriş</div><div class="condition-option-cost">Tahmini maliyet: 12.000 - 50.000 TRY</div></button>
+        </div>
       </div>
       <div id="condition-cost" class="condition-cost" aria-live="polite">
         Kendi durumunuzu yazabilirsiniz; maliyeti bilinmiyor olarak değerlendirilir.

@@ -22,7 +22,24 @@ initToast(document.getElementById('toast'));
 /** WS'ten gelen son 50 olay; öneri sorgusu için event_type listesi buradan
  * çıkarılır. */
 const recentEvents = [];
-let commonConditions = [];
+
+// Gateway henüz yeniden başlatılmamış veya geçici olarak erişilemezse hızlı
+// seçim boş kalmasın diye temel katalog tarayıcıda da bulunur. Sunucu yanıtı
+// geldiğinde aynı kimlikler onun güncel değerleriyle değiştirilir.
+const DEFAULT_COMMON_CONDITIONS = [
+  { condition_id: 'forklift_yaya_yakinligi', baslik: 'Forklift-yaya tehlikeli yakınlığı', maliyet_tahmini: { alt_sinir_tl: 15000, ust_sinir_tl: 60000, para_birimi: 'TRY' } },
+  { condition_id: 'kkd_eksikligi', baslik: 'KKD eksikliği (baret/yelek)', maliyet_tahmini: { alt_sinir_tl: 8000, ust_sinir_tl: 35000, para_birimi: 'TRY' } },
+  { condition_id: 'kaygan_zemin', baslik: 'Kaygan veya ıslak zemin', maliyet_tahmini: { alt_sinir_tl: 3000, ust_sinir_tl: 12000, para_birimi: 'TRY' } },
+  { condition_id: 'forklift_hiz_asimi', baslik: 'Forklift hız aşımı', maliyet_tahmini: { alt_sinir_tl: 25000, ust_sinir_tl: 90000, para_birimi: 'TRY' } },
+  { condition_id: 'forklift_devrilme_riski', baslik: 'Forklift devrilme riski', maliyet_tahmini: { alt_sinir_tl: 20000, ust_sinir_tl: 75000, para_birimi: 'TRY' } },
+  { condition_id: 'yuksekten_dusme_riski', baslik: 'Yüksekten düşme riski', maliyet_tahmini: { alt_sinir_tl: 10000, ust_sinir_tl: 45000, para_birimi: 'TRY' } },
+  { condition_id: 'yangin_veya_duman', baslik: 'Yangın veya duman', maliyet_tahmini: { alt_sinir_tl: 30000, ust_sinir_tl: 120000, para_birimi: 'TRY' } },
+  { condition_id: 'makine_sikisma_riski', baslik: 'Makinede sıkışma/ezilme riski', maliyet_tahmini: { alt_sinir_tl: 15000, ust_sinir_tl: 80000, para_birimi: 'TRY' } },
+  { condition_id: 'kalabalik_ve_ergonomi', baslik: 'Çalışma alanında kalabalık/ergonomi sorunu', maliyet_tahmini: { alt_sinir_tl: 5000, ust_sinir_tl: 25000, para_birimi: 'TRY' } },
+  { condition_id: 'yetkisiz_alana_giris', baslik: 'Yetkisiz veya kısıtlı alana giriş', maliyet_tahmini: { alt_sinir_tl: 12000, ust_sinir_tl: 50000, para_birimi: 'TRY' } },
+];
+let commonConditions = [...DEFAULT_COMMON_CONDITIONS];
+let activeConditionId = null;
 
 function formatCost(cost) {
   if (!cost || cost.alt_sinir_tl == null || cost.ust_sinir_tl == null) return 'Bilinmiyor';
@@ -30,8 +47,42 @@ function formatCost(cost) {
 }
 
 function selectedCondition() {
-  const text = el.queryInput.value.trim();
-  return commonConditions.find((condition) => condition.baslik === text) || null;
+  return commonConditions.find((condition) => condition.condition_id === activeConditionId) || null;
+}
+
+function filteredConditions() {
+  const query = el.queryInput.value.trim().toLocaleLowerCase('tr-TR');
+  if (!query) return commonConditions;
+  return commonConditions.filter((condition) =>
+    condition.baslik.toLocaleLowerCase('tr-TR').includes(query)
+  );
+}
+
+function renderCommonConditions() {
+  const conditions = filteredConditions();
+  el.commonConditions.innerHTML = conditions.length
+    ? conditions.map((condition) => `
+      <button class="condition-option" type="button" role="option" data-condition-id="${escapeHtml(condition.condition_id)}">
+        <div>${escapeHtml(condition.baslik)}</div>
+        <div class="condition-option-cost">Tahmini maliyet: ${escapeHtml(formatCost(condition.maliyet_tahmini))}</div>
+      </button>
+    `).join('')
+    : '<div class="condition-option-cost" style="padding:0.6rem 0.7rem;">Eşleşen hızlı durum yok; yazdığınız özel durum kabul edilir.</div>';
+}
+
+function setConditionOptionsVisible(visible) {
+  el.commonConditions.classList.toggle('is-open', visible);
+  el.queryInput.setAttribute('aria-expanded', String(visible));
+}
+
+function selectCommonCondition(conditionId) {
+  const condition = commonConditions.find((item) => item.condition_id === conditionId);
+  if (!condition) return;
+  activeConditionId = condition.condition_id;
+  el.queryInput.value = condition.baslik;
+  el.queryInput.blur();
+  setConditionOptionsVisible(false);
+  renderConditionCost();
 }
 
 function renderConditionCost() {
@@ -50,13 +101,11 @@ function renderConditionCost() {
 async function loadCommonConditions() {
   try {
     const data = await api('/suggestions/common-conditions');
-    commonConditions = Array.isArray(data) ? data : [];
-    el.commonConditions.innerHTML = commonConditions.map((condition) =>
-      `<option value="${escapeHtml(condition.baslik)}">${escapeHtml(formatCost(condition.maliyet_tahmini))}</option>`
-    ).join('');
+    if (Array.isArray(data) && data.length) commonConditions = data;
   } catch (err) {
-    console.error('Yaygın durumlar yüklenemedi:', err);
+    console.error('Yaygın durumlar yüklenemedi; yerleşik hızlı seçim kullanılıyor:', err);
   }
+  renderCommonConditions();
   renderConditionCost();
 }
 
@@ -222,20 +271,35 @@ async function fetchSuggestions() {
   const original = el.suggestBtn.textContent;
   el.suggestBtn.disabled = true;
   el.suggestBtn.textContent = 'Yükleniyor...';
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 8000);
   try {
     const data = await api('/suggestions/query', {
       method: 'POST',
+      signal: controller.signal,
       body: JSON.stringify({
         event_types: eventTypes,
         query_text: queryText,
         condition_id: condition?.condition_id || null,
       }),
     });
-    renderConditionCostFromResponse(data?.selected_condition);
-    renderSuggestions(Array.isArray(data?.suggestions) ? data.suggestions : []);
+    const selected = data?.selected_condition || (queryText ? {
+      baslik: queryText,
+      maliyet_tahmini: condition?.maliyet_tahmini || null,
+      cost_known: Boolean(condition),
+    } : null);
+    renderConditionCostFromResponse(selected);
+    renderSuggestions(
+      Array.isArray(data) ? data : (Array.isArray(data?.suggestions) ? data.suggestions : []),
+      selected,
+    );
   } catch (err) {
-    showToast(`Öneriler alınamadı: ${err.message}`, true);
+    const message = err.name === 'AbortError'
+      ? 'Sunucuya ulaşılamadı (zaman aşımı). Gateway çalışıyor mu kontrol edin.'
+      : `Öneriler alınamadı: ${err.message}`;
+    showToast(message, true);
   } finally {
+    clearTimeout(timeoutId);
     el.suggestBtn.disabled = false;
     el.suggestBtn.textContent = original;
   }
@@ -261,12 +325,20 @@ function renderConditionCostFromResponse(condition) {
  * oncelik alanı) — kamera duvarındaki RİSK seviyesiyle aynı vokabüler
  * DEĞİLDİR, karışmaması için "Öncelik" olarak açıkça etiketlenir.
  */
-function renderSuggestions(suggestions) {
+function renderSuggestions(suggestions, selectedCondition = null) {
+  const accepted = selectedCondition ? `
+    <div class="suggestion-row accepted-condition">
+      <div class="suggestion-title">Durum kabul edildi</div>
+      <div>${escapeHtml(selectedCondition.baslik)}</div>
+      <div class="meta"><strong>Tahmini maliyet:</strong> ${escapeHtml(
+        selectedCondition.cost_known ? formatCost(selectedCondition.maliyet_tahmini) : 'Bilinmiyor'
+      )}</div>
+    </div>` : '';
   if (!suggestions.length) {
-    el.suggestionsList.innerHTML = '<div class="empty-state">Öneri bulunamadı.</div>';
+    el.suggestionsList.innerHTML = `${accepted}<div class="empty-state">Bu durum için katalogda ek öneri bulunamadı.</div>`;
     return;
   }
-  el.suggestionsList.innerHTML = suggestions.map((s) => `
+  el.suggestionsList.innerHTML = accepted + suggestions.map((s) => `
     <div class="suggestion-row">
       <div class="suggestion-title">${escapeHtml(s.baslik)}</div>
       <div class="meta">
@@ -296,6 +368,7 @@ function handleWsMessage(msg) {
 function init() {
   loadMetrics();
   loadFeedbackData();
+  renderCommonConditions();
   loadCommonConditions();
   setInterval(() => {
     loadMetrics();
@@ -308,8 +381,37 @@ function init() {
   ws.onMessage(handleWsMessage);
 
   el.suggestBtn.addEventListener('click', fetchSuggestions);
-  el.queryInput.addEventListener('input', renderConditionCost);
-  el.queryInput.addEventListener('focus', () => el.queryInput.showPicker?.());
+  el.queryInput.addEventListener('focus', () => {
+    renderCommonConditions();
+    setConditionOptionsVisible(true);
+  });
+  el.queryInput.addEventListener('input', () => {
+    activeConditionId = null;
+    renderCommonConditions();
+    setConditionOptionsVisible(true);
+    renderConditionCost();
+  });
+  el.queryInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      el.queryInput.blur();
+      setConditionOptionsVisible(false);
+    }
+  });
+  // mousedown'da preventDefault input'un focus'unu (ve dolayısıyla listeyi)
+  // kaybetmesini önler; gerçek seçim standart 'click' olayında yapılır.
+  // Bu, özel combobox implementasyonlarında yaygın kullanılan bir örüntüdür.
+  el.commonConditions.addEventListener('mousedown', (event) => {
+    if (event.target.closest('[data-condition-id]')) event.preventDefault();
+  });
+  el.commonConditions.addEventListener('click', (event) => {
+    const option = event.target.closest('[data-condition-id]');
+    if (!option) return;
+    event.stopPropagation();
+    selectCommonCondition(option.dataset.conditionId);
+  });
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.condition-combobox')) setConditionOptionsVisible(false);
+  });
   window.addEventListener('resize', loadMetrics);
 }
 

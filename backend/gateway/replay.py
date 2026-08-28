@@ -255,9 +255,20 @@ class ReplayEngine:
         self._deck.extend(skipped)
 
         if analysis is None and skipped:
-            # Tüm adaylar ekranda (kütüphane kamera sayısından küçük):
-            # tekrar göstermek, boş kare bırakmaktan iyidir.
-            analysis = library.get(self._deck.pop())
+            if library.count() <= len(self.cameras):
+                # Kütüphane kamera sayısına eşit veya küçük: her video zaten
+                # bir kamerada oynuyor, tekrar kaçınılmaz. Boş kare bırakmaktan
+                # iyidir.
+                analysis = library.get(self._deck.pop())
+            else:
+                # Kütüphane kameradan büyük: bu, videoların bitiş zamanlarının
+                # geçici olarak çakışmasından kaynaklanan ANLIK bir durumdur,
+                # yapısal bir kıtlık değil. Burada zorla tekrar seçmek iki
+                # kameranın aynı videoyu aynı anda göstermesine yol açardı;
+                # bunun yerine None dönülür, _camera_loop kısa süre bekleyip
+                # yeniden dener — o sırada başka bir kamera videosunu bitirip
+                # slug'ı serbest bırakabilir.
+                return None
 
         return analysis
 
@@ -334,8 +345,14 @@ class ReplayEngine:
         while True:
             analysis = self._draw_analysis(for_camera=camera_id)
             if analysis is None:
-                logger.warning(f"{camera_id}: oynatılacak analiz yok, 5 sn sonra tekrar")
-                await asyncio.sleep(5)
+                if library.count() == 0:
+                    logger.warning(f"{camera_id}: oynatılacak analiz yok, 5 sn sonra tekrar")
+                    await asyncio.sleep(5)
+                else:
+                    # Kütüphanede video var ama şu an hepsi başka kameralarda
+                    # oynuyor (geçici çakışma) — kısa süre sonra bir kamera
+                    # döngüsünü bitirip slug serbest kalacaktır.
+                    await asyncio.sleep(1)
                 continue
 
             cam.begin_cycle(analysis)

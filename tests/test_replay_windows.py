@@ -78,3 +78,63 @@ def test_active_window_critical_severity_maps_to_yuksek_risk():
     ]
     win = active_risk_window(stamps, 5.0)
     assert win["risk"] == "Yüksek"
+
+
+# ---------------------------------------------------------------------------
+# ReplayEngine._draw_analysis: aynı videonun iki kamerada birden oynamaması
+# ---------------------------------------------------------------------------
+
+from unittest.mock import patch
+
+from backend.gateway.replay import ReplayEngine, CameraStream
+
+
+async def _noop_broadcast(_payload):
+    return None
+
+
+def _noop_save_event(_job_id, _stream, _payload):
+    return None
+
+
+def _make_engine(camera_count: int, pool_slugs: list[str]) -> ReplayEngine:
+    """library'yi sahteleyip belirli boyutta bir havuzla motor kurar."""
+    with patch("backend.gateway.replay.library.count", return_value=len(pool_slugs)):
+        engine = ReplayEngine(_noop_broadcast, _noop_save_event, camera_count=camera_count)
+    return engine
+
+
+def test_draw_analysis_returns_none_on_temporary_clash_when_pool_exceeds_cameras():
+    """Havuz kameradan büyükken, deneme bütçesi tükenip hâlâ boşta slug
+    bulunamazsa (geçici çakışma) zorla tekrar seçilmez; None dönülür ki iki
+    kamera aynı videoyu aynı anda göstermesin. Gerçek video kütüphanesinde bu,
+    deste ortada yeniden karıştırıldığında ekrandaki slug'ların tekrar
+    çekilmesiyle oluşabilir; burada deste doğrudan "hepsi ekranda" durumuna
+    sabitlenerek deterministik test edilir."""
+    engine = _make_engine(camera_count=3, pool_slugs=["a", "b", "c", "d", "e"])
+    cam_ids = list(engine.cameras)
+
+    with patch("backend.gateway.replay.library.count", return_value=5), \
+         patch("backend.gateway.replay.library.slugs", return_value=[]), \
+         patch("backend.gateway.replay.library.get", side_effect=lambda s: {"slug": s}):
+        # Deste sadece ekranda olan slug'ı içeriyor; boşalınca yeniden
+        # karıştırılacak yeni slug da yok (arama bütçesi tükendi).
+        engine.cameras[cam_ids[1]].analysis = {"slug": "on-screen-1"}
+        engine._deck = ["on-screen-1"]
+        result = engine._draw_analysis(for_camera=cam_ids[0])
+        assert result is None
+
+
+def test_draw_analysis_forces_repeat_when_pool_not_larger_than_cameras():
+    """Havuz kamera sayısına eşit/küçükken tekrar kaçınılmazdır; None dönmez."""
+    engine = _make_engine(camera_count=2, pool_slugs=["a", "b"])
+    cam_ids = list(engine.cameras)
+
+    with patch("backend.gateway.replay.library.count", return_value=2), \
+         patch("backend.gateway.replay.library.slugs", return_value=[]), \
+         patch("backend.gateway.replay.library.get", side_effect=lambda s: {"slug": s}):
+        engine.cameras[cam_ids[1]].analysis = {"slug": "on-screen-1"}
+        engine._deck = ["on-screen-1"]
+        result = engine._draw_analysis(for_camera=cam_ids[0])
+        assert result is not None
+        assert result["slug"] == "on-screen-1"

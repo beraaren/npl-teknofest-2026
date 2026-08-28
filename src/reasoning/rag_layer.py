@@ -31,6 +31,44 @@ def _tokenize(text: str) -> List[str]:
     return _TOKEN_RE.findall(text.lower())
 
 
+def _merge_nested(base: Dict[str, Any], override: Dict[str, Any]) -> Dict[str, Any]:
+    """İki YAML koleksiyonunu iç içe anahtarlarda dict birleştirerek merge eder.
+
+    List alanları (örn. potential_hazards) doğrudan eklenir; skaler alanlar
+    override ile ezilir.
+    """
+    result = dict(base)
+    for key, value in override.items():
+        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+            result[key] = _merge_nested(result[key], value)
+        elif key in result and isinstance(result[key], list) and isinstance(value, list):
+            result[key] = list(result[key]) + value
+        else:
+            result[key] = value
+    return result
+
+
+def _load_yaml_collection(path: Path) -> Dict[str, Any]:
+    """Tek YAML dosyasını veya `*.yaml` içeren bir dizini yükler.
+
+    Dizin durumunda her dosyanın kök anahtarları merge edilir; böylece
+    `risk_patterns.yaml` ana dosyası ile `risk_patterns.d/*.yaml` part
+    dosyaları aynı koleksiyon altında birleşir.
+    """
+    if not path.exists():
+        return {}
+    if path.is_file():
+        with open(path, "r", encoding="utf-8") as f:
+            return yaml.safe_load(f) or {}
+
+    merged: Dict[str, Any] = {}
+    for child in sorted(path.glob("*.yaml")):
+        with open(child, "r", encoding="utf-8") as f:
+            partial = yaml.safe_load(f) or {}
+        merged = _merge_nested(merged, partial)
+    return merged
+
+
 def _tfidf_index(docs: Dict[str, str]) -> tuple[Dict[str, Dict[str, float]], Dict[str, float]]:
     """Doküman adı -> {token: tfidf} (L2-normalize) ve token -> idf döner."""
     tf: Dict[str, Dict[str, float]] = {}
@@ -215,6 +253,67 @@ def _observations_to_natural_language(observations: Any) -> str:
     return " ".join(lines) if lines else json.dumps(observations, ensure_ascii=False)
 
 
+def _vlm_interpretation_to_query(vlm_interpretation: Any) -> str:
+    """VLM yorumunun anlamlı alanlarını TF-IDF/embedding sorgusuna çevirir.
+
+    Sadece karar ajanına ham veri taşımak yerine, RAG sorgusunu zenginleştiren
+    Türkçe metin parçaları üretir. risk_flags_tr zaten mevcut; burada ek olarak
+    scene_summary_tr, detected_actions_tr, detected_entities.notes_tr ve
+    risk_events.description_tr/severity değerlendirilir.
+    """
+    if not isinstance(vlm_interpretation, dict):
+        return ""
+
+    parts: List[str] = []
+
+    scene_summary = vlm_interpretation.get("scene_summary_tr", "")
+    if scene_summary:
+        parts.append(str(scene_summary))
+
+    for action in vlm_interpretation.get("detected_actions_tr", []):
+        if action:
+            parts.append(str(action))
+
+    for entity in vlm_interpretation.get("detected_entities", []):
+        if isinstance(entity, dict):
+            label = entity.get("label", "")
+            notes = entity.get("notes_tr", "")
+            if label:
+                parts.append(str(label))
+            if notes:
+                parts.append(str(notes))
+
+    for event in vlm_interpretation.get("risk_events", []):
+        if isinstance(event, dict):
+            description = event.get("description_tr", "")
+            severity = event.get("severity", "")
+            if description:
+                parts.append(str(description))
+            if severity:
+                parts.append(str(severity))
+
+    for flag in vlm_interpretation.get("risk_flags_tr", []):
+        if flag:
+            parts.append(str(flag))
+
+    return " ".join(parts)
+
+
+def _classify_hypothesis_purpose(pattern: Dict[str, Any]) -> List[str]:
+    """Bir pattern’in RAG çıktısında hangi amaç(lar)la kullanılacağını belirler.
+
+    - pre_incident_risk: Kaza öncesi risk göstergeleri (indicators, required_nodes).
+    - post_incident_response: Kaza anında/sonrası aksiyon ipuçları
+      (mock_tool_hints, potential_hazards).
+    """
+    purposes: List[str] = []
+    if pattern.get("indicators") or pattern.get("required_nodes"):
+        purposes.append("pre_incident_risk")
+    if pattern.get("mock_tool_hints") or pattern.get("potential_hazards"):
+        purposes.append("post_incident_response")
+    return purposes
+
+
 class RAGLayer:
     """Gözlem raporunu risk pattern'leriyle eşleştirir, aksiyon kataloğundan öneri üretir."""
 
@@ -230,19 +329,26 @@ class RAGLayer:
         self.history: List[Dict[str, Any]] = []  # Spatio-Temporal bellek için
 
         ppath = Path(patterns_path) if patterns_path else get_data_path("risk_patterns.yaml")
-        if ppath.exists():
-            with open(ppath, "r", encoding="utf-8") as f:
-                self.patterns = yaml.safe_load(f) or {}
+        self.patterns = _load_yaml_collection(ppath)
+        # Varsayılan pattern koleksiyonu: ana dosya + risk_patterns.d/*.yaml part dosyaları
+        if patterns_path is None:
+            parts_dir = get_data_path("risk_patterns.d")
+            if parts_dir.exists() and parts_dir.is_dir():
+                self.patterns = _merge_nested(self.patterns, _load_yaml_collection(parts_dir))
 
         apath = Path(actions_path) if actions_path else get_data_path("action_catalog.yaml")
-        if apath.exists():
-            with open(apath, "r", encoding="utf-8") as f:
-                self.actions = yaml.safe_load(f) or {}
+        self.actions = _load_yaml_collection(apath)
+        if actions_path is None:
+            parts_dir = get_data_path("action_catalog.d")
+            if parts_dir.exists() and parts_dir.is_dir():
+                self.actions = _merge_nested(self.actions, _load_yaml_collection(parts_dir))
 
         spath = Path(suggestions_path) if suggestions_path else get_data_path("isg_onerileri.yaml")
-        if spath.exists():
-            with open(spath, "r", encoding="utf-8") as f:
-                self.suggestions = yaml.safe_load(f) or {}
+        self.suggestions = _load_yaml_collection(spath)
+        if suggestions_path is None:
+            parts_dir = get_data_path("isg_onerileri.d")
+            if parts_dir.exists() and parts_dir.is_dir():
+                self.suggestions = _merge_nested(self.suggestions, _load_yaml_collection(parts_dir))
 
         # Vektör indeksi: description + indicators + keywords (v2: keywords eklendi)
         docs = {
@@ -299,6 +405,10 @@ class RAGLayer:
         Eşleşme olayın gerçekleştiğinin veya risk seviyesinin kanıtı değildir.
         Özellikle yapısal eşleşme yalnız sahnede gerekli sınıfların bulunduğunu
         söyler; nihai karar ajanı bu hipotezi bağlam ve diğer kanıtlarla sınar.
+
+        Bu metod RAG’ı kaza tanıma aracı olarak değil, kaza öncesi risk
+        göstergelerini ve kaza sonrası aksiyon adaylarını karar ajanına
+        sunan bir bilgi katmanı olarak kullanır.
         """
         matched: Dict[str, Dict[str, Any]] = {}
         for sig in event_signals:
@@ -346,6 +456,7 @@ class RAGLayer:
         observation_report: Any,
         event_signals: List[Dict[str, Any]],
         vlm_flags: List[str] | None = None,
+        vlm_interpretation: dict | None = None,
         top_k: int = 5,
         boost: float = 1.5,
     ) -> Dict[str, Any]:
@@ -355,6 +466,16 @@ class RAGLayer:
         gerçekleştiğini kanıtlamaz. Vektör eşleşmeleri ayrı
         ``unverified_hypotheses`` alanında tutulur; böylece promptta kanıt gibi
         görünmezler.
+
+        ``vlm_interpretation`` varsa scene_summary_tr, detected_actions_tr,
+        detected_entities.notes_tr, risk_events.description_tr/severity ve
+        risk_flags_tr alanları arama sorgusuna eklenir. ``vlm_flags`` eski
+        çağrılar için korunmuştur.
+
+        Her hipotezde ``retrieval_confidence`` vektör benzerliğini (0-1)
+        belirtir; bu bir risk confidence’ı değildir. ``hypothesis_purpose``
+        alanıyla hipotezler kaza öncesi risk (`pre_incident_risk`) ve/veya
+        kaza sonrası aksiyon ipucu (`post_incident_response`) olarak etiketlenir.
         """
         if isinstance(observation_report, list):
             query = _observations_to_natural_language(observation_report)
@@ -362,6 +483,11 @@ class RAGLayer:
             query = observation_report
         else:
             query = json.dumps(observation_report, ensure_ascii=False)
+
+        vlm_query = _vlm_interpretation_to_query(vlm_interpretation)
+        if vlm_query:
+            query = f"{query} {vlm_query}".strip()
+
         if vlm_flags:
             query = f"{query} {' '.join(str(flag) for flag in vlm_flags)}".strip()
 
@@ -381,18 +507,29 @@ class RAGLayer:
             if signal_match:
                 similarity *= boost
             required_nodes = pattern.get("required_nodes", [])
+            indicators = pattern.get("indicators", [])
+            retrieval_confidence = max(0.0, min(1.0, float(similarity)))
             entry: Dict[str, Any] = {
                 "pattern": name,
                 "hazard_mechanism": pattern.get("description", ""),
                 "applicability_questions": [
                     f"Aktif faaliyette şu varlıklar/koşullar mevcut mu: {', '.join(required_nodes)}?"
                 ] if required_nodes else ["Bu mekanizma için görüntü ve faaliyet bağlamında yeterli kanıt var mı?"],
-                "required_evidence": pattern.get("indicators", []),
+                "required_evidence": indicators,
                 "disconfirming_evidence": ["Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"],
                 "potential_hazards": pattern.get("potential_hazards", []),
                 "action_hints": pattern.get("mock_tool_hints", []),
                 "similarity": round(similarity, 3),
+                # retrieval_confidence vektör benzerliğidir; risk confidence’ı değildir.
+                "retrieval_confidence": round(retrieval_confidence, 3),
                 "evidence_status": "unverified",
+                # Aşağıdaki değerler pattern kataloğunun referans bilgileridir;
+                # RAG risk kararı üretmez, karar ajanına ek bağlam sağlar.
+                "risk_score": pattern.get("risk_score"),
+                "risk_level": pattern.get("risk_level"),
+                "indicators": indicators,
+                "required_nodes": required_nodes,
+                "hypothesis_purpose": _classify_hypothesis_purpose(pattern),
             }
             if signal_match:
                 signal = signal_match["signal"]

@@ -260,6 +260,14 @@ decision_agent:
     applicability questions and controls; it never proves an incident and its
     catalogue priority is never your risk decision.
 
+    RAG is not an incident detector. Each RAG hypothesis carries a purpose:
+    "pre_incident_risk" for early-warning indicators and required conditions,
+    and "post_incident_response" for action/tool hints after an event.
+    "retrieval_confidence" is only vector similarity, not a risk confidence.
+    "risk_score" and "risk_level" are catalogue reference values, not your
+    severity assignment. Use RAG to enrich possible mechanisms and response
+    options, never to confirm that an incident occurred.
+
     First read SceneContext. Do not invent an industry, procedure, zone or
     required control that is not observable. For each candidate, establish the
     harm mechanism: who is exposed, to what source of harm, during which

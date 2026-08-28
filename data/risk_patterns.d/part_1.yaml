@@ -1,0 +1,403 @@
+patterns:
+  electrical_fire:
+    description: "Elektrik tesisatı, motor veya kablolarda kısa devre/ark oluşması sonucu yangın."
+    risk_score: 95
+    risk_level: "Yüksek"
+    indicators:
+      - "elektrik panosundan duman/ateş"
+      - "kablo izolasyonunda yanık kokusu"
+      - "parlama/ark flaş görülmesi"
+      - "VLM tarafından elektrik kaynaklı yangın bildirimi"
+    keywords: "elektrik yangını kısa devre ark kablo pano motor yanık duman"
+    required_nodes: ["elektrik_pano"]
+    potential_hazards:
+      - "Tesis yangını"
+      - "Elektrik çarpması"
+      - "Duman zehirlenmesi"
+    mock_tool_hints:
+      - "isolate_electrical_grid"
+      - "trigger_fire_suppression"
+      - "broadcast_evacuation"
+      - "call_ambulance"
+      - "notify_supervisor"
+
+  chemical_fire:
+    description: "Kimyasal maddelerin reaksiyonu, tutuşması veya ısınması sonucu çıkan yangın."
+    risk_score: 95
+    risk_level: "Yüksek"
+    indicators:
+      - "kimyasal tank/bidon bölgesinde alev"
+      - "reaktif madde etiketi"
+      - "şişkin/renk değiştirmiş kap"
+      - "VLM tarafından kimyasal yangın bildirimi"
+    keywords: "kimyasal yangın reaksiyon tank bidon asit baz tutuşma"
+    required_nodes: []
+    potential_hazards:
+      - "Zehirli gaz salınımı"
+      - "Patlama"
+      - "Yanık"
+    mock_tool_hints:
+      - "activate_cbrn_protocol"
+      - "broadcast_evacuation"
+      - "call_ambulance"
+      - "notify_supervisor"
+
+  dust_explosion:
+    description: "Tozlu ortamda kıvılcım veya statik elektrik nedeniyle ani patlama ve yangın."
+    risk_score: 100
+    risk_level: "Yüksek"
+    indicators:
+      - "havada yoğun toz bulutu"
+      - "toz toplama ünitesi bölgesi"
+      - "ani parlama/basmaç"
+      - "VLM tarafından toz patlaması şüphesi"
+    keywords: "toz patlama kıvılcım statik yangın bulut tahliye"
+    required_nodes: []
+    potential_hazards:
+      - "Ölümcül basınç dalgası"
+      - "Yangın"
+      - "Yapısal hasar"
+    mock_tool_hints:
+      - "activate_cbrn_protocol"
+      - "broadcast_evacuation"
+      - "trigger_fire_suppression"
+      - "call_ambulance"
+
+  gas_leak_explosion:
+    description: "Doğal gaz, LPG veya proses gazı sızıntısının birikmesi ve tutuşması sonucu patlama."
+    risk_score: 100
+    risk_level: "Yüksek"
+    indicators:
+      - "gaz dedektörü alarmı"
+      - "bölgede gaz kokusu"
+      - "basınç göstergesinde anormal düşüş"
+      - "VLM tarafından gaz sızıntısı bildirimi"
+    keywords: "gaz sızıntı patlama lpg doğalgaz dedektör alarmı"
+    required_nodes: []
+    potential_hazards:
+      - "Patlama"
+      - "Yangın"
+      - "Zehirlenme"
+    mock_tool_hints:
+      - "activate_cbrn_protocol"
+      - "broadcast_evacuation"
+      - "lockdown_facility"
+      - "call_ambulance"
+
+  welding_spark_fire:
+    description: "Kaynak/punta işlemleri sırasında sıçrayan kıvılcımların yanıcı malzemeyi tutuşturması."
+    risk_score: 80
+    risk_level: "Yüksek"
+    indicators:
+      - "kaynak yapılan bölgede yanıcı malzeme"
+      - "etrafta kıvılcım sıçraması"
+      - "duman yükselmesi"
+      - "VLM tarafından kaynak yangını bildirimi"
+    keywords: "kaynak kıvılcım yangın yanıcı malzeme punta sparks"
+    required_nodes: []
+    potential_hazards:
+      - "Yangın"
+      - "Yanık"
+      - "Duman soluma"
+    mock_tool_hints:
+      - "trigger_fire_suppression"
+      - "sound_alarm"
+      - "notify_supervisor"
+
+  battery_fire:
+    description: "Lityum/akü bataryaların termal kaçak veya aşırı şarj nedeniyle tutuşması."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "batarya paketinden duman"
+      - "şişen/patlayan batarya hücresi"
+      - "şarj istasyonunda ısınma"
+      - "VLM tarafından batarya yangını bildirimi"
+    keywords: "batarya yangını lityum akü termal kaçak şarj ısınma"
+    required_nodes: []
+    potential_hazards:
+      - "Zehirli gaz"
+      - "Yanık"
+      - "Yangın yayılımı"
+    mock_tool_hints:
+      - "activate_cbrn_protocol"
+      - "trigger_fire_suppression"
+      - "call_ambulance"
+
+  flammable_liquid_fire:
+    description: "Benzin, tiner, solvent gibi yanıcı sıvıların dökülüp tutuşması sonucu yangın."
+    risk_score: 90
+    risk_level: "Yüksek"
+    indicators:
+      - "yerde yanıcı sıvı birikintisi"
+      - "alev ve sarımsı duman"
+      - "kimyasal depolama alanı"
+      - "VLM tarafından yanıcı sıvı yangını bildirimi"
+    keywords: "yanıcı sıvı yangın solvent tiner benzin dökülme"
+    required_nodes: []
+    potential_hazards:
+      - "Hızlı yangın yayılımı"
+      - "Patlama"
+      - "Yanık"
+    mock_tool_hints:
+      - "activate_cbrn_protocol"
+      - "trigger_fire_suppression"
+      - "broadcast_evacuation"
+
+  oxygen_cylinder_fire:
+    description: "Oksijen tüpü kaçağı veya yanlış kullanım nedeniyle yoğun yanma/alev."
+    risk_score: 95
+    risk_level: "Yüksek"
+    indicators:
+      - "oksijen tüpü bölgesinde alev"
+      - "beyaz/sarı parlama"
+      - "tüp üzerinde buzlanma/yoğunlaşma"
+      - "VLM tarafından oksijen yangını bildirimi"
+    keywords: "oksijen tüpü yangın tüp patlama kaçak yanma"
+    required_nodes: []
+    potential_hazards:
+      - "Patlama"
+      - "Ciddi yanık"
+      - "Yangın büyümesi"
+    mock_tool_hints:
+      - "broadcast_evacuation"
+      - "trigger_fire_suppression"
+      - "call_ambulance"
+
+  paint_booth_fire:
+    description: "Boya kabinindeki yanıcı buharların kıvılcımla tutuşması."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "boya kabini içinde alev/duman"
+      - "havada solvent buharı"
+      - "patlamaya dayanıklı ekipman bölgesi"
+      - "VLM tarafından boya kabini yangını bildirimi"
+    keywords: "boya kabini yangın solvent buhar tutuşma"
+    required_nodes: []
+    potential_hazards:
+      - "Patlama"
+      - "Yangın"
+      - "Zehirli gaz"
+    mock_tool_hints:
+      - "trigger_fire_suppression"
+      - "broadcast_evacuation"
+      - "activate_cbrn_protocol"
+
+  conveyor_overheat_fire:
+    description: "Konveyör rulman, motor veya sıkışan malzeme nedeniyle aşırı ısınma ve yangın."
+    risk_score: 75
+    risk_level: "Yüksek"
+    indicators:
+      - "konveyörden duman/koku"
+      - "malzeme sıkışması"
+      - "motor sıcaklığı artışı"
+      - "VLM tarafından konveyör yangını bildirimi"
+    keywords: "konveyör yangın ısınma rulman motor sıkışma"
+    required_nodes: []
+    potential_hazards:
+      - "Yangın"
+      - "Üretim durması"
+      - "Duman"
+    mock_tool_hints:
+      - "trigger_fire_suppression"
+      - "sound_alarm"
+      - "notify_supervisor"
+
+  forklift_collision:
+    description: "İki forklift veya forklift ile sabit nesne arasında çarpışma."
+    risk_score: 75
+    risk_level: "Yüksek"
+    indicators:
+      - "iki araç arasında temas"
+      - "çarpma sesi/darbe"
+      - "hasarlı forklift veya nesne"
+      - "VLM tarafından forklift çarpışması bildirimi"
+    keywords: "forklift çarpışma araç darbe hasar raf duvar"
+    required_nodes: ["forklift"]
+    potential_hazards:
+      - "Yaralanma"
+      - "Maddi hasar"
+      - "Yangın/sızıntı"
+    mock_tool_hints:
+      - "stop_forklift"
+      - "call_health_team"
+      - "notify_supervisor"
+
+  forklift_load_drop:
+    description: "Forkliftin taşıdığı yükün düşmesi veya sarkıtması."
+    risk_score: 80
+    risk_level: "Yüksek"
+    indicators:
+      - "yük yere düşmüş"
+      - "forklift çatalları boşta sallanıyor"
+      - "yük merkezi aniden düşmüş"
+      - "VLM tarafından yük düşme bildirimi"
+    keywords: "forklift yük düşme çatallar sarkma malzeme"
+    required_nodes: ["forklift"]
+    potential_hazards:
+      - "Ezilme"
+      - "Yaralanma"
+      - "Maddi hasar"
+    mock_tool_hints:
+      - "stop_forklift"
+      - "secure_area"
+      - "call_health_team"
+
+  pallet_jack_runaway:
+    description: "Transpaletin kontrolsüz hareket etmesi veya rampadan aşağı kayması."
+    risk_score: 60
+    risk_level: "Orta"
+    indicators:
+      - "transpalet hızlanarak ilerliyor"
+      - "operatör kontrolü kaybetmiş"
+      - "rampa eğiminde aşağı kayma"
+      - "VLM tarafından transpalet kontrolsüzlüğü"
+    keywords: "transpalet kaçma rampa kontrolsüz manuel kaldırma"
+    required_nodes: []
+    potential_hazards:
+      - "Ayak ezilmesi"
+      - "Çarpma"
+      - "Düşme"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "notify_supervisor"
+
+  crane_hook_swing:
+    description: "Vinç kancasının veya yükün sallanarak çevredeki personele veya ekipmana çarpması."
+    risk_score: 80
+    risk_level: "Yüksek"
+    indicators:
+      - "vinç yükü sallanıyor"
+      - "kanca personele yaklaşıyor"
+      - "radar/taşırma hareketi"
+      - "VLM tarafından vinç sallanma bildirimi"
+    keywords: "vinç kanca sallanma yük taşırma çarpma vinç"
+    required_nodes: ["yuk"]
+    potential_hazards:
+      - "Çarpma"
+      - "Yaralanma"
+      - "Yük düşme"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "secure_area"
+      - "notify_supervisor"
+
+  crane_load_drop:
+    description: "Vinç tarafından taşınan yükün düşmesi."
+    risk_score: 95
+    risk_level: "Yüksek"
+    indicators:
+      - "halat/kanca gevşemiş"
+      - "yük yerde"
+      - "vinç operatörü panik hareketler"
+      - "VLM tarafından vinç yük düşme bildirimi"
+    keywords: "vinç yük düşme halat kanca kopma ağır yük"
+    required_nodes: ["yuk"]
+    potential_hazards:
+      - "Ezilme"
+      - "Ölümcül kaza"
+      - "Yangın/sızıntı"
+    mock_tool_hints:
+      - "broadcast_evacuation"
+      - "call_ambulance"
+      - "secure_area"
+
+  vehicle_pedestrian_collision:
+    description: "Tesis içi herhangi bir araç ile yaya personel arasında çarpışma."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "araç ile insan arasında temas"
+      - "yere düşmüş personel"
+      - "araç durumu"
+      - "VLM tarafından araç-yaya çarpışması"
+    keywords: "araç yaya çarpışma tesis içi insan düşme"
+    required_nodes: ["arac", "insan"]
+    potential_hazards:
+      - "Ezilme"
+      - "Kırık"
+      - "Ölüm"
+    mock_tool_hints:
+      - "stop_forklift"
+      - "call_ambulance"
+      - "secure_area"
+
+  truck_rollover:
+    description: "Kamyon veya tırın viraj, eğim veya yük dengesizliği nedeniyle devrilmesi."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "kamyon yan yatmış"
+      - "yük saçılmış"
+      - "tekerlekleri yerden kesilmiş"
+      - "VLM tarafından kamyon devrilme"
+    keywords: "kamyon tır devrilme eğim viraj yük dengesizlik"
+    required_nodes: ["arac"]
+    potential_hazards:
+      - "Sürücü yaralanma"
+      - "Yük düşme"
+      - "Yangın/sızıntı"
+    mock_tool_hints:
+      - "call_ambulance"
+      - "broadcast_evacuation"
+      - "secure_area"
+
+  forklift_blind_turn:
+    description: "Forkliftin kör noktalı bir dönüşte yaya veya başka araçla çarpışması."
+    risk_score: 75
+    risk_level: "Yüksek"
+    indicators:
+      - "forklift dar köşede dönüyor"
+      - "yaya görüş alanı dışında"
+      - "dönüşte ani temas"
+      - "VLM tarafından kör dönüş kazası"
+    keywords: "forklift kör dönüş köşe yaya görüş alanı"
+    required_nodes: ["forklift", "insan"]
+    potential_hazards:
+      - "Çarpma"
+      - "Ezilme"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "stop_forklift"
+      - "sound_alarm"
+      - "notify_supervisor"
+
+  industrial_vehicle_tip:
+    description: "Forklift dışındaki endüstriyel aracın (sweeper, reach truck, vs.) devrilmesi."
+    risk_score: 70
+    risk_level: "Yüksek"
+    indicators:
+      - "endüstriyel araç yan yatmış"
+      - "operatör araç içinde/altında"
+      - "eğimli zemin/ani manevra"
+      - "VLM tarafından endüstriyel araç devrilme"
+    keywords: "endüstriyel araç devrilme reach truck süpürge eğim"
+    required_nodes: ["arac"]
+    potential_hazards:
+      - "Operatör ezilme"
+      - "Yaralanma"
+      - "Yakıt sızıntısı"
+    mock_tool_hints:
+      - "call_ambulance"
+      - "secure_area"
+      - "notify_supervisor"
+
+  trailer_docking_accident:
+    description: "Tır römorkuna yanaşma/dokuma sırasında araç veya personel arasındaki kaza."
+    risk_score: 65
+    risk_level: "Orta"
+    indicators:
+      - "forklift tır içinde/dışında manevra yapıyor"
+      - "dokka boşluğu büyük"
+      - "yaya rampa yakınında"
+      - "VLM tarafından rampa kazası"
+    keywords: "rampa dokka tır römork forklift yanaşma boşluk"
+    required_nodes: ["arac"]
+    potential_hazards:
+      - "Düşme"
+      - "Çarpma"
+      - "Ezilme"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "notify_supervisor"

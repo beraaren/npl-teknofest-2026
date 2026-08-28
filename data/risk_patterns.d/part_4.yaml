@@ -1,0 +1,393 @@
+patterns:
+  unauthorized_equipment_work:
+    description: "Yetkisiz personelin tehlikeli makine veya ekipman üzerinde çalışmaya kalkışması."
+    risk_score: 70
+    risk_level: "Yüksek"
+    indicators:
+      - "yetkisiz bölgede insan"
+      - "makine paneli açık"
+      - "operasyon kartı/yaka yok"
+      - "VLM tarafından yetkisiz müdahale"
+    keywords: "yetkisiz müdahale makine ekipman eğitim yaka kartı"
+    required_nodes: ["insan", "makine"]
+    potential_hazards:
+      - "Sıkışma"
+      - "Elektrik çarpması"
+      - "Kaza"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "notify_supervisor"
+      - "secure_area"
+
+  working_under_influence:
+    description: "Personelin alkol, ilaç veya uyuşturucu etkisi altında çalışması."
+    risk_score: 70
+    risk_level: "Yüksek"
+    indicators:
+      - "personel dengesiz, koordinasyon bozuk"
+      - "anormal davranış"
+      - "gözde kızarıklık/uykulu"
+      - "VLM tarafından etkisiz personel"
+    keywords: "alkol ilaç uyuşturucu etki altında çalışma denge"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Düşme"
+      - "Makine kazası"
+      - "Araç kazası"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "call_health_team"
+      - "stop_forklift"
+
+  fatigue_operating_vehicle:
+    description: "Yorgun/uyuklayan operatörün forklift veya araç kullanması."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "operatör başı öne düşmüş"
+      - "araç yavaş/sapma yapıyor"
+      - "göz kapanma"
+      - "VLM tarafından yorgun sürücü"
+    keywords: "yorgun sürücü uyuklama baş düşme sapma göz kapanma"
+    required_nodes: ["arac", "insan"]
+    potential_hazards:
+      - "Çarpma"
+      - "Devrilme"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "stop_forklift"
+      - "sound_alarm"
+      - "notify_supervisor"
+
+  horseplay:
+    description: "Personelin iş alanında şakalaşma, itiş-kakış veya dikkatsiz davranışı."
+    risk_score: 50
+    risk_level: "Orta"
+    indicators:
+      - "personeller birbirini itiyor"
+      - "iş ekipmanıyla oynuyor"
+      - "dikkat dağıtıcı davranış"
+      - "VLM tarafından şakalaşma"
+    keywords: "şakalaşma itiş kakış dikkatsiz davranış atıştırma"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Düşme"
+      - "Çarpma"
+      - "Makine kazası"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "notify_supervisor"
+
+  bypassing_safety_interlock:
+    description: "Emniyet kilidi, sensör veya güvenlik durdurucusunun atlatılması."
+    risk_score: 80
+    risk_level: "Yüksek"
+    indicators:
+      - "kilidi tel bağlama/devre dışı"
+      - "kapak açıkken makine çalışıyor"
+      - "sensör üzerine bant yapıştırılmış"
+      - "VLM tarafından emniyet atlatma"
+    keywords: "emniyet kilidi atlatma sensör devre dışı tel bağlama"
+    required_nodes: ["makine"]
+    potential_hazards:
+      - "Sıkışma"
+      - "Çalışma süresi kazası"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "isolate_electrical_grid"
+      - "notify_supervisor"
+      - "secure_area"
+
+  working_alone_hazard:
+    description: "Yalnız çalışma gerektiren alanda kişinin yardımsız kalması sonucu kaza."
+    risk_score: 60
+    risk_level: "Orta"
+    indicators:
+      - "bölgede tek personel"
+      - "iletişim cihazı yok"
+      - "tehlikeli ekipman aktif"
+      - "VLM tarafından yalnız çalışma"
+    keywords: "yalnız çalışma tek personel iletişim tehlike"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Gecikmiş müdahale"
+      - "Ağır yaralanma"
+      - "Ölüm"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "call_health_team"
+
+  crowd_crush:
+    description: "Dar geçitte veya acil çıkışta kalabalık baskısı sonucu ezilme."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "dar alanda çok sayıda insan"
+      - "hareket yavaş/engellenmiş"
+      - "itme/baskı hareketi"
+      - "VLM tarafından kalabalık baskısı"
+    keywords: "kalabalık baskı dar geçit çıkış ezilme"
+    required_nodes: ["insan", "insan", "insan"]
+    potential_hazards:
+      - "Ezilme"
+      - "Soluma güçlüğü"
+      - "Panik"
+    mock_tool_hints:
+      - "broadcast_evacuation"
+      - "sound_alarm"
+      - "secure_area"
+
+  panic_during_evacuation:
+    description: "Acil tahliye sırasında panik, tıkanıklık veya yanlış yöne kaçış."
+    risk_score: 75
+    risk_level: "Yüksek"
+    indicators:
+      - "personel koşarak yanlış yöne"
+      - "çıkış kapısında tıkanma"
+      - "acil ışıkları kapalı"
+      - "VLM tarafından tahliye paniği"
+    keywords: "tahliye panik koşma tıkanma yanlış yön çıkış"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Ezilme"
+      - "Düşme"
+      - "Gecikmiş tahliye"
+    mock_tool_hints:
+      - "broadcast_evacuation"
+      - "sound_alarm"
+      - "notify_supervisor"
+
+  improper_manual_handling:
+    description: "Personelin ağır yükü tek başına veya hatalı pozisyonda kaldırması."
+    risk_score: 50
+    risk_level: "Orta"
+    indicators:
+      - "personel ağır yük kaldırıyor"
+      - "bel bükülmüş"
+      - "dizden kalkma yok"
+      - "VLM tarafından hatalı kaldırma"
+    keywords: "hatalı kaldırma ağır yük bel bükülme diz"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Bel zedelenmesi"
+      - "Fıtık"
+      - "Yük düşme"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "call_health_team"
+
+  stress_induced_error:
+    description: "Aşırı iş yükü veya baskı altında personelin dikkat hatası yapması."
+    risk_score: 45
+    risk_level: "Orta"
+    indicators:
+      - "personel aceleci hareketler"
+      - "çoklu görev/panik"
+      - "yorgunluk belirtileri"
+      - "VLM tarafından stres kaynaklı hata"
+    keywords: "stres iş yükü dikkat hatası acele panik"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Makine kazası"
+      - "Düşme"
+      - "Çarpma"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "call_health_team"
+
+  excavation_collapse:
+    description: "Açık kazı kenarının çökmesi sonucu personel ve toprak göçmesi."
+    risk_score: 95
+    risk_level: "Yüksek"
+    indicators:
+      - "kazı duvarı çatlamış"
+      - "toprak kayıyor"
+      - "personel kazı içinde"
+      - "VLM tarafından kazı çökme"
+    keywords: "kazı çökme toprak duvar göçme hendek"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Gömülme"
+      - "Ezilme"
+      - "Ölüm"
+    mock_tool_hints:
+      - "broadcast_evacuation"
+      - "call_ambulance"
+      - "secure_area"
+
+  trench_collapse:
+    description: "Hendek/kanal kazısının yan duvarlarının çökmesi."
+    risk_score: 95
+    risk_level: "Yüksek"
+    indicators:
+      - "hendek içinde personel"
+      - "yan duvarlar gevşek"
+      - "kazı derinliği yüksek"
+      - "VLM tarafından hendek çökme"
+    keywords: "hendek çökme kanal kazı duvar göçme derinlik"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Gömülme"
+      - "Soluma yetersizliği"
+      - "Kurtarma zorluğu"
+    mock_tool_hints:
+      - "broadcast_evacuation"
+      - "call_ambulance"
+      - "secure_area"
+
+  scaffolding_failure:
+    description: "İskele elemanında bağlantı gevşemesi, zayıflık veya aşırı yükten arıza."
+    risk_score: 80
+    risk_level: "Yüksek"
+    indicators:
+      - "iskele elemanı bükülmüş"
+      - "personel iskele üzerinde"
+      - "aşırı malzeme yükü"
+      - "VLM tarafından iskele arızası"
+    keywords: "iskele arıza bağlantı bükülme aşırı yük"
+    required_nodes: ["iskele", "insan"]
+    potential_hazards:
+      - "Düşme"
+      - "Malzeme düşme"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "secure_area"
+      - "call_ambulance"
+
+  crane_tipping:
+    description: "Vinçin aşırı yük, yanlış konumlanma veya zemin zayıflığı nedeniyle devrilmesi."
+    risk_score: 95
+    risk_level: "Yüksek"
+    indicators:
+      - "vinç gövdesi eğilmiş"
+      - "tekerlekler yerden kesilmiş"
+      - "yuk ağırlık sınırını aşıyor"
+      - "VLM tarafından vinç devrilme"
+    keywords: "vinç devrilme aşırı yük zemin eğilme gövde"
+    required_nodes: ["makine"]
+    potential_hazards:
+      - "Yıkım"
+      - "Yük düşme"
+      - "Ölüm"
+    mock_tool_hints:
+      - "broadcast_evacuation"
+      - "call_ambulance"
+      - "secure_area"
+
+  concrete_formwork_failure:
+    description: "Beton kalıp sisteminin çökmesi veya şişmesi sonucu betonun dışarı fışkırması."
+    risk_score: 90
+    risk_level: "Yüksek"
+    indicators:
+      - "kalıp elemanları bükülmüş"
+      - "beton sızıntısı"
+      - "personel kalıp altında"
+      - "VLM tarafından kalıp çökme"
+    keywords: "beton kalıp çökme fıskiye şişme dübel"
+    required_nodes: ["insan", "iskele"]
+    potential_hazards:
+      - "Ezilme"
+      - "Beton sıçrama"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "broadcast_evacuation"
+      - "call_ambulance"
+      - "secure_area"
+
+  wall_collapse:
+    description: "Yıkım, inşaat veya destek yetersizliği nedeniyle duvarın çökmesi."
+    risk_score: 95
+    risk_level: "Yüksek"
+    indicators:
+      - "duvar eğilmiş/çatlak"
+      - "personel duvar yakınında"
+      - "yıkım çalışması aktif"
+      - "VLM tarafından duvar çökme"
+    keywords: "duvar çökme yıkım inşaat eğilme çatlak"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Gömülme"
+      - "Ezilme"
+      - "Ölüm"
+    mock_tool_hints:
+      - "broadcast_evacuation"
+      - "call_ambulance"
+      - "secure_area"
+
+  buried_by_material:
+    description: "Personelin malzeme yığını, toprak veya granül altında kalması."
+    risk_score: 95
+    risk_level: "Yüksek"
+    indicators:
+      - "yığın altında insan hareketi"
+      - "malzeme kayıyor"
+      - "depolama açısı dik"
+      - "VLM tarafından malzeme altında kalma"
+    keywords: "malzeme altında kalma yığın toprak gömülme"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Soluma yetmezliği"
+      - "Ezilme"
+      - "Ölüm"
+    mock_tool_hints:
+      - "call_ambulance"
+      - "broadcast_evacuation"
+      - "secure_area"
+
+  struck_by_vehicle:
+    description: "İnşaat/saha içinde hafriyat kamyonu, dozer veya iş makinesinin personele çarpması."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "iş makinesi personel yakınında"
+      - "yaya güzergahı yok"
+      - "operatör kör nokta"
+      - "VLM tarafından iş makinesi çarpma"
+    keywords: "iş makinesi çarpma dozer kamyon hafriyat yaya"
+    required_nodes: ["arac", "insan"]
+    potential_hazards:
+      - "Ezilme"
+      - "Yaralanma"
+      - "Ölüm"
+    mock_tool_hints:
+      - "stop_forklift"
+      - "call_ambulance"
+      - "secure_area"
+
+  asphalt_burn:
+    description: "Sıcak asfalt/bitümün personele sıçraması veya dokunması sonucu yanık."
+    risk_score: 70
+    risk_level: "Yüksek"
+    indicators:
+      - "buharlaşan sıcak asfalt"
+      - "buhar kalkanlı çalışma"
+      - "personel koruyucu elbiseli/olmayan"
+      - "VLM tarafından sıcak asfalt yanığı"
+    keywords: "asfalt yanık bitüm sıcak buhar dokunma"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Ciddi yanık"
+      - "Doku hasarı"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "call_ambulance"
+      - "call_health_team"
+
+  welding_flash_burn:
+    description: "Kaynak ışığının (ark) göze veya cilde doğrudan maruz bırakılması."
+    risk_score: 55
+    risk_level: "Orta"
+    indicators:
+      - "kaynak yapılan bölgede yan bakışlar"
+      - "göz koruyucu eksik"
+      - "berrak cam/parlak yansıma"
+      - "VLM tarafından kaynak göz yanığı"
+    keywords: "kaynak göz yanığı ark flaş koruyucu gözlük"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Göz hasarı"
+      - "Cilt yanığı"
+      - "Geçici görme kaybı"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "call_health_team"

@@ -1,0 +1,383 @@
+patterns:
+  ladder_fall:
+    description: "Personelin sabit veya portatif merdivenden düşmesi."
+    risk_score: 80
+    risk_level: "Yüksek"
+    indicators:
+      - "merdiven üzerinde insan"
+      - "insan merkezi dikeyde ani düşüş"
+      - "3 basamaktan fazla yükseklik"
+      - "VLM tarafından merdiven düşme bildirimi"
+    keywords: "merdiven düşme yükseklik basamak portatif kayma"
+    required_nodes: ["merdiven", "insan"]
+    potential_hazards:
+      - "Kırık/çıkık"
+      - "Kafa travması"
+      - "Omurga zedelenmesi"
+    mock_tool_hints:
+      - "call_ambulance"
+      - "secure_area"
+      - "notify_supervisor"
+
+  scaffold_collapse:
+    description: "İskele sisteminin çökmesi veya parçalanması sonucu personel ve malzeme düşmesi."
+    risk_score: 95
+    risk_level: "Yüksek"
+    indicators:
+      - "iskele parçaları dağılmış"
+      - "personel iskele üzerinde sallanıyor"
+      - "ankraj/ayaklar gevşek"
+      - "VLM tarafından iskele çökme bildirimi"
+    keywords: "iskele çökme yapı ankraj sağlamlık personel düşme"
+    required_nodes: ["iskele", "insan"]
+    potential_hazards:
+      - "Çoklu düşme"
+      - "Ezilme"
+      - "Ölüm"
+    mock_tool_hints:
+      - "broadcast_evacuation"
+      - "call_ambulance"
+      - "secure_area"
+
+  roof_edge_fall:
+    description: "Personelin çatı kenarından veya açık yüzeyden düşmesi."
+    risk_score: 95
+    risk_level: "Yüksek"
+    indicators:
+      - "insan çatı kenarında"
+      - "korkuluk/bariyer eksik"
+      - "ayaklar kayma riski altında"
+      - "VLM tarafından çatı düşme riski"
+    keywords: "çatı kenar düşme korkuluk yükseklik açık yüzey"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Ölümcül düşme"
+      - "Ciddi yaralanma"
+    mock_tool_hints:
+      - "call_ambulance"
+      - "broadcast_evacuation"
+      - "secure_area"
+
+  mezzanine_fall:
+    description: "Asma kat, platform veya loft alanından personel veya nesne düşmesi."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "insan asma kat kenarında"
+      - "kapısız/guardrailsiz açıklık"
+      - "malzeme kenara yakın"
+      - "VLM tarafından asma kat düşme"
+    keywords: "asma kat platform loft düşme açıklık guardrail"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Düşme"
+      - "Alt kata malzeme düşmesi"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "call_ambulance"
+      - "secure_area"
+
+  elevated_platform_tipped:
+    description: "Hareketli çalışma platformunun (MEP) devrilmesi."
+    risk_score: 90
+    risk_level: "Yüksek"
+    indicators:
+      - "platform sepeti eğilmiş"
+      - "tekerlekler yerden kesilmiş"
+      - "personel platform içinde sallanıyor"
+      - "VLM tarafından platform devrilme"
+    keywords: "hareketli çalışma platform mep devrilme sepet"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Yüksekten düşme"
+      - "Ezilme"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "call_ambulance"
+      - "secure_area"
+      - "notify_supervisor"
+
+  harness_failure:
+    description: "Yüksekte çalışan personelin emniyet kemeri/telcik sisteminde arıza veya yanlış bağlantı."
+    risk_score: 90
+    risk_level: "Yüksek"
+    indicators:
+      - "kemer bağlantısı gevşek/eksik"
+      - "halat aşınmış"
+      - "insan düşme anında"
+      - "VLM tarafından kemer arızası"
+    keywords: "emniyet kemeri telcik halat düşme yüksekte çalışma"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Ölümcül düşme"
+      - "Ciddi yaralanma"
+    mock_tool_hints:
+      - "call_ambulance"
+      - "broadcast_evacuation"
+
+  slip_from_height:
+    description: "Yüksek bir yerde çalışan personelin kayarak düşmesi (iskele, kiriş, makine üstü)."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "insan dengesini kaybetmiş"
+      - "yukarıdan aşağıya hareket"
+      - "ıslak/kirli yüzey"
+      - "VLM tarafından yüksekten kayma"
+    keywords: "yüksekten kayma ıslak yüzey denge düşme"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Düşme"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "call_ambulance"
+      - "secure_area"
+
+  falling_tools:
+    description: "Yüksekte çalışan personelin el aletinin veya malzemesinin aşağıya düşmesi."
+    risk_score: 70
+    risk_level: "Yüksek"
+    indicators:
+      - "yukarıdan nesne düşüyor"
+      - "insan elinde alet varken boşaldı"
+      - "alt katta yaya var"
+      - "VLM tarafından düşen alet"
+    keywords: "düşen alet yüksekten nesne çekiç tornavida"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Kafa travması"
+      - "Yaralanma"
+      - "Düşen aletin yere çarpması"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "secure_area"
+      - "notify_supervisor"
+
+  guardrail_missing_fall:
+    description: "Korkuluk veya koruma engeli olmayan kenardan düşme riski veya düşme olayı."
+    risk_score: 80
+    risk_level: "Yüksek"
+    indicators:
+      - "açık kenar, korkuluk yok"
+      - "insan kenara yakın"
+      - "geçici koruma kaldırılmış"
+      - "VLM tarafından koruyucu eksikliği"
+    keywords: "korkuluk eksik düşme koruma engel kenar açık"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Düşme"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "secure_area"
+
+  skylight_fall:
+    description: "Personelin çatıdaki ışıklık/şeffaf panelden düşmesi."
+    risk_score: 95
+    risk_level: "Yüksek"
+    indicators:
+      - "çatıda şeffaf panel"
+      - "insan panel üzerinde/panel çatlamış"
+      - "panel çevresinde uyarı yok"
+      - "VLM tarafından ışıklık düşme"
+    keywords: "ışıklık çatı panel düşme şeffaf polycarbon"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Ölümcül düşme"
+      - "Ciddi yaralanma"
+    mock_tool_hints:
+      - "call_ambulance"
+      - "broadcast_evacuation"
+
+  falling_object:
+    description: "Yüksekten veya raf üstünden herhangi bir nesnenin düşmesi."
+    risk_score: 75
+    risk_level: "Yüksek"
+    indicators:
+      - "nesne yere düşmüş"
+      - "nesne yukarıdan gelmiş"
+      - "alt katta yaya var"
+      - "VLM tarafından düşen nesne"
+    keywords: "düşen nesne yukarıdan raf çatı malzeme"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Kafa travması"
+      - "Yaralanma"
+      - "Ezilme"
+    mock_tool_hints:
+      - "secure_area"
+      - "call_health_team"
+      - "notify_supervisor"
+
+  stacking_collapse:
+    description: "Üst üste istiflenmiş malzemenin çökmesi."
+    risk_score: 80
+    risk_level: "Yüksek"
+    indicators:
+      - "istif eğilmiş/çökmüş"
+      - "malzemeler yere saçılmış"
+      - "yükseklik sınırı aşılmış"
+      - "VLM tarafından istif çökme"
+    keywords: "istif çökme yığın malzeme düşme raf"
+    required_nodes: ["palet", "kutu"]
+    potential_hazards:
+      - "Ezilme"
+      - "Yaralanma"
+      - "Engel"
+    mock_tool_hints:
+      - "secure_area"
+      - "notify_supervisor"
+
+  shelving_collapse:
+    description: "Depo raf sisteminin aşırı yük veya çarpma sonucu çökmesi."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "raf direkleri bükülmüş"
+      - "raflar eğilmiş"
+      - "yük ağırlık sınırını aşıyor"
+      - "VLM tarafından raf çökme"
+    keywords: "raf çökme depo direk eğilme aşırı yük"
+    required_nodes: ["palet", "kutu"]
+    potential_hazards:
+      - "Çoklu ezilme"
+      - "Yangın (elektrik/akü)"
+      - "Tahliye engeli"
+    mock_tool_hints:
+      - "broadcast_evacuation"
+      - "call_ambulance"
+      - "secure_area"
+
+  drum_rolling:
+    description: "Varil/bidonun yuvarlanarak personele veya ekipmana çarpması."
+    risk_score: 60
+    risk_level: "Orta"
+    indicators:
+      - "varil yuvarlanıyor"
+      - "insan varilin önünde"
+      - "eğimli zemin"
+      - "VLM tarafından varil yuvarlanma"
+    keywords: "varil bidon yuvarlanma eğim çarpma"
+    required_nodes: ["varil"]
+    potential_hazards:
+      - "Çarpma"
+      - "Sızıntı"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "secure_area"
+
+  swinging_door_impact:
+    description: "Ağır yangın kapısı, fabrika kapısı veya sallanan hızlı kapının personele çarpması."
+    risk_score: 50
+    risk_level: "Orta"
+    indicators:
+      - "kapı ani açılıyor/kapanıyor"
+      - "insan kapı arkası/yolunda"
+      - "fotosel/hız sınırlayıcı yok"
+      - "VLM tarafından kapı çarpması"
+    keywords: "sallanan kapı çarpma fotosel hızlı kapı"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Yaralanma"
+      - "Düşme"
+    mock_tool_hints:
+      - "call_health_team"
+      - "notify_supervisor"
+
+  overhead_load_swing:
+    description: "Vinç/vagon tarafından taşınan yükün sallanarak personele yaklaşması."
+    risk_score: 80
+    risk_level: "Yüksek"
+    indicators:
+      - "yük yatayda sallanıyor"
+      - "insan yük yörüngesinde"
+      - "taşıma sırasında yük stabil değil"
+      - "VLM tarafından sallanan yük"
+    keywords: "yük sallanma vinç taşıma yörünge personele"
+    required_nodes: ["yuk"]
+    potential_hazards:
+      - "Çarpma"
+      - "Ezilme"
+      - "Yük düşme"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "secure_area"
+
+  collapsing_formwork:
+    description: "Beton dökümünde kullanılan kalıp iskelesinin çökmesi."
+    risk_score: 95
+    risk_level: "Yüksek"
+    indicators:
+      - "kalıp direkleri bükülmüş"
+      - "beton sızıntısı"
+      - "personel kalıp altında"
+      - "VLM tarafından kalıp çökme"
+    keywords: "kalıp iskele beton çökme direk bükülme"
+    required_nodes: ["insan", "iskele"]
+    potential_hazards:
+      - "Ezilme"
+      - "Düşme"
+      - "Ölüm"
+    mock_tool_hints:
+      - "broadcast_evacuation"
+      - "call_ambulance"
+      - "secure_area"
+
+  dropped_tool:
+    description: "Yüksekten veya elden düşen el aletinin personele isabet etmesi."
+    risk_score: 65
+    risk_level: "Orta"
+    indicators:
+      - "alet düşüyor"
+      - "insan alt katta"
+      - "elden kayma"
+      - "VLM tarafından düşen alet"
+    keywords: "düşen alet el aleti isabet kafa"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Kafa/yaralanma"
+      - "Kesici alet"
+    mock_tool_hints:
+      - "secure_area"
+      - "call_health_team"
+
+  material_projection:
+    description: "Pres, tester veya makine tarafından malzemenin fırlatılması."
+    risk_score: 75
+    risk_level: "Yüksek"
+    indicators:
+      - "parça fırlıyor"
+      - "makine çalışırken açık"
+      - "parça yüksek hızla hareket"
+      - "VLM tarafından malzeme fırlama"
+    keywords: "parça fırlama pres testere makine kırılma"
+    required_nodes: ["makine"]
+    potential_hazards:
+      - "Göz yaralanması"
+      - "Vücut travması"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "secure_area"
+      - "sound_alarm"
+      - "call_health_team"
+
+  press_ejected_part:
+    description: "Pres makinesinden hatalı parça veya hurda fırlaması sonucu yaralanma."
+    risk_score: 70
+    risk_level: "Yüksek"
+    indicators:
+      - "pres çalışırken parça fırlıyor"
+      - "operatör parça yörüngesinde"
+      - "koruyucu perde eksik"
+      - "VLM tarafından pres fırlatma"
+    keywords: "pres parça fırlama hurda koruyucu perde"
+    required_nodes: ["makine"]
+    potential_hazards:
+      - "Yaralanma"
+      - "Göz hasarı"
+      - "Makine hasarı"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "secure_area"
+      - "call_health_team"

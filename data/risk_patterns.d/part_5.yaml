@@ -1,0 +1,387 @@
+patterns:
+  rack_overloading:
+    description: "Depo rafının üzerindeki yük ağırlık ve hacim sınırını aşması."
+    risk_score: 75
+    risk_level: "Yüksek"
+    indicators:
+      - "raf hücresi doluluğu yüksek"
+      - "palet dışarı sarkıyor"
+      - "raf profili bükülmüş"
+      - "VLM tarafından raf aşırı yüklenme"
+    keywords: "raf aşırı yüklenme depo palet sarkma ağırlık"
+    required_nodes: ["palet"]
+    potential_hazards:
+      - "Raf çökme"
+      - "Yük düşme"
+      - "Tahliye engeli"
+    mock_tool_hints:
+      - "secure_area"
+      - "notify_supervisor"
+
+  forklift_pallet_piercing:
+    description: "Forklift çatallarının paleti delip yükü düşürmesi veya dengesiz taşıması."
+    risk_score: 70
+    risk_level: "Yüksek"
+    indicators:
+      - "çatallar paletin üstünden çıkmış"
+      - "yük sallanıyor"
+      - "palet hasarlı"
+      - "VLM tarafından çatal delme"
+    keywords: "forklift çatal delme palet hasar yük düşme"
+    required_nodes: ["forklift", "palet"]
+    potential_hazards:
+      - "Yük düşme"
+      - "Palet kırılma"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "stop_forklift"
+      - "secure_area"
+      - "notify_supervisor"
+
+  order_picker_fall:
+    description: "Sipariş toplayıcının sepet veya platformdan düşmesi."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "sepet yüksekte"
+      - "personel sepet kenarında eğilmiş"
+      - "emniyet kemeri yok"
+      - "VLM tarafından toplayıcı düşme"
+    keywords: "sipariş toplayıcı sepet düşme emniyet kemeri"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Yüksekten düşme"
+      - "Kafa travması"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "call_ambulance"
+      - "secure_area"
+      - "notify_supervisor"
+
+  loading_dock_gap_fall:
+    description: "Personelin tır ile rampa arasındaki boşluğa düşmesi."
+    risk_score: 80
+    risk_level: "Yüksek"
+    indicators:
+      - "tır ile rampa arasında boşluk"
+      - "personel boşluk kenarında"
+      - "körüklü köprü yok"
+      - "VLM tarafından rampa boşluğuna düşme"
+    keywords: "rampa boşluk tır düşme köprü körük"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Düşme"
+      - "Kırık"
+      - "Ezilme"
+    mock_tool_hints:
+      - "call_ambulance"
+      - "secure_area"
+      - "notify_supervisor"
+
+  conveyor_jam:
+    description: "Konveyörde sıkışan malzeme veya personelin müdahale sırasında sıkışması."
+    risk_score: 70
+    risk_level: "Yüksek"
+    indicators:
+      - "konveyörde malzeme yığılmış"
+      - "personel elini içeri sokuyor"
+      - "acil durdurucu yanında"
+      - "VLM tarafından konveyör sıkışma"
+    keywords: "konveyör sıkışma malzeme yığın el müdahale"
+    required_nodes: ["makine", "insan"]
+    potential_hazards:
+      - "Sıkışma"
+      - "Ezilme"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "isolate_electrical_grid"
+      - "call_health_team"
+      - "secure_area"
+
+  pallet_stacking_too_high:
+    description: "Paletlerin güvenli yüksekliği aşacak şekilde üst üste konulması."
+    risk_score: 65
+    risk_level: "Orta"
+    indicators:
+      - "palet yığıntısı çok yüksek"
+      - "üst palet dengesiz"
+      - "çatıya/ışıklara yakın"
+      - "VLM tarafından yüksek istif"
+    keywords: "palet yüksek istif yığın depo tavan dengesiz"
+    required_nodes: ["palet"]
+    potential_hazards:
+      - "Çökme"
+      - "Yük düşme"
+      - "Raf çarpma"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "secure_area"
+
+  agv_collision:
+    description: "Otonom taşıma robotunun (AGV) personele veya ekipmana çarpması."
+    risk_score: 70
+    risk_level: "Yüksek"
+    indicators:
+      - "AGV personel yakınında"
+      - "lidar/kamera engel algılamıyor"
+      - "hızlı ani duruş"
+      - "VLM tarafından AGV çarpma"
+    keywords: "agv otonom robot çarpma taşıma lidar"
+    required_nodes: ["makine", "insan"]
+    potential_hazards:
+      - "Çarpma"
+      - "Ezilme"
+      - "Makine hasarı"
+    mock_tool_hints:
+      - "stop_forklift"
+      - "sound_alarm"
+      - "notify_supervisor"
+
+  cold_storage_hypothermia:
+    description: "Soğuk hava deposunda uzun süre kalarak vücut ısısının düşmesi."
+    risk_score: 70
+    risk_level: "Yüksek"
+    indicators:
+      - "personel dondurucu hücrede uzun süre"
+      - "titreme/bitkinlik"
+      - "koruyucu giysi yetersiz"
+      - "VLM tarafından soğuk depo hipotermi"
+    keywords: "soğuk depo hipotermi titreme dondurucu hücre"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Hipotermi"
+      - "Bilinç kaybı"
+      - "Donma"
+    mock_tool_hints:
+      - "call_health_team"
+      - "call_ambulance"
+      - "notify_supervisor"
+
+  gas_forklift_exhaust:
+    description: "LPG/dizel forklift egzoz gazının kapalı alanda birikmesi sonucu zehirlenme."
+    risk_score: 75
+    risk_level: "Yüksek"
+    indicators:
+      - "kapalı depoda LPG forklift çalışıyor"
+      - "havalandırma kapalı"
+      - "personel baş ağrısı/bulantı"
+      - "VLM tarafından egzoz zehirlenme"
+    keywords: "lpg dizel forklift egzoz karbonmonoksit kapalı depo"
+    required_nodes: ["arac", "insan"]
+    potential_hazards:
+      - "Karbonmonoksit zehirlenmesi"
+      - "Bilinç kaybı"
+      - "Ölüm"
+    mock_tool_hints:
+      - "activate_cbrn_protocol"
+      - "broadcast_evacuation"
+      - "call_ambulance"
+
+  order_rush_collision:
+    description: "Sipariş acelesi nedeniyle hızlı hareket eden personel/araçların çarpışması."
+    risk_score: 65
+    risk_level: "Orta"
+    indicators:
+      - "personel veya forklift hızlı"
+      - "çoklu yönlü hareket"
+      - "etiket/tarama yapmadan geçiş"
+      - "VLM tarafından acele çarpma"
+    keywords: "sipariş acele hızlı çarpma depo toplama"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Çarpma"
+      - "Düşme"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "notify_supervisor"
+
+  chair_fall:
+    description: "Ofis çalışanının sandalyeden düşmesi veya sandalyenin devrilmesi."
+    risk_score: 30
+    risk_level: "Düşük"
+    indicators:
+      - "sandalye üzerinde dengesiz oturuş"
+      - "tekerlekli sandalye kayıyor"
+      - "insan yere düşmüş"
+      - "VLM tarafından sandalye düşme"
+    keywords: "sandalye düşme ofis dengesiz devrilme"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Kırık/çıkık"
+      - "Baş yaralanması"
+    mock_tool_hints:
+      - "call_health_team"
+      - "notify_supervisor"
+
+  paper_cutter_injury:
+    description: "Kâğıt kesici, giyotin veya zımba makinesinin el/kâğıt sıkıştırması."
+    risk_score: 60
+    risk_level: "Orta"
+    indicators:
+      - "giyotin bıçağı aşağıda"
+      - "el bıçak alanı yakınında"
+      - "iki el kontrolü yok"
+      - "VLM tarafından kâğıt kesici yaralanma"
+    keywords: "giyotin kağıt kesici bıçak el sıkışma ofis"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Kesik"
+      - "Parmak kırığı"
+      - "Parmak amputasyonu"
+    mock_tool_hints:
+      - "call_health_team"
+      - "secure_area"
+
+  lifting_box_back_injury:
+    description: "Ofis/depo ortamında ağır kutu dosya kaldırılırken bel zedelenmesi."
+    risk_score: 45
+    risk_level: "Orta"
+    indicators:
+      - "personel bükülerek kutu kaldırıyor"
+      - "yalnız taşıma"
+      - "kutu büyük ve ağır"
+      - "VLM tarafından kutu kaldırma bel"
+    keywords: "kutu kaldırma bel ofis dosya ağır taşıma"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Bel fıtığı"
+      - "Kas zedelenmesi"
+      - "Uzun vadeli rahatsızlık"
+    mock_tool_hints:
+      - "call_health_team"
+      - "notify_supervisor"
+
+  stair_fall:
+    description: "Personelin ofis merdivenlerinde düşmesi."
+    risk_score: 55
+    risk_level: "Orta"
+    indicators:
+      - "insan merdivende düşüyor"
+      - "elden kağıt/dosya saçılmış"
+      - "kaygan basamak"
+      - "VLM tarafından ofis merdiven düşme"
+    keywords: "ofis merdiven düşme basamak kaygan korkuluk"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Kırık"
+      - "Kafa travması"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "call_health_team"
+      - "notify_supervisor"
+
+  slip_on_polished_floor:
+    description: "Parlak/ıslak ofis zemininde personelin kayması."
+    risk_score: 40
+    risk_level: "Düşük"
+    indicators:
+      - "zemin parlamalı/ıslak"
+      - "uyarı levhası yok"
+      - "insan kayarak düşüyor"
+      - "VLM tarafından parke kayma"
+    keywords: "parke zemin kayma ıslak ofis düşme uyarı"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Düşme"
+      - "Kırık"
+      - "Baş yaralanması"
+    mock_tool_hints:
+      - "call_health_team"
+      - "notify_supervisor"
+
+  file_cabinet_tip:
+    description: "Ağır dosya dolabının aşırı çekmece açılması sonucu devrilmesi."
+    risk_score: 50
+    risk_level: "Orta"
+    indicators:
+      - "dolap eğilmiş"
+      - "üst çekmeceler açık"
+      - "personel dolap yakınında"
+      - "VLM tarafından dosya dolabı devrilme"
+    keywords: "dosya dolabı devrilme ağır çekmece ofis"
+    required_nodes: ["insan", "kutu"]
+    potential_hazards:
+      - "Ezilme"
+      - "Kafa travması"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "call_health_team"
+      - "secure_area"
+      - "notify_supervisor"
+
+  glass_door_walk_through:
+    description: "Personelin cam kapıyı fark etmeyerek çarpması ve camın kırılması."
+    risk_score: 45
+    risk_level: "Orta"
+    indicators:
+      - "temiz cam kapı"
+      - "işaretleme yok"
+      - "insan panele doğru yürüyor"
+      - "VLM tarafından cam kapı çarpma"
+    keywords: "cam kapı çarpma kırılma ofis işaretleme yok"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Kesik"
+      - "Cam yaralanması"
+      - "Düşme"
+    mock_tool_hints:
+      - "call_health_team"
+      - "secure_area"
+
+  hot_beverage_scald:
+    description: "Sıcak kahve, çay veya suyun personel üzerine dökülmesi sonucu yanık."
+    risk_score: 35
+    risk_level: "Düşük"
+    indicators:
+      - "personel sıcak bardağı taşıyor"
+      - "dökülme hareketi"
+      - "cilt kızarmış"
+      - "VLM tarafından sıcak içecek yanığı"
+    keywords: "sıcak içecek yanık kahve çay dökülme ofis"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Yanık"
+      - "Ağrı"
+      - "İş kaybı"
+    mock_tool_hints:
+      - "call_health_team"
+      - "notify_supervisor"
+
+  printer_toner_inhalation:
+    description: "Yazıcı toner tozunun solunması veya toner değişimi sırasında dökülme."
+    risk_score: 40
+    risk_level: "Düşük"
+    indicators:
+      - "toner değiştiriliyor"
+      - "siyah toz saçılmış"
+      - "maske yok"
+      - "VLM tarafından toner solunum"
+    keywords: "toner solunum yazıcı toz dökülme ofis"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Solunum tahrişi"
+      - "Alerjik reaksiyon"
+      - "Uzun vadeli maruziyet"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "call_health_team"
+
+  ergonomic_monitor_neck:
+    description: "Monitör/ekranın ergonomik olmayan konumundan kaynaklanan boyun/omuz ağrısı."
+    risk_score: 30
+    risk_level: "Düşük"
+    indicators:
+      - "monitör çok alçak/yüksek"
+      - "personel baş eğik"
+      - "uzun süre sabit oturuş"
+      - "VLM tarafından ergonomi riski"
+    keywords: "monitör boyun ağrısı ergonomi ekran yükseklik"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Boyun fıtığı"
+      - "Omuz ağrısı"
+      - "Baş ağrısı"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "call_health_team"

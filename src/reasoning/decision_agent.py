@@ -225,6 +225,13 @@ class DecisionAgent:
         parts.append(json.dumps(candidates, ensure_ascii=False, indent=2) if candidates else "Aday geometrik gözlem yok.")
 
         parts.append("\n--- RAG TEHLİKE HİPOTEZLERİ (kanıt değil) ---")
+        parts.append(
+            "RAG çıktısı iki amaçla kullanılır:\n"
+            "- 'pre_incident_risk': Kaza öncesi risk göstergeleri ve olası zarar mekanizmaları.\n"
+            "- 'post_incident_response': Kaza anında/sonrasında alınabilecek aksiyon ve araç ipuçları.\n"
+            "'retrieval_confidence' ve 'similarity' yalnızca vektör benzerliğidir; risk confidence'ı DEĞİLDİR.\n"
+            "'risk_score'/'risk_level' pattern kataloğunun referans değerleridir; kendi kararını desteklemek için kullan, kopyalama."
+        )
         parts.append(json.dumps(rag_context, ensure_ascii=False, indent=2))
 
         parts.append("\n--- VLM GÖRSEL YORUMU (bağımsız kanal) ---")

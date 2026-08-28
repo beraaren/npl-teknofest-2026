@@ -1,0 +1,393 @@
+patterns:
+  lathe_entanglement:
+    description: "Torna tezgahına uzun talaş, saçak veya gevşek kıyafet sarılması sonucu sıkışma."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "torna dönerken parça sarılma"
+      - "operatör makineye doğru çekiliyor"
+      - "gevşek giysi/atkı"
+      - "VLM tarafından torna sıkışma"
+    keywords: "torna sıkışma talaş sarılma parça çekilme"
+    required_nodes: ["makine", "insan"]
+    potential_hazards:
+      - "Sıkışma"
+      - "Kırık"
+      - "Ölüm"
+    mock_tool_hints:
+      - "isolate_electrical_grid"
+      - "call_ambulance"
+      - "secure_area"
+
+  press_crush:
+    description: "Hidrolik veya mekanik presin çalışma anında personeli ezmesi."
+    risk_score: 100
+    risk_level: "Yüksek"
+    indicators:
+      - "pres hareket halinde"
+      - "insan pres içinde veya arasında"
+      - "koruyucu kilidi yok"
+      - "VLM tarafından pres ezme"
+    keywords: "pres ezme hidrolik mekanik insan içinde"
+    required_nodes: ["makine", "insan"]
+    potential_hazards:
+      - "Ezilme"
+      - "Ölüm"
+      - "Amputasyon"
+    mock_tool_hints:
+      - "call_ambulance"
+      - "broadcast_evacuation"
+      - "secure_area"
+
+  milling_machine_injury:
+    description: "Freze tezgahına parçacık, el veya alet kaçması sonucu yaralanma."
+    risk_score: 75
+    risk_level: "Yüksek"
+    indicators:
+      - "freze bıçağı dönerken"
+      - "operatör elini yakın tutuyor"
+      - "parça hareketli"
+      - "VLM tarafından freze yaralanma"
+    keywords: "freze tezgah bıçak parça el kaçma"
+    required_nodes: ["makine", "insan"]
+    potential_hazards:
+      - "Kesik"
+      - "Kırık"
+      - "Göz yaralanması"
+    mock_tool_hints:
+      - "call_health_team"
+      - "secure_area"
+      - "notify_supervisor"
+
+  conveyor_entanglement:
+    description: "Personelin kıyafetinin, saçının veya malzemesinin hareketli banda sıkışması."
+    risk_score: 90
+    risk_level: "Yüksek"
+    indicators:
+      - "bant hareket halinde"
+      - "insan banta yakın sıkışmış"
+      - "tambur/aktarma mekanizması açık"
+      - "VLM tarafından bant sıkışma"
+    keywords: "bant konveyör sıkışma tambur mekanizma"
+    required_nodes: ["makine", "insan"]
+    potential_hazards:
+      - "Sıkışma"
+      - "Ezilme"
+      - "Ölüm"
+    mock_tool_hints:
+      - "isolate_electrical_grid"
+      - "call_ambulance"
+      - "secure_area"
+
+  robot_arm_strike:
+    description: "Endüstriyel robot kolunun personele çarpması veya sıkıştırması."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "robot kolu hareketli"
+      - "insan robot hücresi içinde"
+      - "güvenlik bariyeri ihlal"
+      - "VLM tarafından robot çarpma"
+    keywords: "robot kol çarpma hücre bariyer endüstriyel"
+    required_nodes: ["makine", "insan"]
+    potential_hazards:
+      - "Çarpma"
+      - "Sıkışma"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "isolate_electrical_grid"
+      - "call_ambulance"
+      - "secure_area"
+
+  power_tool_kickback:
+    description: "Zımpara, daire testere veya matkap gibi el aletinin geri tepmesi sonucu yaralanma."
+    risk_score: 70
+    risk_level: "Yüksek"
+    indicators:
+      - "alet ani geri sıçrama"
+      - "operatör dengesiz"
+      - "kesim sırasında bağlama gevşek"
+      - "VLM tarafından alet geri tepme"
+    keywords: "el aleti geri tepme zımpara testere matkap"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Kesik"
+      - "Kafa yaralanması"
+      - "Düşme"
+    mock_tool_hints:
+      - "call_health_team"
+      - "secure_area"
+
+  grinding_wheel_burst:
+    description: "Taşlama taşının aşırı hız, çatlak veya düşme sonucu parçalanması."
+    risk_score: 80
+    risk_level: "Yüksek"
+    indicators:
+      - "taşlama taşı çatlamış"
+      - "parçalar fırlıyor"
+      - "koruyucu kapak açık"
+      - "VLM tarafından taş patlaması"
+    keywords: "taşlama taş patlama çatlak parça fırlama"
+    required_nodes: ["makine"]
+    potential_hazards:
+      - "Göz/beden travması"
+      - "Yaralanma"
+      - "Yangın kıvılcım"
+    mock_tool_hints:
+      - "sound_alarm"
+      - "call_health_team"
+      - "secure_area"
+
+  hydraulic_failure:
+    description: "Hidrolik sistemde ani basınç düşüşü, boru patlaması veya sıvı sıçraması."
+    risk_score: 70
+    risk_level: "Yüksek"
+    indicators:
+      - "hidrolik borudan yağ fışkırıyor"
+      - "yük ani düşüyor"
+      - "basınç göstergesi anormal"
+      - "VLM tarafından hidrolik arıza"
+    keywords: "hidrolik arıza basınç boru patlama yağ fışkırma"
+    required_nodes: ["makine"]
+    potential_hazards:
+      - "Yük düşme"
+      - "Yanık/yağ göz"
+      - "Kayma"
+    mock_tool_hints:
+      - "secure_area"
+      - "call_health_team"
+      - "notify_supervisor"
+
+  machine_guard_missing:
+    description: "Döner, kesici veya hareketli makine parçalarının koruyucu kapağının eksik olması."
+    risk_score: 65
+    risk_level: "Orta"
+    indicators:
+      - "koruyucu kapak sökülmüş"
+      - "tehlikeli parça açıkta"
+      - "operatör parçaya yakın"
+      - "VLM tarafından koruyucu eksiklik"
+    keywords: "koruyucu kapak eksik makine açık tehlike"
+    required_nodes: ["makine", "insan"]
+    potential_hazards:
+      - "Sıkışma"
+      - "Kesik"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "secure_area"
+
+  lockout_failure:
+    description: "Bakım/servis öncesi enerji izolasyonunun (Loto) yapılmaması veya etiketsiz bırakılması."
+    risk_score: 85
+    risk_level: "Yüksek"
+    indicators:
+      - "makine üzerinde bakım yapılıyor"
+      - "enerji kaynağı kilitlenmemiş"
+      - "Loto etiketi yok"
+      - "VLM tarafından Loto ihlali"
+    keywords: "loto kilitleme etiket enerji izolasyon bakım"
+    required_nodes: ["makine", "insan"]
+    potential_hazards:
+      - "Beklenmeden çalışma"
+      - "Elektrik çarpması"
+      - "Sıkışma"
+    mock_tool_hints:
+      - "isolate_electrical_grid"
+      - "notify_supervisor"
+      - "secure_area"
+
+  arc_flash:
+    description: "Elektrik panosu veya hücrede ani ark oluşması sonucu yanık ve patlama."
+    risk_score: 95
+    risk_level: "Yüksek"
+    indicators:
+      - "pano içinde parlama"
+      - "personel pano önünde geri sıçramış"
+      - "yanık kokusu/duman"
+      - "VLM tarafından ark flaş"
+    keywords: "ark flaş elektrik pano parlama yanık patlama"
+    required_nodes: ["elektrik_pano"]
+    potential_hazards:
+      - "Ciddi yanık"
+      - "Patlama"
+      - "Görme kaybı"
+    mock_tool_hints:
+      - "isolate_electrical_grid"
+      - "call_ambulance"
+      - "broadcast_evacuation"
+
+  cable_trip:
+    description: "Yerde uzanan kablo, hortum veya makaronun personele takılması sonucu düşme."
+    risk_score: 50
+    risk_level: "Orta"
+    indicators:
+      - "yerde kablo/hortum"
+      - "insan ayağı takılmış"
+      - "geçiş yolunda engel"
+      - "VLM tarafından kablo takılma"
+    keywords: "kablo hortum takılma yere uzanma geçiş düşme"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Düşme"
+      - "Kırık"
+      - "Yaralanma"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "secure_area"
+
+  chemical_splash:
+    description: "Asit, baz veya reaktif kimyasalın personel üzerine sıçraması."
+    risk_score: 80
+    risk_level: "Yüksek"
+    indicators:
+      - "kimyasal sıçramış"
+      - "cilt/kıyafette yanık lekesi"
+      - "güvenlik duşu uzak"
+      - "VLM tarafından kimyasal sıçrama"
+    keywords: "kimyasal sıçrama asit baz yanık cilt göz"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Kimyasal yanık"
+      - "Göz hasarı"
+      - "Zehirlenme"
+    mock_tool_hints:
+      - "activate_cbrn_protocol"
+      - "call_ambulance"
+      - "secure_area"
+
+  toxic_gas_exposure:
+    description: "Zehirli gaz, buhar veya düşük oksijen ortamına maruz kalma."
+    risk_score: 90
+    risk_level: "Yüksek"
+    indicators:
+      - "bölgede gaz dedektörü alarmı"
+      - "personel bilincini kaybetmek üzere"
+      - "kapalı alan girişi"
+      - "VLM tarafından gaz maruziyeti"
+    keywords: "zehirli gaz buhar oksijen düşüklüğü kapalı alan"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Zehirlenme"
+      - "Bilinç kaybı"
+      - "Ölüm"
+    mock_tool_hints:
+      - "activate_cbrn_protocol"
+      - "broadcast_evacuation"
+      - "call_ambulance"
+
+  heat_stroke:
+    description: "Aşırı sıcak ortamda çalışan personelde sıcak çarpması."
+    risk_score: 70
+    risk_level: "Yüksek"
+    indicators:
+      - "personel terlemiş, bitkin"
+      - "yüz kızarmış"
+      - "hareket yavaşlamış"
+      - "VLM tarafından sıcak çarpması"
+    keywords: "sıcak çarpması terleme bitkinlik kızarma hareket yavaş"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Bilinç kaybı"
+      - "Organ yetmezliği"
+      - "Ölüm"
+    mock_tool_hints:
+      - "call_health_team"
+      - "call_ambulance"
+      - "notify_supervisor"
+
+  repetitive_strain_injury:
+    description: "Tekrarlayan hareketler veya ergonomik olmayan pozisyon nedeniyle kas-iskelet sistemi zedelenmesi."
+    risk_score: 40
+    risk_level: "Düşük"
+    indicators:
+      - "personel tekrarlayan hareket yapıyor"
+      - "bükük/baş eğik pozisyon"
+      - "uzun süre aynı işlem"
+      - "VLM tarafından ergonomik risk"
+    keywords: "tekrarlayan hareket ergonomi kas iskelet zedelenme"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Tendinit"
+      - "Bel/boyun ağrısı"
+      - "Verim kaybı"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "call_health_team"
+
+  vibration_injury:
+    description: "Titreşimli el aleti kullanımına bağlı el-bilek sinir ve damar hasarı."
+    risk_score: 45
+    risk_level: "Orta"
+    indicators:
+      - "personel titreşimli alet kullanıyor"
+      - "uzun süreli tutma"
+      - "eldivensiz/desteksiz"
+      - "VLM tarafından titreşim riski"
+    keywords: "titreşim el aleti sinir damar hasar avc eldiven"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "El-bilek rahatsızlığı"
+      - "Sinir hasarı"
+      - "Meslek hastalığı"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "call_health_team"
+
+  noise_exposure:
+    description: "Gürültülü makine/alan uzun süre maruziyeti sonucu işitme kaybı."
+    risk_score: 40
+    risk_level: "Düşük"
+    indicators:
+      - "personel kulaklıksız gürültülü alanda"
+      - "işaretlerle gürültü uyarısı"
+      - "VLM tarafından gürültü maruziyeti"
+    keywords: "gürültü işitme kaybı kulaklık maruziyet db"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "İşitme kaybı"
+      - "Stres"
+      - "Konsantrasyon düşüklüğü"
+    mock_tool_hints:
+      - "notify_supervisor"
+      - "sound_alarm"
+
+  confined_space_entry:
+    description: "Kapalı/havasız alana izinsiz veya güvenliksiz giriş sonucu bayılma/düşme."
+    risk_score: 90
+    risk_level: "Yüksek"
+    indicators:
+      - "personel kapalı tank/boşluğa giriyor"
+      - "gaz ölçüm cihazı yok"
+      - "kurtarma ekibi hazır değil"
+      - "VLM tarafından kapalı alan giriş"
+    keywords: "kapalı alan tank boşluk gaz ölçüm kurtarma"
+    required_nodes: ["insan"]
+    potential_hazards:
+      - "Oksijen eksikliği"
+      - "Zehirlenme"
+      - "Kurtarma zorluğu"
+    mock_tool_hints:
+      - "activate_cbrn_protocol"
+      - "call_ambulance"
+      - "broadcast_evacuation"
+
+  asbestos_disturbance:
+    description: "Eski yapı malzemelerinde asbest açığa çıkarma sonucu solunum maruziyeti."
+    risk_score: 75
+    risk_level: "Yüksek"
+    indicators:
+      - "yıkım/bakım sırasında eski yalıtım"
+      - "beyaz lifli toz bulutu"
+      - "maske/tulum yetersiz"
+      - "VLM tarafından asbest riski"
+    keywords: "asbest lif toz solunum yıkım yalıtım"
+    required_nodes: []
+    potential_hazards:
+      - "Akciğer hastalığı"
+      - "Meslek hastalığı"
+      - "Uzun vadeli kanser riski"
+    mock_tool_hints:
+      - "activate_cbrn_protocol"
+      - "broadcast_evacuation"
+      - "notify_supervisor"

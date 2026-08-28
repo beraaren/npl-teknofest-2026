@@ -69,17 +69,14 @@ def _run_decision_sync(events: list[dict], vlm_interpretations: list[dict]) -> d
         agent = DecisionAgent(cfg.decision_agent, cfg.vlm, rag, memory, tools)
 
         # RAG bağlamı oluştur
-        vlm_flags = []
-        if vlm_interpretations:
-            vlm_flags = vlm_interpretations[0].get("risk_flags_tr", [])
+        vlm_interp = vlm_interpretations[0] if vlm_interpretations else None
 
         rag_context = rag.build_context(
             observation_report=[],
             event_signals=events,
-            vlm_flags=vlm_flags,
+            vlm_interpretation=vlm_interp,
         )
 
-        vlm_interp = vlm_interpretations[0] if vlm_interpretations else None
         single_source = vlm_interp is None
 
         # Hafızaya olayları ekle

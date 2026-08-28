@@ -48,7 +48,7 @@ Dikkat: `fire-in-bale-plucker` analizinde **geometrik sinyal sayısı 0**, sinya
 Kanal A'nın (YOLO + kural motoru) tüm kütüphanede ürettiği sinyal tipleri:
 
 ```
-ppe_missing : 326      gathering : 185      immobile_person : 43
+ppe_missing : 326      gathering : 185
 person_fall : 20       dangerous_proximity : 6
 ```
 
@@ -84,7 +84,6 @@ VideoReader → frames
 | tip_over | `min(1, aspect_ratio/3.0)` | rules.py:173 |
 | fall | `min(1, drop_ratio/(min_drop_ratio*2))` | rules.py:230 |
 | gathering | `min(1, len(cluster)/5.0)` | rules.py:305 |
-| immobility | `min(1, stationary_sec/10)` + yatıksa +0.2 | rules.py:360-363 |
 | **ppe_missing** | **sabit 0.7** | rules.py:492 |
 | fire_smoke | `det.confidence` (tek istisna) | rules.py:430 |
 | proximity | `1 - dist/effective_limit` | rules.py:627 |
@@ -112,9 +111,8 @@ Gerçek ölçülen benzerlikler (`fire-in-bale-plucker`, 20/20 eşleşme):
 
 ```
 pallet_collapse   0.729 (structural_match)   overhead_hazard   0.399
-ppe_missing       0.383                      immobile_person   0.353
-blocked_exit      0.340                      person_fall       0.319
-...                                          fire_smoke        0.257
+ppe_missing       0.383                      person_fall       0.319
+blocked_exit      0.340                      fire_smoke        0.257
 vehicle_speeding  0.137  ← en düşük, hâlâ 0.1 eşiğinin üstünde
 ```
 
@@ -279,7 +277,7 @@ if required and all(req in detected_classes for req in required):
     matched[name] = {"signal": {"event_type": "structural_match", ...}}
 ```
 
-`gathering`'in `required_nodes: ["insan","insan","insan"]` — `all(... in ...)` üyelik kontrolü olduğu için **tek bir "insan" tespiti** bunu eşleştiriyor. Tek insan tespiti şu 8 pattern'i birden tetikliyor: `person_fall`(90), `immobile_person`(70), `unauthorized_access`(65), `restricted_time_access`(65), `running_in_facility`(60), `gathering`(50), `fatigue_detection`(50), `ppe_missing`(45). Bir forklift eklenince +`forklift_tip_over`(95), +`vehicle_speeding`(75), +`dangerous_proximity`(80), +`blind_spot_movement`(75).
+`gathering`'in `required_nodes: ["insan","insan","insan"]` — `all(... in ...)` üyelik kontrolü olduğu için **tek bir "insan" tespiti** bunu eşleştiriyor. Tek insan tespiti şu 7 pattern'i birden tetikliyor: `person_fall`(90), `unauthorized_access`(65), `restricted_time_access`(65), `running_in_facility`(60), `gathering`(50), `fatigue_detection`(50), `ppe_missing`(45). Bir forklift eklenince +`forklift_tip_over`(95), +`vehicle_speeding`(75), +`dangerous_proximity`(80), +`blind_spot_movement`(75).
 
 Ayrıca `required_nodes: []` olan 4 pattern (`fire_smoke`, `leakage`, `spill_slip_hazard`, `overhead_hazard`) structural yolla **asla** eşleşemez — yalnızca benzerlikle gelir, ki eşik 0.1 olduğu için zaten hep gelir.
 

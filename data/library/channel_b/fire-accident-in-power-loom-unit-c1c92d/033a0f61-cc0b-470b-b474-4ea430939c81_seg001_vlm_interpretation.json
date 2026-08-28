@@ -1,0 +1,69 @@
+{
+  "packet_id": "033a0f61-cc0b-470b-b474-4ea430939c81",
+  "video_id": "fire-accident-in-power-loom-unit-c1c92d",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir tekstil atölyesinde, bir işçi dokuma makinesi başında çalışırken, makinenin alt kısmında ani bir yangın patlaması meydana gelir. Yangın, kısa sürede duman ve alevlerle yayılır. İşçi, yangın başladığında makineden uzaklaşır ve daha sonra geri döner; yangın kontrol altına alınmaya çalışılır.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İşçi, beyaz tank top ve kısa pantolon giymiş, makine başında çalışırken ve yangın sonrası müdahale ederken görülür."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Çalışan dokuma makinesi, yangın başladığında alevler ve duman çıkarmaya başlar."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Makinenin alt kısmından çıkan alevler ve yoğun duman, yangının şiddetini gösterir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Atölyenin sağ tarafında, malzeme ve kabloların bulunduğu raf yapıları görülmektedir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, dokuma makinesine müdahale ederken makinenin yanında durur.",
+    "İşçi, makineden uzaklaşır ve yangın başladığında geri döner.",
+    "Makinenin alt kısmında ani bir yangın patlaması olur.",
+    "Yangın, alevler ve dumanla hızla yayılır.",
+    "İşçi, yangınla mücadele etmek için makineye yaklaşır ve bir nesneyle müdahale eder."
+  ],
+  "confidence_overall": 0.92,
+  "inference": {
+    "latency_ms": 19431.691700003284,
+    "tokens_generated": 697
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, bir işçi dokuma makinesi başında çalışırken, makinenin alt kısmında ani bir yangın patlaması meydana gelir. Yangın, kısa sürede duman ve alevlerle yayılır. İşçi, yangın başladığında makineden uzaklaşır ve daha sonra geri döner; yangın kontrol altına alınmaya çalışılır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, beyaz tank top ve kısa pantolon giymiş, makine başında çalışırken ve yangın sonrası müdahale ederken görülür.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çalışan dokuma makinesi, yangın başladığında alevler ve duman çıkarmaya başlar.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin alt kısmından çıkan alevler ve yoğun duman, yangının şiddetini gösterir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Atölyenin sağ tarafında, malzeme ve kabloların bulunduğu raf yapıları görülmektedir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, dokuma makinesine müdahale ederken makinenin yanında durur.\",\n    \"İşçi, makineden uzaklaşır ve yangın başladığında geri döner.\",\n    \"Makinenin alt kısmında ani bir yangın patlaması olur.\",\n    \"Yangın, alevler ve dumanla hızla yayılır.\",\n    \"İşçi, yangınla mücadele etmek için makineye yaklaşır ve bir nesneyle müdahale eder.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Dokuma makinesinin alt kısmında ani bir yangın patlaması meydana gelir. Alevler ve yoğun duman, atölyeyi kaplar ve çalışanların sağlığına ciddi tehdit oluşturur. Yangın, elektriksel arıza veya aşırı ısınma sonucu olabilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 50.4\n    },\n    {\n      \"description_tr\": \"İşçi, yangın başladığında makineden uzaklaşır ancak daha sonra geri döner ve yangınla mücadele etmeye çalışır. Bu, yangın kontrolü olmaksızın doğrudan tehlikeli bir ortama girmek anlamına gelir ve ciddi yaralanma riski taşır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 55.4\n    }\n  ],\n  \"confidence_overall\": 0.92\n}",
+  "risk_events": [
+    {
+      "description_tr": "Dokuma makinesinin alt kısmında ani bir yangın patlaması meydana gelir. Alevler ve yoğun duman, atölyeyi kaplar ve çalışanların sağlığına ciddi tehdit oluşturur. Yangın, elektriksel arıza veya aşırı ısınma sonucu olabilir.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 98.8
+    },
+    {
+      "description_tr": "İşçi, yangın başladığında makineden uzaklaşır ancak daha sonra geri döner ve yangınla mücadele etmeye çalışır. Bu, yangın kontrolü olmaksızın doğrudan tehlikeli bir ortama girmek anlamına gelir ve ciddi yaralanma riski taşır.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 103.8
+    }
+  ],
+  "risk_flags_tr": [
+    "Dokuma makinesinin alt kısmında ani bir yangın patlaması meydana gelir. Alevler ve yoğun duman, atölyeyi kaplar ve çalışanların sağlığına ciddi tehdit oluşturur. Yangın, elektriksel arıza veya aşırı ısınma sonucu olabilir.",
+    "İşçi, yangın başladığında makineden uzaklaşır ancak daha sonra geri döner ve yangınla mücadele etmeye çalışır. Bu, yangın kontrolü olmaksızın doğrudan tehlikeli bir ortama girmek anlamına gelir ve ciddi yaralanma riski taşır."
+  ],
+  "computed_confidence": 0.7288,
+  "reasoning_trace": "",
+  "segment_start_sec": 48.4,
+  "segment_end_sec": 108.4,
+  "created_at": "2026-08-27T22:20:48.057922+00:00"
+}

@@ -1,0 +1,78 @@
+{
+  "packet_id": "17cf1159-60d6-4558-a0cc-579a67b3b379",
+  "video_id": "industrial-worker-makes-one-mistake-on-t-60f439",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "İki işçi, bir torna makinesi başında uzun bir metal parçasını işleme sokuyor. İşçiler, makine çalışırken yakınında durarak el ile müdahale ediyor ve koruyucu ekipman (gözlük, kask) kullanmıyor. İşyeri ortamı dar ve düzenli olmayan malzemelerle dolu.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İki işçi, makine başında çalışırken görülüyor. Birisi makineye el ile müdahale ediyor, diğeri yakın çevrede hareket ediyor."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Torna makinesi, uzun metal parçayı işleyen döner başlı bir makinedir. İşleme sırasında dönmeye devam ediyor."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Uzun metal parça, makinede işleme sokuluyor. Parça, makinenin döner başlığına sabitlenmiş durumda."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda, metal çubuklar veya malzemelerin durduğu raf veya yapılar görülmektedir. Net bir şekilde tanımlanamıyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, torna makinesine uzun metal parçasını yerleştiriyor.",
+    "İşçi, makine çalışırken el ile dönen parçaya dokunuyor.",
+    "İkinci işçi, makinenin yanında duruyor ve müdahale ediyor.",
+    "İşçiler, koruyucu ekipman kullanmadan makine başında çalışıyor.",
+    "İşçi, makinenin kontrol paneline veya ayarlarına dokunuyor."
+  ],
+  "confidence_overall": 0.87,
+  "inference": {
+    "latency_ms": 12044.692899995425,
+    "tokens_generated": 762
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"İki işçi, bir torna makinesi başında uzun bir metal parçasını işleme sokuyor. İşçiler, makine çalışırken yakınında durarak el ile müdahale ediyor ve koruyucu ekipman (gözlük, kask) kullanmıyor. İşyeri ortamı dar ve düzenli olmayan malzemelerle dolu.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki işçi, makine başında çalışırken görülüyor. Birisi makineye el ile müdahale ediyor, diğeri yakın çevrede hareket ediyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Torna makinesi, uzun metal parçayı işleyen döner başlı bir makinedir. İşleme sırasında dönmeye devam ediyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun metal parça, makinede işleme sokuluyor. Parça, makinenin döner başlığına sabitlenmiş durumda.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda, metal çubuklar veya malzemelerin durduğu raf veya yapılar görülmektedir. Net bir şekilde tanımlanamıyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, torna makinesine uzun metal parçasını yerleştiriyor.\",\n    \"İşçi, makine çalışırken el ile dönen parçaya dokunuyor.\",\n    \"İkinci işçi, makinenin yanında duruyor ve müdahale ediyor.\",\n    \"İşçiler, koruyucu ekipman kullanmadan makine başında çalışıyor.\",\n    \"İşçi, makinenin kontrol paneline veya ayarlarına dokunuyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 122.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 125.0\n    },\n    {\n      \"description_tr\": \"İşçiler, koruyucu ekipman (gözlük, kask) kullanmadan makine başında çalışıyor. Bu, metal parçalarının kopması veya tozun gözlerine girmesi gibi risklere maruz kalma olasılığını artırıyor.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 120.0\n    }\n  ],\n  \"confidence_overall\": 0.87\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 122.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 125.0
+    },
+    {
+      "description_tr": "İşçiler, koruyucu ekipman (gözlük, kask) kullanmadan makine başında çalışıyor. Bu, metal parçalarının kopması veya tozun gözlerine girmesi gibi risklere maruz kalma olasılığını artırıyor.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçiler, koruyucu ekipman (gözlük, kask) kullanmadan makine başında çalışıyor. Bu, metal parçalarının kopması veya tozun gözlerine girmesi gibi risklere maruz kalma olasılığını artırıyor."
+  ],
+  "computed_confidence": 0.6967,
+  "reasoning_trace": "",
+  "segment_start_sec": 120.0,
+  "segment_end_sec": 180.0,
+  "created_at": "2026-08-27T22:25:49.110662+00:00"
+}

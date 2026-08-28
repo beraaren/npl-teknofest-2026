@@ -1,0 +1,591 @@
+{
+  "packet_id": "0b3ef23a-572c-41ec-815e-cf767016e9f0",
+  "video_id": "industrial-worker-makes-one-mistake-on-t-60f439",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Dar bir atölye ortamında, iki işçi bir torna makinesi başında uzun bir metal parçasını işleme sokuyor. İşçiler, makine çalışırken yakınında durarak el ile müdahale ediyor ve koruyucu ekipman (gözlük, kask) kullanmıyor. İş yerinde düzenli olmayan malzemeler ve dar alan, ek risk faktörleri oluşturuyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İki işçi, makine başında çalışırken görülüyor. Koruyucu ekipman kullanmıyorlar."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Torna makinesi, metal parçaları işliyor. Dönen parçaları net bir şekilde görülebiliyor."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Uzun metal parçaları, makineye yerleştiriliyor ve işleme sokuluyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda malzeme rafı veya yapısal elemanlar görülebiliyor, ancak net değil."
+    }
+  ],
+  "detected_actions_tr": [
+    "İki işçi, torna makinesi başında uzun bir metal parçasını yerleştiriyor ve işleme sokuyor.",
+    "İşçiler, makine çalışırken yakınında durarak el ile müdahale ediyor.",
+    "Bir işçi, makine çalışırken dönen metal parçasına dokunuyor.",
+    "İşçiler, koruyucu ekipman (gözlük, kask) kullanmıyor.",
+    "İşçi, makineyi durdurmadan parçayı ayarlıyor."
+  ],
+  "confidence_overall": 0.87,
+  "inference": {
+    "latency_ms": 84329.03179999994,
+    "tokens_generated": 5838
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Dar bir atölye ortamında, iki işçi bir torna makinesi başında uzun bir metal parçasını işleme sokuyor. İşçiler, makine çalışırken yakınında durarak el ile müdahale ediyor ve koruyucu ekipman (gözlük, kask) kullanmıyor. İş yerinde düzenli olmayan malzemeler ve dar alan, ek risk faktörleri oluşturuyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki işçi, makine başında çalışırken görülüyor. Koruyucu ekipman kullanmıyorlar.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Torna makinesi, metal parçaları işliyor. Dönen parçaları net bir şekilde görülebiliyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun metal parçaları, makineye yerleştiriliyor ve işleme sokuluyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda malzeme rafı veya yapısal elemanlar görülebiliyor, ancak net değil.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İki işçi, torna makinesi başında uzun bir metal parçasını yerleştiriyor ve işleme sokuyor.\",\n    \"İşçiler, makine çalışırken yakınında durarak el ile müdahale ediyor.\",\n    \"Bir işçi, makine çalışırken dönen metal parçasına dokunuyor.\",\n    \"İşçiler, koruyucu ekipman (gözlük, kask) kullanmıyor.\",\n    \"İşçi, makineyi durdurmadan parçayı ayarlıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 300.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 301.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 302.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 303.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 304.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 305.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 306.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 307.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 308.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 309.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 310.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 311.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 312.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 313.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 314.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 315.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 316.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 317.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 318.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 319.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 320.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 321.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 322.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 323.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 324.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 325.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 326.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 327.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 328.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 329.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 330.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 331.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 332.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 333.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 334.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 335.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 336.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 337.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 338.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 339.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 340.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 341.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 342.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 343.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 344.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 345.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 346.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 347.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 348.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 349.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 350.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 351.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 352.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 353.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 354.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 355.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 356.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 357.0\n    },\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 358.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 359.0\n    }\n  ],\n  \"confidence_overall\": 0.87\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 300.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 301.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 302.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 303.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 304.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 305.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 306.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 307.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 308.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 309.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 310.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 311.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 312.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 313.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 314.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 315.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 316.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 317.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 318.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 319.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 320.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 321.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 322.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 323.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 324.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 325.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 326.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 327.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 328.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 329.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 330.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 331.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 332.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 333.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 334.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 335.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 336.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 337.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 338.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 339.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 340.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 341.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 342.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 343.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 344.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 345.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 346.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 347.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 348.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 349.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 350.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 351.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 352.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 353.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 354.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 355.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 356.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 357.0
+    },
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 358.0
+    },
+    {
+      "description_tr": "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 359.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor.",
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, makinenin çalışırken yakınında duruyor ve el ile müdahale ediyor. Bu, dönen parçalara maruz kalma ve ciddi yaralanma riski oluşturuyor."
+  ],
+  "computed_confidence": 0.7195,
+  "reasoning_trace": "",
+  "segment_start_sec": 300.0,
+  "segment_end_sec": 360.0,
+  "created_at": "2026-08-27T22:28:51.751143+00:00"
+}

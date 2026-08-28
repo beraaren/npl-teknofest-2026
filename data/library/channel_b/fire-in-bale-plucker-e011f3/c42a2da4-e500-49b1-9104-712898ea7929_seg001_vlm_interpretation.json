@@ -1,0 +1,59 @@
+{
+  "packet_id": "c42a2da4-e500-49b1-9104-712898ea7929",
+  "video_id": "fire-in-bale-plucker-e011f3",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Üretim tesisinde, bir makinenin etrafında ve üzerindeki beyaz, pamuk benzeri madde üzerinde alevler ve yoğun duman oluşumu devam ediyor. Yangın, makinenin etrafındaki yüklerde yayılıyor ve ortam giderek dumanla doluyor. 01:00'dan itibaren yangın hızla büyüyor ve 01:15'te yoğun duman nedeniyle görüş alanını büyük ölçüde engelliyor.",
+  "detected_entities": [
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Makine, üretim hattında yer alan, yükleri kesen bir yapıdır."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Beyaz, pamuk benzeri madde, taşımada sıralanmış yükler halinde görülüyor."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Alevler ve duman, makinenin etrafında ve yüklerde yoğun şekilde gözlemleniyor."
+    },
+    {
+      "label": "conveyor",
+      "confidence_hint": "medium",
+      "notes_tr": "Yüklerin taşındığı taşımalar, makinenin etrafında yer alıyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "Makinenin etrafında ve yüklerde alevlerin yayılması",
+    "Yoğun dumanın ortama yayılması",
+    "Yangının zaman içinde büyümesi ve kontrol altına alınmaması",
+    "Görüş alanının duman nedeniyle azalması"
+  ],
+  "confidence_overall": 0.95,
+  "inference": {
+    "latency_ms": 11461.456099998031,
+    "tokens_generated": 541
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Üretim tesisinde, bir makinenin etrafında ve üzerindeki beyaz, pamuk benzeri madde üzerinde alevler ve yoğun duman oluşumu devam ediyor. Yangın, makinenin etrafındaki yüklerde yayılıyor ve ortam giderek dumanla doluyor. 01:00'dan itibaren yangın hızla büyüyor ve 01:15'te yoğun duman nedeniyle görüş alanını büyük ölçüde engelliyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makine, üretim hattında yer alan, yükleri kesen bir yapıdır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Beyaz, pamuk benzeri madde, taşımada sıralanmış yükler halinde görülüyor.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Alevler ve duman, makinenin etrafında ve yüklerde yoğun şekilde gözlemleniyor.\"\n    },\n    {\n      \"label\": \"conveyor\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Yüklerin taşındığı taşımalar, makinenin etrafında yer alıyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Makinenin etrafında ve yüklerde alevlerin yayılması\",\n    \"Yoğun dumanın ortama yayılması\",\n    \"Yangının zaman içinde büyümesi ve kontrol altına alınmaması\",\n    \"Görüş alanının duman nedeniyle azalması\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinenin etrafında ve yüklerdeki yangın, üretim hattında çalışanlara ciddi bir tehlike teşkil ediyor. Yangın hızla yayılıyor ve duman yoğunluğu artıyor, bu da solunum zorluğu ve görsel engelleme riski oluşturuyor. Acil müdahale gerektiren bir durum.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 60.0\n    }\n  ],\n  \"confidence_overall\": 0.95\n}",
+  "risk_events": [
+    {
+      "description_tr": "Makinenin etrafında ve yüklerdeki yangın, üretim hattında çalışanlara ciddi bir tehlike teşkil ediyor. Yangın hızla yayılıyor ve duman yoğunluğu artıyor, bu da solunum zorluğu ve görsel engelleme riski oluşturuyor. Acil müdahale gerektiren bir durum.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Makinenin etrafında ve yüklerdeki yangın, üretim hattında çalışanlara ciddi bir tehlike teşkil ediyor. Yangın hızla yayılıyor ve duman yoğunluğu artıyor, bu da solunum zorluğu ve görsel engelleme riski oluşturuyor. Acil müdahale gerektiren bir durum."
+  ],
+  "computed_confidence": 0.785,
+  "reasoning_trace": "",
+  "segment_start_sec": 60.0,
+  "segment_end_sec": 120.0,
+  "created_at": "2026-08-27T22:22:19.315233+00:00"
+}

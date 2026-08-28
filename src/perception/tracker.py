@@ -8,7 +8,7 @@ saklanır.
 
 ``TrackedObject`` sadece takip katmanının değil, **olay motorunun**
 (`src/events/`) da temel veri kaynağıdır. Kural motorundaki tüm kinematik
-hesaplar (düşme, devrilme, hareketsizlik) bu sınıfın :attr:`history`
+hesaplar (düşme, devrilme) bu sınıfın :attr:`history`
 listesine ve pencereli erişim metodlarına (:meth:`TrackedObject.displacement`,
 :meth:`TrackedObject.detection_at_offset`) dayanır — bu yüzden bu sınıfın
 geçmişinin kareler arasında **doğru şekilde korunması** kritik önemdedir. Bu

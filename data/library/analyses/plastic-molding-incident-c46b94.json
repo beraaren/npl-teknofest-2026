@@ -2,22 +2,22 @@
   "slug": "plastic-molding-incident-c46b94",
   "video_file": "videos/Plastic Molding Incident.mp4",
   "video_name": "Plastic Molding Incident",
-  "analyzed_at": "2026-08-27T19:03:03.070329+00:00",
-  "analysis_seconds": 76.7,
+  "analyzed_at": "2026-08-27T22:32:45.481170+00:00",
+  "analysis_seconds": 55.5,
   "video": {
     "duration_sec": 62.86,
     "fps": 14.0,
     "width": 480,
     "height": 360
   },
-  "summary": "Sanayi üretim alanında, büyük bir makine etrafında personel toplanması ve makineye müdahale edilmesi gözlemlenmiştir. Zeminde serbest kablolar ve araçlar bulunmaktadır. Görüntü işleme ve geometrik veriler, çok sayıda personelin (en az 4-6 kişi) makine çevresinde toplandığını ve bazı personelin baret/yelek gibi KKD'lerini takmadığını doğrulamaktadır. Ancak, 'hareketsiz personel' (immobile_person) ve 'ani düşüş' (fall) gibi kritik olaylar için kanıtlar yetersizdir; tespit edilen hareketsizlik süreleri (3 saniye) ve duruşlar, makineye bakma veya konuşma eylemiyle açıklanabilir. Makinenin çalışma durumu (enerji kesilip kesilmediği) görsel olarak doğrulanamadığından, makineye müdahale riski belirsizdir.",
-  "headline": "Orta riskli durum",
-  "risk": "Orta",
-  "overall_risk": "medium",
+  "summary": "Sanayi üretim alanında, büyük bir makine etrafında toplanmış personel grubu gözlemlenmiştir. İşçiler makineye müdahale ederken, zeminde serbestçe uzanan kablolar ve makineye erişim sırasında koruyucu ekipman (baret, yelek, eldiven, gözlük) eksikliği tespit edilmiştir. Makinenin çalışır durumu net değildir ancak kapısının açılması ve içine bakılması, enerji izolasyonu (LOTO) yapılmadan müdahale riskini işaret etmektedir. Personel toplanması ve KKD eksikliği, makine çalışması veya düşme riski karşısında toplu yaralanma potansiyeli oluşturmaktadır. Hareketsizlik algılamaları, işçilerin duruşundan kaynaklı yanlış pozitifler olarak değerlendirilmiştir.",
+  "headline": "KKD eksikliği (00:00)",
+  "risk": "Yüksek",
+  "overall_risk": "high",
   "scene_context": {
     "environment": {
       "type": "inferred",
-      "description": "Sanayi üretim alanı, büyük turuncu makine, zeminde serbest kablolar ve araçlar.",
+      "description": "Sanayi üretim alanı, büyük makine, zeminde kablolar ve aletler.",
       "visible_entities": {
         "insan": 2452,
         "yelek": 5
@@ -29,11 +29,12 @@
         "load",
         "liquid/substance",
         "vehicle"
-      ]
+      ],
+      "visibility_limits": []
     },
     "activities": [
       {
-        "activity": "Personel makine kapısını açar, içine bakar ve etrafında toplanır.",
+        "activity": "İşçiler makineye müdahale eder, kapısını açar ve kontrol paneline yaklaşır.",
         "time_range": {
           "start_sec": 0.0,
           "end_sec": 62.0
@@ -47,19 +48,6 @@
         ],
         "operational_state": "unknown",
         "evidence": [
-          "visual",
-          "geometric"
-        ]
-      },
-      {
-        "activity": "Zeminde serbest kablolar ve araçların varlığı.",
-        "time_range": {
-          "start_sec": 0.0,
-          "end_sec": 62.0
-        },
-        "participants": [],
-        "operational_state": "static",
-        "evidence": [
           "visual"
         ]
       }
@@ -67,88 +55,69 @@
     "zones": [
       {
         "id": "unknown",
-        "purpose": "makine bakım/çalışma bölgesi",
+        "purpose": "unknown",
         "active_operations": [
-          "makine kontrolü",
-          "toplanma"
+          "makine bakımı/müdahalesi"
         ],
         "access_constraints": "unknown"
       }
     ],
     "context_uncertainties": [
-      "Makinenin enerji durumu (çalışıyor mu, durduruldu mu?) belirsiz.",
-      "Hareketsizlik tespitlerinin (3 saniye) gerçek bir bayılma mı yoksa duruş mu olduğu belirsiz."
+      "Makinenin enerji durumu (açık/kapalı) görsel olarak doğrulanamamıştır.",
+      "Zemindeki kabloların elektriksel durumu net değildir."
     ]
   },
   "results": [
     {
       "result_id": "result-1",
-      "result_type": "contextual_finding",
+      "result_type": "incident",
       "time": "00:00",
       "end_time": "01:02",
       "timestamp_sec": 0.0,
       "duration": 62.0,
-      "event": "Personel KKD eksikliği (Baret/Yelek)",
+      "event": "Personel grubu, koruyucu ekipman (baret, yelek) kullanmadan makineye müdahale etmektedir.",
       "event_type": "ppe_missing",
       "subjects": [
-        "insan_1",
-        "insan_2",
-        "insan_3",
-        "insan_5",
-        "insan_6",
-        "insan_7",
-        "insan_9",
-        "insan_14",
-        "insan_19",
-        "insan_20",
-        "insan_21",
         "insan_23",
         "insan_25",
-        "insan_28",
-        "insan_29",
-        "insan_30",
-        "insan_31",
-        "insan_32",
         "insan_35",
-        "insan_36",
         "insan_39",
-        "insan_43",
-        "insan_46",
         "insan_47"
       ],
       "zone": "unknown",
-      "hazard_mechanism": "KKD eksikliği nedeniyle kafa travması veya görünmezlik kaynaklı ezilme riski.",
-      "severity": "medium",
+      "hazard_mechanism": "KKD eksikliği nedeniyle makine parçalarıyla temas, düşen cisimler veya elektrik çarpması durumunda yaralanma riski artışı.",
+      "severity": "high",
       "evidence": {
         "geometric": {
           "supports": true,
           "observations": [
-            "Çok sayıda track_id için baret/yelek tespit edilemedi (confidence ~0.7)."
+            "Birden fazla track (23, 25, 35, 39, 47) üzerinde baret/yelek tespit edilememiştir."
           ],
           "limitations": [
-            "Görüş açısı ve ışık koşulları bazı KKD'lerin gizlenmesine neden olabilir."
+            "Görüş açısı ve çözünürlük nedeniyle bazı KKD'lerin (eldiven, gözlük) varlığı kesin olarak reddedilememiştir."
           ]
         },
         "visual": {
           "supports": true,
           "observations": [
-            "VLM yorumu: 'İşçilerin bazıları koruyucu kask takmaktadır' ifadesi, bazılarının takmadığını ima eder."
+            "VLM, işçilerin koruyucu ekipman (kask, eldiven, gözlük) kullanmadığını doğrulamıştır.",
+            "Zeminde serbest kablolar tespit edilmiştir."
           ],
           "limitations": [
-            "Detaylı KKD sınıflandırması için yüksek çözünürlük gereklidir."
+            "Makinenin enerji durumunu doğrulayacak fiziksel göstergeler net değildir."
           ]
         },
         "rag": {
           "supports": true,
           "observations": [
-            "RAG hipotezi 'ppe_missing' ile eşleşmiştir."
+            "RAG, KKD eksikliği ve toplanma risklerini hipotez olarak sunmuştur."
           ],
           "limitations": [
-            "RAG tek başına kanıt değildir."
+            "RAG tek başına kanıt değildir, ancak görsel ve geometrik verilerle örtüşmektedir."
           ]
         },
         "agreement": "corroborated",
-        "resolution": "Geometrik tespitler ve VLM gözlemleri KKD eksikliği konusunda uyumludur."
+        "resolution": "Geometrik (track takibi) ve görsel (VLM) kanıtlar KKD eksikliğini ve zemindeki kablo riskini desteklemektedir. RAG hipotezi bu bulgularla uyumludur."
       },
       "uncertain": false,
       "uncertainty_reason": "",
@@ -156,12 +125,12 @@
     },
     {
       "result_id": "result-2",
-      "result_type": "contextual_finding",
+      "result_type": "incident",
       "time": "00:37",
       "end_time": "01:02",
       "timestamp_sec": 37.0,
       "duration": 25.0,
-      "event": "Tehlikeli bölgede personel toplanması",
+      "event": "Tehlikeli bölgede 3 veya daha fazla personelin toplanması.",
       "event_type": "gathering",
       "subjects": [
         "insan_23",
@@ -171,38 +140,39 @@
         "insan_47"
       ],
       "zone": "unknown",
-      "hazard_mechanism": "Makine çevresinde 3+ personelin toplanması; olası bir makine hareketi veya kaza durumunda toplu yaralanma riski.",
+      "hazard_mechanism": "Makine çalışması veya beklenmedik bir olay durumunda toplu yaralanma riski ve tahliye güçlüğü.",
       "severity": "medium",
       "evidence": {
         "geometric": {
           "supports": true,
           "observations": [
-            "Son karede (01:02) 4 personelin birbirine yakın konumu (near edge weight > 0.17)."
+            "Sahne grafiğinde insan_23, insan_25, insan_35, insan_39, insan_47 arasındaki mesafe 'near' olarak işaretlenmiştir.",
+            "Track ID'ler 37. saniyeden itibaren sürekli yakın konumdadır."
           ],
           "limitations": [
-            "Tam mesafe ölçümü yapılamadı."
+            "Tam mesafe ölçümü yapılamamıştır, sadece 'yakın' ilişkisi tespit edilmiştir."
           ]
         },
         "visual": {
           "supports": true,
           "observations": [
-            "VLM: 'Makinenin etrafında çok sayıda işçi toplanırken... çarpışma riskini artırır.'"
+            "İşçilerin makine etrafında toplanıp iletişim kurduğu gözlemlenmiştir."
           ],
           "limitations": [
-            "Toplanmanın amacının (acil durum müdahalesi mi, rutin kontrol mü) belirsizliği."
+            "Toplanmanın resmi bir toplantı mı yoksa riskli bir müdahale mi olduğu bağlamda belirsizlik vardır."
           ]
         },
         "rag": {
           "supports": true,
           "observations": [
-            "RAG hipotezi 'gathering' ile eşleşmiştir."
+            "RAG, 'gathering' desenini tehlikeli bölgede toplanma olarak tanımlamıştır."
           ],
           "limitations": [
-            "RAG tek başına kanıt değildir."
+            "Toplanmanın amacını doğrulayacak ek bilgi yoktur."
           ]
         },
         "agreement": "corroborated",
-        "resolution": "Geometrik ve görsel kanıtlar toplanmayı doğrular."
+        "resolution": "Geometrik yakınlık ve görsel toplanma eylemi, RAG hipoteziyle uyumlu olarak doğrulanmıştır."
       },
       "uncertain": false,
       "uncertainty_reason": "",
@@ -210,161 +180,88 @@
     },
     {
       "result_id": "result-3",
-      "result_type": "uncertain_observation",
-      "time": "00:03",
-      "end_time": "01:02",
-      "timestamp_sec": 3.0,
-      "duration": 59.0,
-      "event": "Hareketsiz personel şüphesi",
-      "event_type": "immobile_person",
-      "subjects": [
-        "insan_25",
-        "insan_39",
-        "insan_43"
-      ],
-      "zone": "unknown",
-      "hazard_mechanism": "Bayılma veya yaralanma belirtisi.",
-      "severity": "unknown",
-      "evidence": {
-        "geometric": {
-          "supports": false,
-          "observations": [
-            "Tespit edilen hareketsizlik süreleri 3 saniye civarındadır (confidence 0.3-0.4)."
-          ],
-          "limitations": [
-            "3 saniyelik hareketsizlik, makineye bakma veya konuşma eylemiyle açıklanabilir; bayılma için yetersizdir."
-          ]
-        },
-        "visual": {
-          "supports": false,
-          "observations": [
-            "Personeller ayakta durmakta, yere düşmüş veya yatar pozisyonda değildir."
-          ],
-          "limitations": [
-            "Duruş analizi sınırlıdır."
-          ]
-        },
-        "rag": {
-          "supports": false,
-          "observations": [
-            "RAG hipotezi eşleşmiştir ancak kanıt durumu 'signal_candidate' olarak işaretlenmiştir."
-          ],
-          "limitations": [
-            "Hipotez kanıtı doğrulamaz."
-          ]
-        },
-        "agreement": "insufficient",
-        "resolution": "Geometrik ve görsel kanıtlar, hareketsizliğin bir acil durum (bayılma) değil, bir eylem (bakma/konuşma) olduğunu göstermektedir. Güven skoru düşüktür."
-      },
-      "uncertain": true,
-      "uncertainty_reason": "emin değilim",
-      "confidence": 0.35
-    },
-    {
-      "result_id": "result-4",
       "result_type": "contextual_finding",
       "time": "00:00",
       "end_time": "01:02",
       "timestamp_sec": 0.0,
       "duration": 62.0,
-      "event": "Zeminde serbest kablo ve araç riski",
+      "event": "Zeminde serbestçe uzanan kablolar ve aletler.",
       "event_type": "trip_hazard",
       "subjects": [],
       "zone": "unknown",
-      "hazard_mechanism": "Denge kaybı ve düşme riski.",
-      "severity": "low",
+      "hazard_mechanism": "Kablo üzerine takılma sonucu düşme ve makineye çarpma riski.",
+      "severity": "medium",
       "evidence": {
         "geometric": {
           "supports": false,
           "observations": [],
           "limitations": [
-            "Kablo tespiti geometrik olarak yapılamadı."
+            "Kablo yüksekliği ve kalınlığı geometrik olarak ölçülemedi."
           ]
         },
         "visual": {
           "supports": true,
           "observations": [
-            "VLM: 'Zeminde serbest kablolar ve araçlar bulunur.'"
+            "VLM, zeminde serbestçe uzanan kabloların düşme riski oluşturduğunu belirtmiştir."
           ],
           "limitations": [
-            "Kablo uzunluğu ve gerilimi belirsiz."
+            "Kabloların elektriksel yük taşıyıp taşımadığı bilinmemektedir."
           ]
         },
         "rag": {
           "supports": false,
           "observations": [],
           "limitations": [
-            "RAG'de bu spesifik hipotez eşleşmedi."
+            "RAG'de doğrudan 'trip_hazard' deseni eşleşmemiştir, ancak 'electrical_hazard' hipotezi kablolarla ilişkilidir."
           ]
         },
         "agreement": "single_source",
-        "resolution": "Sadece görsel kanıt mevcuttur."
+        "resolution": "Sadece görsel kanıt (VLM) bu riski desteklemektedir. Geometrik veri yetersizdir."
       },
       "uncertain": false,
       "uncertainty_reason": "",
       "confidence": 0.75
-    },
-    {
-      "result_id": "result-5",
-      "result_type": "uncertain_observation",
-      "time": "00:10",
-      "end_time": "01:00",
-      "timestamp_sec": 10.0,
-      "duration": 50.0,
-      "event": "Makineye izinsiz/enerjisiz müdahale şüphesi",
-      "event_type": "unsafe_machine_interaction",
-      "subjects": [
-        "insan_1",
-        "insan_2",
-        "insan_23",
-        "insan_25"
-      ],
-      "zone": "unknown",
-      "hazard_mechanism": "Makinenin çalışıyor olması durumunda ani hareket veya enerji yayılımı sonucu yaralanma.",
-      "severity": "unknown",
-      "evidence": {
-        "geometric": {
-          "supports": false,
-          "observations": [],
-          "limitations": [
-            "Makine hareketi veya enerji durumu tespit edilemedi."
-          ]
-        },
-        "visual": {
-          "supports": true,
-          "observations": [
-            "VLM: 'Makinenin kapısını açarken ve içine bakarken, makinenin çalıştığından emin olmaksızın müdahale edebilir.'"
-          ],
-          "limitations": [
-            "Makinenin gerçek durumu (LOTO uygulaması vb.) görsel olarak doğrulanamadı."
-          ]
-        },
-        "rag": {
-          "supports": false,
-          "observations": [],
-          "limitations": [
-            "RAG'de bu spesifik hipotez eşleşmedi."
-          ]
-        },
-        "agreement": "single_source",
-        "resolution": "Görsel kanıt müdahaleyi gösterir ancak tehlikenin gerçekleşip gerçekleşmediği (makine çalışıyor mu?) belirsizdir."
-      },
-      "uncertain": true,
-      "uncertainty_reason": "emin değilim",
-      "confidence": 0.6
     }
   ],
   "uncertain": false,
   "uncertainty_reason": "",
   "confidence": 0.0,
-  "reasoning": "Görüntü ve geometrik veriler, makine çevresinde KKD eksikliği ve personel toplanması gibi somut riskleri doğrulamaktadır. Ancak, 'hareketsiz personel' ve 'makineye müdahale' gibi olaylar için kritik kanıtlar (bayılma pozisyonu, makine hareketi/enerji durumu) eksiktir. Bu nedenle, bu olaylar 'uncertain_observation' olarak sınıflandırılmış ve risk seviyesi 'medium' (Orta) olarak belirlenmiştir. Toplam risk, doğrulanmış KKD ve toplanma risklerinden kaynaklanmaktadır.",
+  "reasoning": "Görsel ve geometrik kanıtlar, makine etrafında KKD'siz çalışan ve toplanmış bir personel grubunun varlığını güçlü bir şekilde desteklemektedir. Makinenin enerji durumunun belirsizliği ve zemindeki kablolar, KKD eksikliği ile birleştiğinde yüksek risk oluşturmaktadır. Hareketsizlik algılamaları, bağlam analizi (çalışma durumu) nedeniyle çürütülmüş ve acil durum olarak sınıflandırılmamıştır. Toplam risk, KKD eksikliği ve toplanma nedeniyle 'Yüksek' olarak belirlenmiştir.",
   "actions": [
-    "notify_supervisor"
+    "notify_supervisor",
+    "sound_alarm"
   ],
-  "events": [],
+  "events": [
+    {
+      "time": "00:00",
+      "event": "Personel grubu, koruyucu ekipman (baret, yelek) kullanmadan makineye müdahale etmektedir.",
+      "event_type": "ppe_missing",
+      "confidence": 0.85,
+      "timestamp_sec": 0.0,
+      "duration": 62.0,
+      "end_time": "01:02",
+      "result_id": "result-1",
+      "severity": "high"
+    },
+    {
+      "time": "00:37",
+      "event": "Tehlikeli bölgede 3 veya daha fazla personelin toplanması.",
+      "event_type": "gathering",
+      "confidence": 0.8,
+      "timestamp_sec": 37.0,
+      "duration": 25.0,
+      "end_time": "01:02",
+      "result_id": "result-2",
+      "severity": "medium"
+    }
+  ],
   "triggered_mock_tools": [
     {
       "tool_name": "notify_supervisor",
+      "params": {}
+    },
+    {
+      "tool_name": "sound_alarm",
       "params": {}
     }
   ],
@@ -374,6 +271,12 @@
       "tool": "notify_supervisor",
       "params": {},
       "mock_result": "notify_supervisor başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "sound_alarm",
+      "params": {},
+      "mock_result": "sound_alarm başarıyla simüle edildi."
     }
   ],
   "metadata": {
@@ -442,20 +345,6 @@
         }
       },
       {
-        "event_type": "immobile_person",
-        "timestamp": "00:03",
-        "description": "Personel (track 1) 3.0 saniyedir hareketsiz.",
-        "confidence": 0.3,
-        "involved_track_ids": [
-          1
-        ],
-        "metadata": {
-          "stationary_seconds": 3.0,
-          "aspect_ratio": 0.3559792445999758,
-          "is_lying": false
-        }
-      },
-      {
         "event_type": "ppe_missing",
         "timestamp": "00:07",
         "description": "Personel insan_5 eksik KKD: baret, yelek.",
@@ -468,20 +357,6 @@
             "baret",
             "yelek"
           ]
-        }
-      },
-      {
-        "event_type": "immobile_person",
-        "timestamp": "00:08",
-        "description": "Personel (track 2) 3.0 saniyedir hareketsiz.",
-        "confidence": 0.3,
-        "involved_track_ids": [
-          2
-        ],
-        "metadata": {
-          "stationary_seconds": 3.0,
-          "aspect_ratio": 0.371494834492937,
-          "is_lying": false
         }
       },
       {
@@ -560,34 +435,6 @@
         }
       },
       {
-        "event_type": "immobile_person",
-        "timestamp": "00:18",
-        "description": "Personel (track 2) 4.4 saniyedir hareketsiz.",
-        "confidence": 0.436,
-        "involved_track_ids": [
-          2
-        ],
-        "metadata": {
-          "stationary_seconds": 4.357142857142857,
-          "aspect_ratio": 0.6111763718744759,
-          "is_lying": false
-        }
-      },
-      {
-        "event_type": "immobile_person",
-        "timestamp": "00:18",
-        "description": "Personel (track 9) 3.0 saniyedir hareketsiz.",
-        "confidence": 0.3,
-        "involved_track_ids": [
-          9
-        ],
-        "metadata": {
-          "stationary_seconds": 3.0,
-          "aspect_ratio": 0.4509780391215647,
-          "is_lying": false
-        }
-      },
-      {
         "event_type": "ppe_missing",
         "timestamp": "00:20",
         "description": "Personel insan_2 eksik KKD: baret, yelek.",
@@ -630,20 +477,6 @@
             "baret",
             "yelek"
           ]
-        }
-      },
-      {
-        "event_type": "immobile_person",
-        "timestamp": "00:34",
-        "description": "Personel (track 9) 3.0 saniyedir hareketsiz.",
-        "confidence": 0.3,
-        "involved_track_ids": [
-          9
-        ],
-        "metadata": {
-          "stationary_seconds": 3.0,
-          "aspect_ratio": 0.571465163934426,
-          "is_lying": false
         }
       },
       {
@@ -1066,20 +899,6 @@
         }
       },
       {
-        "event_type": "immobile_person",
-        "timestamp": "00:46",
-        "description": "Personel (track 23) 3.0 saniyedir hareketsiz.",
-        "confidence": 0.3,
-        "involved_track_ids": [
-          23
-        ],
-        "metadata": {
-          "stationary_seconds": 3.0,
-          "aspect_ratio": 0.44758104738154625,
-          "is_lying": false
-        }
-      },
-      {
         "event_type": "gathering",
         "timestamp": "00:48",
         "description": "4 personel tehlikeli bölgede toplanmış.",
@@ -1197,20 +1016,6 @@
             "baret",
             "yelek"
           ]
-        }
-      },
-      {
-        "event_type": "immobile_person",
-        "timestamp": "00:51",
-        "description": "Personel (track 25) 3.0 saniyedir hareketsiz.",
-        "confidence": 0.3,
-        "involved_track_ids": [
-          25
-        ],
-        "metadata": {
-          "stationary_seconds": 3.0,
-          "aspect_ratio": 0.4893790849673202,
-          "is_lying": false
         }
       },
       {
@@ -1381,20 +1186,6 @@
         }
       },
       {
-        "event_type": "immobile_person",
-        "timestamp": "00:57",
-        "description": "Personel (track 39) 3.0 saniyedir hareketsiz.",
-        "confidence": 0.3,
-        "involved_track_ids": [
-          39
-        ],
-        "metadata": {
-          "stationary_seconds": 3.0,
-          "aspect_ratio": 0.4425734710087372,
-          "is_lying": false
-        }
-      },
-      {
         "event_type": "ppe_missing",
         "timestamp": "00:57",
         "description": "Personel insan_46 eksik KKD: baret, yelek.",
@@ -1453,20 +1244,6 @@
             "baret",
             "yelek"
           ]
-        }
-      },
-      {
-        "event_type": "immobile_person",
-        "timestamp": "00:59",
-        "description": "Personel (track 43) 3.0 saniyedir hareketsiz.",
-        "confidence": 0.3,
-        "involved_track_ids": [
-          43
-        ],
-        "metadata": {
-          "stationary_seconds": 3.0,
-          "aspect_ratio": 0.28216438759006024,
-          "is_lying": false
         }
       },
       {
@@ -1546,20 +1323,6 @@
         }
       },
       {
-        "event_type": "immobile_person",
-        "timestamp": "01:02",
-        "description": "Personel (track 25) 3.0 saniyedir hareketsiz.",
-        "confidence": 0.3,
-        "involved_track_ids": [
-          25
-        ],
-        "metadata": {
-          "stationary_seconds": 3.0,
-          "aspect_ratio": 0.5659287776708376,
-          "is_lying": false
-        }
-      },
-      {
         "event_type": "ppe_missing",
         "timestamp": "01:02",
         "description": "Personel insan_39 eksik KKD: baret, yelek.",
@@ -1576,62 +1339,61 @@
       }
     ],
     "vlm_interpretation": {
-      "scene_summary_tr": "[00:00-01:00] Sanayi bir üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makineye müdahale ederken, biri makinanın kapısını açar ve içine bakar. Zamanla daha fazla işçi bölgeye gelir ve birlikte makineye bakarlar. Alan, çeşitli araçlar, kablolar ve üretim malzemeleriyle doludur. [01:00-01:03] Sanayi üretim alanında, birkaç işçi büyük bir makinenin etrafında toplanmış durumdadır. İşçiler, makineye müdahale ederken birbirleriyle konuşur ve makinenin kapısını açar. Zeminde serbest kablolar ve araçlar bulunmaktadır.",
+      "scene_summary_tr": "[00:00-01:00] Sanayi bir üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makineye müdahale ederken, biri makinanın kapısını açar ve içine bakar. Daha sonra diğer işçiler de yaklaşır ve birlikte makineye müdahale ederler. Alanın zemininde kablolar ve çeşitli aletler yer almaktadır. [01:00-01:03] Sanayi üretim alanında, birkaç işçi büyük bir makinenin etrafında toplanmış durumdadır. İşçiler, makineye müdahale ederken birbirleriyle iletişim kuruyor ve bazıları makinenin kontrol paneline yaklaşıyor. Zeminde serbestçe uzanan kablolar ve çeşitli üretim malzemeleri göze çarpmaktadır.",
       "detected_entities": [
         {
           "label": "person",
           "confidence_hint": "high",
-          "notes_tr": "En az 5 kişi göze çarpar; bazıları mavi, bazıları beyaz gömlek giymektedir. İşçilerin bazıları koruyucu kask takmaktadır."
+          "notes_tr": "En az 4 işçi göze çarpar; bazıları mavi, bazıları beyaz gömlek giymektedir."
         },
         {
           "label": "machine",
           "confidence_hint": "high",
-          "notes_tr": "Büyük, turuncu renkli bir makine merkezde yer alır. Kapısı açılıp kapanır ve içine bakılır."
+          "notes_tr": "Büyük, turuncu renkli bir makine merkezde yer alır; üzerinde 'Machine 3' etiketi bulunur."
         },
         {
           "label": "rack/structure",
           "confidence_hint": "high",
-          "notes_tr": "Mavi metal raf ve yapılar, üretim alanını çevreler. Üst katlarda kablolar ve borular yer alır."
+          "notes_tr": "Mavi metal raf ve yapılar, üretim alanını çevreler."
         },
         {
           "label": "load",
           "confidence_hint": "medium",
-          "notes_tr": "Makinenin önünde, delikli ahşap bir yük taşıyıcı (veya kalıp) yer alır."
+          "notes_tr": "Makinenin yanında, delikli ahşap bir yük taşıyıcı platformu yer alır."
         },
         {
           "label": "liquid/substance",
           "confidence_hint": "low",
-          "notes_tr": "Makinenin yanında küçük bir kova veya konteyner görülebilir, içeriği belirsizdir."
+          "notes_tr": "Zeminde küçük miktarda sıvı izleri olabilir, ancak net bir madde tespit edilemez."
         },
         {
           "label": "vehicle",
           "confidence_hint": "low",
-          "notes_tr": "Sol alt köşede bir tekerlekli sandalye veya araç görünür, ancak taşıma aracı olup olmadığı belirsizdir."
+          "notes_tr": "Arka planda küçük bir taşıma aracı olabilir, ancak net bir araç tespit edilemez."
         }
       ],
       "detected_actions_tr": [
-        "İşçiler, büyük turuncu makinenin kapısını açar ve içine bakar.",
-        "Bir işçi, makineye yakın bir masada durur ve bir nesneyi incelemeye çalışır.",
-        "Daha fazla işçi bölgeye gelir ve makine etrafında toplanır.",
-        "İşçiler, makineye müdahale ederken birbirleriyle konuşur ve hareket eder.",
-        "Bazı işçiler, makinenin içine uzanır veya içeriği kontrol eder.",
-        "İşçiler, makinenin kapısını açıyor ve içine bakıyor.",
-        "İşçiler, makinenin etrafında toplanmış durumda konuşuyor.",
-        "Bir işçi, makinenin kontrol paneline yaklaşıyor.",
-        "Zeminde serbest kablolar ve araçlar yer alıyor."
+        "İşçiler, büyük bir makineye yaklaşır ve ona müdahale eder.",
+        "Bir işçi, makinenin kapısını açar ve içine bakar.",
+        "Diğer işçiler, makineye yaklaşır ve birlikte çalışır.",
+        "Zemindeki kablolar ve aletler hareket edilmez, sabit durumdadır.",
+        "İşçiler, makinenin kontrol paneline yaklaşıyor ve ona dokunuyor.",
+        "Bazı işçiler birbirleriyle konuşuyor veya işi izliyor.",
+        "Zemindeki kablolar ve araçlar hareketsiz duruyor.",
+        "Makine kapalı görünüyor; herhangi bir hareket veya duman yok."
       ],
       "risk_events": [
         {
-          "description_tr": "Zeminde serbest kablolar ve araçlar bulunur. Bu, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir.",
-          "severity": "low",
-          "confidence": 0.75,
+          "description_tr": "Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Bu, özellikle makineye yaklaşırken ciddi bir düşme riski oluşturur.",
+          "severity": "medium",
+          "confidence": 0.8,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
           "timestamp_sec": 0.0,
           "timestamp": "00:00"
         },
         {
-          "description_tr": "İşçiler, makinenin kapısını açarken ve içine bakarken, makinenin çalıştığından emin olmaksızın müdahale edebilir. Bu, makinenin ani çalışması durumunda ciddi yaralanmaya neden olabilir.",
+          "description_tr": "İşçi, makinenin kapısını açarken ve içine bakarken, makinenin çalışır durumda olup olmadığı kontrol edilmemiş olabilir. Bu, makinenin ani çalışması durumunda ciddi yaralanma riski oluşturur.",
           "severity": "high",
           "confidence": 0.85,
           "supporting_frame_count": 1,
@@ -1640,55 +1402,45 @@
           "timestamp": "00:10"
         },
         {
-          "description_tr": "Makinenin etrafında çok sayıda işçi toplanırken, birbirlerine ve makineye yakın mesafede hareket ederler. Bu, bir kazada veya makine hareketi sırasında çarpışma riskini artırır.",
+          "description_tr": "İşçiler, makineye müdahale ederken, koruyucu ekipman (örneğin, eldiven, gözlük) kullanmadıkları gözlemlenir. Bu, makineyle temas halinde yaralanma riskini artırır.",
           "severity": "medium",
-          "confidence": 0.8,
+          "confidence": 0.75,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
-          "timestamp_sec": 40.0,
-          "timestamp": "00:40"
+          "timestamp_sec": 15.0,
+          "timestamp": "00:15"
         },
         {
-          "description_tr": "İşçiler, makinenin kapısını açarken ve içine bakarken, makinenin çalıştığından emin olmaksızın müdahale edebilir. Bu, makinenin ani çalışması durumunda ciddi yaralanmaya neden olabilir.",
-          "severity": "high",
-          "confidence": 0.85,
+          "description_tr": "İşçiler, makineye müdahale ederken koruyucu ekipman (gözlük, eldiven, kask) kullanmadıkları gözlemleniyor. Bu, makineye temas halinde yaralanma riskini artırır.",
+          "severity": "medium",
+          "confidence": 0.75,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
-          "timestamp_sec": 60.0,
+          "timestamp_sec": 60.5,
           "timestamp": "01:00"
         },
         {
-          "description_tr": "Makinenin etrafında çok sayıda işçi toplanırken, birbirlerine ve makineye yakın mesafede hareket ederler. Bu, bir kazada veya makine hareketi sırasında çarpışma riskini artırır.",
+          "description_tr": "Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle makineye yaklaşırken bu risk artar.",
           "severity": "medium",
           "confidence": 0.8,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
           "timestamp_sec": 61.0,
           "timestamp": "01:01"
-        },
-        {
-          "description_tr": "Zeminde serbest kablolar ve araçlar bulunur. Bu, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir.",
-          "severity": "low",
-          "confidence": 0.75,
-          "supporting_frame_count": 1,
-          "supporting_frame_positions": [],
-          "timestamp_sec": 62.0,
-          "timestamp": "01:02"
         }
       ],
       "risk_flags_tr": [
-        "Zeminde serbest kablolar ve araçlar bulunur. Bu, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir.",
-        "İşçiler, makinenin kapısını açarken ve içine bakarken, makinenin çalıştığından emin olmaksızın müdahale edebilir. Bu, makinenin ani çalışması durumunda ciddi yaralanmaya neden olabilir.",
-        "Makinenin etrafında çok sayıda işçi toplanırken, birbirlerine ve makineye yakın mesafede hareket ederler. Bu, bir kazada veya makine hareketi sırasında çarpışma riskini artırır.",
-        "İşçiler, makinenin kapısını açarken ve içine bakarken, makinenin çalıştığından emin olmaksızın müdahale edebilir. Bu, makinenin ani çalışması durumunda ciddi yaralanmaya neden olabilir.",
-        "Makinenin etrafında çok sayıda işçi toplanırken, birbirlerine ve makineye yakın mesafede hareket ederler. Bu, bir kazada veya makine hareketi sırasında çarpışma riskini artırır.",
-        "Zeminde serbest kablolar ve araçlar bulunur. Bu, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir."
+        "Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Bu, özellikle makineye yaklaşırken ciddi bir düşme riski oluşturur.",
+        "İşçi, makinenin kapısını açarken ve içine bakarken, makinenin çalışır durumda olup olmadığı kontrol edilmemiş olabilir. Bu, makinenin ani çalışması durumunda ciddi yaralanma riski oluşturur.",
+        "İşçiler, makineye müdahale ederken, koruyucu ekipman (örneğin, eldiven, gözlük) kullanmadıkları gözlemlenir. Bu, makineyle temas halinde yaralanma riskini artırır.",
+        "İşçiler, makineye müdahale ederken koruyucu ekipman (gözlük, eldiven, kask) kullanmadıkları gözlemleniyor. Bu, makineye temas halinde yaralanma riskini artırır.",
+        "Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle makineye yaklaşırken bu risk artar."
       ],
-      "confidence_overall": 0.85,
-      "computed_confidence": 0.5725,
+      "confidence_overall": 0.835,
+      "computed_confidence": 0.5713,
       "segment_count": 2,
       "failed_segments": [],
-      "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Sanayi bir üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makineye müdahale ederken, biri makinanın kapısını açar ve içine bakar. Zamanla daha fazla işçi bölgeye gelir ve birlikte makineye bakarlar. Alan,\n  - [00:00] görülen varlıklar: liquid/substance, load, machine, person, rack/structure, vehicle\n  - [01:00] Sanayi üretim alanında, birkaç işçi büyük bir makinenin etrafında toplanmış durumdadır. İşçiler, makineye müdahale ederken birbirleriyle konuşur ve makinenin kapısını açar. Zeminde serbest kablolar ve araçlar bulunmaktadır.\n  - [01:00] görülen varlıklar: liquid/substance, load, machine, person, rack/structure, vehicle\nZaman damgalı olaylar:\n  - 00:10 — İşçiler, makinenin kapısını açarken ve içine bakarken, makinenin çalıştığından emin olmaksızın müdahale edebilir. Bu, makinenin ani çalışması durumunda ciddi yaralanmaya neden olabilir. [high, güven 0.85]\n  - 00:40 — Makinenin etrafında çok sayıda işçi toplanırken, birbirlerine ve makineye yakın mesafede hareket ederler. Bu, bir kazada veya makine hareketi sırasında çarpışma riskini artırır. [medium, güven 0.80]\n  - 00:00 — Zeminde serbest kablolar ve araçlar bulunur. Bu, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. [low, güven 0.75]\n  - 01:00 — İşçiler, makinenin kapısını açarken ve içine bakarken, makinenin çalıştığından emin olmaksızın müdahale edebilir. Bu, makinenin ani çalışması durumunda ciddi yaralanmaya neden olabilir. [high, güven 0.85]\n  - 01:01 — Makinenin etrafında çok sayıda işçi toplanırken, birbirlerine ve makineye yakın mesafede hareket ederler. Bu, bir kazada veya makine hareketi sırasında çarpışma riskini artırır. [medium, güven 0.80]\n  - 01:02 — Zeminde serbest kablolar ve araçlar bulunur. Bu, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. [low, güven 0.75]"
+      "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Sanayi bir üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makineye müdahale ederken, biri makinanın kapısını açar ve içine bakar. Daha sonra diğer işçiler de yaklaşır ve birlikte makineye müdahale ederler\n  - [00:00] görülen varlıklar: liquid/substance, load, machine, person, rack/structure, vehicle\n  - [01:00] Sanayi üretim alanında, birkaç işçi büyük bir makinenin etrafında toplanmış durumdadır. İşçiler, makineye müdahale ederken birbirleriyle iletişim kuruyor ve bazıları makinenin kontrol paneline yaklaşıyor. Zeminde serbestçe uzanan kablolar v\n  - [01:00] görülen varlıklar: liquid/substance, load, machine, person, rack/structure, vehicle\nZaman damgalı olaylar:\n  - 00:10 — İşçi, makinenin kapısını açarken ve içine bakarken, makinenin çalışır durumda olup olmadığı kontrol edilmemiş olabilir. Bu, makinenin ani çalışması durumunda ciddi yaralanma riski oluşturur. [high, güven 0.85]\n  - 00:15 — İşçiler, makineye müdahale ederken, koruyucu ekipman (örneğin, eldiven, gözlük) kullanmadıkları gözlemlenir. Bu, makineyle temas halinde yaralanma riskini artırır. [medium, güven 0.75]\n  - 00:00 — Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Bu, özellikle makineye yaklaşırken ciddi bir düşme riski oluşturur. [medium, güven 0.80]\n  - 01:00 — İşçiler, makineye müdahale ederken koruyucu ekipman (gözlük, eldiven, kask) kullanmadıkları gözlemleniyor. Bu, makineye temas halinde yaralanma riskini artırır. [medium, güven 0.75]\n  - 01:01 — Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle makineye yaklaşırken bu risk artar. [medium, güven 0.80]"
     },
     "rag_context": {
       "hypotheses": [
@@ -1731,47 +1483,6 @@
             ],
             "metadata": {
               "person_count": 4
-            }
-          }
-        },
-        {
-          "pattern": "immobile_person",
-          "hazard_mechanism": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
-          "applicability_questions": [
-            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
-          ],
-          "required_evidence": [
-            "insan merkezi 2.5 sn'den fazla sabit",
-            "insan bbox değişmiyor",
-            "çevresinde yardım hareketi yok",
-            "insan zemin seviyesinde hareketsiz"
-          ],
-          "disconfirming_evidence": [
-            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
-          ],
-          "potential_hazards": [
-            "Hayati tehlike",
-            "Tıbbi müdahale gecikmesi"
-          ],
-          "action_hints": [
-            "call_health_team",
-            "call_ambulance",
-            "notify_supervisor"
-          ],
-          "similarity": 0.029,
-          "evidence_status": "signal_candidate",
-          "matched_signal": {
-            "event_type": "immobile_person",
-            "timestamp": "01:02",
-            "description": "Personel (track 25) 3.0 saniyedir hareketsiz.",
-            "confidence": 0.3,
-            "involved_track_ids": [
-              25
-            ],
-            "metadata": {
-              "stationary_seconds": 3.0,
-              "aspect_ratio": 0.5659287776708376,
-              "is_lying": false
             }
           }
         },
@@ -2115,47 +1826,6 @@
           }
         },
         {
-          "pattern": "immobile_person",
-          "hazard_mechanism": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
-          "applicability_questions": [
-            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
-          ],
-          "required_evidence": [
-            "insan merkezi 2.5 sn'den fazla sabit",
-            "insan bbox değişmiyor",
-            "çevresinde yardım hareketi yok",
-            "insan zemin seviyesinde hareketsiz"
-          ],
-          "disconfirming_evidence": [
-            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
-          ],
-          "potential_hazards": [
-            "Hayati tehlike",
-            "Tıbbi müdahale gecikmesi"
-          ],
-          "action_hints": [
-            "call_health_team",
-            "call_ambulance",
-            "notify_supervisor"
-          ],
-          "similarity": 0.029,
-          "evidence_status": "signal_candidate",
-          "matched_signal": {
-            "event_type": "immobile_person",
-            "timestamp": "01:02",
-            "description": "Personel (track 25) 3.0 saniyedir hareketsiz.",
-            "confidence": 0.3,
-            "involved_track_ids": [
-              25
-            ],
-            "metadata": {
-              "stationary_seconds": 3.0,
-              "aspect_ratio": 0.5659287776708376,
-              "is_lying": false
-            }
-          }
-        },
-        {
           "pattern": "ppe_missing",
           "hazard_mechanism": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği.",
           "applicability_questions": [
@@ -2344,6 +2014,39 @@
         }
       ]
     },
-    "event_timestamps": []
+    "event_timestamps": [
+      {
+        "result_id": "result-1",
+        "result_type": "incident",
+        "seconds": 0.0,
+        "timestamp": "00:00",
+        "end_time": "01:02",
+        "timestamp_sec": 0.0,
+        "duration": 62.0,
+        "event_type": "ppe_missing",
+        "event": "Personel grubu, koruyucu ekipman (baret, yelek) kullanmadan makineye müdahale etmektedir.",
+        "hazard_mechanism": "KKD eksikliği nedeniyle makine parçalarıyla temas, düşen cisimler veya elektrik çarpması durumunda yaralanma riski artışı.",
+        "confidence": 0.85,
+        "severity": "high",
+        "evidence_agreement": "corroborated",
+        "uncertain": false
+      },
+      {
+        "result_id": "result-2",
+        "result_type": "incident",
+        "seconds": 37.0,
+        "timestamp": "00:37",
+        "end_time": "01:02",
+        "timestamp_sec": 37.0,
+        "duration": 25.0,
+        "event_type": "gathering",
+        "event": "Tehlikeli bölgede 3 veya daha fazla personelin toplanması.",
+        "hazard_mechanism": "Makine çalışması veya beklenmedik bir olay durumunda toplu yaralanma riski ve tahliye güçlüğü.",
+        "confidence": 0.8,
+        "severity": "medium",
+        "evidence_agreement": "corroborated",
+        "uncertain": false
+      }
+    ]
   }
 }

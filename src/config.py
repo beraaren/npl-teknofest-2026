@@ -51,7 +51,6 @@ class EventThresholds(BaseModel):
     tip_over: dict[str, Any] = Field(default_factory=dict)
     fall: dict[str, Any] = Field(default_factory=dict)
     gathering: dict[str, Any] = Field(default_factory=dict)
-    immobility: dict[str, Any] = Field(default_factory=dict)
     ppe_missing: dict[str, Any] = Field(default_factory=dict)
     proximity: dict[str, Any] = Field(default_factory=dict)
     fire_smoke: dict[str, Any] = Field(default_factory=dict)

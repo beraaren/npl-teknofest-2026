@@ -1,0 +1,64 @@
+{
+  "packet_id": "ccac8a84-c40f-4eb2-bbaa-47964984dee5",
+  "video_id": "kaos-and-the-hands-of-fate-machine-shop-a34463",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir endüstriyel üretim tesisinde, uzun bir metal çubuk veya silindir, bir makine üzerinde işleme sırasında görülüyor. İşlem sırasında ani bir patlama veya basınç salınımı meydana gelir ve çevreye yoğun bir duman veya toz bulutu yayılır. Bir çalışan, olaydan hemen önce makinenin yakınında yürüyor ve olay sırasında kaçmaya başlar.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Koyu renk kıyafetli bir kişi, makinenin yakınında yürüyor ve olay sırasında kaçıyor."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Uzun bir metal çubuk işleme makinesi, mavi ve kırmızı parçalardan oluşuyor."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Uzun, silindirik metal parça, makinenin üzerinde sabitlenmiş durumda."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "00:09'dan itibaren yoğun duman/toz bulutu yayılıyor, muhtemelen patlama veya basınç salınımı sonucu."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda çeşitli üretim aletleri ve raf yapıları görülmektedir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, makinenin yakınında yürüyor.",
+    "Makine üzerindeki metal parça işleme sırasında ani bir patlama veya basınç salınımı meydana geliyor.",
+    "Duman/toz bulutu hızla yayılıyor.",
+    "İşçi, olaydan kaçmaya başlıyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 8537.776099998155,
+    "tokens_generated": 582
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir endüstriyel üretim tesisinde, uzun bir metal çubuk veya silindir, bir makine üzerinde işleme sırasında görülüyor. İşlem sırasında ani bir patlama veya basınç salınımı meydana gelir ve çevreye yoğun bir duman veya toz bulutu yayılır. Bir çalışan, olaydan hemen önce makinenin yakınında yürüyor ve olay sırasında kaçmaya başlar.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Koyu renk kıyafetli bir kişi, makinenin yakınında yürüyor ve olay sırasında kaçıyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun bir metal çubuk işleme makinesi, mavi ve kırmızı parçalardan oluşuyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun, silindirik metal parça, makinenin üzerinde sabitlenmiş durumda.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:09'dan itibaren yoğun duman/toz bulutu yayılıyor, muhtemelen patlama veya basınç salınımı sonucu.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda çeşitli üretim aletleri ve raf yapıları görülmektedir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, makinenin yakınında yürüyor.\",\n    \"Makine üzerindeki metal parça işleme sırasında ani bir patlama veya basınç salınımı meydana geliyor.\",\n    \"Duman/toz bulutu hızla yayılıyor.\",\n    \"İşçi, olaydan kaçmaya başlıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makine üzerindeki metal parça işleme sırasında ani bir patlama veya basınç salınımı meydana gelerek yoğun duman/toz bulutu oluşturuyor. Bu, çalışanın sağlığına ve güvenliğine ciddi tehdit oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 9.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Makine üzerindeki metal parça işleme sırasında ani bir patlama veya basınç salınımı meydana gelerek yoğun duman/toz bulutu oluşturuyor. Bu, çalışanın sağlığına ve güvenliğine ciddi tehdit oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 9.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Makine üzerindeki metal parça işleme sırasında ani bir patlama veya basınç salınımı meydana gelerek yoğun duman/toz bulutu oluşturuyor. Bu, çalışanın sağlığına ve güvenliğine ciddi tehdit oluşturuyor."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 15.815815815815816,
+  "created_at": "2026-08-27T22:30:17.093973+00:00"
+}

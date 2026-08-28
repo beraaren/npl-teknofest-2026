@@ -72,7 +72,6 @@ VIDEO_EXTENSIONS = {".mp4", ".avi", ".mov", ".mkv", ".webm"}
 EVENT_TITLES = {
     "forklift_tip_over": "Araç devrilmesi",
     "person_fall": "Personel düşmesi",
-    "immobile_person": "Hareketsiz personel",
     "gathering": "Personel kalabalıklaşması",
     "ppe_missing": "KKD eksikliği",
     "dangerous_proximity": "Tehlikeli yakınlık",
@@ -182,18 +181,25 @@ def build_event_timestamps(
         if result.get("uncertain") or severity == "unknown":
             continue
         timestamp_sec = float(result.get("timestamp_sec") or time_to_seconds(result.get("time")))
+        timestamp_sec = max(0.0, timestamp_sec)
         if duration_sec > 0:
-            timestamp_sec = min(max(0.0, timestamp_sec), max(0.0, duration_sec - 0.5))
+            timestamp_sec = min(timestamp_sec, duration_sec)
+
         duration = max(0.0, float(result.get("duration") or 0.0))
-        end_time = str(result.get("end_time") or "")
-        if not end_time and duration > 0:
-            end_time = mmss(timestamp_sec + duration)
+        if duration_sec > 0:
+            duration = min(duration, max(0.0, duration_sec - timestamp_sec))
+
+        # Zaman aralığının tek kaynağı timestamp_sec + duration'dır. Modelin
+        # çelişkili time/end_time metinleri saklanmaz; replay ve JSON aynı
+        # sayısal aralıktan türetilir.
+        timestamp = mmss(timestamp_sec)
+        end_time = mmss(timestamp_sec + duration)
         evidence = result.get("evidence") if isinstance(result.get("evidence"), dict) else {}
         out.append({
             "result_id": str(result.get("result_id") or ""),
             "result_type": "incident",
             "seconds": round(timestamp_sec, 2),
-            "timestamp": mmss(timestamp_sec),
+            "timestamp": timestamp,
             "end_time": end_time,
             "timestamp_sec": round(timestamp_sec, 2),
             "duration": round(duration, 2),

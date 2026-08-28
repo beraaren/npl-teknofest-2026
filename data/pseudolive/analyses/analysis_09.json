@@ -1,12 +1,6 @@
 {
-  "summary": "Depo-A Giriş bölgesinde 2 olay tespit edildi; en kritik: Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
+  "summary": "Depo-A Giriş bölgesinde 1 olay tespit edildi; en kritik: Çalışma alanında düzensiz eşyalar ve engeller (takılma riski).",
   "events": [
-    {
-      "time": "00:18",
-      "event": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
-      "event_type": "immobile_person",
-      "confidence": 0.61
-    },
     {
       "time": "00:30",
       "event": "Çalışma alanında düzensiz eşyalar ve engeller (takılma riski).",
@@ -21,21 +15,21 @@
     "Kişinin son bilinen aktivitesini kayıt altına al.",
     "Alan sorumlusunu derhal bilgilendir."
   ],
-  "reasoning": "Geometrik sinyaller immobile_person, cluttered_workspace pattern'leriyle eşleşti. En yüksek risk skoru 70 (immobile_person). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "reasoning": "Geometrik sinyaller cluttered_workspace pattern'leriyle eşleşti. RAG bağlamı ve olay zaman damgaları tutarlı.",
   "confidence": 0.82,
   "triggered_mock_tools": [
     {
       "tool_name": "call_health_team",
       "params": {
         "location": "saha",
-        "reason": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi."
+        "reason": ""
       }
     },
     {
       "tool_name": "call_ambulance",
       "params": {
         "location": "saha",
-        "reason": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi."
+        "reason": ""
       }
     }
   ],
@@ -45,14 +39,6 @@
     "duration_sec": 41,
     "fps": 12.0,
     "geometric_signals": [
-      {
-        "event_type": "immobile_person",
-        "timestamp": "00:18",
-        "description": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
-        "confidence": 0.61,
-        "involved_track_ids": [],
-        "metadata": {}
-      },
       {
         "event_type": "cluttered_workspace",
         "timestamp": "00:30",
@@ -64,24 +50,12 @@
     ],
     "event_timestamps": [
       {
-        "event_type": "immobile_person",
-        "timestamp": "00:18",
-        "seconds": 18
-      },
-      {
         "event_type": "cluttered_workspace",
         "timestamp": "00:30",
         "seconds": 30
       }
     ],
     "risk_segments": [
-      {
-        "start_sec": 18,
-        "end_sec": 24,
-        "event_type": "immobile_person",
-        "risk": "Orta",
-        "description": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi."
-      },
       {
         "start_sec": 30,
         "end_sec": 38,

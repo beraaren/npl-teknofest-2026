@@ -1,0 +1,78 @@
+{
+  "packet_id": "ef0066fc-e848-461a-8644-95e435ad661f",
+  "video_id": "plastic-molding-incident-c46b94",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Sanayi üretim alanında, birkaç işçi büyük bir makinenin etrafında toplanmış durumdadır. İşçiler, makineye müdahale ederken birbirleriyle iletişim kuruyor ve bazıları makinenin kontrol paneline yaklaşıyor. Zeminde serbestçe uzanan kablolar ve çeşitli üretim malzemeleri göze çarpmaktadır.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Dört işçi makinenin etrafında hareket ediyor; biri kontrol paneline yaklaşıyor, diğerleri konuşuyor veya izliyor."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük, kırmızı renkli bir makine (Machine 3 olarak etiketlenmiş) sahnenin merkezinde yer alıyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Makinenin üstünde ve etrafında mavi metal yapılar ve raf sistemleri mevcut."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Makinenin yanında bir tahta zemin üzerinde düzenlenmiş, delikli bir yük taşıyıcı göze çarpıyor."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "low",
+      "notes_tr": "Makinenin yanında küçük bir kova veya konteyner var; içeriği belirsiz."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "low",
+      "notes_tr": "Sahnenin sol tarafında küçük bir tekerlekli araç (muhtemelen bir koltuk veya araç) görülmektedir; türü kesin değil."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler, makinenin kontrol paneline yaklaşıyor ve ona dokunuyor.",
+    "Bazı işçiler birbirleriyle konuşuyor veya işi izliyor.",
+    "Zemindeki kablolar ve araçlar hareketsiz duruyor.",
+    "Makine kapalı görünüyor; herhangi bir hareket veya duman yok."
+  ],
+  "confidence_overall": 0.82,
+  "inference": {
+    "latency_ms": 9513.301099999808,
+    "tokens_generated": 729
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi üretim alanında, birkaç işçi büyük bir makinenin etrafında toplanmış durumdadır. İşçiler, makineye müdahale ederken birbirleriyle iletişim kuruyor ve bazıları makinenin kontrol paneline yaklaşıyor. Zeminde serbestçe uzanan kablolar ve çeşitli üretim malzemeleri göze çarpmaktadır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Dört işçi makinenin etrafında hareket ediyor; biri kontrol paneline yaklaşıyor, diğerleri konuşuyor veya izliyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, kırmızı renkli bir makine (Machine 3 olarak etiketlenmiş) sahnenin merkezinde yer alıyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin üstünde ve etrafında mavi metal yapılar ve raf sistemleri mevcut.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinenin yanında bir tahta zemin üzerinde düzenlenmiş, delikli bir yük taşıyıcı göze çarpıyor.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Makinenin yanında küçük bir kova veya konteyner var; içeriği belirsiz.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Sahnenin sol tarafında küçük bir tekerlekli araç (muhtemelen bir koltuk veya araç) görülmektedir; türü kesin değil.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, makinenin kontrol paneline yaklaşıyor ve ona dokunuyor.\",\n    \"Bazı işçiler birbirleriyle konuşuyor veya işi izliyor.\",\n    \"Zemindeki kablolar ve araçlar hareketsiz duruyor.\",\n    \"Makine kapalı görünüyor; herhangi bir hareket veya duman yok.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçiler, makineye müdahale ederken koruyucu ekipman (gözlük, eldiven, kask) kullanmadıkları gözlemleniyor. Bu, makineye temas halinde yaralanma riskini artırır.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.75,\n      \"timestamp_sec\": 60.5\n    },\n    {\n      \"description_tr\": \"Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle makineye yaklaşırken bu risk artar.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 61.0\n    }\n  ],\n  \"confidence_overall\": 0.82\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçiler, makineye müdahale ederken koruyucu ekipman (gözlük, eldiven, kask) kullanmadıkları gözlemleniyor. Bu, makineye temas halinde yaralanma riskini artırır.",
+      "severity": "medium",
+      "confidence": 0.75,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 60.5
+    },
+    {
+      "description_tr": "Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle makineye yaklaşırken bu risk artar.",
+      "severity": "medium",
+      "confidence": 0.8,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 61.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçiler, makineye müdahale ederken koruyucu ekipman (gözlük, eldiven, kask) kullanmadıkları gözlemleniyor. Bu, makineye temas halinde yaralanma riskini artırır.",
+    "Zeminde serbestçe uzanan kablolar, çalışanların dengesini kaybetmesine ve düşmesine neden olabilir. Özellikle makineye yaklaşırken bu risk artar."
+  ],
+  "computed_confidence": 0.5513,
+  "reasoning_trace": "",
+  "segment_start_sec": 60.0,
+  "segment_end_sec": 62.857142857142854,
+  "created_at": "2026-08-27T22:32:18.958646+00:00"
+}

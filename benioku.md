@@ -80,8 +80,8 @@ gördüklerini genel terimlerle betimler; çelişkiyi Karar Ajanı çözer ve
   içinde tekrarlanmaz. `get_signals()` → `EventSignal.to_dict()` listesi;
   **timestamp alanı "MM:SS" string**'dir (float değil).
 - `rules.py` — `RuleSet`: config'teki `enabled_rules`'a göre geometrik kurallar
-  (tip_over: en/boy oranı; fall: dikey düşüş; gathering; immobility;
-  ppe_missing; proximity; fire_smoke/leakage placeholder).
+  (tip_over: en/boy oranı; fall: dikey düşüş; gathering; ppe_missing;
+  proximity; fire_smoke/leakage placeholder).
 - `state_machine.py` — `TrackStateMachine`: track geçmişi ve süreklilik durumu.
 
 ### `src/reasoning/`

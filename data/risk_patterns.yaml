@@ -69,25 +69,6 @@ patterns:
       - "notify_supervisor"
       - "sound_alarm"
 
-  immobile_person:
-    description: "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi."
-    risk_score: 70
-    risk_level: "Orta"
-    indicators:
-      - "insan merkezi 2.5 sn'den fazla sabit"
-      - "insan bbox değişmiyor"
-      - "çevresinde yardım hareketi yok"
-      - "insan zemin seviyesinde hareketsiz"
-    keywords: "hareketsiz sabit bayılma bilinçsiz yerde yatan kişi insan personel"
-    required_nodes: ["insan"]
-    potential_hazards:
-      - "Hayati tehlike"
-      - "Tıbbi müdahale gecikmesi"
-    mock_tool_hints:
-      - "call_health_team"
-      - "call_ambulance"
-      - "notify_supervisor"
-
   ppe_missing:
     description: "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği."
     risk_score: 45

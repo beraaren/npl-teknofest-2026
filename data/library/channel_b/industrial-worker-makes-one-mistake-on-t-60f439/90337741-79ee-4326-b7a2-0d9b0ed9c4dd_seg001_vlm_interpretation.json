@@ -1,0 +1,68 @@
+{
+  "packet_id": "90337741-79ee-4326-b7a2-0d9b0ed9c4dd",
+  "video_id": "industrial-worker-makes-one-mistake-on-t-60f439",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "İki işçi, bir torna makinesi başında çalışmaktadır. İşçiler, makineye yakın durarak uzun bir metal parçasını yerleştiriyor, ayarlıyor ve işleme sokuyor. İşyeri ortamı dar ve işçilerin koruyucu ekipmanları (örneğin kask, gözlük) kullanılmıyor. Makine çalışırken işçiler el ile müdahale ediyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İki işçi, biri makineye yakın duruyor, diğeri geçici olarak görünür."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Torna makinesi, uzun bir metal parçayı işliyor."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Uzun metal parça, makinede işleme sokuluyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda metal çubuklar veya malzeme yığınları görülmektedir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, torna makinesine uzun bir metal parçayı yerleştiriyor.",
+    "İşçi, makinenin kontrol paneline dokunarak ayar yapıyor.",
+    "İşçi, makine çalışırken el ile metal parçasını tutuyor ve yönlendiriyor.",
+    "İkinci işçi, makinenin yanında geçerek kısa süreliğine görünüyor."
+  ],
+  "confidence_overall": 0.87,
+  "inference": {
+    "latency_ms": 10841.8090999985,
+    "tokens_generated": 598
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"İki işçi, bir torna makinesi başında çalışmaktadır. İşçiler, makineye yakın durarak uzun bir metal parçasını yerleştiriyor, ayarlıyor ve işleme sokuyor. İşyeri ortamı dar ve işçilerin koruyucu ekipmanları (örneğin kask, gözlük) kullanılmıyor. Makine çalışırken işçiler el ile müdahale ediyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki işçi, biri makineye yakın duruyor, diğeri geçici olarak görünür.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Torna makinesi, uzun bir metal parçayı işliyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Uzun metal parça, makinede işleme sokuluyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda metal çubuklar veya malzeme yığınları görülmektedir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, torna makinesine uzun bir metal parçayı yerleştiriyor.\",\n    \"İşçi, makinenin kontrol paneline dokunarak ayar yapıyor.\",\n    \"İşçi, makine çalışırken el ile metal parçasını tutuyor ve yönlendiriyor.\",\n    \"İkinci işçi, makinenin yanında geçerek kısa süreliğine görünüyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.88,\n      \"timestamp_sec\": 65.0\n    },\n    {\n      \"description_tr\": \"İşçiler, koruyucu ekipman (gözlük, kask) kullanmadan makine başında çalışıyor. Bu, metal parçalarının kopması veya tozun gözlerine girmesi gibi risklere maruz kalma olasılığını artırıyor.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 62.0\n    }\n  ],\n  \"confidence_overall\": 0.87\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+      "severity": "critical",
+      "confidence": 0.88,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 65.0
+    },
+    {
+      "description_tr": "İşçiler, koruyucu ekipman (gözlük, kask) kullanmadan makine başında çalışıyor. Bu, metal parçalarının kopması veya tozun gözlerine girmesi gibi risklere maruz kalma olasılığını artırıyor.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 62.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, makine çalışırken el ile dönen metal parçasına dokunuyor. Bu, dönen parçaya takılma ve ciddi kesik veya ezilme yaralanması riski oluşturuyor.",
+    "İşçiler, koruyucu ekipman (gözlük, kask) kullanmadan makine başında çalışıyor. Bu, metal parçalarının kopması veya tozun gözlerine girmesi gibi risklere maruz kalma olasılığını artırıyor."
+  ],
+  "computed_confidence": 0.6876,
+  "reasoning_trace": "",
+  "segment_start_sec": 60.0,
+  "segment_end_sec": 120.0,
+  "created_at": "2026-08-27T22:25:37.033736+00:00"
+}

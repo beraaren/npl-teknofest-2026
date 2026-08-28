@@ -79,7 +79,6 @@ events:
     - tip_over
     - fall
     - gathering
-    - immobility
     - proximity
     - fire_smoke
     - leakage
@@ -111,31 +110,6 @@ events:
       max_inter_center_distance: 120  # piksel — ölçek bilinmiyorsa (scale_ema=0) fallback
       max_inter_center_ratio: 1.5     # ölçek bilinen çiftler için: ortalama bbox yüksekliğinin katı
       min_duration_frames: 10
-    immobility:
-      # Kümülatif pencere + ölçeğe (scale_ema) oranlı hareketsizlik tespiti.
-      # Eski tasarım (sabit 15px, frame-to-frame karşılaştırma) yavaş yürüyen
-      # personeli de "durağan" sayıyordu çünkü kare-kareye hareket (~1-2px)
-      # her zaman eşiğin altında kalıyor, sayaç asla sıfırlanmıyordu (bkz.
-      # src/events/state_machine.py TrackState.update). Artık son
-      # `window_seconds` boyunca toplam yer değiştirme, kişinin kendi bbox
-      # yüksekliğine (scale_ema) oranlanarak değerlendirilir.
-      # Kalibrasyon (gerçek video ölçümü, bkz. state_machine.py yorumu):
-      #   - Gerçekten hareketsiz kişide (bbox jitter/titreme) oran zamanla
-      #     büyümüyor, ~0.09'da tavan yapıyor (rastgele/sınırlı gürültü).
-      #   - Yavaş yürüyen kişide oran pencere büyüdükçe DOĞRUSAL büyüyor
-      #     (3s pencerede medyan ~0.15) çünkü hareket yönlü ve birikimlidir.
-      #   window_seconds=3.0 bu ikisini ayırt etmeye yetecek kadar uzun;
-      #   1.0s gibi kısa pencerelerde ikisi ayırt edilemeyecek kadar yakın çıkıyor.
-      window_seconds: 3.0               # kümülatif hareket penceresi (sn)
-      movement_ratio_threshold: 0.12    # jitter tavanının (~0.09) üstü, yürüyüşün (~0.15) altı
-      min_duration_seconds: 3.0        # AYAKTA/normal duruşta: bu kadar sn kesintisiz durağansa sinyal üret
-      # Duruş (pose) ayırımı: yatık pozisyon (aspect_ratio >= lying_aspect_ratio_min,
-      # bkz. _rule_tip_over'daki forklift mantığının aynısı) bayılma şüphesini
-      # geometrik olarak güçlendiren bağımsız bir kanıttır. Bu durumda daha kısa
-      # bir süre eşiği (lying_min_duration_seconds) yeterli sayılır; ayakta
-      # durağan kalan (örn. telefon bakan) biri için genel eşik değişmez.
-      lying_aspect_ratio_min: 1.0        # bbox genişlik/yükseklik >= 1.0 -> yatık sayılır
-      lying_min_duration_seconds: 1.5    # yatık pozisyonda daha kısa süre yeterli
     ppe_missing:
       classes: ["baret", "yelek"]
       # Not: KKD eşleştirmesi piksel eşiği kullanmaz. Baret/yelek, personel bbox'ının

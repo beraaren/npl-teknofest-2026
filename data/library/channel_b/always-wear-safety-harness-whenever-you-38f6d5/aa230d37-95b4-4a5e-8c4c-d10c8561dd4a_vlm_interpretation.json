@@ -1,0 +1,65 @@
+{
+  "packet_id": "aa230d37-95b4-4a5e-8c4c-d10c8561dd4a",
+  "video_id": "always-wear-safety-harness-whenever-you-38f6d5",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Yapı sitesinde, bir kırık kolu (boom) ile çalışan bir yükseklikteki işçinin, kolu kontrolsüz bir şekilde devrildiği ve işçinin havada asılı kaldığı bir olay gözlemleniyor. İşçi, kolu devrilen anı takip eden saniyelerde kurtarılmaya çalışılıyor. Olay, bir yolun kıvrımında ve inşaat alanının kenarında gerçekleşiyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İşçi, yükseklikteki kırık kolu üzerinde çalışırken görülüyor. Kaza anında havada asılı kalıyor. Ayrıca, kaza sonrası yerde yürüyen birkaç kişi daha var."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Kırmızı renkli, uzun kolu olan bir kırık kolu (boom) makinesi. Bu makine, inşaat alanının kenarında yer alıyor ve kaza anında devrilir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Yapı sitesindeki betonarme yapı ve iskeleler. Bu yapılar, inşaat alanının bir parçası olarak görünüyor."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "low",
+      "notes_tr": "Arka planda, uzakta bir araç gibi görünen nesne var ancak net bir tanımlama yapılamıyor. Belki bir kamyon veya inşaat aracı olabilir."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "low",
+      "notes_tr": "Kırık kolu üzerindeki kova (basket) içinde bir yük olabilir, ancak net bir şekilde belirlenemiyor. Kova, işçinin bulunduğu yerdir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, yükseklikteki kırık kolu üzerinde çalışırken.",
+    "Kırık kolu, kontrolsüz bir şekilde devriliyor.",
+    "İşçi, kolu devrilen anı takip eden saniyelerde havada asılı kalıyor.",
+    "Diğer kişiler, kaza sonrası yerde koşarak müdahale ediyor.",
+    "İşçi, kaza sonrası kurtarılmaya çalışılıyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 15709.218899995903,
+    "tokens_generated": 699
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Yapı sitesinde, bir kırık kolu (boom) ile çalışan bir yükseklikteki işçinin, kolu kontrolsüz bir şekilde devrildiği ve işçinin havada asılı kaldığı bir olay gözlemleniyor. İşçi, kolu devrilen anı takip eden saniyelerde kurtarılmaya çalışılıyor. Olay, bir yolun kıvrımında ve inşaat alanının kenarında gerçekleşiyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, yükseklikteki kırık kolu üzerinde çalışırken görülüyor. Kaza anında havada asılı kalıyor. Ayrıca, kaza sonrası yerde yürüyen birkaç kişi daha var.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kırmızı renkli, uzun kolu olan bir kırık kolu (boom) makinesi. Bu makine, inşaat alanının kenarında yer alıyor ve kaza anında devrilir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Yapı sitesindeki betonarme yapı ve iskeleler. Bu yapılar, inşaat alanının bir parçası olarak görünüyor.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Arka planda, uzakta bir araç gibi görünen nesne var ancak net bir tanımlama yapılamıyor. Belki bir kamyon veya inşaat aracı olabilir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Kırık kolu üzerindeki kova (basket) içinde bir yük olabilir, ancak net bir şekilde belirlenemiyor. Kova, işçinin bulunduğu yerdir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, yükseklikteki kırık kolu üzerinde çalışırken.\",\n    \"Kırık kolu, kontrolsüz bir şekilde devriliyor.\",\n    \"İşçi, kolu devrilen anı takip eden saniyelerde havada asılı kalıyor.\",\n    \"Diğer kişiler, kaza sonrası yerde koşarak müdahale ediyor.\",\n    \"İşçi, kaza sonrası kurtarılmaya çalışılıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Kırık kolu, kontrolsüz bir şekilde devrildi ve üzerindeki işçi havada asılı kaldı. Bu, işçinin düşmesi ve ciddi yaralanması riskini doğuruyor. İşçi, kaza anında güvenlik teli veya diğer koruma ekipmanları ile bağlı görünmüyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 45.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Kırık kolu, kontrolsüz bir şekilde devrildi ve üzerindeki işçi havada asılı kaldı. Bu, işçinin düşmesi ve ciddi yaralanması riskini doğuruyor. İşçi, kaza anında güvenlik teli veya diğer koruma ekipmanları ile bağlı görünmüyor.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 45.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Kırık kolu, kontrolsüz bir şekilde devrildi ve üzerindeki işçi havada asılı kaldı. Bu, işçinin düşmesi ve ciddi yaralanması riskini doğuruyor. İşçi, kaza anında güvenlik teli veya diğer koruma ekipmanları ile bağlı görünmüyor."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 52.6,
+  "created_at": "2026-08-27T22:16:17.414350+00:00"
+}

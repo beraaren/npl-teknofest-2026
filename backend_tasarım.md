@@ -90,7 +90,7 @@ Bu bölüm kod yazılmadan önce bağlayıcıdır. Tasarımın geri kalanı bu i
 2. Kamera aktifken ingest servisi kareleri Kanal A yoğunluğunda (`channel_a_fps: 24`)
    okur, `data/frames/<job_id>/` altına yazar ve `frame.chunk` olayları yayınlar.
 3. Algı servisi kareleri tüketir: YOLO + ByteTrack → sahne grafi → `EventEngine`
-   geometrik kuralları (devrilme, düşme, toplanma, hareketsizlik, KKD eksikliği,
+   geometrik kuralları (devrilme, düşme, toplanma, KKD eksikliği,
    tehlikeli yakınlık) → `event.detected` olayları.
 4. Kritik olay görüldüğünde VLM servisi Kanal B'yi çalıştırır: kritik karelerden grid
    oluşturup mevcut llama.cpp/vLLM sunucusuna sorar → bağımsız görsel yorum.
@@ -157,7 +157,7 @@ flowchart LR
 - **Görev:** Karelerden sahne grafi ve olay sinyali üretmek.
   AŞAMA 2–4'ün servisleşmiş hali.
 - **Kullandığı mevcut kod:** `ObserverAgent` (YOLO + ByteTrack), `EventEngine`
-  (8 geometrik kural), `FrameSampler`, `LowLightEnhancer`.
+  (6 yapılandırılmış kural), `FrameSampler`, `LowLightEnhancer`.
 - **Davranış:** `frame.chunk`'ları job bazında tamponlar; Kanal A penceresi kapanınca
   gözlemleri çıkarır, `EventEngine`'e besler, her sinyal için `event.detected` yayınlar.
   Sinyal formatı mevcut `EventEngine.get_signals()` çıktısıyla birebir aynıdır
@@ -232,7 +232,7 @@ class FrameChunk(BaseModel):        # stream: frame.chunk
 class EventDetected(BaseModel):     # stream: event.detected  (EventEngine çıktısıyla aynı)
     job_id: str
     camera_id: str
-    event_type: str                 # tip_over | fall | gathering | immobility | ...
+    event_type: str                 # tip_over | fall | gathering | proximity | ...
     timestamp: str                  # "MM:SS"
     confidence: float
     description: str

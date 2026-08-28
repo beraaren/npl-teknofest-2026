@@ -1,0 +1,97 @@
+{
+  "packet_id": "f64c3090-a89a-4a31-876d-39ca62fe87e2",
+  "video_id": "18-cctv-footage-of-man-caught-on-a-paper-03a4c6",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir endüstriyel üretim tesisi içinde, birkaç işçi büyük bir makineye yakın çalışmaktadır. İşçiler, makinenin üzerine yerleştirilen büyük bir rulo veya yükü manuel olarak hareket ettirmeye çalışıyor. İş yerinde kablolar, konteynerler ve diğer malzemeler yerde dağılmış durumdadır. İşçilerin bazıları koruyucu ekipman giymemektedir.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "En az 4 kişi görülüyor; bazıları mavi, beyaz ve koyu renkli üstler giymektedir."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük, yeşil renkli bir üretim makinesi, rulo veya yükü destekliyor."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük, beyaz, sarmal şeklinde bir rulo veya malzeme makineye yerleştiriliyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Arka planda yüksek raf veya yapılar, malzeme depolama alanı gibi görünüyor."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "low",
+      "notes_tr": "Mavi bir konteynerde sıvı veya toz gibi bir madde olabilir, ancak net değil."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "low",
+      "notes_tr": "Bazı anlarda hafif toz veya buhar gibi bir etki gözlemleniyor, ancak alev veya duman değil."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler, büyük bir rulo veya yükü makineye yerleştirmeye çalışıyor.",
+    "İşçiler, yükü manuel olarak itiyor, çekiyor ve yönlendiriyor.",
+    "Bir işçi, yükün üzerine çıkmaya çalışırken dengesini kaybediyor.",
+    "İşçiler, yükün düşmesini önlemek için birlikte müdahale ediyor.",
+    "Yerde kablolar ve malzemeler, hareket özgürlüğünü kısıtlıyor."
+  ],
+  "confidence_overall": 0.88,
+  "inference": {
+    "latency_ms": 19192.35380000464,
+    "tokens_generated": 960
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir endüstriyel üretim tesisi içinde, birkaç işçi büyük bir makineye yakın çalışmaktadır. İşçiler, makinenin üzerine yerleştirilen büyük bir rulo veya yükü manuel olarak hareket ettirmeye çalışıyor. İş yerinde kablolar, konteynerler ve diğer malzemeler yerde dağılmış durumdadır. İşçilerin bazıları koruyucu ekipman giymemektedir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az 4 kişi görülüyor; bazıları mavi, beyaz ve koyu renkli üstler giymektedir.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, yeşil renkli bir üretim makinesi, rulo veya yükü destekliyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, beyaz, sarmal şeklinde bir rulo veya malzeme makineye yerleştiriliyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Arka planda yüksek raf veya yapılar, malzeme depolama alanı gibi görünüyor.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Mavi bir konteynerde sıvı veya toz gibi bir madde olabilir, ancak net değil.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Bazı anlarda hafif toz veya buhar gibi bir etki gözlemleniyor, ancak alev veya duman değil.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, büyük bir rulo veya yükü makineye yerleştirmeye çalışıyor.\",\n    \"İşçiler, yükü manuel olarak itiyor, çekiyor ve yönlendiriyor.\",\n    \"Bir işçi, yükün üzerine çıkmaya çalışırken dengesini kaybediyor.\",\n    \"İşçiler, yükün düşmesini önlemek için birlikte müdahale ediyor.\",\n    \"Yerde kablolar ve malzemeler, hareket özgürlüğünü kısıtlıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"00:10-00:15 arasında, bir işçi büyük bir yükü iterken dengesini kaybediyor ve düşme tehlikesiyle karşı karşıya kalıyor. Bu, ciddi yaralanmaya neden olabilir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 10.0\n    },\n    {\n      \"description_tr\": \"00:25-00:30 arasında, bir işçi yükün üzerine çıkmaya çalışırken, diğer işçilerin yardımıyla dengesini sağlıyor. Ancak bu, koruyucu ekipman kullanılmadığı için yüksek düşme riski taşımaktadır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 25.0\n    },\n    {\n      \"description_tr\": \"00:35-00:45 arasında, yükün hareketi sırasında toz veya parçacıklar havaya sıçrıyor. Bu, solunum yoluyla maruz kalma riski oluşturabilir.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.8,\n      \"timestamp_sec\": 35.0\n    },\n    {\n      \"description_tr\": \"00:50-00:55 arasında, birkaç işçi birlikte yükü kontrol etmeye çalışırken, koordinasyon eksikliği ve yeterli koruyucu ekipman eksikliği gözlemleniyor. Bu, iş kazası riskini artırıyor.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 50.0\n    }\n  ],\n  \"confidence_overall\": 0.88\n}",
+  "risk_events": [
+    {
+      "description_tr": "00:10-00:15 arasında, bir işçi büyük bir yükü iterken dengesini kaybediyor ve düşme tehlikesiyle karşı karşıya kalıyor. Bu, ciddi yaralanmaya neden olabilir.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 10.0
+    },
+    {
+      "description_tr": "00:25-00:30 arasında, bir işçi yükün üzerine çıkmaya çalışırken, diğer işçilerin yardımıyla dengesini sağlıyor. Ancak bu, koruyucu ekipman kullanılmadığı için yüksek düşme riski taşımaktadır.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 25.0
+    },
+    {
+      "description_tr": "00:35-00:45 arasında, yükün hareketi sırasında toz veya parçacıklar havaya sıçrıyor. Bu, solunum yoluyla maruz kalma riski oluşturabilir.",
+      "severity": "medium",
+      "confidence": 0.8,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 35.0
+    },
+    {
+      "description_tr": "00:50-00:55 arasında, birkaç işçi birlikte yükü kontrol etmeye çalışırken, koordinasyon eksikliği ve yeterli koruyucu ekipman eksikliği gözlemleniyor. Bu, iş kazası riskini artırıyor.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 50.0
+    }
+  ],
+  "risk_flags_tr": [
+    "00:10-00:15 arasında, bir işçi büyük bir yükü iterken dengesini kaybediyor ve düşme tehlikesiyle karşı karşıya kalıyor. Bu, ciddi yaralanmaya neden olabilir.",
+    "00:25-00:30 arasında, bir işçi yükün üzerine çıkmaya çalışırken, diğer işçilerin yardımıyla dengesini sağlıyor. Ancak bu, koruyucu ekipman kullanılmadığı için yüksek düşme riski taşımaktadır.",
+    "00:35-00:45 arasında, yükün hareketi sırasında toz veya parçacıklar havaya sıçrıyor. Bu, solunum yoluyla maruz kalma riski oluşturabilir.",
+    "00:50-00:55 arasında, birkaç işçi birlikte yükü kontrol etmeye çalışırken, koordinasyon eksikliği ve yeterli koruyucu ekipman eksikliği gözlemleniyor. Bu, iş kazası riskini artırıyor."
+  ],
+  "computed_confidence": 0.6412,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 60.0,
+  "created_at": "2026-08-27T22:33:18.486750+00:00"
+}

@@ -8,10 +8,9 @@ Tespit Edilen Temel Olaylar:
   1. Forklift Devrilmesi (`forklift_tip_over`): En/boy oranının (aspect ratio) değişmesi.
   2. İnsan Düşmesi (`person_fall`): Dikey eksende (Y ekseni) ani ve yüksek hızlı düşüş hareketi.
   3. Tehlikeli Toplanma (`gathering`): Belirli bir mesafe içinde birden fazla personelin kümelenmesi.
-  4. Hareketsizlik / Bayılma (`immobile_person`): Personelin belirli bir süre durağan kalması.
-  5. KKD Eksikliği (`ppe_missing`): Sahne grafiğinde baret veya yelek giyilme ilişkisinin bulunmaması.
-  6. Tehlikeli Yakınlık (`dangerous_proximity`): Forklift ile yaya arasındaki mesafenin risk sınırına inmesi.
-  7. Yangın / Duman (`fire_smoke`): `yangin` veya `duman` sınıfının süreklilik eşiğini aşarak tespiti.
+  4. KKD Eksikliği (`ppe_missing`): Sahne grafiğinde baret veya yelek giyilme ilişkisinin bulunmaması.
+  5. Tehlikeli Yakınlık (`dangerous_proximity`): Forklift ile yaya arasındaki mesafenin risk sınırına inmesi.
+  6. Yangın / Duman (`fire_smoke`): `yangin` veya `duman` sınıfının süreklilik eşiğini aşarak tespiti.
 """
 from __future__ import annotations
 
@@ -131,8 +130,6 @@ class RuleSet:
             signals.extend(self._rule_fall(tracks, states))
         if "gathering" in enabled:
             signals.extend(self._rule_gathering(tracks, states))
-        if "immobility" in enabled:
-            signals.extend(self._rule_immobility(tracks, states))
         if "ppe_missing" in enabled:
             signals.extend(self._rule_ppe_missing(graph))
         if "proximity" in enabled:
@@ -317,75 +314,6 @@ class RuleSet:
                     metadata={"person_count": len(cluster)},
                 )
             )
-        return signals
-
-    def _rule_immobility(self, tracks: List[TrackedObject], states: TrackStateMachine) -> List[EventSignal]:
-        """Hareketsizlik / Bayılma Kuralı: Zaman Sürekliliği + Duruş (Pose) Analizi.
-
-        Personel belirli bir süreden (`min_duration_seconds`) daha uzun süre boyunca
-        durağan kalmışsa (bayılma, sakatlanma veya kaza şüphesi) sinyal üretir.
-
-        Tek bir sabit süre eşiği iki farklı senaryoyu ayırt edemez: ayakta durup
-        3 saniye kıpırdamayan biri (telefon bakma, bir şey izleme — normal
-        davranış) ile yerde yatarken 3 saniye hareketsiz kalan biri (gerçek
-        bayılma şüphesi) aynı sinyali üretir. Bunu ayırmak için bbox en/boy
-        oranı (`aspect_ratio`) ikinci bir sinyal olarak kullanılır — aynı
-        `_rule_tip_over`'ın forklift için kullandığı mantık: ayakta bir insanın
-        bbox'ı dar/uzun (ratio < 1), yerde yatan/düşmüş bir insanın bbox'ı
-        geniş/yassıdır (ratio >= `lying_aspect_ratio_min`).
-
-        Yatık pozisyon, bayılma şüphesini geometrik olarak güçlendiren bağımsız
-        bir kanıt olduğu için, bu durumda daha kısa bir süre eşiği
-        (`lying_min_duration_seconds`) yeterli sayılır ve güven skoru artırılır.
-        Ayakta/normal duruşta ise daha uzun süre (`min_duration_seconds`) beklenir
-        — böylece süre eşiğini genel olarak kısaltmadan, doğru senaryoda daha
-        hızlı alarm üretilir.
-
-        Args:
-            tracks: Aktif takip listesi.
-            states: Nesne durum makinesi.
-
-        Returns:
-            List[EventSignal]: Hareketsiz kalan personel için üretilen sinyaller.
-        """
-        signals = []
-        cfg = self.thresholds.get("immobility", {})
-        min_seconds = cfg.get("min_duration_seconds", 2.5)
-        lying_aspect_ratio_min = cfg.get("lying_aspect_ratio_min", 1.0)
-        lying_min_seconds = cfg.get("lying_min_duration_seconds", min_seconds)
-
-        for t in tracks:
-            if t.class_name != "insan":
-                continue
-            state = states.get(t.track_id)
-            if not state:
-                continue
-
-            stationary_seconds = state.seconds_stationary(self.fps)
-            aspect_ratio = t.last_detection.aspect_ratio
-            is_lying = aspect_ratio >= lying_aspect_ratio_min
-            required_seconds = lying_min_seconds if is_lying else min_seconds
-
-            if stationary_seconds >= required_seconds:
-                confidence = min(1.0, stationary_seconds / 10.0)
-                if is_lying:
-                    # Yatık duruş bağımsız bir kanıt; güven skorunu güçlendirir.
-                    confidence = min(1.0, confidence + 0.2)
-                pose_note = " (yatık pozisyonda)" if is_lying else ""
-                signals.append(
-                    EventSignal(
-                        event_type="immobile_person",
-                        timestamp=t.last_detection.frame_idx / self.fps,
-                        description=f"Personel (track {t.track_id}) {stationary_seconds:.1f} saniyedir hareketsiz{pose_note}.",
-                        confidence=confidence,
-                        involved_track_ids=[t.track_id],
-                        metadata={
-                            "stationary_seconds": stationary_seconds,
-                            "aspect_ratio": aspect_ratio,
-                            "is_lying": is_lying,
-                        },
-                    )
-                )
         return signals
 
     def _rule_fire_smoke(self, tracks: List[TrackedObject]) -> List[EventSignal]:

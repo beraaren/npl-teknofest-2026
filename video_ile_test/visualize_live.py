@@ -2,7 +2,7 @@
 
 Bu script, test videolarını kare kare oynatarak:
   1. Görüntünün üzerine doğrudan herhangi bir HUD / uyarı paneli bindirmeden,
-  2. Alt kısma eklenen özel İSG Durum Şeridi (Dashboard) üzerinde tüm kuralları (7 kural)
+  2. Alt kısma eklenen özel İSG Durum Şeridi (Dashboard) üzerinde tüm kuralları (6 kural)
      durum gösterge yuvarlakları ile (Normal: Kırmızı Yuvarlak, Tetiklendiğinde: Yeşil Yuvarlak),
   3. Tetikleme bittikten sonra belirlenen soğuma süresi (2.5 sn) boyunca yeşil kalıp
      ardından otomatik kırmızıya dönme mantığı ile canlı olarak görselleştirir.
@@ -12,9 +12,8 @@ Kural Listesi:
   2. INSAN DUSMESI (`person_fall`): Ani dikey kinematik düşüş.
   3. TEHLIKELI YAKINLIK (`dangerous_proximity`): Araç ile yaya yakınlaşması.
   4. KKD DENETIMI (`ppe_missing`): Baret veya reflektör yelek eksikliği.
-  5. HAREKETSIZLIK (`immobile_person`): Bayılma / hareketsiz kalma.
-  6. TEHLIKELI TOPLANMA (`gathering`): Çoklu personel kümelenmesi.
-  7. YANGIN / DUMAN (`fire_smoke`): Alev veya duman sınıfının süreklilik eşiğini aşarak tespiti.
+  5. TEHLIKELI TOPLANMA (`gathering`): Çoklu personel kümelenmesi.
+  6. YANGIN / DUMAN (`fire_smoke`): Alev veya duman sınıfının süreklilik eşiğini aşarak tespiti.
 
 Kullanım:
   1. Arayüz ile (Sürükle-Bırak veya Dosya Seç):
@@ -119,12 +118,6 @@ RULE_DEFINITIONS = [
         "title": "KKD DENETIMI",
         "subtitle": "Baret / Yelek Eksik",
         "alias": ["ppe_missing", "ppe"],
-    },
-    {
-        "key": "immobile_person",
-        "title": "HAREKETSIZLIK",
-        "subtitle": "Bayilma / Duragan",
-        "alias": ["immobile_person", "immobility"],
     },
     {
         "key": "gathering",

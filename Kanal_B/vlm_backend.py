@@ -937,8 +937,10 @@ def _clamp_timestamp(
     videonun yanlış anına yerleştirir. Bu yüzden:
 
     * Sayıya çevrilemeyen değer ``None`` olur (zaman bilinmiyor sayılır).
-    * Aralık dışı değer en yakın sınıra çekilir.
-    * Klip göreli verilmişse (0 ile süre arasında) mutlak eksene taşınır.
+    * Değer zaten klibin mutlak aralığındaysa olduğu gibi korunur.
+    * Mutlak aralığın dışında, ancak klip süresi içindeyse göreli kabul edilip
+      mutlak eksene taşınır.
+    * Diğer aralık dışı değerler en yakın sınıra çekilir.
 
     Args:
         value: Modelin ``timestamp_sec`` alanı.
@@ -957,7 +959,13 @@ def _clamp_timestamp(
 
     duration = max(0.0, end_sec - start_sec)
 
-    # Model klip göreli (0..süre) yanıt verdiyse mutlak eksene taşı.
+    # Prompt ve S8 sözleşmesi mutlak tam-video saniyesi ister. Değer zaten
+    # segmentin mutlak aralığındaysa göreli sanıp ikinci kez ofsetleme.
+    if end_sec > start_sec and start_sec <= ts <= end_sec:
+        return ts
+
+    # Mutlak aralığa girmeyen fakat klip süresine uyan değer, modelin prompta
+    # rağmen klibe göreli yanıt vermiş olabileceği durumlar için fallback'tir.
     if start_sec > 0 and 0.0 <= ts <= duration + 1e-6:
         ts = start_sec + ts
 

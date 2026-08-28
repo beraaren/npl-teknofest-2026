@@ -1,0 +1,53 @@
+{
+  "packet_id": "9accf380-12bb-42dd-b967-3babc0f698b7",
+  "video_id": "fire-in-bale-plucker-e011f3",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Üretim tesisindeki yangın, yoğun duman ve alevlerle devam ediyor. Görüntü, dumanla kaplı bir alanda yayılan küçük alevlerin dağılımını gösteriyor. Ortam, görsel olarak çok az netlikte ve tehlikeli bir durumda.",
+  "detected_entities": [
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Duman yoğunluğu yüksek, alevlerin küçük parçaları duman içinde yayılmış durumda."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Dumanın altında belirsiz şekiller, muhtemelen yangınla etkilenen yüklerdir."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "low",
+      "notes_tr": "Makine detayları duman nedeniyle tam olarak görünmüyor, ancak önceki segmentlerdeki bağlamdan bu alanın bir üretim makinesi olduğu anlaşılmaktadır."
+    }
+  ],
+  "detected_actions_tr": [
+    "Yangın, duman içinde yayılıyor.",
+    "Alevler, dumanla karışık olarak hareket ediyor.",
+    "Ortam, yoğun dumanla kaplı ve görsel olarak belirsiz."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 6800.095400001737,
+    "tokens_generated": 433
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Üretim tesisindeki yangın, yoğun duman ve alevlerle devam ediyor. Görüntü, dumanla kaplı bir alanda yayılan küçük alevlerin dağılımını gösteriyor. Ortam, görsel olarak çok az netlikte ve tehlikeli bir durumda.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Duman yoğunluğu yüksek, alevlerin küçük parçaları duman içinde yayılmış durumda.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Dumanın altında belirsiz şekiller, muhtemelen yangınla etkilenen yüklerdir.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Makine detayları duman nedeniyle tam olarak görünmüyor, ancak önceki segmentlerdeki bağlamdan bu alanın bir üretim makinesi olduğu anlaşılmaktadır.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Yangın, duman içinde yayılıyor.\",\n    \"Alevler, dumanla karışık olarak hareket ediyor.\",\n    \"Ortam, yoğun dumanla kaplı ve görsel olarak belirsiz.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yangın, dumanla birlikte hızla yayılıyor ve ortamda solunum zorluğu, görsel engelleme ve patlama riski oluşturuyor. Çalışanlar için acil tahliye gerektiren bir durum.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 120.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Yangın, dumanla birlikte hızla yayılıyor ve ortamda solunum zorluğu, görsel engelleme ve patlama riski oluşturuyor. Çalışanlar için acil tahliye gerektiren bir durum.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Yangın, dumanla birlikte hızla yayılıyor ve ortamda solunum zorluğu, görsel engelleme ve patlama riski oluşturuyor. Çalışanlar için acil tahliye gerektiren bir durum."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 120.0,
+  "segment_end_sec": 127.08,
+  "created_at": "2026-08-27T22:22:26.124182+00:00"
+}

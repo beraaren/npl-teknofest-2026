@@ -1,17 +1,11 @@
 {
-  "summary": "Kantin Çıkışı bölgesinde 3 olay tespit edildi; en kritik: Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir.",
+  "summary": "Kantin Çıkışı bölgesinde 2 olay tespit edildi; en kritik: Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir.",
   "events": [
     {
       "time": "00:10",
       "event": "Palet yükünün devrilmesi, çökmesi veya tehlikeli pozisyonda olması.",
       "event_type": "pallet_collapse",
       "confidence": 0.55
-    },
-    {
-      "time": "00:31",
-      "event": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
-      "event_type": "immobile_person",
-      "confidence": 0.73
     },
     {
       "time": "00:16",
@@ -27,7 +21,7 @@
     "Depo/saha bölümünü erişime kapat.",
     "Yangın söndürme sistemini derhal devreye al."
   ],
-  "reasoning": "Geometrik sinyaller pallet_collapse, immobile_person, fire_smoke pattern'leriyle eşleşti. En yüksek risk skoru 100 (fire_smoke). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "reasoning": "Geometrik sinyaller pallet_collapse, fire_smoke pattern'leriyle eşleşti. En yüksek risk skoru 100 (fire_smoke). RAG bağlamı ve olay zaman damgaları tutarlı.",
   "confidence": 0.91,
   "triggered_mock_tools": [
     {
@@ -60,14 +54,6 @@
         "metadata": {}
       },
       {
-        "event_type": "immobile_person",
-        "timestamp": "00:31",
-        "description": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
-        "confidence": 0.73,
-        "involved_track_ids": [],
-        "metadata": {}
-      },
-      {
         "event_type": "fire_smoke",
         "timestamp": "00:16",
         "description": "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir.",
@@ -86,11 +72,6 @@
         "event_type": "fire_smoke",
         "timestamp": "00:16",
         "seconds": 16
-      },
-      {
-        "event_type": "immobile_person",
-        "timestamp": "00:31",
-        "seconds": 31
       }
     ],
     "risk_segments": [
@@ -107,13 +88,6 @@
         "event_type": "fire_smoke",
         "risk": "Yüksek",
         "description": "Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir."
-      },
-      {
-        "start_sec": 31,
-        "end_sec": 38,
-        "event_type": "immobile_person",
-        "risk": "Orta",
-        "description": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi."
       }
     ]
   }

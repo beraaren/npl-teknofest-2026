@@ -2,30 +2,30 @@
   "slug": "always-wear-safety-harness-whenever-you-38f6d5",
   "video_file": "videos/Always wear safety harness whenever you work at height _ workplace accident _ MEWP _ Life saving PPE.mp4",
   "video_name": "Always wear safety harness whenever you work at height _ workplace accident _ MEWP _ Life saving PPE",
-  "analyzed_at": "2026-08-27T18:49:31.914650+00:00",
-  "analysis_seconds": 49.9,
+  "analyzed_at": "2026-08-27T22:16:44.345224+00:00",
+  "analysis_seconds": 42.7,
   "video": {
     "duration_sec": 52.6,
     "fps": 30.0,
     "width": 640,
     "height": 360
   },
-  "summary": "İnşaat sahasında, yükseklikte çalışma makinesi (kuleli kırık kolu) devrilme olayı gerçekleşmiştir. VLM görsel yorumu, makinenin devrilmesi sırasında bir işçinin kabinin altında kaldığını ve ciddi yaralanma/ölüm riski taşıdığını %95 güvenle doğrulamaktadır. Geometrik veriler, olay anında (00:44-00:48) birden fazla personelde (track 138, 139, 143) ani düşme hareketi tespit etmiştir; bu veriler görsel kanıtla örtüşmektedir. Ayrıca, olay öncesi ve sonrası sahadaki personelin birçoğunda (örn. track 9, 14, 30, 144) baret ve yelek eksikliği tespit edilmiştir. Ancak, düşme tespitlerinin çoğu tek bir geometrik kanala dayanmakta ve track ID sürekliliği belirsizdir; bu nedenle düşme olayları 'şüpheli' olarak sınıflandırılmış, ancak makine devrilmesi ve altında kalan kişi 'doğrulanmış' kritik olay olarak kabul edilmiştir.",
-  "headline": "Yükseklikte çalışma makinesi (kuleli kırık kolu) devrilir ve bir işçi …",
+  "summary": "Yapı sitesi ortamında, yükseklikte çalışan bir işçinin bulunduğu kırık kolu (boom lift) kontrolsüz bir şekilde devrilmiş ve işçi havada asılı kalmıştır. VLM analizi, işçinin güvenlik teli veya benzeri koruma ekipmanlarına bağlı olmadığını ve ciddi bir düşme riski taşıdığını %95 güvenle doğrulamaktadır. Geometrik algılayıcılar, kaza sonrası yerde toplanan personelde düşme hareketi (track 138, 139, 143) ve KKD eksikliği (baret/yelek) sinyalleri üretmiştir. Ancak, bu düşme sinyalleri, kaza sonrası panik ve koşuşturma hareketleri ile karışık olup, gerçek bir ikinci düşme olayını mı yoksa sadece hareketli bir duruşu mu yansıttığı belirsizdir. Kritik olay, makine devrilmesi ve işçinin havada asılı kalmasıdır. KKD eksiklikleri, sahada toplanan müdahale ekiplerinde gözlemlenmiş olup, bu durumun kaza anındaki işçi için de geçerli olduğu ancak doğrudan kanıtlanamadığı için 'contextual_finding' olarak sınıflandırılmıştır.",
+  "headline": "Kırık kolu makinesinin devrilmesi ve işçinin havada asılı kalması",
   "risk": "Yüksek",
   "overall_risk": "critical",
   "scene_context": {
     "environment": {
       "type": "inferred",
-      "description": "İnşaat alanında, bir kırık kolu (boom) ile çalışan bir yükseklikte çalışma makinesi (kuleli kırık kolu) göze çarpmaktadır. Makine, bir bina inşaatının yanında yer alırken, çevrede asfaltlanmış bir yol, işçiler ve bazı inşaat malzemeleri bulunmaktadır.",
+      "description": "Yapı sitesi, yol kıvrımı ve inşaat alanı kenarı. Kırmızı renkli kırık kolu makinesi ve betonarme yapılar mevcuttur.",
       "visible_entities": {
         "arac": 20,
         "insan": 448,
         "yelek": 36
       },
       "visual_entities": [
-        "machine",
         "person",
+        "machine",
         "rack/structure",
         "vehicle",
         "load"
@@ -34,110 +34,97 @@
     },
     "activities": [
       {
-        "activity": "Makine yükseklikte çalışırken devrilir.",
+        "activity": "Kırık kolu makinesinin kontrolsüz devrilmesi ve işçinin havada asılı kalması.",
         "time_range": {
-          "start_sec": 46.0,
-          "end_sec": 46.0
+          "start_sec": 45.0,
+          "end_sec": 52.0
         },
-        "participants": [],
+        "participants": [
+          "track_138"
+        ],
         "operational_state": "critical_failure",
         "evidence": [
           "visual"
         ]
       },
       {
-        "activity": "Bir kişi makinenin devrilmesinden sonra kabinin altında kalır.",
+        "activity": "Kaza sonrası personelin koşarak müdahale etmesi ve toplanması.",
         "time_range": {
-          "start_sec": 46.0,
+          "start_sec": 45.0,
           "end_sec": 52.0
         },
-        "participants": [],
-        "operational_state": "trapped",
-        "evidence": [
-          "visual"
-        ]
-      },
-      {
-        "activity": "İşçiler olay yerine doğru koşar.",
-        "time_range": {
-          "start_sec": 46.0,
-          "end_sec": 52.0
-        },
-        "participants": [],
+        "participants": [
+          "track_139",
+          "track_143",
+          "track_144"
+        ],
         "operational_state": "emergency_response",
         "evidence": [
-          "visual"
+          "visual",
+          "geometric"
         ]
       }
     ],
     "zones": [
       {
         "id": "unknown",
-        "purpose": "inşaat sahası",
+        "purpose": "inşaat alanı ve yol kenarı",
         "active_operations": [
-          "yükseklikte çalışma",
-          "makine devrilmesi"
+          "makine devrilmesi",
+          "acil müdahale"
         ],
         "access_constraints": "acil durum nedeniyle kısıtlı"
       }
     ],
     "context_uncertainties": [
-      "Makine devrilmesinin tam nedeni (zemin durumu, operatör hatası vb.) görsel olarak belirlenememiştir.",
-      "Kabin altında kalan kişinin mevcut fiziksel durumu ve bilinç seviyesi net değildir."
+      "Havada asılı kalan işçinin tam konumu ve kurtarma operasyonunun detayları net değildir.",
+      "Yerdeki 'düşme' sinyallerinin gerçek düşme mi yoksa panik hareketi mi olduğu belirsizdir."
     ]
   },
   "results": [
     {
       "result_id": "result-1",
       "result_type": "incident",
-      "time": "00:46",
+      "time": "00:45",
       "end_time": "00:52",
-      "timestamp_sec": 46.0,
-      "duration": 6.0,
-      "event": "Yükseklikte çalışma makinesi (kuleli kırık kolu) devrilir ve bir işçi kabinin altında kalır.",
-      "event_type": "machine_tip_over",
+      "timestamp_sec": 45.0,
+      "duration": 7.0,
+      "event": "Kırık kolu makinesinin devrilmesi ve işçinin havada asılı kalması",
+      "event_type": "machine_failure_person_suspended",
       "subjects": [
-        "makine",
-        "insan_138",
-        "insan_139",
-        "insan_143"
+        "track_138"
       ],
-      "zone": "inşaat_sahası",
-      "hazard_mechanism": "Makinenin devrilmesi sonucu oluşan ezilme ve travma riski. İşçi, makine kabininin altında sıkışarak hayati tehlike ile karşı karşıyadır.",
+      "zone": "unknown",
+      "hazard_mechanism": "Mekanik arıza sonucu makinenin devrilmesi ve işçinin yüksekten düşme riski ile havada asılı kalması. Görünür güvenlik teli veya koruma ekipmanı bulunmamaktadır.",
       "severity": "critical",
       "evidence": {
         "geometric": {
-          "supports": true,
-          "observations": [
-            "00:44-00:48 arası track 138, 139, 143'te ani dikey düşüş (drop_ratio > 0.47) tespit edildi.",
-            "Makine ve insan konumlarında ani pozisyon değişimi."
-          ],
+          "supports": false,
+          "observations": [],
           "limitations": [
-            "Track ID sürekliliği devrilme anında kesintiye uğrayabilir.",
-            "Tam mesafe ve hız hesaplaması için derinlik verisi eksik."
+            "Makinenin devrilme açısı ve işçinin tam yüksekliği ölçülemedi.",
+            "Track ID değişimleri nedeniyle işçinin sürekliliği net değil."
           ]
         },
         "visual": {
           "supports": true,
           "observations": [
-            "VLM modeli makine devrilmesini ve işçinin altında kalmasını %95 güvenle doğruladı.",
-            "İşçilerin olay yerine koştuğu ve toplanma olduğu gözlemlendi."
+            "VLM, makinenin devrildiğini ve işçinin havada asılı kaldığını %95 güvenle tespit etti.",
+            "İşçinin güvenlik ekipmanına bağlı olmadığı görsel olarak doğrulandı."
           ],
           "limitations": [
-            "Kabin altındaki işçinin detaylı yaralanma durumu net görünmüyor."
+            "İşçinin yaralanma durumu net görülemiyor."
           ]
         },
         "rag": {
-          "supports": true,
-          "observations": [
-            "person_fall ve gathering hipotezleri olayla uyumlu."
-          ],
+          "supports": false,
+          "observations": [],
           "limitations": [
-            "RAG hipotezleri tek başına kanıt değildir, ancak görsel kanıtı destekler."
+            "RAG hipotezleri sadece adaydır, bu olayı kanıtlamaz."
           ]
         },
         "agreement": "corroborated",
-        "resolution": "Görsel (VLM) ve geometrik (düşme tespiti) kanıtlar makine devrilmesi ve işçinin sıkışması konusunda tam uyum içindedir."
+        "resolution": "VLM görsel analizi, kritik bir makine arızası ve asılı kalma durumunu doğrulamaktadır. Geometrik veriler bu spesifik durumu doğrudan desteklemese de, görsel kanıt baskındır."
       },
       "uncertain": false,
       "uncertainty_reason": "",
@@ -146,131 +133,62 @@
     {
       "result_id": "result-2",
       "result_type": "contextual_finding",
-      "time": "00:11",
+      "time": "00:48",
       "end_time": "00:50",
-      "timestamp_sec": 11.0,
-      "duration": 39.0,
-      "event": "Sahada birden fazla personelde baret ve yelek eksikliği tespit edildi.",
-      "event_type": "ppe_missing",
+      "timestamp_sec": 48.0,
+      "duration": 2.0,
+      "event": "Müdahale eden personelde KKD eksikliği ve şüpheli düşme hareketleri",
+      "event_type": "ppe_missing_and_suspicious_motion",
       "subjects": [
-        "insan_9",
-        "insan_14",
-        "insan_30",
-        "insan_33",
-        "insan_34",
-        "insan_54",
-        "insan_58",
-        "insan_64",
-        "insan_66",
-        "insan_69",
-        "insan_76",
-        "insan_77",
-        "insan_78",
-        "insan_80",
-        "insan_82",
-        "insan_83",
-        "insan_130",
-        "insan_131",
-        "insan_138",
-        "insan_139",
-        "insan_142",
-        "insan_143",
-        "insan_144"
+        "track_139",
+        "track_143",
+        "track_144"
       ],
-      "zone": "inşaat_sahası",
-      "hazard_mechanism": "Kişisel Koruyucu Donanım (KKD) eksikliği nedeniyle kafa travması ve görünmezlik kaynaklı ezilme riski artışı.",
+      "zone": "unknown",
+      "hazard_mechanism": "Acil müdahale sırasında personelin baret ve yelek gibi KKD'lerini kullanmaması ve panik nedeniyle ani hareketler (düşme sinyali) göstermesi.",
       "severity": "medium",
       "evidence": {
         "geometric": {
           "supports": true,
           "observations": [
-            "Çok sayıda track için KKD (baret/yelek) tespit skoru düşük veya yok."
+            "Track 139, 143 ve 144 için düşme hareketi (person_fall) ve KKD eksikliği (ppe_missing) sinyalleri alındı.",
+            "Düşme sinyalleri düşük güven (0.55-0.60) seviyesindedir."
           ],
           "limitations": [
-            "Bazı tespitler tek karelik (isolated) ve track sürekliliği belirsiz."
+            "Düşme sinyalleri, koşma ve panik hareketleri ile karışık olabilir; gerçek düşme olup olmadığı belirsizdir."
           ]
         },
         "visual": {
           "supports": true,
           "observations": [
-            "VLM modeli işçilerin bazıları için koyu renk kıyafet ve yelek eksikliği notu düşmüştür."
+            "VLM, sahada koşan ve toplanan personeli tespit etti.",
+            "KKD eksikliği görsel olarak desteklenmektedir."
           ],
           "limitations": [
-            "Tüm personelin KKD durumu tek tek doğrulanmamıştır."
+            "Hareketin düşme mi yoksa koşma mı olduğu görsel olarak net ayırt edilememiştir."
           ]
         },
         "rag": {
           "supports": true,
           "observations": [
-            "ppe_missing hipotezi sahadaki durumla uyumludur."
+            "RAG, 'person_fall' ve 'ppe_missing' hipotezlerini desteklemektedir."
           ],
           "limitations": [
-            "RAG, spesifik kişileri kanıtlamaz."
-          ]
-        },
-        "agreement": "corroborated",
-        "resolution": "Geometrik tespitler ve görsel gözlemler KKD eksikliğinin yaygın olduğunu göstermektedir."
-      },
-      "uncertain": false,
-      "uncertainty_reason": "",
-      "confidence": 0.85
-    },
-    {
-      "result_id": "result-3",
-      "result_type": "uncertain_observation",
-      "time": "00:44",
-      "end_time": "00:48",
-      "timestamp_sec": 44.0,
-      "duration": 4.0,
-      "event": "Bazı personellerde (track 138, 139, 143) ani düşme hareketi tespit edildi ancak bu hareketin makine devrilmesiyle doğrudan ilişkisi veya düşme yüksekliği net değildir.",
-      "event_type": "person_fall",
-      "subjects": [
-        "insan_138",
-        "insan_139",
-        "insan_143"
-      ],
-      "zone": "inşaat_sahası",
-      "hazard_mechanism": "Ani düşme sonucu oluşabilecek yaralanma riski.",
-      "severity": "unknown",
-      "evidence": {
-        "geometric": {
-          "supports": true,
-          "observations": [
-            "Track 138, 139, 143'te ani dikey düşüş (drop_ratio ~0.48) tespit edildi."
-          ],
-          "limitations": [
-            "Düşmenin zemine mi yoksa makineye mi olduğunu ayırt etmek için yeterli derinlik bilgisi yok.",
-            "Track ID değişimleri (switch) olasılığı yüksek."
-          ]
-        },
-        "visual": {
-          "supports": false,
-          "observations": [
-            "VLM modeli spesifik düşme hareketlerini tek tek doğrulamamış, genel devrilme olayına odaklanmıştır."
-          ],
-          "limitations": [
-            "Görüntü kalitesi veya açı nedeniyle bireysel düşmeler net görülememiş olabilir."
-          ]
-        },
-        "rag": {
-          "supports": false,
-          "observations": [],
-          "limitations": [
-            "RAG hipotezi sadece sinyal adayıdır, kanıt değildir."
+            "RAG, bu sinyallerin gerçek bir düşme olayı olduğunu kanıtlamaz."
           ]
         },
         "agreement": "single_source",
-        "resolution": "Sadece geometrik veriler düşme hareketini desteklemektedir; görsel kanıt bu spesifik hareketi doğrulamamaktadır. Bu nedenle belirsiz olarak işaretlenmiştir."
+        "resolution": "Geometrik ve görsel veriler KKD eksikliğini desteklerken, düşme hareketi sinyalleri belirsizdir. Bu durum, acil müdahale sırasında oluşan bir risk faktörü olarak değerlendirilmiştir."
       },
-      "uncertain": true,
-      "uncertainty_reason": "emin değilim",
-      "confidence": 0.55
+      "uncertain": false,
+      "uncertainty_reason": "",
+      "confidence": 0.7
     }
   ],
   "uncertain": false,
   "uncertainty_reason": "",
   "confidence": 0.0,
-  "reasoning": "VLM görsel yorumu, makine devrilmesi ve işçinin altında kalması olayını %95 güvenle doğrulayarak kritik bir acil durum oluşturmuştur. Geometrik veriler, olay anında birden fazla personelde ani düşme hareketi tespit etmiş olsa da, bu düşmelerin doğrudan yaralanma sonucu olup olmadığı görsel olarak net değildir; bu nedenle 'uncertain_observation' olarak sınıflandırılmıştır. KKD eksikliği yaygın bir bulgudur ancak makine devrilmesi olayının yanında ikincil bir risk faktörüdür. Toplam risk, doğrulanmış makine devrilmesi ve sıkışma olayı nedeniyle 'critical' seviyesindedir.",
+  "reasoning": "VLM analizi, makine devrilmesi ve işçinin havada asılı kalması gibi kritik bir olayı %95 güvenle doğrulamıştır. Bu durum, doğrudan hayati tehlike içermektedir. Geometrik algılayıcıların ürettiği 'düşme' ve 'KKD eksikliği' sinyalleri, kaza sonrası panik ve müdahale sürecindeki personeli ilgilendirmektedir. Düşme sinyallerinin güven seviyesi düşüktür ve koşma hareketi ile karışık olabileceğinden, bunlar 'contextual_finding' olarak sınıflandırılmıştır. Kritik risk, makine arızası ve asılı kalan işçiden kaynaklanmaktadır. Bu nedenle, sağlık ekibi çağrısı, alanın güvenliği ve sorumlunun bilgilendirilmesi öncelikli aksiyonlardır.",
   "actions": [
     "call_health_team",
     "secure_area",
@@ -278,12 +196,12 @@
   ],
   "events": [
     {
-      "time": "00:46",
-      "event": "Yükseklikte çalışma makinesi (kuleli kırık kolu) devrilir ve bir işçi kabinin altında kalır.",
-      "event_type": "machine_tip_over",
+      "time": "00:45",
+      "event": "Kırık kolu makinesinin devrilmesi ve işçinin havada asılı kalması",
+      "event_type": "machine_failure_person_suspended",
       "confidence": 0.95,
-      "timestamp_sec": 46.0,
-      "duration": 6.0,
+      "timestamp_sec": 45.0,
+      "duration": 7.0,
       "end_time": "00:52",
       "result_id": "result-1",
       "severity": "critical"
@@ -745,69 +663,69 @@
       }
     ],
     "vlm_interpretation": {
-      "packet_id": "d5e4b397-925f-442b-a24c-e86b6d197ea1",
+      "packet_id": "aa230d37-95b4-4a5e-8c4c-d10c8561dd4a",
       "video_id": "always-wear-safety-harness-whenever-you-38f6d5",
       "model_name": "vlm",
       "model_backend": "server",
-      "scene_summary_tr": "Inşaat alanında, bir kırık kolu (boom) ile çalışan bir yükseklikte çalışma makinesi (kuleli kırık kolu) göze çarpmaktadır. Makine, bir bina inşaatının yanında yer alırken, çevrede asfaltlanmış bir yol, işçiler ve bazı inşaat malzemeleri bulunmaktadır. Video süresince makine devrildiğinde bir kişi kurtulurken, başka bir kişi de makinenin altında kalmaktadır.",
+      "scene_summary_tr": "Yapı sitesinde, bir kırık kolu (boom) ile çalışan bir yükseklikteki işçinin, kolu kontrolsüz bir şekilde devrildiği ve işçinin havada asılı kaldığı bir olay gözlemleniyor. İşçi, kolu devrilen anı takip eden saniyelerde kurtarılmaya çalışılıyor. Olay, bir yolun kıvrımında ve inşaat alanının kenarında gerçekleşiyor.",
       "detected_entities": [
-        {
-          "label": "machine",
-          "confidence_hint": "high",
-          "notes_tr": "Kırmızı ve siyah renkli, yükseklikte çalışma için kullanılan bir kırık kolu (boom) makinesi. Bu, muhtemelen bir kuleli kırık kolu (boom lift) olabilir."
-        },
         {
           "label": "person",
           "confidence_hint": "high",
-          "notes_tr": "İşçi kıyafetleri giymiş birkaç kişi görülüyor. Birisi turuncu güvenlik yeleği giymiş, diğerleri koyu renk kıyafetlerde."
+          "notes_tr": "İşçi, yükseklikteki kırık kolu üzerinde çalışırken görülüyor. Kaza anında havada asılı kalıyor. Ayrıca, kaza sonrası yerde yürüyen birkaç kişi daha var."
+        },
+        {
+          "label": "machine",
+          "confidence_hint": "high",
+          "notes_tr": "Kırmızı renkli, uzun kolu olan bir kırık kolu (boom) makinesi. Bu makine, inşaat alanının kenarında yer alıyor ve kaza anında devrilir."
         },
         {
           "label": "rack/structure",
-          "confidence_hint": "high",
-          "notes_tr": "Yapıya ait betonarme yapılar ve iskeleler mevcut."
+          "confidence_hint": "medium",
+          "notes_tr": "Yapı sitesindeki betonarme yapı ve iskeleler. Bu yapılar, inşaat alanının bir parçası olarak görünüyor."
         },
         {
           "label": "vehicle",
-          "confidence_hint": "medium",
-          "notes_tr": "Makinenin alt kısmında bir araç gövdesi görünür ancak tam olarak tanımlanamaz. Bu, kırık kolu makinesinin tabanı olabilir."
+          "confidence_hint": "low",
+          "notes_tr": "Arka planda, uzakta bir araç gibi görünen nesne var ancak net bir tanımlama yapılamıyor. Belki bir kamyon veya inşaat aracı olabilir."
         },
         {
           "label": "load",
           "confidence_hint": "low",
-          "notes_tr": "Makinenin kolu üzerinde bir yük taşıdığı kesin değildir, ancak kabinde bir kişi olduğu için yük olabilir."
+          "notes_tr": "Kırık kolu üzerindeki kova (basket) içinde bir yük olabilir, ancak net bir şekilde belirlenemiyor. Kova, işçinin bulunduğu yerdir."
         }
       ],
       "detected_actions_tr": [
-        "Makine yükseklikte çalışırken devrilir.",
-        "İşçiler asfaltlı yolda yürüyor.",
-        "Bir kişi makinenin devrilmesinden hemen önce kabinde olup, kurtulur.",
-        "Bir kişi makinenin devrilmesinden sonra kabinin altında kalır.",
-        "İşçiler olay yerine doğru koşar."
+        "İşçi, yükseklikteki kırık kolu üzerinde çalışırken.",
+        "Kırık kolu, kontrolsüz bir şekilde devriliyor.",
+        "İşçi, kolu devrilen anı takip eden saniyelerde havada asılı kalıyor.",
+        "Diğer kişiler, kaza sonrası yerde koşarak müdahale ediyor.",
+        "İşçi, kaza sonrası kurtarılmaya çalışılıyor."
       ],
       "confidence_overall": 0.9,
       "inference": {
-        "latency_ms": 14220.106500004476,
-        "tokens_generated": 650
+        "latency_ms": 15709.218899995903,
+        "tokens_generated": 699
       },
-      "raw_model_output": "{\n  \"scene_summary_tr\": \"Inşaat alanında, bir kırık kolu (boom) ile çalışan bir yükseklikte çalışma makinesi (kuleli kırık kolu) göze çarpmaktadır. Makine, bir bina inşaatının yanında yer alırken, çevrede asfaltlanmış bir yol, işçiler ve bazı inşaat malzemeleri bulunmaktadır. Video süresince makine devrildiğinde bir kişi kurtulurken, başka bir kişi de makinenin altında kalmaktadır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kırmızı ve siyah renkli, yükseklikte çalışma için kullanılan bir kırık kolu (boom) makinesi. Bu, muhtemelen bir kuleli kırık kolu (boom lift) olabilir.\"\n    },\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi kıyafetleri giymiş birkaç kişi görülüyor. Birisi turuncu güvenlik yeleği giymiş, diğerleri koyu renk kıyafetlerde.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yapıya ait betonarme yapılar ve iskeleler mevcut.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinenin alt kısmında bir araç gövdesi görünür ancak tam olarak tanımlanamaz. Bu, kırık kolu makinesinin tabanı olabilir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Makinenin kolu üzerinde bir yük taşıdığı kesin değildir, ancak kabinde bir kişi olduğu için yük olabilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Makine yükseklikte çalışırken devrilir.\",\n    \"İşçiler asfaltlı yolda yürüyor.\",\n    \"Bir kişi makinenin devrilmesinden hemen önce kabinde olup, kurtulur.\",\n    \"Bir kişi makinenin devrilmesinden sonra kabinin altında kalır.\",\n    \"İşçiler olay yerine doğru koşar.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yükseklikte çalışma makinesi (kuleli kırık kolu) devrilir ve bir işçi kabinin altında kalır. Bu, ciddi yaralanma veya ölüm riski taşır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 46.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+      "raw_model_output": "{\n  \"scene_summary_tr\": \"Yapı sitesinde, bir kırık kolu (boom) ile çalışan bir yükseklikteki işçinin, kolu kontrolsüz bir şekilde devrildiği ve işçinin havada asılı kaldığı bir olay gözlemleniyor. İşçi, kolu devrilen anı takip eden saniyelerde kurtarılmaya çalışılıyor. Olay, bir yolun kıvrımında ve inşaat alanının kenarında gerçekleşiyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, yükseklikteki kırık kolu üzerinde çalışırken görülüyor. Kaza anında havada asılı kalıyor. Ayrıca, kaza sonrası yerde yürüyen birkaç kişi daha var.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kırmızı renkli, uzun kolu olan bir kırık kolu (boom) makinesi. Bu makine, inşaat alanının kenarında yer alıyor ve kaza anında devrilir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Yapı sitesindeki betonarme yapı ve iskeleler. Bu yapılar, inşaat alanının bir parçası olarak görünüyor.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Arka planda, uzakta bir araç gibi görünen nesne var ancak net bir tanımlama yapılamıyor. Belki bir kamyon veya inşaat aracı olabilir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Kırık kolu üzerindeki kova (basket) içinde bir yük olabilir, ancak net bir şekilde belirlenemiyor. Kova, işçinin bulunduğu yerdir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, yükseklikteki kırık kolu üzerinde çalışırken.\",\n    \"Kırık kolu, kontrolsüz bir şekilde devriliyor.\",\n    \"İşçi, kolu devrilen anı takip eden saniyelerde havada asılı kalıyor.\",\n    \"Diğer kişiler, kaza sonrası yerde koşarak müdahale ediyor.\",\n    \"İşçi, kaza sonrası kurtarılmaya çalışılıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Kırık kolu, kontrolsüz bir şekilde devrildi ve üzerindeki işçi havada asılı kaldı. Bu, işçinin düşmesi ve ciddi yaralanması riskini doğuruyor. İşçi, kaza anında güvenlik teli veya diğer koruma ekipmanları ile bağlı görünmüyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 45.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
       "risk_events": [
         {
-          "description_tr": "Yükseklikte çalışma makinesi (kuleli kırık kolu) devrilir ve bir işçi kabinin altında kalır. Bu, ciddi yaralanma veya ölüm riski taşır.",
+          "description_tr": "Kırık kolu, kontrolsüz bir şekilde devrildi ve üzerindeki işçi havada asılı kaldı. Bu, işçinin düşmesi ve ciddi yaralanması riskini doğuruyor. İşçi, kaza anında güvenlik teli veya diğer koruma ekipmanları ile bağlı görünmüyor.",
           "severity": "critical",
           "confidence": 0.95,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
-          "timestamp_sec": 46.0
+          "timestamp_sec": 45.0
         }
       ],
       "risk_flags_tr": [
-        "Yükseklikte çalışma makinesi (kuleli kırık kolu) devrilir ve bir işçi kabinin altında kalır. Bu, ciddi yaralanma veya ölüm riski taşır."
+        "Kırık kolu, kontrolsüz bir şekilde devrildi ve üzerindeki işçi havada asılı kaldı. Bu, işçinin düşmesi ve ciddi yaralanması riskini doğuruyor. İşçi, kaza anında güvenlik teli veya diğer koruma ekipmanları ile bağlı görünmüyor."
       ],
       "computed_confidence": 0.76,
       "reasoning_trace": "",
       "segment_start_sec": 0.0,
       "segment_end_sec": 52.6,
-      "created_at": "2026-08-27T18:48:56.396254+00:00"
+      "created_at": "2026-08-27T22:16:17.414350+00:00"
     },
     "rag_context": {
       "hypotheses": [
@@ -920,37 +838,6 @@
             "sound_alarm"
           ],
           "similarity": 0.269,
-          "evidence_status": "structural_candidate",
-          "matched_signal": {
-            "event_type": "structural_match",
-            "source": "scene_graph"
-          }
-        },
-        {
-          "pattern": "immobile_person",
-          "hazard_mechanism": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
-          "applicability_questions": [
-            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
-          ],
-          "required_evidence": [
-            "insan merkezi 2.5 sn'den fazla sabit",
-            "insan bbox değişmiyor",
-            "çevresinde yardım hareketi yok",
-            "insan zemin seviyesinde hareketsiz"
-          ],
-          "disconfirming_evidence": [
-            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
-          ],
-          "potential_hazards": [
-            "Hayati tehlike",
-            "Tıbbi müdahale gecikmesi"
-          ],
-          "action_hints": [
-            "call_health_team",
-            "call_ambulance",
-            "notify_supervisor"
-          ],
-          "similarity": 0.002,
           "evidence_status": "structural_candidate",
           "matched_signal": {
             "event_type": "structural_match",
@@ -1299,37 +1186,6 @@
           }
         },
         {
-          "pattern": "immobile_person",
-          "hazard_mechanism": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
-          "applicability_questions": [
-            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
-          ],
-          "required_evidence": [
-            "insan merkezi 2.5 sn'den fazla sabit",
-            "insan bbox değişmiyor",
-            "çevresinde yardım hareketi yok",
-            "insan zemin seviyesinde hareketsiz"
-          ],
-          "disconfirming_evidence": [
-            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
-          ],
-          "potential_hazards": [
-            "Hayati tehlike",
-            "Tıbbi müdahale gecikmesi"
-          ],
-          "action_hints": [
-            "call_health_team",
-            "call_ambulance",
-            "notify_supervisor"
-          ],
-          "similarity": 0.002,
-          "evidence_status": "structural_candidate",
-          "matched_signal": {
-            "event_type": "structural_match",
-            "source": "scene_graph"
-          }
-        },
-        {
           "pattern": "unauthorized_access",
           "hazard_mechanism": "Yetkisiz personelin tehlikeli veya kısıtlı alana girişi.",
           "applicability_questions": [
@@ -1420,14 +1276,14 @@
       {
         "result_id": "result-1",
         "result_type": "incident",
-        "seconds": 46.0,
-        "timestamp": "00:46",
+        "seconds": 45.0,
+        "timestamp": "00:45",
         "end_time": "00:52",
-        "timestamp_sec": 46.0,
-        "duration": 6.0,
-        "event_type": "machine_tip_over",
-        "event": "Yükseklikte çalışma makinesi (kuleli kırık kolu) devrilir ve bir işçi kabinin altında kalır.",
-        "hazard_mechanism": "Makinenin devrilmesi sonucu oluşan ezilme ve travma riski. İşçi, makine kabininin altında sıkışarak hayati tehlike ile karşı karşıyadır.",
+        "timestamp_sec": 45.0,
+        "duration": 7.0,
+        "event_type": "machine_failure_person_suspended",
+        "event": "Kırık kolu makinesinin devrilmesi ve işçinin havada asılı kalması",
+        "hazard_mechanism": "Mekanik arıza sonucu makinenin devrilmesi ve işçinin yüksekten düşme riski ile havada asılı kalması. Görünür güvenlik teli veya koruma ekipmanı bulunmamaktadır.",
         "confidence": 0.95,
         "severity": "critical",
         "evidence_agreement": "corroborated",

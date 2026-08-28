@@ -1,0 +1,64 @@
+{
+  "packet_id": "29a00c47-abdd-42b8-ac02-be2af3e59e07",
+  "video_id": "daily-safety-failsthis-is-why-you-must-f-efd1b4",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir metal işleme fabrikasının iç mekanında, işçiler metal levhaların arasında hareket ederken, bir kumandalı taşımada (veya kran) büyük bir metal levha taşınırken ani bir şekilde düşer ve toz bulutu oluşturur. Olay, yaklaşık 00:12'de başlar ve çevredeki işçilerin dikkatini çeker.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "En az 5 kişi göze çarpar; bazıları sarı kask, bazıları mavi üniforma giymektedir."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Sarı renkli, kumandalı bir taşımada (veya kran) göze çarpar; büyük metal levhaları taşıyor."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük boyutlu, düz metal levhalar, bazıları yığın halinde, bazıları taşınırken."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Metal levhaların yığıldığı ahşap destekler ve metal raf yapıları."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "00:12'den itibaren büyük bir toz bulutu oluşur; bu, metal levhanın düşmesiyle ilişkilidir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler metal levhaların arasında yürüyor.",
+    "Bir kumandalı taşımada büyük bir metal levha taşınıyor.",
+    "Metal levha ani bir şekilde düşer ve toz bulutu oluşturur.",
+    "İşçiler olay yerine doğru yönelir veya duraklar."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 11344.66209999664,
+    "tokens_generated": 607
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir metal işleme fabrikasının iç mekanında, işçiler metal levhaların arasında hareket ederken, bir kumandalı taşımada (veya kran) büyük bir metal levha taşınırken ani bir şekilde düşer ve toz bulutu oluşturur. Olay, yaklaşık 00:12'de başlar ve çevredeki işçilerin dikkatini çeker.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az 5 kişi göze çarpar; bazıları sarı kask, bazıları mavi üniforma giymektedir.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli, kumandalı bir taşımada (veya kran) göze çarpar; büyük metal levhaları taşıyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük boyutlu, düz metal levhalar, bazıları yığın halinde, bazıları taşınırken.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Metal levhaların yığıldığı ahşap destekler ve metal raf yapıları.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:12'den itibaren büyük bir toz bulutu oluşur; bu, metal levhanın düşmesiyle ilişkilidir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler metal levhaların arasında yürüyor.\",\n    \"Bir kumandalı taşımada büyük bir metal levha taşınıyor.\",\n    \"Metal levha ani bir şekilde düşer ve toz bulutu oluşturur.\",\n    \"İşçiler olay yerine doğru yönelir veya duraklar.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Bir metal levha taşınırken ani bir şekilde düşerek büyük bir toz bulutu oluşturur. Bu, çevredeki işçilerin solunum sistemlerine zarar verebilir ve düşen levhanın başka bir işçiyi vurması gibi fiziksel yaralanma riski oluşturur.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 12.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Bir metal levha taşınırken ani bir şekilde düşerek büyük bir toz bulutu oluşturur. Bu, çevredeki işçilerin solunum sistemlerine zarar verebilir ve düşen levhanın başka bir işçiyi vurması gibi fiziksel yaralanma riski oluşturur.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 12.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Bir metal levha taşınırken ani bir şekilde düşerek büyük bir toz bulutu oluşturur. Bu, çevredeki işçilerin solunum sistemlerine zarar verebilir ve düşen levhanın başka bir işçiyi vurması gibi fiziksel yaralanma riski oluşturur."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 21.77175,
+  "created_at": "2026-08-27T22:17:41.078029+00:00"
+}

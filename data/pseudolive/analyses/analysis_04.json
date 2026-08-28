@@ -9,8 +9,7 @@
   ],
   "reasoning": "Olay motoru anlamlı sinyal üretmedi; sahnede yalnızca normal faaliyet gözlendi.",
   "confidence": 0.84,
-  "triggered_mock_tools": [
-  ],
+  "triggered_mock_tools": [],
   "metadata": {
     "video_file": "video_04.mp4",
     "camera_label": "Elektrik Panosu Odası",

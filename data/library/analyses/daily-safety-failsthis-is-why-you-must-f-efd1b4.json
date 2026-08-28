@@ -2,22 +2,22 @@
   "slug": "daily-safety-failsthis-is-why-you-must-f-efd1b4",
   "video_file": "videos/Daily Safety Fails🤯This is WHY You Must Follow The Rules🤯- STAY SAFE #fails #safety #crane.mp4",
   "video_name": "Daily Safety Fails🤯This is WHY You Must Follow The Rules🤯- STAY SAFE #fails #safety #crane",
-  "analyzed_at": "2026-08-27T18:50:45.755172+00:00",
-  "analysis_seconds": 33.8,
+  "analyzed_at": "2026-08-27T22:18:17.633753+00:00",
+  "analysis_seconds": 47.9,
   "video": {
     "duration_sec": 21.77,
     "fps": 19.98,
     "width": 640,
     "height": 360
   },
-  "summary": "Metal işleme fabrikasında, 00:12'de bir metal levhanın düşmesi sonucu toz bulutu oluşmuş ve çevredeki çalışanlar etkilenmiştir. 00:15'te, düşen yükün yarattığı panik veya fiziksel etki nedeniyle 'insan_37' (track 37) isimli personel düşme hareketi sergilemiştir. Geometrik veriler düşüşü desteklerken, görsel analiz toz bulutu ve panik durumunu doğrulamaktadır. Ayrıca, sahada birden fazla personelin (insan_1, insan_2, insan_11 vb.) baret ve yelek gibi temel KKD'lerini eksik kullandığı tespit edilmiştir. Düşme olayı, düşen yük ve toz maruziyeti ile doğrudan ilişkili bir akut olaydır; KKD eksiklikleri ise bağlamsal bir güvenlik ihlalidir.",
-  "headline": "Personel düşmesi (00:15)",
+  "summary": "Metal işleme fabrikası ortamında, 00:12 civarında bir vinç/kumandalı taşıma sırasında büyük bir metal levhanın düşmesi ve toz bulutu oluşturması gözlemlenmiştir. Bu olay, çevredeki personelin solunum yolu ve ezilme riski altında olduğunu göstermektedir. 00:15'te, düşme olayının hemen ardından, track 37 numaralı personelin ani bir düşüş hareketi gösterdiği tespit edilmiştir; bu durum, düşen yükün yarattığı panik veya fiziksel çarpışma sonucu oluşmuş olabilir. Ayrıca, sahada birden fazla personelin (insan_1, insan_2, insan_11 vb.) baret ve yelek gibi temel KKD'lerini eksik kullandığı tespit edilmiştir. Bu KKD eksiklikleri, düşen yük ve toz bulutu gibi mevcut tehlikeler karşısında personelin savunmasız kalmasına neden olmaktadır. Olayın şiddeti ve çoklu risk faktörleri (düşen yük, KKD eksikliği, potansiyel yaralanma) nedeniyle durum kritik olarak değerlendirilmiştir.",
+  "headline": "Büyük metal levhanın vinç/kumandalı taşıma sırasında düşmesi ve toz bu…",
   "risk": "Yüksek",
-  "overall_risk": "high",
+  "overall_risk": "critical",
   "scene_context": {
     "environment": {
-      "type": "metal_isleme_fabrikasi",
-      "description": "Büyük metal levhaların depolandığı ve işlendiği bir alan. Arka planda sarı renkli bir kumandalı taşıma makinesi (kran) ve metal yığınları bulunmaktadır.",
+      "type": "inferred",
+      "description": "Metal işleme fabrikası iç mekanı, metal levha depolama ve taşıma alanı.",
       "visible_entities": {
         "insan": 280,
         "baret": 73,
@@ -29,121 +29,195 @@
         "load",
         "rack/structure",
         "smoke or flame"
-      ]
+      ],
+      "visibility_limits": []
     },
     "activities": [
       {
-        "activity": "Metal levhalar arasında personel hareketi",
+        "activity": "Metal levha taşınması sırasında yükün düşmesi ve toz bulutu oluşması.",
+        "time_range": {
+          "start_sec": 12.0,
+          "end_sec": 15.0
+        },
+        "participants": [
+          "vinç operatörü (görülmüyor)",
+          "çevredeki personel"
+        ],
+        "operational_state": "kritik_olay",
+        "evidence": [
+          "visual",
+          "geometric"
+        ]
+      },
+      {
+        "activity": "Personelin düşme hareketi göstermesi.",
+        "time_range": {
+          "start_sec": 15.0,
+          "end_sec": 15.0
+        },
+        "participants": [
+          "track_37"
+        ],
+        "operational_state": "yaralanma_riski",
+        "evidence": [
+          "geometric",
+          "visual"
+        ]
+      },
+      {
+        "activity": "Personelin KKD eksikliği ile çalışması.",
         "time_range": {
           "start_sec": 0.0,
-          "end_sec": 12.0
+          "end_sec": 18.0
         },
         "participants": [
           "insan_1",
           "insan_2",
           "insan_11",
           "insan_22",
-          "insan_32"
+          "insan_32",
+          "insan_35",
+          "insan_37",
+          "insan_38",
+          "insan_39",
+          "insan_43",
+          "insan_46"
         ],
-        "operational_state": "normal"
-      },
-      {
-        "activity": "Metal levhanın düşmesi ve toz bulutu oluşumu",
-        "time_range": {
-          "start_sec": 12.0,
-          "end_sec": 15.0
-        },
-        "participants": [],
-        "operational_state": "hazard_event"
-      },
-      {
-        "activity": "Personelin düşmesi ve panik durumu",
-        "time_range": {
-          "start_sec": 15.0,
-          "end_sec": 18.0
-        },
-        "participants": [
-          "insan_37"
-        ],
-        "operational_state": "incident"
+        "operational_state": "sürekli_risk",
+        "evidence": [
+          "geometric",
+          "visual"
+        ]
       }
     ],
     "zones": [
       {
-        "id": "depolama_alani",
-        "purpose": "metal_levha_depolama",
+        "id": "unknown",
+        "purpose": "metal_levha_taşıma_ve_depolama",
         "active_operations": [
-          "levha_tasima",
-          "personel_gezinti"
+          "yük taşıma",
+          "personel hareketi"
         ],
-        "access_constraints": "KKD zorunlu"
+        "access_constraints": "KKD zorunlu, tehlikeli yük altı yasak"
       }
     ],
     "context_uncertainties": [
-      "Düşen levhanın tam ağırlığı ve düşüş yüksekliği ölçülemedi.",
-      "Personelin düşme anındaki fiziksel yaralanma durumu görsel olarak doğrulanamadı."
+      "Düşen yükün tam ağırlığı ve düşme yüksekliği ölçülemedi.",
+      "Personelin düşme anındaki fiziksel durumu (bayılma mı, kaçış mı) net değil.",
+      "Toz bulutunun kimyasal içeriği belirsiz."
     ]
   },
   "results": [
     {
       "result_id": "result-1",
       "result_type": "incident",
-      "time": "00:15",
-      "end_time": "00:18",
-      "timestamp_sec": 15.0,
+      "time": "00:12",
+      "end_time": "00:15",
+      "timestamp_sec": 12.0,
       "duration": 3.0,
-      "event": "Personel (track 37) düşen metal levha ve oluşan toz bulutu sonrası düşme hareketi gösterdi.",
-      "event_type": "person_fall",
+      "event": "Büyük metal levhanın vinç/kumandalı taşıma sırasında düşmesi ve toz bulutu oluşturması.",
+      "event_type": "overhead_hazard",
       "subjects": [
-        "insan_37"
+        "load",
+        "person"
       ],
-      "zone": "depolama_alani",
-      "hazard_mechanism": "Düşen yük (metal levha) ve oluşan toz bulutu nedeniyle personel dengesini kaybetti veya fiziksel darbe aldı, zemin seviyesine ani düşüş gerçekleşti.",
-      "severity": "high",
+      "zone": "metal_levha_taşıma_ve_depolama",
+      "hazard_mechanism": "Yüksekteki metal levhanın kontrolsüz düşmesi sonucu, altındaki veya yakınındaki personelin ezilmesi, yaralanması ve oluşan toz bulutu ile solunum yolu hasarı riski.",
+      "severity": "critical",
       "evidence": {
         "geometric": {
           "supports": true,
           "observations": [
-            "Track 37'de dikeyde ani düşüş (drop_ratio: 0.47), bbox yüksekliğinde küçülme."
+            "Load (yük) ve personelin konum değişimi, düşme hareketi."
           ],
           "limitations": [
-            "Tam düşüş yüksekliği ve çarpma şiddeti piksel bazlı tahminle sınırlıdır."
+            "Tam mesafe ve hız ölçümü yapılamadı."
           ]
         },
         "visual": {
           "supports": true,
           "observations": [
-            "00:12'de metal levha düşüşü ve toz bulutu.",
-            "00:15'te personelin ani duruş bozukluğu ve yere çökme hareketi."
+            "VLM: Metal levhanın düşmesi ve toz bulutu oluşumu net görüldü.",
+            "Olay anında personelin tepkisi ve toplanması."
           ],
           "limitations": [
-            "Toz bulutu nedeniyle düşme anındaki detaylı fiziksel temas net görülemeyebilir."
+            "Toz bulutu nedeniyle görüş mesafesi azaldı."
           ]
         },
         "rag": {
           "supports": true,
           "observations": [
-            "Düşen yük ve toz maruziyeti riski hipotezi ile uyumlu."
+            "overhead_hazard hipotezi ile uyumlu."
           ],
           "limitations": [
-            "RAG hipotezi tek başına kanıt değildir, ancak görsel/geometrik verilerle desteklenmiştir."
+            "Hipotez tek başına kanıt değildir."
           ]
         },
         "agreement": "corroborated",
-        "resolution": "Geometrik düşüş verisi (0.47 oranı) ve görsel toz bulutu/düşme hareketi gözlemi birbiriyle tutarlıdır. Düşen yükün yarattığı ortam, düşme mekanizmasını açıklar."
+        "resolution": "VLM görsel yorumu ve geometrik hareket verileri düşme olayını doğrulamaktadır. RAG hipotezi bu durumu desteklemektedir."
+      },
+      "uncertain": false,
+      "uncertainty_reason": "",
+      "confidence": 0.95
+    },
+    {
+      "result_id": "result-2",
+      "result_type": "incident",
+      "time": "00:15",
+      "end_time": "00:15",
+      "timestamp_sec": 15.0,
+      "duration": 0.0,
+      "event": "Personel (track 37) düşme hareketi gösterdi.",
+      "event_type": "person_fall",
+      "subjects": [
+        "track_37"
+      ],
+      "zone": "metal_levha_taşıma_ve_depolama",
+      "hazard_mechanism": "Düşen yükün yarattığı panik, çarpışma veya zemindeki engeller nedeniyle personelin dengesini kaybedip yere düşmesi; ciddi yaralanma riski.",
+      "severity": "high",
+      "evidence": {
+        "geometric": {
+          "supports": true,
+          "observations": [
+            "Track 37 için dikey düşüş (drop_ratio: 0.47) ve ani hız değişimi tespit edildi."
+          ],
+          "limitations": [
+            "Düşmenin nedeni (çarpma mı, kayma mı) net değil."
+          ]
+        },
+        "visual": {
+          "supports": true,
+          "observations": [
+            "Olay anında personelin ani hareketi ve yere düşüş pozisyonu."
+          ],
+          "limitations": [
+            "Toz bulutu nedeniyle detaylı duruş analizi zor."
+          ]
+        },
+        "rag": {
+          "supports": true,
+          "observations": [
+            "person_fall hipotezi ile uyumlu."
+          ],
+          "limitations": [
+            "Hipotez tek başına kanıt değildir."
+          ]
+        },
+        "agreement": "corroborated",
+        "resolution": "Geometrik düşüş verisi ve VLM'nin olay tanımı düşme olayını doğrulamaktadır."
       },
       "uncertain": false,
       "uncertainty_reason": "",
       "confidence": 0.85
     },
     {
-      "result_id": "result-2",
+      "result_id": "result-3",
       "result_type": "contextual_finding",
       "time": "00:00",
       "end_time": "00:18",
       "timestamp_sec": 0.0,
       "duration": 18.0,
-      "event": "Sahada birden fazla personelin baret ve yelek gibi temel KKD'lerini eksik kullanması.",
+      "event": "Çok sayıda personelin baret ve yelek gibi temel KKD'lerini eksik kullanması.",
       "event_type": "ppe_missing",
       "subjects": [
         "insan_1",
@@ -158,99 +232,177 @@
         "insan_43",
         "insan_46"
       ],
-      "zone": "depolama_alani",
-      "hazard_mechanism": "Kafa travması (düşen cisim riski) ve görünmezlik kaynaklı ezilme riski. KKD eksikliği, düşen yük olayında yaralanma şiddetini artırıcı bir faktördür.",
-      "severity": "medium",
+      "zone": "metal_levha_taşıma_ve_depolama",
+      "hazard_mechanism": "KKD eksikliği nedeniyle, düşen yük, toz bulutu veya diğer fiziksel tehlikeler karşısında personelin kafa travması, ezilme ve solunum yolu hasarı riskinin artması.",
+      "severity": "high",
       "evidence": {
         "geometric": {
           "supports": true,
           "observations": [
-            "Çok sayıda insan tespitinde baret ve yelek sınıflarının düşük skorlu veya eksik olması."
+            "Birden fazla track için baret ve yelek tespit edilemedi (confidence: 0.7)."
           ],
           "limitations": [
-            "Bazı karelerde ışıklandırma ve açı nedeniyle KKD tespiti belirsiz olabilir."
+            "Görüş açısı ve ışık koşulları tespit doğruluğunu etkileyebilir."
           ]
         },
         "visual": {
           "supports": true,
           "observations": [
-            "VLM yorumunda 'bazıları kask takıyor, bazıları hareket halinde' ifadesi ve genel sahne analizinde KKD eksikliği notu."
+            "VLM: Bazı personellerin kask ve üniforma giydiği, ancak genel KKD eksikliği olduğu not edildi."
           ],
           "limitations": [
-            "Tüm personelin KKD durumu kare kare doğrulanmamıştır, örnekleme dayalıdır."
+            "Tüm personellerin KKD durumu tek tek doğrulanamadı."
           ]
         },
         "rag": {
           "supports": true,
           "observations": [
-            "PPE eksikliği hipotezi ile uyumlu."
+            "ppe_missing hipotezi ile uyumlu."
           ],
           "limitations": [
-            "RAG, sadece aday hipotezdir."
+            "Hipotez tek başına kanıt değildir."
           ]
         },
         "agreement": "corroborated",
-        "resolution": "Geometrik tespitler ve görsel yorum, sahada yaygın bir KKD eksikliği olduğunu desteklemektedir. Bu durum, düşen yük olayı bağlamında riski artıran bir faktördür."
+        "resolution": "Geometrik tespitler ve VLM gözlemleri KKD eksikliğini doğrulamaktadır."
       },
       "uncertain": false,
       "uncertainty_reason": "",
-      "confidence": 0.75
+      "confidence": 0.8
     }
   ],
   "uncertain": false,
   "uncertainty_reason": "",
   "confidence": 0.0,
-  "reasoning": "00:12'de gerçekleşen metal levha düşüşü ve toz bulutu, 00:15'te 'insan_37' isimli personelin düşmesine neden olmuştur. Geometrik veriler (drop_ratio 0.47) ve görsel kanıtlar (toz bulutu, ani hareket kaybı) düşme olayını doğrulamaktadır. Bu, akut bir kazadır ve acil tıbbi müdahale gerektirir. Ayrıca, sahada çok sayıda personelin KKD eksikliği (baret/yelek) tespit edilmiştir; bu durum, düşen yük riski altında yaralanma olasılığını ve şiddetini artıran bağlamsal bir güvenlik ihlalidir. RAG hipotezleri, görsel ve geometrik kanıtlarla desteklendiği için sonuç olarak kabul edilmiştir. Düşme olayı 'incident', KKD eksikliği ise 'contextual_finding' olarak sınıflandırılmıştır.",
+  "reasoning": "VLM görsel yorumu ve geometrik veriler, 00:12'de metal levhanın düşmesi ve toz bulutu oluşmasıyla kritik bir olayın gerçekleştiğini doğrulamaktadır. Bu olay, 00:15'te bir personelin düşmesine neden olmuş olabilir. Ayrıca, sahada çok sayıda personelin KKD eksikliği, mevcut tehlikeler karşısında riski artırmaktadır. Bu nedenle, olay kritik seviyede değerlendirilmiş ve acil müdahale (sağlık ekibi, alan güvenliği, uyarı) önerilmiştir. KKD eksikliği, olayın şiddetini artıran bir bağlamsal bulgudur.",
   "actions": [
     "call_health_team",
     "secure_area",
-    "notify_supervisor"
+    "notify_supervisor",
+    "sound_alarm"
   ],
   "events": [
     {
+      "time": "00:12",
+      "event": "Büyük metal levhanın vinç/kumandalı taşıma sırasında düşmesi ve toz bulutu oluşturması.",
+      "event_type": "overhead_hazard",
+      "confidence": 0.95,
+      "timestamp_sec": 12.0,
+      "duration": 3.0,
+      "end_time": "00:15",
+      "result_id": "result-1",
+      "severity": "critical"
+    },
+    {
       "time": "00:15",
-      "event": "Personel (track 37) düşen metal levha ve oluşan toz bulutu sonrası düşme hareketi gösterdi.",
+      "event": "Personel (track 37) düşme hareketi gösterdi.",
       "event_type": "person_fall",
       "confidence": 0.85,
       "timestamp_sec": 15.0,
-      "duration": 3.0,
-      "end_time": "00:18",
-      "result_id": "result-1",
+      "duration": 0.0,
+      "end_time": "00:15",
+      "result_id": "result-2",
       "severity": "high"
     }
   ],
   "triggered_mock_tools": [
     {
       "tool_name": "call_health_team",
-      "params": {}
+      "params": {
+        "location": "saha",
+        "reason": "Metal işleme fabrikası ortamında, 00:12 civarında bir vinç/kumandalı taşıma sırasında büyük bir meta"
+      }
     },
     {
       "tool_name": "secure_area",
-      "params": {}
+      "params": {
+        "location": "saha",
+        "reason": "Metal işleme fabrikası ortamında, 00:12 civarında bir vinç/kumandalı taşıma sırasında büyük bir meta"
+      }
     },
     {
       "tool_name": "notify_supervisor",
-      "params": {}
+      "params": {
+        "location": "saha",
+        "reason": "Metal işleme fabrikası ortamında, 00:12 civarında bir vinç/kumandalı taşıma sırasında büyük bir meta"
+      }
+    },
+    {
+      "tool_name": "lockdown_facility",
+      "params": {
+        "location": "saha",
+        "reason": "Metal işleme fabrikası ortamında, 00:12 civarında bir vinç/kumandalı taşıma sırasında büyük bir meta"
+      }
+    },
+    {
+      "tool_name": "trigger_fire_suppression",
+      "params": {
+        "location": "saha",
+        "reason": "Metal işleme fabrikası ortamında, 00:12 civarında bir vinç/kumandalı taşıma sırasında büyük bir meta"
+      }
+    },
+    {
+      "tool_name": "activate_cbrn_protocol",
+      "params": {
+        "location": "saha",
+        "reason": "Metal işleme fabrikası ortamında, 00:12 civarında bir vinç/kumandalı taşıma sırasında büyük bir meta"
+      }
     }
   ],
   "tool_execution_results": [
     {
       "status": "success",
       "tool": "call_health_team",
-      "params": {},
+      "params": {
+        "location": "saha",
+        "reason": "Metal işleme fabrikası ortamında, 00:12 civarında bir vinç/kumandalı taşıma sırasında büyük bir meta"
+      },
       "mock_result": "call_health_team başarıyla simüle edildi."
     },
     {
       "status": "success",
       "tool": "secure_area",
-      "params": {},
+      "params": {
+        "location": "saha",
+        "reason": "Metal işleme fabrikası ortamında, 00:12 civarında bir vinç/kumandalı taşıma sırasında büyük bir meta"
+      },
       "mock_result": "secure_area başarıyla simüle edildi."
     },
     {
       "status": "success",
       "tool": "notify_supervisor",
-      "params": {},
+      "params": {
+        "location": "saha",
+        "reason": "Metal işleme fabrikası ortamında, 00:12 civarında bir vinç/kumandalı taşıma sırasında büyük bir meta"
+      },
       "mock_result": "notify_supervisor başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "lockdown_facility",
+      "params": {
+        "location": "saha",
+        "reason": "Metal işleme fabrikası ortamında, 00:12 civarında bir vinç/kumandalı taşıma sırasında büyük bir meta"
+      },
+      "mock_result": "lockdown_facility başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "trigger_fire_suppression",
+      "params": {
+        "location": "saha",
+        "reason": "Metal işleme fabrikası ortamında, 00:12 civarında bir vinç/kumandalı taşıma sırasında büyük bir meta"
+      },
+      "mock_result": "trigger_fire_suppression başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "activate_cbrn_protocol",
+      "params": {
+        "location": "saha",
+        "reason": "Metal işleme fabrikası ortamında, 00:12 civarında bir vinç/kumandalı taşıma sırasında büyük bir meta"
+      },
+      "mock_result": "activate_cbrn_protocol başarıyla simüle edildi."
     }
   ],
   "metadata": {
@@ -453,68 +605,68 @@
       }
     ],
     "vlm_interpretation": {
-      "packet_id": "0e92933e-7760-473b-9550-a61e1c80679b",
+      "packet_id": "29a00c47-abdd-42b8-ac02-be2af3e59e07",
       "video_id": "daily-safety-failsthis-is-why-you-must-f-efd1b4",
       "model_name": "vlm",
       "model_backend": "server",
-      "scene_summary_tr": "Bir metal işleme fabrikasında, çalışanlar büyük metal levhaların arasında hareket ediyor. Arka planda bir kumanda ile çalışan sarı renkli bir taşımak makinesi (veya kran) ve çeşitli metal yığınları mevcut. 00:12'den itibaren bir metal levha düşerek toz bulutu oluşturuyor.",
+      "scene_summary_tr": "Bir metal işleme fabrikasının iç mekanında, işçiler metal levhaların arasında hareket ederken, bir kumandalı taşımada (veya kran) büyük bir metal levha taşınırken ani bir şekilde düşer ve toz bulutu oluşturur. Olay, yaklaşık 00:12'de başlar ve çevredeki işçilerin dikkatini çeker.",
       "detected_entities": [
         {
           "label": "person",
           "confidence_hint": "high",
-          "notes_tr": "Çalışanlar, bazıları kask takıyor, bazıları hareket halinde."
+          "notes_tr": "En az 5 kişi göze çarpar; bazıları sarı kask, bazıları mavi üniforma giymektedir."
         },
         {
           "label": "machine",
           "confidence_hint": "high",
-          "notes_tr": "Sarı renkli, büyük boyutlu, kumandalı bir taşımak makinesi (kran veya taşıyıcı)."
+          "notes_tr": "Sarı renkli, kumandalı bir taşımada (veya kran) göze çarpar; büyük metal levhaları taşıyor."
         },
         {
           "label": "load",
           "confidence_hint": "high",
-          "notes_tr": "Yığın halindeki büyük metal levhalar, bazıları taşınırken."
+          "notes_tr": "Büyük boyutlu, düz metal levhalar, bazıları yığın halinde, bazıları taşınırken."
         },
         {
           "label": "rack/structure",
           "confidence_hint": "high",
-          "notes_tr": "Metal levhaların desteklendiği ahşap ve metal raf yapıları."
+          "notes_tr": "Metal levhaların yığıldığı ahşap destekler ve metal raf yapıları."
         },
         {
           "label": "smoke or flame",
           "confidence_hint": "high",
-          "notes_tr": "00:12'den itibaren metal levha düşerken oluşan toz bulutu."
+          "notes_tr": "00:12'den itibaren büyük bir toz bulutu oluşur; bu, metal levhanın düşmesiyle ilişkilidir."
         }
       ],
       "detected_actions_tr": [
-        "İşçilerin metal levhalar arasında yürüdüğü",
-        "Bir metal levhanın düşerek toz bulutu oluşturduğu",
-        "Sarı makinenin hareket halinde olduğu",
-        "İşçilerin düşen levha sonrası durup durumun değerlendirildiği"
+        "İşçiler metal levhaların arasında yürüyor.",
+        "Bir kumandalı taşımada büyük bir metal levha taşınıyor.",
+        "Metal levha ani bir şekilde düşer ve toz bulutu oluşturur.",
+        "İşçiler olay yerine doğru yönelir veya duraklar."
       ],
       "confidence_overall": 0.9,
       "inference": {
-        "latency_ms": 10500.106899999082,
-        "tokens_generated": 529
+        "latency_ms": 11344.66209999664,
+        "tokens_generated": 607
       },
-      "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir metal işleme fabrikasında, çalışanlar büyük metal levhaların arasında hareket ediyor. Arka planda bir kumanda ile çalışan sarı renkli bir taşımak makinesi (veya kran) ve çeşitli metal yığınları mevcut. 00:12'den itibaren bir metal levha düşerek toz bulutu oluşturuyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çalışanlar, bazıları kask takıyor, bazıları hareket halinde.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli, büyük boyutlu, kumandalı bir taşımak makinesi (kran veya taşıyıcı).\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yığın halindeki büyük metal levhalar, bazıları taşınırken.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Metal levhaların desteklendiği ahşap ve metal raf yapıları.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:12'den itibaren metal levha düşerken oluşan toz bulutu.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçilerin metal levhalar arasında yürüdüğü\",\n    \"Bir metal levhanın düşerek toz bulutu oluşturduğu\",\n    \"Sarı makinenin hareket halinde olduğu\",\n    \"İşçilerin düşen levha sonrası durup durumun değerlendirildiği\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Bir metal levha düşerek toz bulutu oluşturdu ve yakın çevredeki çalışanlara zarar verebilir. Bu, düşen yük ve toz maruziyeti riskini içerir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 12.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+      "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir metal işleme fabrikasının iç mekanında, işçiler metal levhaların arasında hareket ederken, bir kumandalı taşımada (veya kran) büyük bir metal levha taşınırken ani bir şekilde düşer ve toz bulutu oluşturur. Olay, yaklaşık 00:12'de başlar ve çevredeki işçilerin dikkatini çeker.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az 5 kişi göze çarpar; bazıları sarı kask, bazıları mavi üniforma giymektedir.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli, kumandalı bir taşımada (veya kran) göze çarpar; büyük metal levhaları taşıyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük boyutlu, düz metal levhalar, bazıları yığın halinde, bazıları taşınırken.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Metal levhaların yığıldığı ahşap destekler ve metal raf yapıları.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:12'den itibaren büyük bir toz bulutu oluşur; bu, metal levhanın düşmesiyle ilişkilidir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler metal levhaların arasında yürüyor.\",\n    \"Bir kumandalı taşımada büyük bir metal levha taşınıyor.\",\n    \"Metal levha ani bir şekilde düşer ve toz bulutu oluşturur.\",\n    \"İşçiler olay yerine doğru yönelir veya duraklar.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Bir metal levha taşınırken ani bir şekilde düşerek büyük bir toz bulutu oluşturur. Bu, çevredeki işçilerin solunum sistemlerine zarar verebilir ve düşen levhanın başka bir işçiyi vurması gibi fiziksel yaralanma riski oluşturur.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 12.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
       "risk_events": [
         {
-          "description_tr": "Bir metal levha düşerek toz bulutu oluşturdu ve yakın çevredeki çalışanlara zarar verebilir. Bu, düşen yük ve toz maruziyeti riskini içerir.",
-          "severity": "high",
-          "confidence": 0.9,
+          "description_tr": "Bir metal levha taşınırken ani bir şekilde düşerek büyük bir toz bulutu oluşturur. Bu, çevredeki işçilerin solunum sistemlerine zarar verebilir ve düşen levhanın başka bir işçiyi vurması gibi fiziksel yaralanma riski oluşturur.",
+          "severity": "critical",
+          "confidence": 0.95,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
           "timestamp_sec": 12.0
         }
       ],
       "risk_flags_tr": [
-        "Bir metal levha düşerek toz bulutu oluşturdu ve yakın çevredeki çalışanlara zarar verebilir. Bu, düşen yük ve toz maruziyeti riskini içerir."
+        "Bir metal levha taşınırken ani bir şekilde düşerek büyük bir toz bulutu oluşturur. Bu, çevredeki işçilerin solunum sistemlerine zarar verebilir ve düşen levhanın başka bir işçiyi vurması gibi fiziksel yaralanma riski oluşturur."
       ],
-      "computed_confidence": 0.6775,
+      "computed_confidence": 0.76,
       "reasoning_trace": "",
       "segment_start_sec": 0.0,
       "segment_end_sec": 21.77175,
-      "created_at": "2026-08-27T18:50:22.513871+00:00"
+      "created_at": "2026-08-27T22:17:41.078029+00:00"
     },
     "rag_context": {
       "hypotheses": [
@@ -628,37 +780,6 @@
             "sound_alarm"
           ],
           "similarity": 0.272,
-          "evidence_status": "structural_candidate",
-          "matched_signal": {
-            "event_type": "structural_match",
-            "source": "scene_graph"
-          }
-        },
-        {
-          "pattern": "immobile_person",
-          "hazard_mechanism": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
-          "applicability_questions": [
-            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
-          ],
-          "required_evidence": [
-            "insan merkezi 2.5 sn'den fazla sabit",
-            "insan bbox değişmiyor",
-            "çevresinde yardım hareketi yok",
-            "insan zemin seviyesinde hareketsiz"
-          ],
-          "disconfirming_evidence": [
-            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
-          ],
-          "potential_hazards": [
-            "Hayati tehlike",
-            "Tıbbi müdahale gecikmesi"
-          ],
-          "action_hints": [
-            "call_health_team",
-            "call_ambulance",
-            "notify_supervisor"
-          ],
-          "similarity": 0.006,
           "evidence_status": "structural_candidate",
           "matched_signal": {
             "event_type": "structural_match",
@@ -1008,37 +1129,6 @@
           }
         },
         {
-          "pattern": "immobile_person",
-          "hazard_mechanism": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
-          "applicability_questions": [
-            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
-          ],
-          "required_evidence": [
-            "insan merkezi 2.5 sn'den fazla sabit",
-            "insan bbox değişmiyor",
-            "çevresinde yardım hareketi yok",
-            "insan zemin seviyesinde hareketsiz"
-          ],
-          "disconfirming_evidence": [
-            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
-          ],
-          "potential_hazards": [
-            "Hayati tehlike",
-            "Tıbbi müdahale gecikmesi"
-          ],
-          "action_hints": [
-            "call_health_team",
-            "call_ambulance",
-            "notify_supervisor"
-          ],
-          "similarity": 0.006,
-          "evidence_status": "structural_candidate",
-          "matched_signal": {
-            "event_type": "structural_match",
-            "source": "scene_graph"
-          }
-        },
-        {
           "pattern": "unauthorized_access",
           "hazard_mechanism": "Yetkisiz personelin tehlikeli veya kısıtlı alana girişi.",
           "applicability_questions": [
@@ -1129,14 +1219,30 @@
       {
         "result_id": "result-1",
         "result_type": "incident",
+        "seconds": 12.0,
+        "timestamp": "00:12",
+        "end_time": "00:15",
+        "timestamp_sec": 12.0,
+        "duration": 3.0,
+        "event_type": "overhead_hazard",
+        "event": "Büyük metal levhanın vinç/kumandalı taşıma sırasında düşmesi ve toz bulutu oluşturması.",
+        "hazard_mechanism": "Yüksekteki metal levhanın kontrolsüz düşmesi sonucu, altındaki veya yakınındaki personelin ezilmesi, yaralanması ve oluşan toz bulutu ile solunum yolu hasarı riski.",
+        "confidence": 0.95,
+        "severity": "critical",
+        "evidence_agreement": "corroborated",
+        "uncertain": false
+      },
+      {
+        "result_id": "result-2",
+        "result_type": "incident",
         "seconds": 15.0,
         "timestamp": "00:15",
-        "end_time": "00:18",
+        "end_time": "00:15",
         "timestamp_sec": 15.0,
-        "duration": 3.0,
+        "duration": 0.0,
         "event_type": "person_fall",
-        "event": "Personel (track 37) düşen metal levha ve oluşan toz bulutu sonrası düşme hareketi gösterdi.",
-        "hazard_mechanism": "Düşen yük (metal levha) ve oluşan toz bulutu nedeniyle personel dengesini kaybetti veya fiziksel darbe aldı, zemin seviyesine ani düşüş gerçekleşti.",
+        "event": "Personel (track 37) düşme hareketi gösterdi.",
+        "hazard_mechanism": "Düşen yükün yarattığı panik, çarpışma veya zemindeki engeller nedeniyle personelin dengesini kaybedip yere düşmesi; ciddi yaralanma riski.",
         "confidence": 0.85,
         "severity": "high",
         "evidence_agreement": "corroborated",

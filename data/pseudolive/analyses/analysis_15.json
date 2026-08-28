@@ -1,5 +1,5 @@
 {
-  "summary": "Depo-B Raf Arası bölgesinde 3 olay tespit edildi; en kritik: Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir.",
+  "summary": "Depo-B Raf Arası bölgesinde 2 olay tespit edildi; en kritik: Yangın veya duman görülmesi. Yakıt, elektrik veya kimyasal kaynaklı olabilir.",
   "events": [
     {
       "time": "00:05",
@@ -12,12 +12,6 @@
       "event": "Sıvı/kimyasal sızıntı veya birikintisi — kayma ve zehirlenme riski.",
       "event_type": "leakage",
       "confidence": 0.61
-    },
-    {
-      "time": "00:34",
-      "event": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
-      "event_type": "immobile_person",
-      "confidence": 0.83
     }
   ],
   "risk": "Yüksek",
@@ -27,7 +21,7 @@
     "İtfaiye ve acil müdahale ekiplerini çağır.",
     "Yakıt veya kimyasal kaynakları kapatmaya çalış (güvenlik varsa)."
   ],
-  "reasoning": "Geometrik sinyaller fire_smoke, leakage, immobile_person pattern'leriyle eşleşti. En yüksek risk skoru 100 (fire_smoke). RAG bağlamı ve olay zaman damgaları tutarlı.",
+  "reasoning": "Geometrik sinyaller fire_smoke, leakage pattern'leriyle eşleşti. En yüksek risk skoru 100 (fire_smoke). RAG bağlamı ve olay zaman damgaları tutarlı.",
   "confidence": 0.77,
   "triggered_mock_tools": [
     {
@@ -73,14 +67,6 @@
         "confidence": 0.61,
         "involved_track_ids": [],
         "metadata": {}
-      },
-      {
-        "event_type": "immobile_person",
-        "timestamp": "00:34",
-        "description": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi.",
-        "confidence": 0.83,
-        "involved_track_ids": [],
-        "metadata": {}
       }
     ],
     "event_timestamps": [
@@ -93,11 +79,6 @@
         "event_type": "leakage",
         "timestamp": "00:25",
         "seconds": 25
-      },
-      {
-        "event_type": "immobile_person",
-        "timestamp": "00:34",
-        "seconds": 34
       }
     ],
     "risk_segments": [
@@ -114,13 +95,6 @@
         "event_type": "leakage",
         "risk": "Orta",
         "description": "Sıvı/kimyasal sızıntı veya birikintisi — kayma ve zehirlenme riski."
-      },
-      {
-        "start_sec": 34,
-        "end_sec": 40,
-        "event_type": "immobile_person",
-        "risk": "Orta",
-        "description": "Personelin uzun süre hareketsiz kalması — bayılma veya yaralanma belirtisi."
       }
     ]
   }

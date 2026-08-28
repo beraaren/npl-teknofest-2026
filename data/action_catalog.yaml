@@ -66,10 +66,6 @@ actions:
       - "Toplanma bölgesindeki personeli güvenli alana dağıt."
       - "Bölgedeki tehlikeli makineleri veya hareketleri durdur."
       - "Çalışma bölgesi kapasitesini ve erişim kontrolünü gözden geçir."
-    immobile_person:
-      - "Kişinin bilincini ve durumunu kontrol et, sağlık ekibine haber ver."
-      - "Çevresinde güvenli alan oluştur, diğer personeli uzaklaştır."
-      - "Kişinin son bilinen aktivitesini kayıt altına al."
     leakage:
       - "Sızıntı kaynağını tespit et ve varsa vanayı/boruyu kapat."
       - "Bölgeyi sızıntı temizlenene kadar erişime kapat."

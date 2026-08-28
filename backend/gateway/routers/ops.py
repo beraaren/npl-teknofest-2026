@@ -113,6 +113,41 @@ def _get_broadcast_fn(request: Request):
     return request.app.state.broadcast_fn
 
 
+def _load_analysis_for_assignment(slug: str) -> Optional[dict]:
+    """Önce kütüphanede, yoksa SQLite analiz tablosunda arar.
+
+    Canlı demo sayfasından yüklenen videolar kütüphaneye kaydedilmez,
+    yalnızca ``analyses`` tablosuna yazılır. Bu fonksiyon hem kütüphane
+    slug'larını hem de canlı iş ``job_id``'lerini aynı uç noktayla
+    kullanabilmeyi sağlar.
+    """
+    analysis = library.get(slug)
+    if analysis is not None:
+        return analysis
+    return store.get_analysis_by_id(slug)
+
+
+def _pick_event_for_analysis(analysis: dict, event_index: Optional[int] = None) -> Dict[str, Any]:
+    """Bir analizdeki olaylar listesinden uygun olayı seçer.
+
+    Hem kütüphane formatındaki ``metadata.event_timestamps`` hem de
+    canlı demo formatındaki ``events`` listesini destekler.
+    """
+    events = analysis.get("events") or analysis.get("metadata", {}).get("event_timestamps", []) or []
+    if not events:
+        return {}
+    if event_index is not None and 0 <= event_index < len(events):
+        return events[event_index]
+    severity_rank = {"low": 1, "medium": 2, "high": 3, "critical": 4}
+    return max(
+        events,
+        key=lambda e: (
+            severity_rank.get(str(e.get("severity") or "low"), 1),
+            float(e.get("confidence") or 0.0),
+        ),
+    )
+
+
 @router.post("/assignments")
 async def create_assignment_endpoint(body: AssignmentCreate, request: Request, response: Response):
     """Bir olayı belirli bir ekibe atar ve o ekibin ekranına düşürür.
@@ -131,7 +166,7 @@ async def create_assignment_endpoint(body: AssignmentCreate, request: Request, r
     Raises:
         HTTPException: Analiz bulunamazsa 404.
     """
-    analysis = library.get(body.analysis_slug)
+    analysis = _load_analysis_for_assignment(body.analysis_slug)
     if analysis is None:
         raise HTTPException(
             status_code=404,
@@ -145,7 +180,7 @@ async def create_assignment_endpoint(body: AssignmentCreate, request: Request, r
     if not role:
         raise HTTPException(status_code=400, detail="Rol belirtilmedi.")
 
-    event = library.pick_event(analysis, body.event_index)
+    event = _pick_event_for_analysis(analysis, body.event_index)
     _, event_end = library.event_window(event)
 
     row, created = store.get_or_create_assignment(
@@ -335,10 +370,10 @@ async def execute_tool(body: ToolExecuteRequest, request: Request):
     # tutarlı akış sağlar.
     assigns_role = str(tool_def.get("assigns_role") or "")
     if assigns_role and body.analysis_slug:
-        analysis = library.get(body.analysis_slug)
+        analysis = _load_analysis_for_assignment(body.analysis_slug)
         if analysis is not None:
             role = roles.normalize_role(assigns_role)
-            event = library.pick_event(analysis, None)
+            event = _pick_event_for_analysis(analysis, None)
             _, event_end = library.event_window(event)
             assignment, created = store.get_or_create_assignment(
                 analysis_slug=body.analysis_slug,

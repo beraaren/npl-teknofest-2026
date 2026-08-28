@@ -838,3 +838,97 @@ header .meta { margin-left: auto; font-size: 0.8rem; opacity: 0.75; }
 @media (max-width: 700px) {
   .progress-steps { gap: 0.5rem; }
 }
+
+/* ---------------------------------------------------------------------- */
+/* Canlı Demo sayfası: kanıt / açıklama metinleri tam görünsün             */
+/* ---------------------------------------------------------------------- */
+.demo-app .timeline-item {
+  grid-template-columns: 3.4rem 9rem 4.2rem 1fr;
+  align-items: start;
+}
+
+.demo-app .timeline-item .meta {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.demo-app .timeline-item .meta:nth-last-child(1),
+.demo-app .timeline-item .meta:nth-last-child(2) {
+  grid-column: 4;
+}
+
+.demo-app .timeline-item .meta:nth-last-child(2) {
+  margin-bottom: 0.15rem;
+}
+
+.demo-app .btn-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Canlı Demo sayfası: kanal çıktısı tab'ları                              */
+/* ---------------------------------------------------------------------- */
+.demo-tabs {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin: 1.2rem 0 1rem;
+  border-bottom: 1px solid var(--surface-2);
+  padding-bottom: 0.5rem;
+}
+
+.demo-tab {
+  background: transparent;
+  border: 1px solid var(--surface-2);
+  border-radius: 8px 8px 0 0;
+  color: var(--text);
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+.demo-tab:hover { opacity: 1; background: rgba(56, 189, 248, 0.08); }
+
+.demo-tab.active {
+  opacity: 1;
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(56, 189, 248, 0.1);
+  font-weight: 600;
+}
+
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+.channel-meta {
+  padding: 0.4rem 0.6rem;
+  background: rgba(56, 189, 248, 0.07);
+  border-radius: 8px;
+  margin-bottom: 0.6rem;
+}
+
+.channel-chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  padding: 0;
+  margin: 0.4rem 0 1rem;
+}
+
+.channel-chips .chip {
+  border: 1px solid var(--surface-2);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.85rem;
+  background: rgba(51, 65, 85, 0.35);
+}
+
+.channel-chips .empty-state {
+  list-style: none;
+  opacity: 0.7;
+  font-size: 0.9rem;
+}

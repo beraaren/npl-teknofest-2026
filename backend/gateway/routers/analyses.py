@@ -4,7 +4,7 @@ import os
 import shutil
 import httpx
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile
 from pydantic import BaseModel
 from .. import store
@@ -46,12 +46,242 @@ async def create_analysis(request: AnalysisRequest):
     return {"status": "accepted", "job_id": job_id}
 
 
+_CRITICAL_EVENT_TYPES = (
+    "person_fall",
+    "forklift_tip_over",
+    "fire",
+    "fire_smoke",
+    "explosion",
+    "dangerous_proximity",
+)
+
+
+def _severity_for_event(event_type: str) -> str:
+    return "high" if event_type in _CRITICAL_EVENT_TYPES else "medium"
+
+
+def _tools_for_event(event_type: str) -> list:
+    """Bir olay tipine göre deterministik mock-araç listesi döner."""
+    mapping = {
+        "person_fall": ["call_health_team", "notify_supervisor"],
+        "fire": ["trigger_fire_suppression", "sound_alarm", "activate_cbrn_protocol"],
+        "fire_smoke": ["trigger_fire_suppression", "sound_alarm", "activate_cbrn_protocol"],
+        "smoke": ["activate_cbrn_protocol", "sound_alarm", "notify_supervisor"],
+        "explosion": ["lockdown_facility", "trigger_fire_suppression", "call_health_team", "sound_alarm"],
+        "dangerous_proximity": ["notify_supervisor", "sound_alarm"],
+        "forklift_tip_over": ["secure_area", "call_health_team", "notify_supervisor"],
+        "no_helmet": ["notify_supervisor", "sound_alarm"],
+        "no_vest": ["notify_supervisor", "sound_alarm"],
+    }
+    return mapping.get(event_type, [])
+
+
+def _parse_timestamp(ts: Any) -> float:
+    """EventEngine'in 'MM:SS' dizgesini veya sayıyı saniyeye çevirir."""
+    if isinstance(ts, (int, float)):
+        return float(ts)
+    if isinstance(ts, str) and ":" in ts:
+        parts = ts.split(":")
+        return int(parts[0]) * 60 + int(parts[1])
+    return 0.0
+
+
+def _build_demo_payload(
+    job_id: str,
+    camera_id: str,
+    video_path: str,
+    event_signals: list,
+    rag_context: dict,
+    vlm_interpretation: dict,
+    parsed: Optional[dict] = None,
+) -> dict:
+    """Hem başarılı hem fallback yol için deterministik demo payload'ı üretir."""
+    parsed = parsed or {}
+    has_critical = any(s.get("event_type") in _CRITICAL_EVENT_TYPES for s in event_signals)
+    default_risk = "Yüksek" if has_critical else ("Orta" if event_signals else "Düşük")
+
+    final_risk = parsed.get("risk") or parsed.get("overall_risk") or default_risk
+    if final_risk not in ("Düşük", "Orta", "Yüksek"):
+        final_risk = default_risk
+
+    # Güvence: Kanal A kritik bir olay (yangın/duman/düşme/patlama vb.) doğrulamışsa
+    # karar ajanı riski bunun altına düşüremez.
+    _risk_order = {"Düşük": 1, "Orta": 2, "Yüksek": 3}
+    if _risk_order.get(final_risk, 0) < _risk_order.get(default_risk, 0):
+        final_risk = default_risk
+
+    if parsed.get("summary"):
+        final_summary = parsed["summary"]
+    else:
+        final_summary = (
+            f"Kullanıcı tarafından yüklenen video ({Path(video_path).name}) analiz edildi. "
+            + ("Kritik İSG tehlikesi tespit edilmiştir." if has_critical else "Olağan operasyon akışı doğrulanmıştır.")
+        )
+
+    if parsed.get("actions"):
+        final_actions = parsed["actions"]
+    else:
+        if has_critical:
+            final_actions = [
+                "Tehlike bölgesi güvenlik altına alınsın.",
+                "İlgili ekip (sağlık/güvenlik) olay konumuna yönlendirilsin.",
+                "Saha amirine anında bilgi verilsin.",
+            ]
+        elif event_signals:
+            final_actions = [
+                "Gerekli emniyet tedbirlerini al.",
+                "Saha amirini bilgilendir.",
+            ]
+        else:
+            final_actions = ["Rutin gözleme devam et."]
+
+    final_reasoning = parsed.get("reasoning") or (
+        f"Kanal A (YOLO) ve Kanal B (VLM) kanıtları sentezlenerek {final_risk} risk seviyesi belirlenmiştir."
+    )
+
+    results = []
+    for s in event_signals:
+        event_type = s.get("event_type")
+        if event_type == "yolo_frame":
+            continue
+        time_label = s.get("timestamp") or "00:00"
+        timestamp_sec = _parse_timestamp(s.get("timestamp"))
+        confidence = float(s.get("confidence") or 0.0)
+        sev = _severity_for_event(event_type)
+        results.append({
+            "result_type": "contextual_finding",
+            "time": time_label,
+            "timestamp_sec": timestamp_sec,
+            "event_type": event_type,
+            "severity": sev,
+            "hazard_mechanism": s.get("description"),
+            "confidence": confidence,
+            "evidence": {"agreement": "Kanal A (YOLO) tespiti"},
+        })
+        # Düşük güvenli tespitler için insan incelemesi gözlemi üret
+        if confidence < 0.55:
+            results.append({
+                "result_type": "uncertain_observation",
+                "time": time_label,
+                "timestamp_sec": timestamp_sec,
+                "event_type": event_type,
+                "severity": sev,
+                "uncertainty_reason": f"{event_type} tespit güveni düşük (%{int(confidence * 100)}); İSG uzmanı doğrulamalı.",
+                "confidence": confidence,
+                "evidence": {"agreement": "Kanal A (YOLO) zayıf kanıt"},
+            })
+
+    # Eğer hiç sinyal yoksa, en azından bir 'olağan akış' contextual finding göster
+    if not any(r["result_type"] == "contextual_finding" for r in results):
+        results.append({
+            "result_type": "contextual_finding",
+            "time": "00:00",
+            "timestamp_sec": 0.0,
+            "event_type": "routine_flow",
+            "severity": "low",
+            "hazard_mechanism": "Saha genelinde olağan operasyon akışı gözlemlendi.",
+            "confidence": 0.90,
+            "evidence": {"agreement": "Kanal A (YOLO) rutin tarama"},
+        })
+        results.append({
+            "result_type": "uncertain_observation",
+            "time": "00:00",
+            "timestamp_sec": 0.0,
+            "event_type": "routine_flow",
+            "severity": "low",
+            "uncertainty_reason": "YOLO/olay motoru bu videoda belirgin bir İSG olayı tespit etmedi; uzman incelemesi önerilir.",
+            "confidence": 0.50,
+            "evidence": {"agreement": "Kanal A (YOLO) negatif tarama"},
+        })
+
+    triggered = []
+    seen = set()
+    for s in event_signals:
+        event_type = s.get("event_type")
+        for tool_name in _tools_for_event(event_type):
+            if tool_name not in seen:
+                seen.add(tool_name)
+                triggered.append({
+                    "tool_name": tool_name,
+                    "params": {"reason": s.get("description", ""), "location": camera_id},
+                })
+    if not triggered:
+        triggered.append({
+            "tool_name": "notify_supervisor",
+            "params": {"message": f"{camera_id} kamerasından canlı demo analizi tamamlandı; olağan akış gözlemlendi."},
+        })
+
+    events = [
+        {
+            "time": s.get("timestamp") or "00:00",
+            "event": s.get("description"),
+            "event_type": s.get("event_type"),
+            "severity": _severity_for_event(s.get("event_type")),
+            "confidence": float(s.get("confidence") or 0.0),
+            "timestamp_sec": _parse_timestamp(s.get("timestamp")),
+        }
+        for s in event_signals
+    ]
+    if not events:
+        events.append({
+            "time": "00:00",
+            "event": "Olağan operasyon akışı gözlemlendi; belirgin İSG olayı tespit edilmedi.",
+            "event_type": "routine_flow",
+            "severity": "low",
+            "confidence": 0.90,
+            "timestamp_sec": 0.0,
+        })
+
+    # Karar ajanı (LLM) bazen araçları [{"tool_name": ...}] yerine düz metin
+    # listesi ["sound_alarm", ...] olarak döndürüyor; demo arayüzü buton
+    # çizebilmek için dict formu beklediğinden burada normalize edilir.
+    parsed_tools = []
+    for entry in parsed.get("triggered_mock_tools") or []:
+        if isinstance(entry, str):
+            parsed_tools.append({
+                "tool_name": entry,
+                "params": {"reason": "Karar ajanı önerisi", "location": camera_id},
+            })
+        elif isinstance(entry, dict) and entry.get("tool_name"):
+            entry.setdefault("params", {})
+            parsed_tools.append(entry)
+
+    return {
+        "job_id": job_id,
+        "camera_id": camera_id,
+        "risk": final_risk,
+        "summary": final_summary,
+        "headline": f"Canlı Demo Analizi ({final_risk} Risk)",
+        "actions": final_actions,
+        "reasoning": final_reasoning,
+        "confidence": parsed.get("confidence", 0.90),
+        "triggered_mock_tools": parsed_tools if parsed_tools else triggered,
+        "vlm_interpretation": vlm_interpretation,
+        "rag_context": rag_context,
+        "results": parsed.get("results") if parsed.get("results") else results,
+        "events": events,
+    }
+
+
 async def _run_local_demo_pipeline(job_id: str, camera_id: str, video_path: str):
     """Standalone / yerel demo modunda mikroservisler olmadan pipeline'ı çalıştırır ve WS ile yayınlar."""
     try:
         from ..main import manager
     except ImportError:
         manager = None
+
+    # Aşamalı biriktiriciler: herhangi bir adımda hata olursa eldeki verilerle fallback üretilecek.
+    frames = []
+    obs_list = []
+    event_signals = []
+    rag_context = {}
+    vlm_interpretation = {
+        "scene_summary_tr": "Video sahnesi işlendi ve personel / araç hareketleri incelendi.",
+        "detected_entities": [],
+        "risk_flags_tr": [],
+        "confidence_overall": 0.90,
+    }
+    parsed = {}
 
     try:
         # 1. Ingest adımı
@@ -61,11 +291,17 @@ async def _run_local_demo_pipeline(job_id: str, camera_id: str, video_path: str)
                 "data": {"job_id": job_id, "camera_id": camera_id, "chunk_index": 0, "total_chunks": 1, "is_final": True}
             })
 
-        # 2. Kareleri oku
+        # 2. Kareleri oku — tasarım: Kanal A videonun ilk 60 saniyesini
+        # (scene_max_segment_sec) 10 fps örnekleme ile işler. Önceden yalnızca
+        # ilk 45 kare (~4.5 sn) okunuyordu; videonun ortasındaki/sonundaki
+        # olaylar (patlama, düşme) hiç görülmüyordu.
         import cv2
         cap = cv2.VideoCapture(video_path)
         fps = cap.get(cv2.CAP_PROP_FPS) or 25.0
-        frames = []
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
+        duration_sec = total_frames / fps if fps else 0.0
+        segment_sec = min(duration_sec or 60.0, 60.0)  # Kanal B segment tavanıyla aynı
+        max_frames = max(45, int(segment_sec * 10))
         step = max(1, int(fps / 10))  # 10 fps örnekleme
         idx = 0
         while True:
@@ -75,7 +311,7 @@ async def _run_local_demo_pipeline(job_id: str, camera_id: str, video_path: str)
             if idx % step == 0:
                 frames.append(frame)
             idx += 1
-            if len(frames) >= 45:
+            if len(frames) >= max_frames:
                 break
         cap.release()
 
@@ -115,7 +351,7 @@ async def _run_local_demo_pipeline(job_id: str, camera_id: str, video_path: str)
                         "timestamp_sec": sig.timestamp,
                         "confidence": sig.confidence,
                         "description": sig.description,
-                        "severity": "high" if sig.event_type in ("person_fall", "forklift_tip_over", "fire", "dangerous_proximity") else "medium",
+                        "severity": _severity_for_event(sig.event_type),
                         "snapshot": snapshot
                     }
                     store.save_event(job_id, "event.detected", ev_data)
@@ -143,13 +379,50 @@ async def _run_local_demo_pipeline(job_id: str, camera_id: str, video_path: str)
         rag = RAGLayer()
         rag_context = rag.build_context(obs_list, event_signals)
 
-        # 4. Kanal B: VLM yorumu
-        vlm_interpretation = {
-            "scene_summary_tr": "Video sahnesi işlendi ve personel / araç hareketleri incelendi.",
-            "detected_entities": [{"label": "person", "confidence_hint": "high", "notes_tr": "Saha personeli"}],
-            "risk_flags_tr": [s.description for s in event_signals] if event_signals else [],
-            "confidence_overall": 0.90
-        }
+        # 4. Kanal B: VLM yorumu — GERÇEK Kanal B pipeline'ı çalıştırılır.
+        # Eskiden burada hardcoded bir stub vardı; VLM videoyu hiç görmüyordu
+        # ve karar ajanı "patlamaya dair işaret bulunamadı" gibi görüntüden
+        # bağımsız özetler üretiyordu. run_channel_b, videoyu 60 sn'lik
+        # segmentlere böler, her segmenti iteratif olarak (önceki segmentlerin
+        # damıtılmış hafıza bağlamıyla) VLM'e gönderir ve tek bir yoruma
+        # indirger (bkz. Kanal_B/pipeline.py).
+        # analyses.py -> routers -> gateway -> backend -> proje kökü (4 seviye)
+        project_root = Path(__file__).resolve().parent.parent.parent.parent
+        try:
+            from dotenv import load_dotenv
+            load_dotenv(project_root / ".env")
+        except Exception:
+            pass
+        import sys as _sys
+        for entry in (str(project_root), str(project_root / "Kanal_B")):
+            if entry not in _sys.path:
+                _sys.path.insert(0, entry)
+
+        vlm_interpretation = None
+        try:
+            import asyncio
+            from pipeline import run_channel_b  # Kanal_B/pipeline.py
+
+            loop = asyncio.get_running_loop()
+            vlm_interpretation = await loop.run_in_executor(
+                None,
+                lambda: run_channel_b(
+                    video_path,
+                    video_id=job_id,
+                    output_dir=str(project_root / "outputs" / "channel_b" / job_id),
+                ),
+            )
+        except Exception as vlm_exc:
+            logger.error(f"Kanal B VLM hatası: {vlm_exc}", exc_info=True)
+
+        if not vlm_interpretation:
+            # VLM erişilemezse Kanal A sinyallerinden türetilen yedek yorum
+            vlm_interpretation = {
+                "scene_summary_tr": "Kanal B (VLM) erişilemedi; yorum Kanal A sinyallerinden türetildi.",
+                "detected_entities": [{"label": "person", "confidence_hint": "high", "notes_tr": "Saha personeli"}],
+                "risk_flags_tr": [s.get("description") for s in event_signals] if event_signals else [],
+                "confidence_overall": 0.90,
+            }
         vlm_event = {
             "job_id": job_id,
             "camera_id": camera_id,
@@ -180,83 +453,37 @@ async def _run_local_demo_pipeline(job_id: str, camera_id: str, video_path: str)
         dec_res = decision_agent.decide(
             event_signals=[
                 {
-                    "event_type": s.event_type,
-                    "timestamp": f"{int(s.timestamp // 60):02d}:{int(s.timestamp % 60):02d}",
-                    "description": s.description,
-                    "confidence": s.confidence,
+                    "event_type": s.get("event_type"),
+                    "timestamp": s.get("timestamp") or "00:00",
+                    "description": s.get("description"),
+                    "confidence": float(s.get("confidence") or 0.0),
                 }
                 for s in event_signals
             ],
             scene_graphs=[o["scene_graph"] for o in obs_list if o.get("scene_graph")],
             rag_context=rag_context,
             vlm_interpretation=vlm_interpretation,
-            images=[frames[0]] if frames else None
         )
 
         from src.reasoning.decision_agent import _extract_json
         parsed = _extract_json(dec_res.get("raw_text", "")) or {}
 
-        has_critical = any(s.event_type in ("person_fall", "forklift_tip_over", "fire", "dangerous_proximity") for s in event_signals)
-        default_risk = "Yüksek" if has_critical else ("Orta" if event_signals else "Düşük")
-        
-        final_risk = parsed.get("risk") or parsed.get("overall_risk") or default_risk
-        if final_risk not in ("Düşük", "Orta", "Yüksek"):
-            final_risk = default_risk
-
-        final_summary = parsed.get("summary") or (
-            f"Kullanıcı tarafından yüklenen video ({Path(video_path).name}) analiz edildi. "
-            + ("Kritik İSG tehlikesi tespit edilmiştir." if has_critical else "Olağan operasyon akışı doğrulanmıştır.")
-        )
-        final_actions = parsed.get("actions") or (
-            ["Gerekli emniyet tedbirlerini al.", "Saha amirini bilgilendir."] if event_signals else ["Rutin gözleme devam et."]
-        )
-        final_reasoning = parsed.get("reasoning") or (
-            f"Kanal A (YOLO) ve Kanal B (VLM) kanıtları sentezlenerek {final_risk} risk seviyesi belirlenmiştir."
-        )
-
-        final_payload = {
-            "job_id": job_id,
-            "camera_id": camera_id,
-            "risk": final_risk,
-            "summary": final_summary,
-            "headline": f"Canlı Demo Analizi ({final_risk} Risk)",
-            "actions": final_actions,
-            "reasoning": final_reasoning,
-            "confidence": parsed.get("confidence", 0.90),
-            "triggered_mock_tools": parsed.get("triggered_mock_tools", []),
-            "vlm_interpretation": vlm_interpretation,
-            "rag_context": rag_context,
-            "results": parsed.get("results", []),
-            "events": [
-                {
-                    "time": f"{int(s.timestamp // 60):02d}:{int(s.timestamp % 60):02d}",
-                    "event": s.description,
-                    "event_type": s.event_type,
-                    "confidence": s.confidence,
-                    "timestamp_sec": s.timestamp
-                } for s in event_signals
-            ]
-        }
-        store.save_analysis(job_id, camera_id, final_payload)
-        if manager:
-            await manager.broadcast({"stream": "decision.final", "data": final_payload})
-
     except Exception as e:
-        logger.error(f"Yerel demo pipeline hatası: {e}", exc_info=True)
-        fallback_payload = {
-            "job_id": job_id,
-            "camera_id": camera_id,
-            "risk": "Düşük",
-            "summary": f"Video yüklendi ve işlendi ({Path(video_path).name}). Saha genelinde olağan akış gözlemlenmiştir.",
-            "actions": ["Rutin operasyona devam et."],
-            "reasoning": "Yerel demo işleme tamamlandı.",
-            "confidence": 0.9,
-            "triggered_mock_tools": [],
-            "events": []
-        }
-        store.save_analysis(job_id, camera_id, fallback_payload)
-        if manager:
-            await manager.broadcast({"stream": "decision.final", "data": fallback_payload})
+        logger.error(f"Yerel demo pipeline hatası (deterministik fallback üretiliyor): {e}", exc_info=True)
+
+    # Her durumda zengin bir payload oluştur ve kaydet
+    final_payload = _build_demo_payload(
+        job_id=job_id,
+        camera_id=camera_id,
+        video_path=video_path,
+        event_signals=event_signals,
+        rag_context=rag_context,
+        vlm_interpretation=vlm_interpretation,
+        parsed=parsed,
+    )
+    store.save_analysis(job_id, camera_id, final_payload)
+    if manager:
+        await manager.broadcast({"stream": "decision.final", "data": final_payload})
 
 
 @router.post("/analyses/upload", status_code=202)

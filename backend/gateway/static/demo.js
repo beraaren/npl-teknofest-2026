@@ -44,6 +44,16 @@ const el = {
   modalFindings: document.getElementById('modal-findings'),
   modalUncertain: document.getElementById('modal-uncertain'),
   suggestedActions: document.getElementById('suggested-actions'),
+
+  // Kanal tab'ları
+  demoTabs: document.getElementById('demo-tabs'),
+  vlmMeta: document.getElementById('vlm-meta'),
+  vlmSummary: document.getElementById('vlm-summary'),
+  vlmRisks: document.getElementById('vlm-risks'),
+  vlmEntities: document.getElementById('vlm-entities'),
+  vlmActions: document.getElementById('vlm-actions'),
+  ragVerified: document.getElementById('rag-verified'),
+  ragUnverified: document.getElementById('rag-unverified'),
   
   // Manuel aksiyon
   manualTool: document.getElementById('manual-tool'),
@@ -112,7 +122,9 @@ function stopFakeProgress() {
 
 const toolLabel = (name) => {
   const tool = toolCatalog.find((t) => t.tool_name === name);
-  return tool ? tool.human_label : name;
+  if (!tool) return name;
+  const label = tool.description || tool.tool_name || name;
+  return label.charAt(0).toUpperCase() + label.slice(1);
 };
 
 // ---------------------------------------------------------------------------
@@ -221,6 +233,16 @@ function resetUI() {
   el.suggestedActions.innerHTML = '';
   el.manualResult.textContent = '';
   el.assignExisting.textContent = '';
+  el.vlmMeta.textContent = '';
+  el.vlmSummary.textContent = '—';
+  el.vlmRisks.innerHTML = '';
+  el.vlmEntities.innerHTML = '';
+  el.vlmActions.innerHTML = '';
+  el.ragVerified.innerHTML = '';
+  el.ragUnverified.innerHTML = '';
+  // Tab'ı başa döndür
+  el.demoTabs.querySelectorAll('.demo-tab').forEach((b, i) => b.classList.toggle('active', i === 0));
+  document.querySelectorAll('#decision-summary .tab-pane').forEach((p, i) => p.classList.toggle('active', i === 0));
   
   el.fbBadge.className = 'fb-badge pending';
   el.fbBadge.textContent = 'Değerlendirilmedi';
@@ -363,6 +385,8 @@ function finalize(analysis, events) {
   el.demoStatus.textContent = 'Analiz tamamlandı';
 
   renderDecision(analysis);
+  refreshFeedbackBadge();
+  refreshAssignments();
 }
 
 function parseSeconds(ts) {
@@ -384,6 +408,8 @@ function renderDecision(analysis) {
   
   renderTimeline(analysis.events || []);
   renderContextualResults(results);
+  renderChannelB(analysis.vlm_interpretation || vlmInterpretation);
+  renderRag(analysis.rag_context || {});
   renderSuggestedActions(analysis);
   fillAssignEventSelect(analysis.events || []);
   
@@ -428,6 +454,101 @@ function renderContextualResults(results) {
   render(el.modalUncertain, uncertain, 'İnsan incelemesi gereken belirsiz gözlem yok.');
 }
 
+// ---------------------------------------------------------------------------
+// Kanal tab'ları: Kanal B (VLM) ve RAG çıktıları
+// ---------------------------------------------------------------------------
+
+const VLM_SEVERITY_CLASS = { low: 'low', medium: 'medium', high: 'high', critical: 'high' };
+const VLM_SEVERITY_LABEL = { low: 'Düşük', medium: 'Orta', high: 'Yüksek', critical: 'Kritik' };
+
+function renderChannelB(vlm) {
+  if (!vlm || typeof vlm !== 'object') {
+    el.vlmMeta.textContent = '';
+    el.vlmSummary.textContent = 'Kanal B yorumu alınamadı.';
+    el.vlmRisks.innerHTML = '<li class="empty-state">VLM çıktısı yok.</li>';
+    el.vlmEntities.innerHTML = '';
+    el.vlmActions.innerHTML = '';
+    return;
+  }
+
+  const metaParts = [];
+  if (vlm.model_name) metaParts.push(`Model: ${vlm.model_name} (${vlm.model_backend || 'server'})`);
+  const segCount = Number(vlm.segment_count);
+  if (Number.isFinite(segCount) && segCount > 1) {
+    const failed = (vlm.failed_segments || []).length;
+    metaParts.push(`${segCount} segment iteratif analiz edildi${failed ? ` (${failed} başarısız)` : ''}`);
+  } else {
+    metaParts.push('Tek parça analiz');
+  }
+  if (Number.isFinite(Number(vlm.confidence_overall))) {
+    metaParts.push(`Güven: ${formatConfidence(vlm.confidence_overall)}`);
+  }
+  const latency = Number(vlm.inference?.latency_ms);
+  if (Number.isFinite(latency) && latency > 0) {
+    metaParts.push(`Süre: ${(latency / 1000).toFixed(1)} sn`);
+  }
+  el.vlmMeta.textContent = metaParts.join(' · ');
+
+  el.vlmSummary.textContent = vlm.scene_summary_tr || 'Sahne özeti üretilmedi.';
+
+  const risks = Array.isArray(vlm.risk_events) && vlm.risk_events.length
+    ? vlm.risk_events
+    : (vlm.risk_flags_tr || []).map((flag) => ({ description_tr: flag, severity: 'medium' }));
+  el.vlmRisks.innerHTML = risks.length
+    ? risks.map((r) => {
+      const sev = VLM_SEVERITY_CLASS[r.severity] || 'medium';
+      const ts = Number.isFinite(Number(r.timestamp_sec)) ? mmss(r.timestamp_sec) : '—';
+      return `<li class="timeline-item severity-${sev}">
+        <span class="timeline-time">${escapeHtml(ts)}</span>
+        <span class="timeline-sev ${sev}">${VLM_SEVERITY_LABEL[r.severity] || 'Orta'}</span>
+        <span class="meta">${escapeHtml(r.description_tr || String(r))}</span>
+        <span class="meta">Güven: ${formatConfidence(r.confidence)}</span>
+      </li>`;
+    }).join('')
+    : '<li class="empty-state">VLM sahada risk işareti bulamadı.</li>';
+
+  const entities = vlm.detected_entities || [];
+  el.vlmEntities.innerHTML = entities.length
+    ? entities.map((e) =>
+        `<li class="chip">${escapeHtml(e.label || '?')} <span class="meta">${escapeHtml(e.confidence_hint || '')}${e.notes_tr ? ` — ${escapeHtml(e.notes_tr)}` : ''}</span></li>`
+      ).join('')
+    : '<li class="empty-state">Varlık listesi yok.</li>';
+
+  const actions = vlm.detected_actions_tr || [];
+  el.vlmActions.innerHTML = actions.length
+    ? actions.map((a) => `<li class="chip">${escapeHtml(a)}</li>`).join('')
+    : '<li class="empty-state">Eylem listesi yok.</li>';
+}
+
+function renderRag(rag) {
+  const renderHyp = (target, rows, emptyText) => {
+    target.innerHTML = rows.length
+      ? rows.map((h) => {
+        const sim = Number.isFinite(Number(h.similarity)) ? `Benzerlik: %${(h.similarity * 100).toFixed(0)}` : '';
+        const risk = h.risk_level ? `Risk: ${h.risk_level}` : '';
+        return `<li class="timeline-item">
+          <span class="timeline-type">${escapeHtml(h.pattern || 'hipotez')}</span>
+          <span class="meta">${escapeHtml(h.hazard_mechanism || '')}</span>
+          <span class="meta">${[sim, risk].filter(Boolean).join(' · ')}</span>
+        </li>`;
+      }).join('')
+      : `<li class="empty-state">${escapeHtml(emptyText)}</li>`;
+  };
+  renderHyp(el.ragVerified, rag.hypotheses || [], 'Doğrulanmış hipotez yok.');
+  renderHyp(el.ragUnverified, rag.unverified_hypotheses || [], 'Doğrulanmamış hipotez yok.');
+}
+
+function initTabs() {
+  el.demoTabs.querySelectorAll('.demo-tab').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      el.demoTabs.querySelectorAll('.demo-tab').forEach((b) => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('#decision-summary .tab-pane').forEach((pane) => {
+        pane.classList.toggle('active', pane.id === btn.dataset.tab);
+      });
+    });
+  });
+}
+
 function fillAssignEventSelect(stamps) {
   el.assignEvent.innerHTML = stamps.length
     ? stamps.map((s, i) =>
@@ -437,88 +558,204 @@ function fillAssignEventSelect(stamps) {
 }
 
 function renderSuggestedActions(analysis) {
-  const availableTools = new Set(toolCatalog.map((t) => t.tool_name));
-  const tools = (analysis.triggered_mock_tools || []).filter((call) => availableTools.has(call.tool_name));
-  
+  const catalogByName = Object.fromEntries(toolCatalog.map((t) => [t.tool_name, t]));
+  const tools = (analysis.triggered_mock_tools || []).filter((call) => catalogByName[call.tool_name]);
+
   el.suggestedActions.innerHTML = '';
-  
+
   for (const call of tools) {
+    const def = catalogByName[call.tool_name];
+    const isEnabled = def.enabled !== false;
+    const already = executedTools.has(call.tool_name);
     const btn = document.createElement('button');
     btn.className = 'btn btn-secondary';
     btn.title = JSON.stringify(call.params || {});
-    if (executedTools.has(call.tool_name)) {
+    if (already || !isEnabled) {
       btn.disabled = true;
       btn.dataset.locked = '1';
-      btn.classList.add('btn-done');
-      btn.textContent = `✓ ${toolLabel(call.tool_name)}`;
+      if (already) btn.classList.add('btn-done');
+      if (!isEnabled) btn.classList.add('btn-disabled');
+      btn.textContent = already ? `✓ ${toolLabel(call.tool_name)}` : `🔒 ${toolLabel(call.tool_name)}`;
     } else {
       btn.textContent = toolLabel(call.tool_name);
-      btn.addEventListener('click', () => mockExecuteTool(btn, call.tool_name));
+      btn.addEventListener('click', () => executeTool(btn, call.tool_name));
     }
     el.suggestedActions.appendChild(btn);
   }
-  
+
   if ((analysis.actions || []).length) {
     const list = document.createElement('ul');
     list.className = 'action-advice';
     list.innerHTML = analysis.actions.map((a) => `<li>${escapeHtml(a)}</li>`).join('');
     el.suggestedActions.appendChild(list);
   }
-  
+
   if (!tools.length && !(analysis.actions || []).length) {
     el.suggestedActions.innerHTML = '<span class="meta">Aksiyon önerisi üretilmedi.</span>';
   }
 }
 
-async function mockExecuteTool(btn, toolName) {
-  await runOnce(btn, async () => {
-    // Simüle edilmiş tool çalıştırma
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    executedTools.add(toolName);
-    showToast(`${toolLabel(toolName)} başarıyla çalıştırıldı (Simülasyon)`);
-    return { label: `✓ ${toolLabel(toolName)}` };
+async function callToolExecute(toolName, params = {}) {
+  return api('/tools/execute', {
+    method: 'POST',
+    body: JSON.stringify({
+      tool_name: toolName,
+      params,
+      camera_id: 'demo_upload',
+      job_id: currentJobId || 'manuel',
+      analysis_slug: currentJobId || '',
+      triggered_by: 'supervisor',
+    }),
   });
 }
 
-function mockManualAction() {
+async function executeTool(btn, toolName) {
+  try {
+    await runOnce(btn, async () => {
+      const res = await callToolExecute(toolName, { reason: `Önerilen aksiyon: ${toolName}` });
+      executedTools.add(toolName);
+      showToast(`${toolLabel(toolName)} çalıştırıldı`);
+      return { label: `✓ ${toolLabel(toolName)}` };
+    });
+  } catch (err) {
+    showToast(`Araç çalıştırılamadı: ${err.message}`, true);
+  }
+}
+
+async function runManualAction() {
   const toolName = el.manualTool.value;
   if (!toolName) return;
-  runOnce(el.manualRunBtn, async () => {
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    el.manualResult.textContent = `✓ '${toolLabel(toolName)}' başarıyla çalıştırıldı (Simülasyon).`;
-    showToast("Manuel aksiyon tamamlandı.");
-  });
+  const original = el.manualRunBtn.textContent;
+  el.manualRunBtn.disabled = true;
+  el.manualRunBtn.textContent = `${original} …`;
+  try {
+    const params = {
+      location: 'demo_upload',
+      urgency: decisionPayload?.risk || 'Orta',
+      reason: el.manualNote.value.trim() || (decisionPayload?.summary || 'Demo manuel aksiyon'),
+    };
+    const res = await callToolExecute(toolName, params);
+    el.manualResult.textContent = res.already_executed
+      ? `${toolLabel(toolName)} zaten çalıştırılmıştı.`
+      : `${toolLabel(toolName)}: ${res.mock_result || res.status}`;
+    if (res.assignment) {
+      showToast(`Görev oluşturuldu: ${res.assignment.role}`);
+      refreshAssignments();
+    }
+    el.manualRunBtn.textContent = 'Çalıştırıldı ✓';
+    setTimeout(() => { el.manualRunBtn.textContent = original; }, 1200);
+  } catch (err) {
+    showToast(`Araç çalıştırılamadı: ${err.message}`, true);
+    el.manualRunBtn.textContent = original;
+  } finally {
+    el.manualRunBtn.disabled = false;
+  }
 }
 
-function mockAssignRole() {
+async function assignRole() {
   const role = el.assignRole.value;
-  if (!role) return;
-  runOnce(el.assignBtn, async () => {
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    el.assignExisting.textContent = `✓ Görev başarıyla ${role} ekibine atandı (Simülasyon).`;
-    showToast("Ekibe görev atandı.");
-  });
+  if (!role || !currentJobId) return;
+  const eventIdx = el.assignEvent.value;
+  const original = el.assignBtn.textContent;
+  el.assignBtn.disabled = true;
+  el.assignBtn.textContent = `${original} …`;
+  try {
+    const payload = {
+      analysis_slug: currentJobId,
+      camera_id: 'demo_upload',
+      role,
+      event_index: eventIdx === '' ? null : parseInt(eventIdx, 10),
+      note: 'Canlı demo ekip ataması',
+      assigned_by: 'supervisor',
+    };
+    const res = await api('/assignments', { method: 'POST', body: JSON.stringify(payload) });
+    showToast(`Görev ${res.role} ekibine atandı`);
+    await refreshAssignments();
+  } catch (err) {
+    showToast(`Atama yapılamadı: ${err.message}`, true);
+  } finally {
+    el.assignBtn.disabled = false;
+    el.assignBtn.textContent = original;
+  }
 }
 
-function mockSubmitFeedback(feedbackType) {
+async function refreshAssignments() {
+  if (!currentJobId) return;
+  try {
+    const rows = await api(`/assignments?analysis_slug=${encodeURIComponent(currentJobId)}`);
+    if (rows.length) {
+      const latest = rows[rows.length - 1];
+      el.assignExisting.textContent = `✓ ${latest.role.toUpperCase()} ekibine atandı — ${latest.status}`;
+    } else {
+      el.assignExisting.textContent = '';
+    }
+  } catch (err) {
+    console.error('Atamalar yenilenemedi:', err);
+  }
+}
+
+function renderFeedbackBadge(feedback) {
+  if (!feedback) {
+    el.fbBadge.className = 'fb-badge pending';
+    el.fbBadge.textContent = 'Değerlendirilmedi';
+    return;
+  }
+  if (feedback.feedback_type === 'correct') {
+    el.fbBadge.className = 'fb-badge correct';
+    el.fbBadge.textContent = '✔ Karar Doğrulandı';
+    return;
+  }
+  const typeMap = {
+    false_positive: 'Yanlış Alarm',
+    wrong_risk: 'Hatalı Risk',
+    wrong_event: 'Hatalı Olay',
+    wrong_action: 'Hatalı Aksiyon',
+    other: 'Düzeltildi',
+  };
+  el.fbBadge.className = 'fb-badge corrected';
+  el.fbBadge.textContent = `⚠️ ${typeMap[feedback.feedback_type] || 'Düzeltildi'}`;
+}
+
+async function refreshFeedbackBadge() {
+  if (!currentJobId) return renderFeedbackBadge(null);
+  try {
+    const rows = await api(`/feedback?analysis_slug=${encodeURIComponent(currentJobId)}&limit=1`);
+    renderFeedbackBadge(rows.length ? rows[0] : null);
+  } catch {
+    renderFeedbackBadge(null);
+  }
+}
+
+async function submitFeedback(feedbackType) {
+  if (!currentJobId || !decisionPayload) {
+    showToast('Henüz tamamlanmış analiz yok', true);
+    return;
+  }
   const isCorrection = el.fbType.value !== 'correct';
   if (isCorrection) feedbackType = el.fbType.value;
-  
+
   runOnce(el.fbBtnSubmitCorrection, async () => {
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    
-    // UI Güncelleme (Geri Bildirim Badge)
-    if (feedbackType === 'correct') {
-      el.fbBadge.className = 'fb-badge correct';
-      el.fbBadge.textContent = '✔ Karar Doğrulandı (Simüle)';
-    } else {
-      const typeMap = { false_positive: 'Yanlış Alarm', wrong_risk: 'Hatalı Risk', wrong_event: 'Hatalı Olay', wrong_action: 'Hatalı Aksiyon', other: 'Düzeltildi' };
-      el.fbBadge.className = 'fb-badge corrected';
-      el.fbBadge.textContent = `⚠️ ${typeMap[feedbackType] || 'Düzeltildi'} (Simüle)`;
+    const payload = {
+      analysis_slug: currentJobId,
+      camera_id: 'demo_upload',
+      feedback_type: feedbackType,
+      original_risk: decisionPayload.risk || '',
+      original_summary: decisionPayload.summary || '',
+      original_output: decisionPayload,
+      corrected_risk: isCorrection ? el.fbCorrectRisk.value : (decisionPayload.risk || ''),
+      corrected_summary: isCorrection ? el.fbCorrectSummary.value.trim() : (decisionPayload.summary || ''),
+      corrected_actions: [],
+      supervisor_notes: isCorrection ? el.fbNotes.value.trim() : 'Süpervizör tarafından doğrulandı.',
+      prompt_context: { camera_label: 'demo_upload', source: 'demo_page' },
+    };
+    try {
+      const res = await api('/feedback', { method: 'POST', body: JSON.stringify(payload) });
+      renderFeedbackBadge(res);
+      el.fbEditPanel.hidden = true;
+      showToast(isCorrection ? '🎯 Düzeltme DPO havuzuna kaydedildi' : '✔ Karar doğrulandı');
+    } catch (err) {
+      showToast(`Geri bildirim kaydedilemedi: ${err.message}`, true);
     }
-    
-    el.fbEditPanel.hidden = true;
-    showToast(isCorrection ? '🎯 Düzeltme DPO havuzuna kaydedildi (Simülasyon)' : '✔ Karar doğrulandı (Simülasyon)');
   });
 }
 
@@ -620,33 +857,39 @@ function drawOverlay() {
 
 async function init() {
   initUpload();
+  initTabs();
 
   try {
-    const catalog = await api('/ops/tools/catalog');
-    toolCatalog = catalog.tools || [];
-    el.manualTool.innerHTML = toolCatalog
-      .map((t) => `<option value="${escapeHtml(t.tool_name)}">${escapeHtml(t.human_label)}</option>`)
-      .join('');
+    toolCatalog = (await api('/tools')) || [];
+    el.manualTool.innerHTML = [
+      '<option value="">Araç seçin</option>',
+      ...toolCatalog.map((t) => {
+        const disabled = t.enabled === false ? ' disabled' : '';
+        return `<option value="${escapeHtml(t.tool_name)}"${disabled}>${escapeHtml(toolLabel(t.tool_name))}</option>`;
+      }),
+    ].join('');
   } catch (err) {
     console.error('Katalog yüklenemedi:', err);
+    showToast('Araç kataloğu yüklenemedi', true);
   }
 
   try {
-    const roles = await api('/ops/roles');
-    el.assignRole.innerHTML = roles
-      .map((r) => `<option value="${escapeHtml(r.id)}">${escapeHtml(r.name)}</option>`)
-      .join('');
+    const roles = (await api('/roles')) || [];
+    el.assignRole.innerHTML = [
+      '<option value="">Ekip seçin</option>',
+      ...roles.map((r) => `<option value="${escapeHtml(r.role)}">${escapeHtml(r.label)}</option>`),
+    ].join('');
   } catch (err) {
     console.error('Roller yüklenemedi:', err);
   }
 
-  el.manualRunBtn.addEventListener('click', mockManualAction);
-  el.assignBtn.addEventListener('click', mockAssignRole);
+  el.manualRunBtn.addEventListener('click', runManualAction);
+  el.assignBtn.addEventListener('click', assignRole);
 
-  el.fbBtnCorrect.addEventListener('click', () => mockSubmitFeedback('correct'));
+  el.fbBtnCorrect.addEventListener('click', () => submitFeedback('correct'));
   el.fbBtnToggleEdit.addEventListener('click', () => { el.fbEditPanel.hidden = !el.fbEditPanel.hidden; });
   el.fbBtnCancelEdit.addEventListener('click', () => { el.fbEditPanel.hidden = true; });
-  el.fbBtnSubmitCorrection.addEventListener('click', () => mockSubmitFeedback());
+  el.fbBtnSubmitCorrection.addEventListener('click', () => submitFeedback());
 
   el.video.addEventListener('timeupdate', drawOverlay);
   el.video.addEventListener('resize', drawOverlay);

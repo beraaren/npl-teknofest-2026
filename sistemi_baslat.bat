@@ -12,5 +12,5 @@ cd /d "%~dp0"
 echo Gateway baslatiliyor... (kapatmak icin Ctrl+C)
 echo Hazir olunca tarayicida http://127.0.0.1:8000 adresini acin.
 echo.
-venv\Scripts\python.exe -m uvicorn backend.gateway.main:app --host 127.0.0.1 --port 8000
+python -m uvicorn backend.gateway.main:app --host 127.0.0.1 --port 8000
 pause

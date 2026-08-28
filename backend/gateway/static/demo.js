@@ -1,6 +1,6 @@
 import { WsClient } from './ws.js';
 import {
-  API, api, escapeHtml, mmss, riskClass, showToast, initToast,
+  API, api, escapeHtml, mmss, riskClass, showToast, initToast, runOnce, SEVERITY_CLASS, SEVERITY_LABEL
 } from './app.js';
 
 // OpenCV BGR tuple'ları → CSS rgb(...). BGR'de ilk değer Mavi, son Kırmızı.
@@ -35,11 +35,41 @@ const el = {
   canvas: document.getElementById('overlay-canvas'),
   videoMeta: document.getElementById('video-meta'),
   decisionSummary: document.getElementById('decision-summary'),
-  summaryRisk: document.getElementById('summary-risk'),
-  summaryConfidence: document.getElementById('summary-confidence'),
-  summaryText: document.getElementById('summary-text'),
-  summaryReasoning: document.getElementById('summary-reasoning'),
-  summaryActions: document.getElementById('summary-actions'),
+  modalRisk: document.getElementById('modal-risk'),
+  modalEvidence: document.getElementById('modal-evidence'),
+  modalProgress: document.getElementById('modal-progress'),
+  modalSummary: document.getElementById('modal-summary'),
+  modalReasoning: document.getElementById('modal-reasoning'),
+  modalEvents: document.getElementById('modal-events'),
+  modalFindings: document.getElementById('modal-findings'),
+  modalUncertain: document.getElementById('modal-uncertain'),
+  suggestedActions: document.getElementById('suggested-actions'),
+  
+  // Manuel aksiyon
+  manualTool: document.getElementById('manual-tool'),
+  manualNote: document.getElementById('manual-note'),
+  manualRunBtn: document.getElementById('manual-run-btn'),
+  manualResult: document.getElementById('manual-result'),
+  
+  // Ekip atama
+  assignRole: document.getElementById('assign-role'),
+  assignEvent: document.getElementById('assign-event'),
+  assignBtn: document.getElementById('assign-btn'),
+  assignExisting: document.getElementById('assign-existing'),
+
+  // RLHF Feedback
+  fbBadge: document.getElementById('feedback-badge'),
+  fbQuickActions: document.getElementById('fb-quick-actions'),
+  fbBtnCorrect: document.getElementById('fb-btn-correct'),
+  fbBtnToggleEdit: document.getElementById('fb-btn-toggle-edit'),
+  fbEditPanel: document.getElementById('fb-edit-panel'),
+  fbType: document.getElementById('fb-type'),
+  fbCorrectRisk: document.getElementById('fb-correct-risk'),
+  fbCorrectSummary: document.getElementById('fb-correct-summary'),
+  fbNotes: document.getElementById('fb-notes'),
+  fbBtnSubmitCorrection: document.getElementById('fb-btn-submit-correction'),
+  fbBtnCancelEdit: document.getElementById('fb-btn-cancel-edit'),
+
   demoStatus: document.getElementById('demo-status'),
   toast: document.getElementById('toast'),
 };
@@ -53,6 +83,37 @@ let decisionPayload = null;
 let wsClient = null;
 let pollInterval = null;
 let completedSteps = new Set();
+let toolCatalog = [];
+const executedTools = new Set();
+let fakeProgressValue = 0;
+let fakeProgressTimer = null;
+
+function startFakeProgress() {
+  fakeProgressValue = 0;
+  if (fakeProgressTimer) clearInterval(fakeProgressTimer);
+  el.progressFill.style.width = '0%';
+  
+  fakeProgressTimer = setInterval(() => {
+    if (fakeProgressValue < 85) {
+      fakeProgressValue += (85 - fakeProgressValue) * 0.05 + 0.5;
+    } else if (fakeProgressValue < 99) {
+      fakeProgressValue += 0.1;
+    }
+    el.progressFill.style.width = `${Math.min(99.5, fakeProgressValue)}%`;
+  }, 100);
+}
+
+function stopFakeProgress() {
+  if (fakeProgressTimer) {
+    clearInterval(fakeProgressTimer);
+    fakeProgressTimer = null;
+  }
+}
+
+const toolLabel = (name) => {
+  const tool = toolCatalog.find((t) => t.tool_name === name);
+  return tool ? tool.human_label : name;
+};
 
 // ---------------------------------------------------------------------------
 // MM:SS ↔ saniye dönüşümleri
@@ -135,6 +196,7 @@ async function startUpload(file) {
     el.demoStatus.textContent = `Analiz başlatıldı: ${currentJobId.slice(0, 8)}`;
     showToast('Video yüklendi; analiz başlatıldı.');
     el.progressSection.hidden = false;
+    startFakeProgress();
     startWatching(currentJobId);
   } catch (err) {
     el.demoStatus.textContent = 'Yükleme başarısız';
@@ -143,27 +205,28 @@ async function startUpload(file) {
 }
 
 function resetUI() {
+  stopFakeProgress();
   el.progressFill.style.width = '0%';
   el.progressSection.hidden = true;
   el.videoSection.hidden = true;
-  el.decisionSummary.hidden = true;
-  el.detailAnalysis.hidden = true;
   el.canvas.getContext('2d')?.clearRect(0, 0, el.canvas.width, el.canvas.height);
-  el.yoloList.innerHTML = '';
-  el.vlmSummary.textContent = '';
-  el.vlmFlags.innerHTML = '';
-  el.ragList.innerHTML = '';
-  el.eventTimeline.innerHTML = '';
-  el.summaryActions.innerHTML = '';
-  el.summaryText.textContent = '';
-  el.summaryReasoning.textContent = '';
-  el.summaryRisk.textContent = '—';
-  el.summaryRisk.className = 'risk-badge';
-  el.summaryConfidence.textContent = 'Güven: —';
-  el.tabButtons.forEach((btn) => btn.classList.remove('active'));
-  el.tabButtons[0]?.classList.add('active');
-  el.tabContents.forEach((tc) => tc.classList.remove('active'));
-  el.tabContents[0]?.classList.add('active');
+  el.modalRisk.textContent = '—';
+  el.modalRisk.className = 'risk-badge';
+  el.modalEvidence.textContent = 'Kanıt: —';
+  el.modalSummary.innerHTML = 'Özet bekleniyor…';
+  el.modalReasoning.innerHTML = '';
+  el.modalEvents.innerHTML = '';
+  el.modalFindings.innerHTML = '';
+  el.modalUncertain.innerHTML = '';
+  el.suggestedActions.innerHTML = '';
+  el.manualResult.textContent = '';
+  el.assignExisting.textContent = '';
+  
+  el.fbBadge.className = 'fb-badge pending';
+  el.fbBadge.textContent = 'Değerlendirilmedi';
+  el.fbEditPanel.hidden = true;
+  el.fbNotes.value = '';
+  executedTools.clear();
   updateStepUI();
 }
 
@@ -172,11 +235,6 @@ function resetUI() {
 // ---------------------------------------------------------------------------
 
 function updateStepUI() {
-  const total = STEP_ORDER.length;
-  const done = Array.from(completedSteps);
-  const progress = Math.min(100, Math.round((done.length / total) * 100));
-  el.progressFill.style.width = `${progress}%`;
-
   el.progressSteps.querySelectorAll('span').forEach((span) => {
     const step = span.dataset.step;
     span.classList.remove('done', 'active');
@@ -284,6 +342,12 @@ async function fetchAndFinalize() {
 function finalize(analysis, events) {
   if (!analysis) return;
 
+  stopFakeProgress();
+  el.progressFill.style.width = '100%';
+  setTimeout(() => {
+    el.progressSection.hidden = true;
+  }, 800);
+
   // WebSocket kaçırılırsa REST yedeğinden gelen olayları da overlay ve
   // zaman çizelgesinin kullandığı kanonik koleksiyona al.
   currentEvents = Array.isArray(events) ? events : [];
@@ -301,21 +365,162 @@ function finalize(analysis, events) {
   renderDecision(analysis);
 }
 
-function renderDecision(analysis) {
-  const risk = analysis.risk || '—';
-  el.summaryRisk.textContent = risk;
-  el.summaryRisk.className = `risk-badge ${riskClass(risk)}`;
-  el.summaryConfidence.textContent = `Güven: ${formatConfidence(analysis.confidence)}`;
-  el.summaryText.textContent = analysis.summary || 'Özet üretilmedi.';
-  el.summaryReasoning.textContent = analysis.reasoning || 'Gerekçe kaydı yok.';
-
-  const actions = analysis.actions || [];
-  el.summaryActions.innerHTML = actions.length
-    ? actions.map((a) => `<li>${escapeHtml(a)}</li>`).join('')
-    : '<li class="meta">Aksiyon önerisi yok.</li>';
+function parseSeconds(ts) {
+  if (typeof ts === 'number') return ts;
+  return parseMmss(ts);
 }
 
+function renderDecision(analysis) {
+  el.modalRisk.textContent = analysis.risk || '—';
+  el.modalRisk.className = `risk-badge ${riskClass(analysis.risk)}`;
+  const results = analysis.results || [];
+  const agreements = [...new Set(results.map((r) => r?.evidence?.agreement).filter(Boolean))];
+  el.modalEvidence.textContent = analysis.uncertain
+    ? `İnceleme gerekli: ${analysis.uncertainty_reason || 'Kanıt yetersiz.'}`
+    : `Kanıt: ${agreements.length ? agreements.join(', ') : 'Yerel Demo'}`;
+  
+  el.modalSummary.innerHTML = analysis.summary || 'Özet üretilmedi.';
+  el.modalReasoning.innerHTML = analysis.reasoning || 'Gerekçe kaydı yok.';
+  
+  renderTimeline(analysis.events || []);
+  renderContextualResults(results);
+  renderSuggestedActions(analysis);
+  fillAssignEventSelect(analysis.events || []);
+  
+  el.fbCorrectRisk.value = analysis.risk || 'Düşük';
+  el.fbCorrectSummary.value = analysis.summary || '';
+}
 
+function renderTimeline(stamps) {
+  el.modalEvents.innerHTML = stamps.length
+    ? stamps.map((s) => `
+        <li class="timeline-item severity-${SEVERITY_CLASS[s.severity] || 'low'}">
+          <span class="timeline-time">${escapeHtml(s.time || s.timestamp || '00:00')}</span>
+          <span class="timeline-type">${escapeHtml(s.event_type)}</span>
+          <span class="timeline-sev ${SEVERITY_CLASS[s.severity] || 'low'}">${SEVERITY_LABEL[s.severity] || 'Belirsiz'}</span>
+          <span class="meta">${escapeHtml(s.event || s.description || '')}</span>
+          <span class="meta">Güven: ${formatConfidence(s.confidence)}</span>
+        </li>`).join('')
+    : '<li class="empty-state">Tespit edilen olay yok.</li>';
+}
+
+function renderContextualResults(results) {
+  const findings = results.filter((r) => r?.result_type === 'contextual_finding');
+  const uncertain = results.filter((r) => r?.result_type === 'uncertain_observation');
+  
+  const render = (target, rows, emptyText) => {
+    target.innerHTML = rows.length
+      ? rows.map((r) => {
+        const agreement = r?.evidence?.agreement || 'bilinmiyor';
+        const detail = r.uncertain ? (r.uncertainty_reason || 'Kanıt yetersiz.') : (r.hazard_mechanism || r.event || 'Açıklama yok.');
+        const timeLabel = r.time || r.timestamp || '—';
+        return `<li class="timeline-item severity-${SEVERITY_CLASS[r.severity] || 'low'}">
+          <span class="timeline-time">${escapeHtml(timeLabel)}</span>
+          <span class="timeline-type">${escapeHtml(r.event_type || r.result_type)}</span>
+          <span class="timeline-sev ${SEVERITY_CLASS[r.severity] || 'low'}">${SEVERITY_LABEL[r.severity] || 'Belirsiz'}</span>
+          <span class="meta">${escapeHtml(detail)}</span>
+          <span class="meta">Kanıt: ${escapeHtml(agreement)}</span>
+        </li>`;
+      }).join('')
+      : `<li class="empty-state">${escapeHtml(emptyText)}</li>`;
+  };
+  render(el.modalFindings, findings, 'Bağlama uygun sürekli bulgu yok.');
+  render(el.modalUncertain, uncertain, 'İnsan incelemesi gereken belirsiz gözlem yok.');
+}
+
+function fillAssignEventSelect(stamps) {
+  el.assignEvent.innerHTML = stamps.length
+    ? stamps.map((s, i) =>
+        `<option value="${i}">${escapeHtml(s.time || s.timestamp)} · ${escapeHtml(s.event_type)} (${SEVERITY_LABEL[s.severity] || ''})</option>`
+      ).join('')
+    : '<option value="">Olay yok</option>';
+}
+
+function renderSuggestedActions(analysis) {
+  const availableTools = new Set(toolCatalog.map((t) => t.tool_name));
+  const tools = (analysis.triggered_mock_tools || []).filter((call) => availableTools.has(call.tool_name));
+  
+  el.suggestedActions.innerHTML = '';
+  
+  for (const call of tools) {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-secondary';
+    btn.title = JSON.stringify(call.params || {});
+    if (executedTools.has(call.tool_name)) {
+      btn.disabled = true;
+      btn.dataset.locked = '1';
+      btn.classList.add('btn-done');
+      btn.textContent = `✓ ${toolLabel(call.tool_name)}`;
+    } else {
+      btn.textContent = toolLabel(call.tool_name);
+      btn.addEventListener('click', () => mockExecuteTool(btn, call.tool_name));
+    }
+    el.suggestedActions.appendChild(btn);
+  }
+  
+  if ((analysis.actions || []).length) {
+    const list = document.createElement('ul');
+    list.className = 'action-advice';
+    list.innerHTML = analysis.actions.map((a) => `<li>${escapeHtml(a)}</li>`).join('');
+    el.suggestedActions.appendChild(list);
+  }
+  
+  if (!tools.length && !(analysis.actions || []).length) {
+    el.suggestedActions.innerHTML = '<span class="meta">Aksiyon önerisi üretilmedi.</span>';
+  }
+}
+
+async function mockExecuteTool(btn, toolName) {
+  await runOnce(btn, async () => {
+    // Simüle edilmiş tool çalıştırma
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    executedTools.add(toolName);
+    showToast(`${toolLabel(toolName)} başarıyla çalıştırıldı (Simülasyon)`);
+    return { label: `✓ ${toolLabel(toolName)}` };
+  });
+}
+
+function mockManualAction() {
+  const toolName = el.manualTool.value;
+  if (!toolName) return;
+  runOnce(el.manualRunBtn, async () => {
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    el.manualResult.textContent = `✓ '${toolLabel(toolName)}' başarıyla çalıştırıldı (Simülasyon).`;
+    showToast("Manuel aksiyon tamamlandı.");
+  });
+}
+
+function mockAssignRole() {
+  const role = el.assignRole.value;
+  if (!role) return;
+  runOnce(el.assignBtn, async () => {
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    el.assignExisting.textContent = `✓ Görev başarıyla ${role} ekibine atandı (Simülasyon).`;
+    showToast("Ekibe görev atandı.");
+  });
+}
+
+function mockSubmitFeedback(feedbackType) {
+  const isCorrection = el.fbType.value !== 'correct';
+  if (isCorrection) feedbackType = el.fbType.value;
+  
+  runOnce(el.fbBtnSubmitCorrection, async () => {
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    
+    // UI Güncelleme (Geri Bildirim Badge)
+    if (feedbackType === 'correct') {
+      el.fbBadge.className = 'fb-badge correct';
+      el.fbBadge.textContent = '✔ Karar Doğrulandı (Simüle)';
+    } else {
+      const typeMap = { false_positive: 'Yanlış Alarm', wrong_risk: 'Hatalı Risk', wrong_event: 'Hatalı Olay', wrong_action: 'Hatalı Aksiyon', other: 'Düzeltildi' };
+      el.fbBadge.className = 'fb-badge corrected';
+      el.fbBadge.textContent = `⚠️ ${typeMap[feedbackType] || 'Düzeltildi'} (Simüle)`;
+    }
+    
+    el.fbEditPanel.hidden = true;
+    showToast(isCorrection ? '🎯 Düzeltme DPO havuzuna kaydedildi (Simülasyon)' : '✔ Karar doğrulandı (Simülasyon)');
+  });
+}
 
 // ---------------------------------------------------------------------------
 // Canvas overlay
@@ -413,8 +618,35 @@ function drawOverlay() {
 // Başlatma
 // ---------------------------------------------------------------------------
 
-function init() {
+async function init() {
   initUpload();
+
+  try {
+    const catalog = await api('/ops/tools/catalog');
+    toolCatalog = catalog.tools || [];
+    el.manualTool.innerHTML = toolCatalog
+      .map((t) => `<option value="${escapeHtml(t.tool_name)}">${escapeHtml(t.human_label)}</option>`)
+      .join('');
+  } catch (err) {
+    console.error('Katalog yüklenemedi:', err);
+  }
+
+  try {
+    const roles = await api('/ops/roles');
+    el.assignRole.innerHTML = roles
+      .map((r) => `<option value="${escapeHtml(r.id)}">${escapeHtml(r.name)}</option>`)
+      .join('');
+  } catch (err) {
+    console.error('Roller yüklenemedi:', err);
+  }
+
+  el.manualRunBtn.addEventListener('click', mockManualAction);
+  el.assignBtn.addEventListener('click', mockAssignRole);
+
+  el.fbBtnCorrect.addEventListener('click', () => mockSubmitFeedback('correct'));
+  el.fbBtnToggleEdit.addEventListener('click', () => { el.fbEditPanel.hidden = !el.fbEditPanel.hidden; });
+  el.fbBtnCancelEdit.addEventListener('click', () => { el.fbEditPanel.hidden = true; });
+  el.fbBtnSubmitCorrection.addEventListener('click', () => mockSubmitFeedback());
 
   el.video.addEventListener('timeupdate', drawOverlay);
   el.video.addEventListener('resize', drawOverlay);

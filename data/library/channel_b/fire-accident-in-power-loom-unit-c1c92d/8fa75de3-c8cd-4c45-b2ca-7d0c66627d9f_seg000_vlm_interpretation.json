@@ -1,0 +1,82 @@
+{
+  "packet_id": "8fa75de3-c8cd-4c45-b2ca-7d0c66627d9f",
+  "video_id": "fire-accident-in-power-loom-unit-c1c92d",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir tekstil atölyesinde, çok sayıda dokuma makinesi sıralanmış durumda. Makineler çalışır halde olup, bir işçi 00:30'dan itibaren atölyenin derinliklerinden gelerek bir makineye yaklaşır ve 00:42'den itibaren makineye müdahale eder. İşçi, kısa kollu bir üst giysi ve kısa etek giymiş, ayakkabı takmamıştır. Atölye, tozlu ve düzenli olmayan bir ortamda görünmektedir.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İşçi, 00:30'dan itibaren görünür, makineye yaklaşır ve müdahale eder. Kısa kollu üst ve kısa etek giymiş, ayakkabı takmamıştır."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Çok sayıda dokuma makinesi, yeşil renkli, büyük boyutlarda, çalışır halde. Makinelerin bazılarında kumaş rulosu bulunmaktadır."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Makinelerin yanında ve sağ tarafta kumaş veya malzeme yığınları mevcut. Bu yığınlar, işlenmemiş kumaş veya atık olabilir."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Duvarlara ve makinelere bağlı kablolar, borular ve destek yapıları mevcut. Özellikle sağ tarafta yoğun bir yapı görünümü."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "low",
+      "notes_tr": "Zeminde bazı koyu lekeler olabilir, ancak net bir sıvı veya madde tespit edilememiştir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, atölyenin derinliklerinden gelerek bir dokuma makinesine yaklaşır.",
+    "İşçi, makineye yakınlaştıktan sonra makinenin üzerindeki bir parçaya elini koyar ve ayar yapar.",
+    "Dokuma makineleri, video boyunca sürekli çalışır halde olup, kumaş üretimi devam eder.",
+    "İşçi, ayakkabı takmaksızın makineye yaklaşır ve çalışır."
+  ],
+  "confidence_overall": 0.88,
+  "inference": {
+    "latency_ms": 16738.33989999548,
+    "tokens_generated": 913
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, çok sayıda dokuma makinesi sıralanmış durumda. Makineler çalışır halde olup, bir işçi 00:30'dan itibaren atölyenin derinliklerinden gelerek bir makineye yaklaşır ve 00:42'den itibaren makineye müdahale eder. İşçi, kısa kollu bir üst giysi ve kısa etek giymiş, ayakkabı takmamıştır. Atölye, tozlu ve düzenli olmayan bir ortamda görünmektedir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, 00:30'dan itibaren görünür, makineye yaklaşır ve müdahale eder. Kısa kollu üst ve kısa etek giymiş, ayakkabı takmamıştır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çok sayıda dokuma makinesi, yeşil renkli, büyük boyutlarda, çalışır halde. Makinelerin bazılarında kumaş rulosu bulunmaktadır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinelerin yanında ve sağ tarafta kumaş veya malzeme yığınları mevcut. Bu yığınlar, işlenmemiş kumaş veya atık olabilir.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Duvarlara ve makinelere bağlı kablolar, borular ve destek yapıları mevcut. Özellikle sağ tarafta yoğun bir yapı görünümü.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Zeminde bazı koyu lekeler olabilir, ancak net bir sıvı veya madde tespit edilememiştir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, atölyenin derinliklerinden gelerek bir dokuma makinesine yaklaşır.\",\n    \"İşçi, makineye yakınlaştıktan sonra makinenin üzerindeki bir parçaya elini koyar ve ayar yapar.\",\n    \"Dokuma makineleri, video boyunca sürekli çalışır halde olup, kumaş üretimi devam eder.\",\n    \"İşçi, ayakkabı takmaksızın makineye yaklaşır ve çalışır.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, makineye yaklaşırken ve çalışırken ayakkabı takmamıştır. Bu, makineye düşen parçalar, dönen akslar veya diğer mekanik tehlikeler karşısında ciddi yaralanma riski oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 38.0\n    },\n    {\n      \"description_tr\": \"İşçi, kısa etek ve kısa kollu üst giyimle makineye yakın çalışmaktadır. Bu, dönen akslara veya sıcak yüzeylere temas halinde yanık veya sıkışma riski doğurabilir.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 42.0\n    },\n    {\n      \"description_tr\": \"Atölye, tozlu ve düzenli olmayan bir ortamda olup, zemindeki kablolar ve malzeme yığınları, işçinin düşme veya kayma riskini artırır.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.8,\n      \"timestamp_sec\": 0.0\n    }\n  ],\n  \"confidence_overall\": 0.88\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, makineye yaklaşırken ve çalışırken ayakkabı takmamıştır. Bu, makineye düşen parçalar, dönen akslar veya diğer mekanik tehlikeler karşısında ciddi yaralanma riski oluşturur.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 38.0
+    },
+    {
+      "description_tr": "İşçi, kısa etek ve kısa kollu üst giyimle makineye yakın çalışmaktadır. Bu, dönen akslara veya sıcak yüzeylere temas halinde yanık veya sıkışma riski doğurabilir.",
+      "severity": "medium",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 42.0
+    },
+    {
+      "description_tr": "Atölye, tozlu ve düzenli olmayan bir ortamda olup, zemindeki kablolar ve malzeme yığınları, işçinin düşme veya kayma riskini artırır.",
+      "severity": "medium",
+      "confidence": 0.8,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 0.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, makineye yaklaşırken ve çalışırken ayakkabı takmamıştır. Bu, makineye düşen parçalar, dönen akslar veya diğer mekanik tehlikeler karşısında ciddi yaralanma riski oluşturur.",
+    "İşçi, kısa etek ve kısa kollu üst giyimle makineye yakın çalışmaktadır. Bu, dönen akslara veya sıcak yüzeylere temas halinde yanık veya sıkışma riski doğurabilir.",
+    "Atölye, tozlu ve düzenli olmayan bir ortamda olup, zemindeki kablolar ve malzeme yığınları, işçinin düşme veya kayma riskini artırır."
+  ],
+  "computed_confidence": 0.615,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 48.4,
+  "created_at": "2026-08-28T06:55:55.777736+00:00"
+}

@@ -1,0 +1,88 @@
+{
+  "packet_id": "51301e28-bc5a-4091-a8b7-983e6faa7bbf",
+  "video_id": "plastic-molding-incident-c46b94",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Sanayi bir üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makineye müdahale ederken, biri makinanın kapısını açar ve içine uzanır. Daha sonra diğer işçiler de yaklaşır ve birlikte makineye müdahale ederler. İş yerinde çeşitli araçlar, kablolar ve bir çalışma masası yer almaktadır.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "En az 4 işçi göze çarpar; bazıları mavi, bazıları beyaz üst giyimde. İşçilerin bazıları koruyucu kask takmaktadır."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Büyük, turuncu renkli bir makine merkezde yer alır. Kapısı açılıp kapanır ve içine el uzanır."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "high",
+      "notes_tr": "Mavi metal raf ve yapılar, üretim alanını çevreler. Üst katlarda kablolar ve borular yer alır."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Makinenin yanında, delikli bir tahta yüzeyi olan bir yük taşıma platformu bulunur."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "low",
+      "notes_tr": "Makinenin yanında küçük bir kova veya konteyner görülebilir, içeriği belirsizdir."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "low",
+      "notes_tr": "Sol alt köşede bir tekerlekli sandalye veya küçük araç görünür, ancak taşıma aracı olup olmadığı belirsizdir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçiler, büyük bir makineye yaklaşır ve ona müdahale eder.",
+    "Bir işçi, makinenin kapısını açar ve içine el uzatır.",
+    "Diğer işçiler, makineye yaklaşır ve birlikte çalışır.",
+    "İşçiler, makinenin etrafında hareket eder ve birbirleriyle iletişim kurar.",
+    "Makinenin yanında yer alan çalışma masasına ve araçlara bakışlar yapılır."
+  ],
+  "confidence_overall": 0.85,
+  "inference": {
+    "latency_ms": 15621.690300002228,
+    "tokens_generated": 874
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi bir üretim alanında, birkaç işçi büyük bir makinanın etrafında çalışmaktadır. İşçiler, makineye müdahale ederken, biri makinanın kapısını açar ve içine uzanır. Daha sonra diğer işçiler de yaklaşır ve birlikte makineye müdahale ederler. İş yerinde çeşitli araçlar, kablolar ve bir çalışma masası yer almaktadır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"En az 4 işçi göze çarpar; bazıları mavi, bazıları beyaz üst giyimde. İşçilerin bazıları koruyucu kask takmaktadır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük, turuncu renkli bir makine merkezde yer alır. Kapısı açılıp kapanır ve içine el uzanır.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Mavi metal raf ve yapılar, üretim alanını çevreler. Üst katlarda kablolar ve borular yer alır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinenin yanında, delikli bir tahta yüzeyi olan bir yük taşıma platformu bulunur.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Makinenin yanında küçük bir kova veya konteyner görülebilir, içeriği belirsizdir.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Sol alt köşede bir tekerlekli sandalye veya küçük araç görünür, ancak taşıma aracı olup olmadığı belirsizdir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçiler, büyük bir makineye yaklaşır ve ona müdahale eder.\",\n    \"Bir işçi, makinenin kapısını açar ve içine el uzatır.\",\n    \"Diğer işçiler, makineye yaklaşır ve birlikte çalışır.\",\n    \"İşçiler, makinenin etrafında hareket eder ve birbirleriyle iletişim kurar.\",\n    \"Makinenin yanında yer alan çalışma masasına ve araçlara bakışlar yapılır.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Bir işçi, makinenin kapısını açarak içine el uzatırken, makinenin çalıştığı durumda olabilecek mekanik hasar veya sıkışma riski mevcuttur. Bu, yüksek tehlike seviyesinde bir durumdur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 15.0\n    },\n    {\n      \"description_tr\": \"İşçiler, makineye müdahale ederken koruyucu ekipmanları tam olarak takmamış olabilir. Özellikle kask ve eldiven kullanımı eksik görünmektedir. Bu, orta düzeyde bir risktir.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.75,\n      \"timestamp_sec\": 30.0\n    },\n    {\n      \"description_tr\": \"Makinenin etrafında kablolar ve araçlar yer alır; bu, işçilerin hareketi sırasında kayma veya düşme riski oluşturabilir. Özellikle zemindeki kablolar, düşme tehlikesi yaratır.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.70,\n      \"timestamp_sec\": 0.0\n    }\n  ],\n  \"confidence_overall\": 0.85\n}",
+  "risk_events": [
+    {
+      "description_tr": "Bir işçi, makinenin kapısını açarak içine el uzatırken, makinenin çalıştığı durumda olabilecek mekanik hasar veya sıkışma riski mevcuttur. Bu, yüksek tehlike seviyesinde bir durumdur.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 15.0
+    },
+    {
+      "description_tr": "İşçiler, makineye müdahale ederken koruyucu ekipmanları tam olarak takmamış olabilir. Özellikle kask ve eldiven kullanımı eksik görünmektedir. Bu, orta düzeyde bir risktir.",
+      "severity": "medium",
+      "confidence": 0.75,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 30.0
+    },
+    {
+      "description_tr": "Makinenin etrafında kablolar ve araçlar yer alır; bu, işçilerin hareketi sırasında kayma veya düşme riski oluşturabilir. Özellikle zemindeki kablolar, düşme tehlikesi yaratır.",
+      "severity": "medium",
+      "confidence": 0.7,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 0.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Bir işçi, makinenin kapısını açarak içine el uzatırken, makinenin çalıştığı durumda olabilecek mekanik hasar veya sıkışma riski mevcuttur. Bu, yüksek tehlike seviyesinde bir durumdur.",
+    "İşçiler, makineye müdahale ederken koruyucu ekipmanları tam olarak takmamış olabilir. Özellikle kask ve eldiven kullanımı eksik görünmektedir. Bu, orta düzeyde bir risktir.",
+    "Makinenin etrafında kablolar ve araçlar yer alır; bu, işçilerin hareketi sırasında kayma veya düşme riski oluşturabilir. Özellikle zemindeki kablolar, düşme tehlikesi yaratır."
+  ],
+  "computed_confidence": 0.5863,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 60.0,
+  "created_at": "2026-08-28T07:08:35.313860+00:00"
+}

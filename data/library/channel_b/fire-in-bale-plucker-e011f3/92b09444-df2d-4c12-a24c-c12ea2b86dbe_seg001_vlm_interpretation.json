@@ -1,0 +1,59 @@
+{
+  "packet_id": "92b09444-df2d-4c12-a24c-c12ea2b86dbe",
+  "video_id": "fire-in-bale-plucker-e011f3",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Üretim tesisinde, bir makinenin etrafında ve taşımada bulunan beyaz, pamuk benzeri madde üzerinde alevler hızla yayılıyor. Yangın, kısa sürede yoğun duman oluşturarak sahneyi kaplıyor ve üretim hattının büyük bir kısmını etkiliyor.",
+  "detected_entities": [
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Makine, taşımada bulunan maddeyi kesen bir yapıya sahip."
+    },
+    {
+      "label": "conveyor",
+      "confidence_hint": "high",
+      "notes_tr": "İki taşımada beyaz, pamuk benzeri madde taşınıyor."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "high",
+      "notes_tr": "Taşımada bulunan beyaz, pamuk benzeri madde."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Alevler makinenin etrafında ve taşımada hızla yayılıyor; yoğun duman oluşumu gözlemleniyor."
+    }
+  ],
+  "detected_actions_tr": [
+    "Makinenin etrafında ve taşımada bulunan madde üzerinde alevler hızla yayılıyor.",
+    "Yangın, üretim hattının büyük bir kısmını etkiliyor.",
+    "Yoğun duman oluşumu, sahneyi giderek kaplıyor.",
+    "Alevler zamanla azalıyor ve duman yoğunluğu artıyor."
+  ],
+  "confidence_overall": 0.95,
+  "inference": {
+    "latency_ms": 11046.62360000657,
+    "tokens_generated": 502
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Üretim tesisinde, bir makinenin etrafında ve taşımada bulunan beyaz, pamuk benzeri madde üzerinde alevler hızla yayılıyor. Yangın, kısa sürede yoğun duman oluşturarak sahneyi kaplıyor ve üretim hattının büyük bir kısmını etkiliyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makine, taşımada bulunan maddeyi kesen bir yapıya sahip.\"\n    },\n    {\n      \"label\": \"conveyor\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki taşımada beyaz, pamuk benzeri madde taşınıyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Taşımada bulunan beyaz, pamuk benzeri madde.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Alevler makinenin etrafında ve taşımada hızla yayılıyor; yoğun duman oluşumu gözlemleniyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Makinenin etrafında ve taşımada bulunan madde üzerinde alevler hızla yayılıyor.\",\n    \"Yangın, üretim hattının büyük bir kısmını etkiliyor.\",\n    \"Yoğun duman oluşumu, sahneyi giderek kaplıyor.\",\n    \"Alevler zamanla azalıyor ve duman yoğunluğu artıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yangın, taşımada bulunan yanıcı maddeye hızla yayılıyor ve üretim hattının büyük bir kısmını etkiliyor. Yoğun duman oluşumu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 60.0\n    }\n  ],\n  \"confidence_overall\": 0.95\n}",
+  "risk_events": [
+    {
+      "description_tr": "Yangın, taşımada bulunan yanıcı maddeye hızla yayılıyor ve üretim hattının büyük bir kısmını etkiliyor. Yoğun duman oluşumu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 60.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Yangın, taşımada bulunan yanıcı maddeye hızla yayılıyor ve üretim hattının büyük bir kısmını etkiliyor. Yoğun duman oluşumu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor."
+  ],
+  "computed_confidence": 0.785,
+  "reasoning_trace": "",
+  "segment_start_sec": 60.0,
+  "segment_end_sec": 120.0,
+  "created_at": "2026-08-28T06:58:27.265645+00:00"
+}

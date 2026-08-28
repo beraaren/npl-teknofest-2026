@@ -1,0 +1,66 @@
+{
+  "packet_id": "160c2279-cbe0-4ac7-b16c-8cfdecc823d5",
+  "video_id": "always-wear-safety-harness-whenever-you-38f6d5",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Yapı sitesinde, bir kırık kolu (boom) ile çalışan bir yükseklikte çalışma makinesi (kuleli kırık kolu) göze çarpmaktadır. Makine, bir bina inşaatının yanında yer alır ve kolu yukarıda sabitlenmiş durumdadır. Zamanla, makinenin kolu ani bir şekilde çöker ve yere devrilmeye başlar. Bu sırada, makinenin yakınında çalışan bir işçi, kolu çökmeden önce kaçmaya başlar. Diğer kişiler de sahneye girer ve olay yerine doğru ilerlerler. Olay, açık havada, bulutlu bir günde gerçekleşir.",
+  "detected_entities": [
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Kırmızı ve siyah renkli, yükseklikte çalışma için kullanılan bir kırık kolu (boom) makinesi. Tipi kesin olarak belirlenemese de, inşaat alanlarında yaygın olarak kullanılan bir türdür."
+    },
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Makinenin yakınında çalışan işçiler, bazıları turuncu güvenlik yeleği giymektedir. Olayın gelişiminde kaçış hareketi gösterecek şekilde hareket ederler."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Yapı sitesindeki betonarme yapılar ve iskeleler, inşaatın ilerlemiş bir aşamasında olduğunu gösterir."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "low",
+      "notes_tr": "Arka planda bazı araçlar belirgin olmamakla birlikte, inşaat alanının dışına doğru hareket eden bir araç izlenimi vardır. Ancak net bir araç türü belirlenememiştir."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "low",
+      "notes_tr": "Kırık kolu üzerinde bir yük taşıyıcı (kabine) bulunmakta, ancak içindeki yük net olarak belirlenememiştir."
+    }
+  ],
+  "detected_actions_tr": [
+    "Kırık kolu makinesi yukarıda sabitlenmiş durumda.",
+    "İşçi, makinenin yakınında yürüyor.",
+    "Kırık kolu ani bir şekilde çökerek yere devriliyor.",
+    "İşçi, kolu çökmeden önce kaçmaya başlıyor.",
+    "Diğer kişiler, olay yerine doğru koşarak ilerliyor.",
+    "Kırık kolu tamamen yere devrilmiş durumda."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 17198.44940000621,
+    "tokens_generated": 803
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Yapı sitesinde, bir kırık kolu (boom) ile çalışan bir yükseklikte çalışma makinesi (kuleli kırık kolu) göze çarpmaktadır. Makine, bir bina inşaatının yanında yer alır ve kolu yukarıda sabitlenmiş durumdadır. Zamanla, makinenin kolu ani bir şekilde çöker ve yere devrilmeye başlar. Bu sırada, makinenin yakınında çalışan bir işçi, kolu çökmeden önce kaçmaya başlar. Diğer kişiler de sahneye girer ve olay yerine doğru ilerlerler. Olay, açık havada, bulutlu bir günde gerçekleşir.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Kırmızı ve siyah renkli, yükseklikte çalışma için kullanılan bir kırık kolu (boom) makinesi. Tipi kesin olarak belirlenemese de, inşaat alanlarında yaygın olarak kullanılan bir türdür.\"\n    },\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin yakınında çalışan işçiler, bazıları turuncu güvenlik yeleği giymektedir. Olayın gelişiminde kaçış hareketi gösterecek şekilde hareket ederler.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Yapı sitesindeki betonarme yapılar ve iskeleler, inşaatın ilerlemiş bir aşamasında olduğunu gösterir.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Arka planda bazı araçlar belirgin olmamakla birlikte, inşaat alanının dışına doğru hareket eden bir araç izlenimi vardır. Ancak net bir araç türü belirlenememiştir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Kırık kolu üzerinde bir yük taşıyıcı (kabine) bulunmakta, ancak içindeki yük net olarak belirlenememiştir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Kırık kolu makinesi yukarıda sabitlenmiş durumda.\",\n    \"İşçi, makinenin yakınında yürüyor.\",\n    \"Kırık kolu ani bir şekilde çökerek yere devriliyor.\",\n    \"İşçi, kolu çökmeden önce kaçmaya başlıyor.\",\n    \"Diğer kişiler, olay yerine doğru koşarak ilerliyor.\",\n    \"Kırık kolu tamamen yere devrilmiş durumda.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yükseklikte çalışma makinesi (kırık kolu) ani bir şekilde çökerek yere devrilmiştir. Bu durum, makinenin yakınında bulunan işçilere ciddi fiziksel zarar verebilir. İşçi, kolu çökmeden önce kaçış hareketi yaparak zarar görmemiş olabilir, ancak bu durum hâlâ yüksek riskli bir olaydır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 45.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Yükseklikte çalışma makinesi (kırık kolu) ani bir şekilde çökerek yere devrilmiştir. Bu durum, makinenin yakınında bulunan işçilere ciddi fiziksel zarar verebilir. İşçi, kolu çökmeden önce kaçış hareketi yaparak zarar görmemiş olabilir, ancak bu durum hâlâ yüksek riskli bir olaydır.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 45.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Yükseklikte çalışma makinesi (kırık kolu) ani bir şekilde çökerek yere devrilmiştir. Bu durum, makinenin yakınında bulunan işçilere ciddi fiziksel zarar verebilir. İşçi, kolu çökmeden önce kaçış hareketi yaparak zarar görmemiş olabilir, ancak bu durum hâlâ yüksek riskli bir olaydır."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 52.6,
+  "created_at": "2026-08-28T06:48:48.079825+00:00"
+}

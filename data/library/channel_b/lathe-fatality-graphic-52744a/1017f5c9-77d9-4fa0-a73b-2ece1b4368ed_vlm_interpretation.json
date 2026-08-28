@@ -1,0 +1,74 @@
+{
+  "packet_id": "1017f5c9-77d9-4fa0-a73b-2ece1b4368ed",
+  "video_id": "lathe-fatality-graphic-52744a",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir atölye veya endüstriyel çalışma alanındaki güvenlik kamerası görüntüsü. Başlangıçta tek bir kişi makineye çalışırken, 32. saniyede birden fazla kişi atölyeye girer ve birlikte bir makineye müdahale eder. Zemin ıslak ve iş yerinde düzenli olmayan bir durum vardır.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Başlangıçta bir kişi, 32. saniyede birden fazla kişi atölyeye girer ve makineye müdahale eder."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Ortada büyük bir makine (muhtemelen bir torna veya benzeri) yer alır. Kırmızı bir tekerleği ve çeşitli parçaları vardır."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Sol tarafta metal raf ve çalışma masaları, sağ tarafta da çeşitli yapılar ve aletler yer alır."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "high",
+      "notes_tr": "Zeminde ıslak alanlar ve muhtemelen yağ veya su lekeleri görülür, bu da kayma riski oluşturabilir."
+    },
+    {
+      "label": "fan",
+      "confidence_hint": "high",
+      "notes_tr": "Makinenin yanında büyük bir stand fanı yer alır, bu da çalışma alanının hava akışını etkiler."
+    }
+  ],
+  "detected_actions_tr": [
+    "Bir kişi makineye çalışır.",
+    "Birden fazla kişi atölyeye girer.",
+    "Kişiler birlikte makineye müdahale eder.",
+    "Kişiler makinenin etrafında toplanır ve onarım veya kontrol yapar.",
+    "Zemindeki ıslak alanlar dikkat çekilir."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 16807.56270000711,
+    "tokens_generated": 711
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir atölye veya endüstriyel çalışma alanındaki güvenlik kamerası görüntüsü. Başlangıçta tek bir kişi makineye çalışırken, 32. saniyede birden fazla kişi atölyeye girer ve birlikte bir makineye müdahale eder. Zemin ıslak ve iş yerinde düzenli olmayan bir durum vardır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Başlangıçta bir kişi, 32. saniyede birden fazla kişi atölyeye girer ve makineye müdahale eder.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Ortada büyük bir makine (muhtemelen bir torna veya benzeri) yer alır. Kırmızı bir tekerleği ve çeşitli parçaları vardır.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sol tarafta metal raf ve çalışma masaları, sağ tarafta da çeşitli yapılar ve aletler yer alır.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Zeminde ıslak alanlar ve muhtemelen yağ veya su lekeleri görülür, bu da kayma riski oluşturabilir.\"\n    },\n    {\n      \"label\": \"fan\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin yanında büyük bir stand fanı yer alır, bu da çalışma alanının hava akışını etkiler.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Bir kişi makineye çalışır.\",\n    \"Birden fazla kişi atölyeye girer.\",\n    \"Kişiler birlikte makineye müdahale eder.\",\n    \"Kişiler makinenin etrafında toplanır ve onarım veya kontrol yapar.\",\n    \"Zemindeki ıslak alanlar dikkat çekilir.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Zeminde ıslak alanlar ve çeşitli aletlerin dağılması, çalışanların kayma ve düşme riskini artırır. Bu durum özellikle 32. saniyeden itibaren yoğunlaşan hareketli ortamda ciddi bir tehlike oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.9,\n      \"timestamp_sec\": 32.0\n    },\n    {\n      \"description_tr\": \"Birden fazla kişi aynı makineye aynı anda müdahale ederken, koordinasyon eksikliği ve fiziksel temas riski oluşur. Bu, 35. saniyede görülen yoğun etkileşimde belirginleşir.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 35.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Zeminde ıslak alanlar ve çeşitli aletlerin dağılması, çalışanların kayma ve düşme riskini artırır. Bu durum özellikle 32. saniyeden itibaren yoğunlaşan hareketli ortamda ciddi bir tehlike oluşturur.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 32.0
+    },
+    {
+      "description_tr": "Birden fazla kişi aynı makineye aynı anda müdahale ederken, koordinasyon eksikliği ve fiziksel temas riski oluşur. Bu, 35. saniyede görülen yoğun etkileşimde belirginleşir.",
+      "severity": "medium",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 35.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Zeminde ıslak alanlar ve çeşitli aletlerin dağılması, çalışanların kayma ve düşme riskini artırır. Bu durum özellikle 32. saniyeden itibaren yoğunlaşan hareketli ortamda ciddi bir tehlike oluşturur.",
+    "Birden fazla kişi aynı makineye aynı anda müdahale ederken, koordinasyon eksikliği ve fiziksel temas riski oluşur. Bu, 35. saniyede görülen yoğun etkileşimde belirginleşir."
+  ],
+  "computed_confidence": 0.64,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 55.43333333333333,
+  "created_at": "2026-08-28T07:06:17.879279+00:00"
+}

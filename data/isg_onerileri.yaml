@@ -8,7 +8,7 @@
 #   (RAGLayer.match_suggestions bu eşleşmeye ek ağırlık verir).
 # - keywords: RAG indeksine eklenir — boşluklu Türkçe anahtar kelimeler; ne kadar
 #   zengin olursa doğal dil sorgularıyla eşleşme o kadar iyi olur.
-# - Maliyet aralıkları 2026 TL, KDV hariç tahmini değerlerdir.
+# - Maliyet aralıkları tahmini değerlerdir.
 # - Hedef: risk_patterns.yaml'daki her pattern için en az 1-2 öneri.
 #
 # ZORUNLU ALANLAR: baslik, kategori, aciklama, related_patterns,
@@ -138,3 +138,48 @@ oneriler:
     gerekli_kaynaklar: ["telemetri tedarikçisi", "forklift filosu erişimi", "İSG uzmanı"]
     olcum_kpi: "aylık hız aşımı olayı sayısı"
     keywords: "forklift hız sürat limit telemetri sensör uyarı denetim tesis içi trafik"
+
+
+# Admin panelindeki yazılabilir hızlı seçim için en yaygın İSG durumları.
+# Maliyetler yaklaşık uygulama maliyetleridir.
+yaygin_durumlar:
+  forklift_yaya_yakinligi:
+    baslik: "Forklift-yaya tehlikeli yakınlığı"
+    maliyet_tahmini: {alt_sinir_tl: 15000, ust_sinir_tl: 60000, para_birimi: "TRY"}
+    related_patterns: ["dangerous_proximity", "blind_spot_movement"]
+  kkd_eksikligi:
+    baslik: "KKD eksikliği (baret/yelek)"
+    maliyet_tahmini: {alt_sinir_tl: 8000, ust_sinir_tl: 35000, para_birimi: "TRY"}
+    related_patterns: ["ppe_missing"]
+  kaygan_zemin:
+    baslik: "Kaygan veya ıslak zemin"
+    maliyet_tahmini: {alt_sinir_tl: 3000, ust_sinir_tl: 12000, para_birimi: "TRY"}
+    related_patterns: ["leakage", "spill_slip_hazard"]
+  forklift_hiz_asimi:
+    baslik: "Forklift hız aşımı"
+    maliyet_tahmini: {alt_sinir_tl: 25000, ust_sinir_tl: 90000, para_birimi: "TRY"}
+    related_patterns: ["vehicle_speeding"]
+  forklift_devrilme_riski:
+    baslik: "Forklift devrilme riski"
+    maliyet_tahmini: {alt_sinir_tl: 20000, ust_sinir_tl: 75000, para_birimi: "TRY"}
+    related_patterns: ["forklift_tip_over"]
+  yuksekten_dusme_riski:
+    baslik: "Yüksekten düşme riski"
+    maliyet_tahmini: {alt_sinir_tl: 10000, ust_sinir_tl: 45000, para_birimi: "TRY"}
+    related_patterns: ["person_fall"]
+  yangin_veya_duman:
+    baslik: "Yangın veya duman"
+    maliyet_tahmini: {alt_sinir_tl: 30000, ust_sinir_tl: 120000, para_birimi: "TRY"}
+    related_patterns: ["fire_smoke"]
+  makine_sikisma_riski:
+    baslik: "Makinede sıkışma/ezilme riski"
+    maliyet_tahmini: {alt_sinir_tl: 15000, ust_sinir_tl: 80000, para_birimi: "TRY"}
+    related_patterns: ["machine_entanglement", "crush_hazard"]
+  kalabalik_ve_ergonomi:
+    baslik: "Çalışma alanında kalabalık/ergonomi sorunu"
+    maliyet_tahmini: {alt_sinir_tl: 5000, ust_sinir_tl: 25000, para_birimi: "TRY"}
+    related_patterns: ["gathering"]
+  yetkisiz_alana_giris:
+    baslik: "Yetkisiz veya kısıtlı alana giriş"
+    maliyet_tahmini: {alt_sinir_tl: 12000, ust_sinir_tl: 50000, para_birimi: "TRY"}
+    related_patterns: ["unauthorized_access", "restricted_time_access"]

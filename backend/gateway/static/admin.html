@@ -59,11 +59,16 @@
 
     <aside class="sidebar" style="width:360px;">
       <h2>💡 Çalışma Alanı Önerileri</h2>
-      <label class="meta" for="query-text">Sorgu metni (isteğe bağlı)</label>
+      <label class="meta" for="query-text">Durum tanımı</label>
       <div class="query-input-row">
-        <input id="query-text" type="text" placeholder="Örn: risk azaltma önlemleri..." />
+        <input id="query-text" type="text" list="common-conditions"
+          placeholder="Bir durum seçin veya kendi durumunuzu yazın..." autocomplete="off" />
+        <datalist id="common-conditions"></datalist>
       </div>
-      <button id="suggest-btn" class="btn" style="width:100%;">Seçili olaylar için öneri al</button>
+      <div id="condition-cost" class="condition-cost" aria-live="polite">
+        Kendi durumunuzu yazabilirsiniz; maliyeti bilinmiyor olarak değerlendirilir.
+      </div>
+      <button id="suggest-btn" class="btn" style="width:100%;">Öneri al</button>
       <!--
         Öneriler düz metin satırları olarak listelenir: başlık, kategori,
         öncelik, skor, maliyet. Tıklanamaz; sohbet/yorum bölümü kasıtlı

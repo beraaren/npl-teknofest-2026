@@ -96,6 +96,7 @@ class FeedbackCreate(BaseModel):
 class SuggestionQuery(BaseModel):
     event_types: List[str] = Field(default_factory=list)
     query_text: str = ""
+    condition_id: Optional[str] = None
 
 
 class ChatMessage(BaseModel):
@@ -410,14 +411,36 @@ async def execute_tool(body: ToolExecuteRequest, request: Request):
     return payload
 
 
+@router.get("/suggestions/common-conditions")
+async def common_suggestion_conditions():
+    """Yaygın, maliyetli durumları yazılabilir hızlı seçim için döner."""
+    return rag_layer.common_conditions()
+
+
 @router.post("/suggestions/query")
 async def query_suggestions(body: SuggestionQuery):
-    """RAGLayer öneri eşleştirmesi yapar."""
-    return rag_layer.match_suggestions(
-        event_types=body.event_types,
-        query_text=body.query_text,
-        top_k=8,
-    )
+    """RAGLayer önerilerini ve seçilen durumun maliyet bilgisini döner."""
+    conditions = {item["condition_id"]: item for item in rag_layer.common_conditions()}
+    selected_condition = conditions.get(body.condition_id or "")
+    custom_condition = body.query_text.strip() if body.query_text.strip() else ""
+    if selected_condition is None and custom_condition:
+        selected_condition = {
+            "condition_id": None,
+            "baslik": custom_condition,
+            "maliyet_tahmini": None,
+            "cost_known": False,
+        }
+    elif selected_condition is not None:
+        selected_condition = {**selected_condition, "cost_known": True}
+
+    return {
+        "selected_condition": selected_condition,
+        "suggestions": rag_layer.match_suggestions(
+            event_types=body.event_types,
+            query_text=body.query_text,
+            top_k=8,
+        ),
+    }
 
 
 @router.post("/chat")

@@ -13,6 +13,8 @@ const el = {
   riskChart: document.getElementById('risk-chart'),
   suggestBtn: document.getElementById('suggest-btn'),
   queryInput: document.getElementById('query-text'),
+  commonConditions: document.getElementById('common-conditions'),
+  conditionCost: document.getElementById('condition-cost'),
   suggestionsList: document.getElementById('suggestions-list'),
 };
 initToast(document.getElementById('toast'));
@@ -20,6 +22,43 @@ initToast(document.getElementById('toast'));
 /** WS'ten gelen son 50 olay; öneri sorgusu için event_type listesi buradan
  * çıkarılır. */
 const recentEvents = [];
+let commonConditions = [];
+
+function formatCost(cost) {
+  if (!cost || cost.alt_sinir_tl == null || cost.ust_sinir_tl == null) return 'Bilinmiyor';
+  return `${cost.alt_sinir_tl.toLocaleString('tr-TR')} - ${cost.ust_sinir_tl.toLocaleString('tr-TR')} ${cost.para_birimi || 'TL'}`;
+}
+
+function selectedCondition() {
+  const text = el.queryInput.value.trim();
+  return commonConditions.find((condition) => condition.baslik === text) || null;
+}
+
+function renderConditionCost() {
+  const text = el.queryInput.value.trim();
+  const condition = selectedCondition();
+  el.conditionCost.classList.toggle('known', Boolean(condition));
+  if (condition) {
+    el.conditionCost.textContent = `Tahmini maliyet: ${formatCost(condition.maliyet_tahmini)}`;
+  } else if (text) {
+    el.conditionCost.textContent = 'Özel durum kabul edildi; tahmini maliyet: Bilinmiyor.';
+  } else {
+    el.conditionCost.textContent = 'Bir durum seçin veya kendi durumunuzu yazın; özel durumların maliyeti bilinmiyor olarak değerlendirilir.';
+  }
+}
+
+async function loadCommonConditions() {
+  try {
+    const data = await api('/suggestions/common-conditions');
+    commonConditions = Array.isArray(data) ? data : [];
+    el.commonConditions.innerHTML = commonConditions.map((condition) =>
+      `<option value="${escapeHtml(condition.baslik)}">${escapeHtml(formatCost(condition.maliyet_tahmini))}</option>`
+    ).join('');
+  } catch (err) {
+    console.error('Yaygın durumlar yüklenemedi:', err);
+  }
+  renderConditionCost();
+}
 
 const FEEDBACK_TYPE_BADGE = {
   correct: '<span class="status-badge status-tamamlandi">✔ Doğrulandı</span>',
@@ -169,13 +208,15 @@ function collectEventTypes() {
 }
 
 // ---------------------------------------------------------------------------
-// Çalışma alanı önerileri — DÜZ METİN, tıklanamaz, sohbet/yorum yok
+// Çalışma alanı önerileri — seçilen veya serbest yazılan durumdan öneri üretir
 // ---------------------------------------------------------------------------
 
 async function fetchSuggestions() {
   const eventTypes = collectEventTypes();
-  if (!eventTypes.length) {
-    showToast('Henüz olay tipi yok.');
+  const queryText = el.queryInput.value.trim();
+  const condition = selectedCondition();
+  if (!eventTypes.length && !queryText) {
+    showToast('Bir durum seçin/yazın veya en az bir olay bekleyin.');
     return;
   }
   const original = el.suggestBtn.textContent;
@@ -184,9 +225,14 @@ async function fetchSuggestions() {
   try {
     const data = await api('/suggestions/query', {
       method: 'POST',
-      body: JSON.stringify({ event_types: eventTypes, query_text: el.queryInput.value || '' }),
+      body: JSON.stringify({
+        event_types: eventTypes,
+        query_text: queryText,
+        condition_id: condition?.condition_id || null,
+      }),
     });
-    renderSuggestions(Array.isArray(data) ? data : []);
+    renderConditionCostFromResponse(data?.selected_condition);
+    renderSuggestions(Array.isArray(data?.suggestions) ? data.suggestions : []);
   } catch (err) {
     showToast(`Öneriler alınamadı: ${err.message}`, true);
   } finally {
@@ -195,9 +241,15 @@ async function fetchSuggestions() {
   }
 }
 
-function formatCost(cost) {
-  if (!cost) return '-';
-  return `${cost.alt_sinir_tl || 0} - ${cost.ust_sinir_tl || 0} ${cost.para_birimi || 'TL'}`;
+function renderConditionCostFromResponse(condition) {
+  if (!condition) {
+    renderConditionCost();
+    return;
+  }
+  el.conditionCost.classList.toggle('known', Boolean(condition.cost_known));
+  el.conditionCost.textContent = condition.cost_known
+    ? `Tahmini maliyet: ${formatCost(condition.maliyet_tahmini)}`
+    : 'Özel durum kabul edildi; tahmini maliyet: Bilinmiyor.';
 }
 
 /**
@@ -244,6 +296,7 @@ function handleWsMessage(msg) {
 function init() {
   loadMetrics();
   loadFeedbackData();
+  loadCommonConditions();
   setInterval(() => {
     loadMetrics();
     loadFeedbackData();
@@ -255,6 +308,8 @@ function init() {
   ws.onMessage(handleWsMessage);
 
   el.suggestBtn.addEventListener('click', fetchSuggestions);
+  el.queryInput.addEventListener('input', renderConditionCost);
+  el.queryInput.addEventListener('focus', () => el.queryInput.showPicker?.());
   window.addEventListener('resize', loadMetrics);
 }
 

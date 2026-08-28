@@ -3,7 +3,7 @@
   "total_segments": 3,
   "total_risk_events": 3,
   "most_critical_segment_index": 0,
-  "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Bir üretim tesisinde, iki taşımada beyaz, pamuk benzeri bir madde taşınıyor. Üstteki bir makine, bu maddeyi keserken, 00:50'den itibaren makinenin içinde ve etrafında alevler ve duman oluşmaya başlıyor. Bu, muhtemelen bir yangın veya aşırı \n  - [00:00] görülen varlıklar: conveyor, load, machine, smoke or flame\n  - [01:00] Üretim tesisinde, bir makinenin etrafında ve üzerindeki beyaz, pamuk benzeri madde üzerinde alevler ve yoğun duman oluşumu devam ediyor. Yangın, makinenin etrafındaki yüklerde yayılıyor ve ortam giderek dumanla doluyor. 01:00'dan itibaren y\n  - [01:00] görülen varlıklar: conveyor, load, machine, smoke or flame\n  - [02:00] Üretim tesisindeki yangın, yoğun duman ve alevlerle devam ediyor. Görüntü, dumanla kaplı bir alanda yayılan küçük alevlerin dağılımını gösteriyor. Ortam, görsel olarak çok az netlikte ve tehlikeli bir durumda.\n  - [02:00] görülen varlıklar: load, machine, smoke or flame\nZaman damgalı olaylar:\n  - 00:50 — Makine içinde ve etrafında alevler ve duman oluşumu, yangın tehlikesi oluşturuyor. Bu, üretim hattında çalışanlara ciddi bir tehlike teşkil edebilir ve yangın yayılabilir. [critical, güven 0.95]\n  - 02:00 — Makinenin etrafında ve yüklerdeki yangın, üretim hattında çalışanlara ciddi bir tehlike teşkil ediyor. Yangın hızla yayılıyor ve duman yoğunluğu artıyor, bu da solunum zorluğu ve görsel engelleme riski oluşturuyor. Acil müdahale gerektiren bir durum. [critical, güven 0.95]\n  - 02:00 — Yangın, dumanla birlikte hızla yayılıyor ve ortamda solunum zorluğu, görsel engelleme ve patlama riski oluşturuyor. Çalışanlar için acil tahliye gerektiren bir durum. [critical, güven 0.95]",
+  "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Bir üretim tesisinde, iki taşımada beyaz, pamuk benzeri bir madde taşınıyor. Üstteki bir makine, bu maddeyi keserken, 00:50'den itibaren makinenin içinden ve etrafında alevler çıkıyor. Bu, muhtemelen bir yangın veya aşırı ısınma olayıdır.\n  - [00:00] görülen varlıklar: conveyor, load, machine, smoke or flame\n  - [01:00] Üretim tesisinde, bir makinenin etrafında ve taşımada bulunan beyaz, pamuk benzeri madde üzerinde alevler hızla yayılıyor. Yangın, kısa sürede yoğun duman oluşturarak sahneyi kaplıyor ve üretim hattının büyük bir kısmını etkiliyor.\n  - [01:00] görülen varlıklar: conveyor, load, machine, smoke or flame\n  - [02:00] Üretim tesisindeki yangın, yoğun dumanla birlikte devam ediyor. Sahne, alevlerin hâlâ yayıldığı ve çevreyi kaplayan dumanla dolu bir ortamı gösteriyor. İşletme alanı tamamen görünmez hale gelmiş durumda.\n  - [02:00] görülen varlıklar: load, machine, smoke or flame\nZaman damgalı olaylar:\n  - 00:50 — Makinenin içinden çıkan alevler, taşımada bulunan yanıcı maddeye yayılıyor. Bu, üretim hattında büyük bir yangın tehlikesi oluşturuyor ve çevredeki malzemeleri, ekipmanları ve çalışanları (varsa) ciddi şekilde tehdit ediyor. [critical, güven 0.95]\n  - 01:00 — Yangın, taşımada bulunan yanıcı maddeye hızla yayılıyor ve üretim hattının büyük bir kısmını etkiliyor. Yoğun duman oluşumu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor. [critical, güven 0.95]\n  - 02:00 — Yangın hâlâ devam ediyor ve yoğun duman üretiyor. Bu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor. Duman, görüşü tamamen engelleyerek kurtarma ve müdahale ekiplerinin çalışmalarını zorlaştırıyor. [critical, güven 0.95]",
   "segments": [
     {
       "segment_index": 0,
@@ -12,48 +12,48 @@
       "time_range": "00:00-01:00",
       "max_severity": "critical",
       "interpretation": {
-        "packet_id": "2ce5f43e-c438-486d-9435-eb7d1a915ac6",
+        "packet_id": "3b89d1d9-8e52-49a3-997b-39bf26b79c32",
         "video_id": "fire-in-bale-plucker-e011f3",
         "model_name": "vlm",
         "model_backend": "server",
-        "scene_summary_tr": "Bir üretim tesisinde, iki taşımada beyaz, pamuk benzeri bir madde taşınıyor. Üstteki bir makine, bu maddeyi keserken, 00:50'den itibaren makinenin içinde ve etrafında alevler ve duman oluşmaya başlıyor. Bu, muhtemelen bir yangın veya aşırı ısınma olayıdır.",
+        "scene_summary_tr": "Bir üretim tesisinde, iki taşımada beyaz, pamuk benzeri bir madde taşınıyor. Üstteki bir makine, bu maddeyi keserken, 00:50'den itibaren makinenin içinden ve etrafında alevler çıkıyor. Bu, muhtemelen bir yangın veya aşırı ısınma olayıdır.",
         "detected_entities": [
           {
             "label": "machine",
             "confidence_hint": "high",
-            "notes_tr": "Makine, taşımaya yerleştirilmiş bir kesme veya işleme cihazı gibi görünüyor. Üzerinde bir boru veya emme sistemi bulunuyor."
+            "notes_tr": "Makine, taşımaya yerleştirilmiş bir kesme veya işleme cihazı gibi görünüyor. Üzerinde bir boru veya hava emme sistemi bulunuyor."
           },
           {
             "label": "load",
             "confidence_hint": "high",
-            "notes_tr": "Taşıyıcı bandlarda beyaz, pamuk benzeri bir madde (muhtemelen tekstil atığı veya yastık doldurucu) bulunmaktadır."
+            "notes_tr": "Taşıyıcı bandlarda beyaz, pamuk benzeri bir madde (muhtemelen tekstil atığı veya yastık doldurucu) bulunuyor."
           },
           {
             "label": "conveyor",
             "confidence_hint": "high",
-            "notes_tr": "İki uzun taşıyıcı band, üretim hattının bir parçası olarak görünüyor."
+            "notes_tr": "İki paralel taşıyıcı band, üretim hattının bir parçası olarak çalışmakta."
           },
           {
             "label": "smoke or flame",
             "confidence_hint": "high",
-            "notes_tr": "00:50'den itibaren makinenin içinde ve etrafında alevler ve duman oluşumu gözlemleniyor. Bu, yangın veya aşırı ısınma işaretidir."
+            "notes_tr": "00:50'den itibaren makinenin içinden ve etrafında alevler ve duman görünüyor. Bu, yangın veya aşırı ısınma işaretidir."
           }
         ],
         "detected_actions_tr": [
           "Taşıyıcı bandlarda beyaz madde ilerliyor.",
           "Makine, maddeyi kesiyor veya işliyor.",
-          "00:50'den itibaren makinede alevler ve duman oluşuyor.",
-          "Alevler, makinenin etrafındaki maddeye yayılıyor."
+          "Makinenin içinden 00:50'den itibaren alevler çıkıyor.",
+          "Alevler, taşımada bulunan maddeye yayılıyor."
         ],
         "confidence_overall": 0.9,
         "inference": {
-          "latency_ms": 12315.547600002901,
-          "tokens_generated": 567
+          "latency_ms": 12075.878200004809,
+          "tokens_generated": 579
         },
-        "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir üretim tesisinde, iki taşımada beyaz, pamuk benzeri bir madde taşınıyor. Üstteki bir makine, bu maddeyi keserken, 00:50'den itibaren makinenin içinde ve etrafında alevler ve duman oluşmaya başlıyor. Bu, muhtemelen bir yangın veya aşırı ısınma olayıdır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makine, taşımaya yerleştirilmiş bir kesme veya işleme cihazı gibi görünüyor. Üzerinde bir boru veya emme sistemi bulunuyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Taşıyıcı bandlarda beyaz, pamuk benzeri bir madde (muhtemelen tekstil atığı veya yastık doldurucu) bulunmaktadır.\"\n    },\n    {\n      \"label\": \"conveyor\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki uzun taşıyıcı band, üretim hattının bir parçası olarak görünüyor.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:50'den itibaren makinenin içinde ve etrafında alevler ve duman oluşumu gözlemleniyor. Bu, yangın veya aşırı ısınma işaretidir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Taşıyıcı bandlarda beyaz madde ilerliyor.\",\n    \"Makine, maddeyi kesiyor veya işliyor.\",\n    \"00:50'den itibaren makinede alevler ve duman oluşuyor.\",\n    \"Alevler, makinenin etrafındaki maddeye yayılıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makine içinde ve etrafında alevler ve duman oluşumu, yangın tehlikesi oluşturuyor. Bu, üretim hattında çalışanlara ciddi bir tehlike teşkil edebilir ve yangın yayılabilir.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 50.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+        "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir üretim tesisinde, iki taşımada beyaz, pamuk benzeri bir madde taşınıyor. Üstteki bir makine, bu maddeyi keserken, 00:50'den itibaren makinenin içinden ve etrafında alevler çıkıyor. Bu, muhtemelen bir yangın veya aşırı ısınma olayıdır.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makine, taşımaya yerleştirilmiş bir kesme veya işleme cihazı gibi görünüyor. Üzerinde bir boru veya hava emme sistemi bulunuyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Taşıyıcı bandlarda beyaz, pamuk benzeri bir madde (muhtemelen tekstil atığı veya yastık doldurucu) bulunuyor.\"\n    },\n    {\n      \"label\": \"conveyor\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki paralel taşıyıcı band, üretim hattının bir parçası olarak çalışmakta.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:50'den itibaren makinenin içinden ve etrafında alevler ve duman görünüyor. Bu, yangın veya aşırı ısınma işaretidir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Taşıyıcı bandlarda beyaz madde ilerliyor.\",\n    \"Makine, maddeyi kesiyor veya işliyor.\",\n    \"Makinenin içinden 00:50'den itibaren alevler çıkıyor.\",\n    \"Alevler, taşımada bulunan maddeye yayılıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinenin içinden çıkan alevler, taşımada bulunan yanıcı maddeye yayılıyor. Bu, üretim hattında büyük bir yangın tehlikesi oluşturuyor ve çevredeki malzemeleri, ekipmanları ve çalışanları (varsa) ciddi şekilde tehdit ediyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 50.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
         "risk_events": [
           {
-            "description_tr": "Makine içinde ve etrafında alevler ve duman oluşumu, yangın tehlikesi oluşturuyor. Bu, üretim hattında çalışanlara ciddi bir tehlike teşkil edebilir ve yangın yayılabilir.",
+            "description_tr": "Makinenin içinden çıkan alevler, taşımada bulunan yanıcı maddeye yayılıyor. Bu, üretim hattında büyük bir yangın tehlikesi oluşturuyor ve çevredeki malzemeleri, ekipmanları ve çalışanları (varsa) ciddi şekilde tehdit ediyor.",
             "severity": "critical",
             "confidence": 0.95,
             "supporting_frame_count": 1,
@@ -62,13 +62,13 @@
           }
         ],
         "risk_flags_tr": [
-          "Makine içinde ve etrafında alevler ve duman oluşumu, yangın tehlikesi oluşturuyor. Bu, üretim hattında çalışanlara ciddi bir tehlike teşkil edebilir ve yangın yayılabilir."
+          "Makinenin içinden çıkan alevler, taşımada bulunan yanıcı maddeye yayılıyor. Bu, üretim hattında büyük bir yangın tehlikesi oluşturuyor ve çevredeki malzemeleri, ekipmanları ve çalışanları (varsa) ciddi şekilde tehdit ediyor."
         ],
         "computed_confidence": 0.76,
         "reasoning_trace": "",
         "segment_start_sec": 0.0,
         "segment_end_sec": 60.0,
-        "created_at": "2026-08-27T22:22:07.842833+00:00"
+        "created_at": "2026-08-28T06:58:16.199147+00:00"
       }
     },
     {
@@ -78,63 +78,63 @@
       "time_range": "01:00-02:00",
       "max_severity": "critical",
       "interpretation": {
-        "packet_id": "c42a2da4-e500-49b1-9104-712898ea7929",
+        "packet_id": "92b09444-df2d-4c12-a24c-c12ea2b86dbe",
         "video_id": "fire-in-bale-plucker-e011f3",
         "model_name": "vlm",
         "model_backend": "server",
-        "scene_summary_tr": "Üretim tesisinde, bir makinenin etrafında ve üzerindeki beyaz, pamuk benzeri madde üzerinde alevler ve yoğun duman oluşumu devam ediyor. Yangın, makinenin etrafındaki yüklerde yayılıyor ve ortam giderek dumanla doluyor. 01:00'dan itibaren yangın hızla büyüyor ve 01:15'te yoğun duman nedeniyle görüş alanını büyük ölçüde engelliyor.",
+        "scene_summary_tr": "Üretim tesisinde, bir makinenin etrafında ve taşımada bulunan beyaz, pamuk benzeri madde üzerinde alevler hızla yayılıyor. Yangın, kısa sürede yoğun duman oluşturarak sahneyi kaplıyor ve üretim hattının büyük bir kısmını etkiliyor.",
         "detected_entities": [
           {
             "label": "machine",
             "confidence_hint": "high",
-            "notes_tr": "Makine, üretim hattında yer alan, yükleri kesen bir yapıdır."
+            "notes_tr": "Makine, taşımada bulunan maddeyi kesen bir yapıya sahip."
+          },
+          {
+            "label": "conveyor",
+            "confidence_hint": "high",
+            "notes_tr": "İki taşımada beyaz, pamuk benzeri madde taşınıyor."
           },
           {
             "label": "load",
             "confidence_hint": "high",
-            "notes_tr": "Beyaz, pamuk benzeri madde, taşımada sıralanmış yükler halinde görülüyor."
+            "notes_tr": "Taşımada bulunan beyaz, pamuk benzeri madde."
           },
           {
             "label": "smoke or flame",
             "confidence_hint": "high",
-            "notes_tr": "Alevler ve duman, makinenin etrafında ve yüklerde yoğun şekilde gözlemleniyor."
-          },
-          {
-            "label": "conveyor",
-            "confidence_hint": "medium",
-            "notes_tr": "Yüklerin taşındığı taşımalar, makinenin etrafında yer alıyor."
+            "notes_tr": "Alevler makinenin etrafında ve taşımada hızla yayılıyor; yoğun duman oluşumu gözlemleniyor."
           }
         ],
         "detected_actions_tr": [
-          "Makinenin etrafında ve yüklerde alevlerin yayılması",
-          "Yoğun dumanın ortama yayılması",
-          "Yangının zaman içinde büyümesi ve kontrol altına alınmaması",
-          "Görüş alanının duman nedeniyle azalması"
+          "Makinenin etrafında ve taşımada bulunan madde üzerinde alevler hızla yayılıyor.",
+          "Yangın, üretim hattının büyük bir kısmını etkiliyor.",
+          "Yoğun duman oluşumu, sahneyi giderek kaplıyor.",
+          "Alevler zamanla azalıyor ve duman yoğunluğu artıyor."
         ],
         "confidence_overall": 0.95,
         "inference": {
-          "latency_ms": 11461.456099998031,
-          "tokens_generated": 541
+          "latency_ms": 11046.62360000657,
+          "tokens_generated": 502
         },
-        "raw_model_output": "{\n  \"scene_summary_tr\": \"Üretim tesisinde, bir makinenin etrafında ve üzerindeki beyaz, pamuk benzeri madde üzerinde alevler ve yoğun duman oluşumu devam ediyor. Yangın, makinenin etrafındaki yüklerde yayılıyor ve ortam giderek dumanla doluyor. 01:00'dan itibaren yangın hızla büyüyor ve 01:15'te yoğun duman nedeniyle görüş alanını büyük ölçüde engelliyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makine, üretim hattında yer alan, yükleri kesen bir yapıdır.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Beyaz, pamuk benzeri madde, taşımada sıralanmış yükler halinde görülüyor.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Alevler ve duman, makinenin etrafında ve yüklerde yoğun şekilde gözlemleniyor.\"\n    },\n    {\n      \"label\": \"conveyor\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Yüklerin taşındığı taşımalar, makinenin etrafında yer alıyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Makinenin etrafında ve yüklerde alevlerin yayılması\",\n    \"Yoğun dumanın ortama yayılması\",\n    \"Yangının zaman içinde büyümesi ve kontrol altına alınmaması\",\n    \"Görüş alanının duman nedeniyle azalması\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinenin etrafında ve yüklerdeki yangın, üretim hattında çalışanlara ciddi bir tehlike teşkil ediyor. Yangın hızla yayılıyor ve duman yoğunluğu artıyor, bu da solunum zorluğu ve görsel engelleme riski oluşturuyor. Acil müdahale gerektiren bir durum.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 60.0\n    }\n  ],\n  \"confidence_overall\": 0.95\n}",
+        "raw_model_output": "{\n  \"scene_summary_tr\": \"Üretim tesisinde, bir makinenin etrafında ve taşımada bulunan beyaz, pamuk benzeri madde üzerinde alevler hızla yayılıyor. Yangın, kısa sürede yoğun duman oluşturarak sahneyi kaplıyor ve üretim hattının büyük bir kısmını etkiliyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makine, taşımada bulunan maddeyi kesen bir yapıya sahip.\"\n    },\n    {\n      \"label\": \"conveyor\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki taşımada beyaz, pamuk benzeri madde taşınıyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Taşımada bulunan beyaz, pamuk benzeri madde.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Alevler makinenin etrafında ve taşımada hızla yayılıyor; yoğun duman oluşumu gözlemleniyor.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Makinenin etrafında ve taşımada bulunan madde üzerinde alevler hızla yayılıyor.\",\n    \"Yangın, üretim hattının büyük bir kısmını etkiliyor.\",\n    \"Yoğun duman oluşumu, sahneyi giderek kaplıyor.\",\n    \"Alevler zamanla azalıyor ve duman yoğunluğu artıyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yangın, taşımada bulunan yanıcı maddeye hızla yayılıyor ve üretim hattının büyük bir kısmını etkiliyor. Yoğun duman oluşumu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 60.0\n    }\n  ],\n  \"confidence_overall\": 0.95\n}",
         "risk_events": [
           {
-            "description_tr": "Makinenin etrafında ve yüklerdeki yangın, üretim hattında çalışanlara ciddi bir tehlike teşkil ediyor. Yangın hızla yayılıyor ve duman yoğunluğu artıyor, bu da solunum zorluğu ve görsel engelleme riski oluşturuyor. Acil müdahale gerektiren bir durum.",
+            "description_tr": "Yangın, taşımada bulunan yanıcı maddeye hızla yayılıyor ve üretim hattının büyük bir kısmını etkiliyor. Yoğun duman oluşumu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor.",
             "severity": "critical",
             "confidence": 0.95,
             "supporting_frame_count": 1,
             "supporting_frame_positions": [],
-            "timestamp_sec": 120.0
+            "timestamp_sec": 60.0
           }
         ],
         "risk_flags_tr": [
-          "Makinenin etrafında ve yüklerdeki yangın, üretim hattında çalışanlara ciddi bir tehlike teşkil ediyor. Yangın hızla yayılıyor ve duman yoğunluğu artıyor, bu da solunum zorluğu ve görsel engelleme riski oluşturuyor. Acil müdahale gerektiren bir durum."
+          "Yangın, taşımada bulunan yanıcı maddeye hızla yayılıyor ve üretim hattının büyük bir kısmını etkiliyor. Yoğun duman oluşumu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor."
         ],
         "computed_confidence": 0.785,
         "reasoning_trace": "",
         "segment_start_sec": 60.0,
         "segment_end_sec": 120.0,
-        "created_at": "2026-08-27T22:22:19.315233+00:00"
+        "created_at": "2026-08-28T06:58:27.265645+00:00"
       }
     },
     {
@@ -144,42 +144,42 @@
       "time_range": "02:00-02:07",
       "max_severity": "critical",
       "interpretation": {
-        "packet_id": "9accf380-12bb-42dd-b967-3babc0f698b7",
+        "packet_id": "6bf2ea04-a72b-4b80-9b3c-56a382714dfe",
         "video_id": "fire-in-bale-plucker-e011f3",
         "model_name": "vlm",
         "model_backend": "server",
-        "scene_summary_tr": "Üretim tesisindeki yangın, yoğun duman ve alevlerle devam ediyor. Görüntü, dumanla kaplı bir alanda yayılan küçük alevlerin dağılımını gösteriyor. Ortam, görsel olarak çok az netlikte ve tehlikeli bir durumda.",
+        "scene_summary_tr": "Üretim tesisindeki yangın, yoğun dumanla birlikte devam ediyor. Sahne, alevlerin hâlâ yayıldığı ve çevreyi kaplayan dumanla dolu bir ortamı gösteriyor. İşletme alanı tamamen görünmez hale gelmiş durumda.",
         "detected_entities": [
           {
             "label": "smoke or flame",
             "confidence_hint": "high",
-            "notes_tr": "Duman yoğunluğu yüksek, alevlerin küçük parçaları duman içinde yayılmış durumda."
-          },
-          {
-            "label": "load",
-            "confidence_hint": "medium",
-            "notes_tr": "Dumanın altında belirsiz şekiller, muhtemelen yangınla etkilenen yüklerdir."
+            "notes_tr": "Sahne boyunca dumanın yoğunluğu yüksek; alevlerin birkaç noktasında hâlâ yanması gözlemleniyor."
           },
           {
             "label": "machine",
             "confidence_hint": "low",
-            "notes_tr": "Makine detayları duman nedeniyle tam olarak görünmüyor, ancak önceki segmentlerdeki bağlamdan bu alanın bir üretim makinesi olduğu anlaşılmaktadır."
+            "notes_tr": "Makine yapıları duman nedeniyle kısmen görünür, ancak varlığı tahmin edilebilir."
+          },
+          {
+            "label": "load",
+            "confidence_hint": "low",
+            "notes_tr": "Yanıcı madde yükü duman altında kalmış, ancak önceki segmentlerden bilgiye dayanarak varlığı varsayılabilir."
           }
         ],
         "detected_actions_tr": [
-          "Yangın, duman içinde yayılıyor.",
-          "Alevler, dumanla karışık olarak hareket ediyor.",
-          "Ortam, yoğun dumanla kaplı ve görsel olarak belirsiz."
+          "Yangın devam ediyor.",
+          "Duman yoğunluğu artıyor.",
+          "Alevlerin birkaç noktasında hâlâ yanması gözlemleniyor."
         ],
         "confidence_overall": 0.9,
         "inference": {
-          "latency_ms": 6800.095400001737,
-          "tokens_generated": 433
+          "latency_ms": 7153.481699991971,
+          "tokens_generated": 438
         },
-        "raw_model_output": "{\n  \"scene_summary_tr\": \"Üretim tesisindeki yangın, yoğun duman ve alevlerle devam ediyor. Görüntü, dumanla kaplı bir alanda yayılan küçük alevlerin dağılımını gösteriyor. Ortam, görsel olarak çok az netlikte ve tehlikeli bir durumda.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Duman yoğunluğu yüksek, alevlerin küçük parçaları duman içinde yayılmış durumda.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Dumanın altında belirsiz şekiller, muhtemelen yangınla etkilenen yüklerdir.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Makine detayları duman nedeniyle tam olarak görünmüyor, ancak önceki segmentlerdeki bağlamdan bu alanın bir üretim makinesi olduğu anlaşılmaktadır.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Yangın, duman içinde yayılıyor.\",\n    \"Alevler, dumanla karışık olarak hareket ediyor.\",\n    \"Ortam, yoğun dumanla kaplı ve görsel olarak belirsiz.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yangın, dumanla birlikte hızla yayılıyor ve ortamda solunum zorluğu, görsel engelleme ve patlama riski oluşturuyor. Çalışanlar için acil tahliye gerektiren bir durum.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 120.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+        "raw_model_output": "{\n  \"scene_summary_tr\": \"Üretim tesisindeki yangın, yoğun dumanla birlikte devam ediyor. Sahne, alevlerin hâlâ yayıldığı ve çevreyi kaplayan dumanla dolu bir ortamı gösteriyor. İşletme alanı tamamen görünmez hale gelmiş durumda.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sahne boyunca dumanın yoğunluğu yüksek; alevlerin birkaç noktasında hâlâ yanması gözlemleniyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Makine yapıları duman nedeniyle kısmen görünür, ancak varlığı tahmin edilebilir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"low\",\n      \"notes_tr\": \"Yanıcı madde yükü duman altında kalmış, ancak önceki segmentlerden bilgiye dayanarak varlığı varsayılabilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Yangın devam ediyor.\",\n    \"Duman yoğunluğu artıyor.\",\n    \"Alevlerin birkaç noktasında hâlâ yanması gözlemleniyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Yangın hâlâ devam ediyor ve yoğun duman üretiyor. Bu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor. Duman, görüşü tamamen engelleyerek kurtarma ve müdahale ekiplerinin çalışmalarını zorlaştırıyor.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 120.0\n    }\n  ],\n  \"confidence_overall\": 0.90\n}",
         "risk_events": [
           {
-            "description_tr": "Yangın, dumanla birlikte hızla yayılıyor ve ortamda solunum zorluğu, görsel engelleme ve patlama riski oluşturuyor. Çalışanlar için acil tahliye gerektiren bir durum.",
+            "description_tr": "Yangın hâlâ devam ediyor ve yoğun duman üretiyor. Bu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor. Duman, görüşü tamamen engelleyerek kurtarma ve müdahale ekiplerinin çalışmalarını zorlaştırıyor.",
             "severity": "critical",
             "confidence": 0.95,
             "supporting_frame_count": 1,
@@ -188,16 +188,16 @@
           }
         ],
         "risk_flags_tr": [
-          "Yangın, dumanla birlikte hızla yayılıyor ve ortamda solunum zorluğu, görsel engelleme ve patlama riski oluşturuyor. Çalışanlar için acil tahliye gerektiren bir durum."
+          "Yangın hâlâ devam ediyor ve yoğun duman üretiyor. Bu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor. Duman, görüşü tamamen engelleyerek kurtarma ve müdahale ekiplerinin çalışmalarını zorlaştırıyor."
         ],
         "computed_confidence": 0.76,
         "reasoning_trace": "",
         "segment_start_sec": 120.0,
         "segment_end_sec": 127.08,
-        "created_at": "2026-08-27T22:22:26.124182+00:00"
+        "created_at": "2026-08-28T06:58:34.434420+00:00"
       }
     }
   ],
   "failed_segments": [],
-  "created_at": "2026-08-27T22:22:26.126183+00:00"
+  "created_at": "2026-08-28T06:58:34.436417+00:00"
 }

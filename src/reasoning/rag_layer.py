@@ -671,6 +671,19 @@ class RAGLayer:
 
         return result
 
+    def common_conditions(self) -> List[Dict[str, Any]]:
+        """Yazılabilir durum combobox'ında gösterilecek maliyetli katalog kayıtları."""
+        conditions = self.suggestions.get("yaygin_durumlar", {})
+        return [
+            {
+                "condition_id": name,
+                "baslik": str(condition.get("baslik", name)),
+                "maliyet_tahmini": condition.get("maliyet_tahmini", {}),
+                "related_patterns": condition.get("related_patterns", []),
+            }
+            for name, condition in conditions.items()
+        ]
+
     def match_suggestions(
         self,
         event_types: List[str] | None = None,

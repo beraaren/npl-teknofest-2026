@@ -2,22 +2,22 @@
   "slug": "daily-safety-failsthis-is-you-must-pay-a-abe7b2",
   "video_file": "videos/Daily Safety Fails🤯This is You Must Pay Attention🤯- PLEASE Stay Safe Today.mp4",
   "video_name": "Daily Safety Fails🤯This is You Must Pay Attention🤯- PLEASE Stay Safe Today",
-  "analyzed_at": "2026-08-27T22:19:50.611548+00:00",
-  "analysis_seconds": 51.0,
+  "analyzed_at": "2026-08-28T06:55:04.522816+00:00",
+  "analysis_seconds": 68.9,
   "video": {
     "duration_sec": 19.33,
     "fps": 30.0,
     "width": 640,
     "height": 352
   },
-  "summary": "Sanayi üretim alanında, 00:07'de bir makineden ani patlama ve alevler çıkması sonucu kritik bir acil durum yaşanmıştır. Personel kaçış yaparken, forklift sürücüsü geri çekilmiştir. Görüntü analizi, patlama anında personelin KKD (baret, yelek) eksik olduğunu ve forklift ile personel arasında tehlikeli yakınlık olduğunu göstermektedir. Ancak, patlama sonrası personel kaçış hareketi ve duman nedeniyle, KKD eksikliği ve yakınlık tespitlerinin patlama anındaki gerçek riski yansıtıp yansıtmadığı veya sadece statik bir durum mu yoksa patlamanın tetikleyicisi mi olduğu konusunda belirsizlik bulunmaktadır. Patlama olayı kendisi en yüksek riski oluşturmaktadır.",
-  "headline": "Makineden ani patlama ve alevler çıkması, personelin kaçışa başlaması",
+  "summary": "Sanayi üretim alanında, bir makineden 00:08 civarında ani bir patlama ve alev çıkışı gözlemlenmiştir. Patlama sonrası personel kaçış hareketine geçerken, aynı anda bir forklift olay yerinden uzaklaşmıştır. Görüntü analizi (VLM) patlama ve alevleri yüksek güvenle doğrulamış ve kritik bir risk olayı olarak işaretlemiştir. Geometrik analiz (00:17), bir araç ve insan arasında tehlikeli yakınlık (~65 piksel) tespit etmiştir; ancak bu durum, patlama sonrası oluşan panik ve tahliye hareketliliği bağlamında, forkliftin olay yerinden kaçış manevrası sırasında oluşmuş geçici bir yakınlık olarak değerlendirilmiştir. RAG hipotezleri (tehlikeli yakınlık, düşme vb.) potansiyel mekanizmalar sunsa da, asıl doğrulanmış olay makine patlamasıdır. Forklift ve personel arasındaki mesafe, patlama sonrası kaçış senaryosunda bir çarpışma riskinden ziyade, acil durum tahliyesi sırasında oluşan bir durum olarak yorumlanmıştır.",
+  "headline": "Makineden ani patlama ve alev çıkışı; personel ve forkliftin acil tahl…",
   "risk": "Yüksek",
   "overall_risk": "critical",
   "scene_context": {
     "environment": {
       "type": "inferred",
-      "description": "Sanayi bir üretim alanında, bir personel makineye yakın bir alanda çalışırken, bir forklift makinenin hemen yanında duruyor. 00:07'de makineden ani bir patlama ve alevler çıkıyor, personel kaçmaya başlıyor. Forklift sürücüsü durumu fark ederek geri çekiliyor. Patlamadan sonra duman ve parçalar yerde yayılıyor.",
+      "description": "Sanayi bir üretim alanında, bir personel makineye yakın bir alanda çalışırken, yanındaki bir makineden ani bir patlama ve alevler çıkıyor. Patlamadan sonra personel kaçmaya başlıyor ve yerde parçalar dağılıyor. Aynı anda bir forklift, olay yerinden uzaklaşmaya başlıyor.",
       "visible_entities": {
         "arac": 212,
         "insan": 18
@@ -33,37 +33,61 @@
     },
     "activities": [
       {
-        "activity": "Makineden ani patlama ve alevler çıkması",
+        "activity": "Personel makineye yakın bir alanda çalışıyor.",
         "time_range": {
-          "start_sec": 7.0,
-          "end_sec": 7.0
+          "start_sec": 0.0,
+          "end_sec": 0.0
         },
         "participants": [],
-        "operational_state": "critical_failure",
+        "operational_state": "unknown",
         "evidence": [
           "visual"
         ]
       },
       {
-        "activity": "Personelin kaçış hareketi",
+        "activity": "Makineden ani bir patlama ve alevler çıkıyor.",
         "time_range": {
-          "start_sec": 7.0,
-          "end_sec": 19.0
+          "start_sec": 0.0,
+          "end_sec": 0.0
         },
         "participants": [],
-        "operational_state": "emergency_response",
+        "operational_state": "unknown",
         "evidence": [
           "visual"
         ]
       },
       {
-        "activity": "Forkliftin geri çekilmesi",
+        "activity": "Personel kaçmaya başlıyor.",
         "time_range": {
-          "start_sec": 7.0,
-          "end_sec": 19.0
+          "start_sec": 0.0,
+          "end_sec": 0.0
         },
         "participants": [],
-        "operational_state": "evasive_action",
+        "operational_state": "unknown",
+        "evidence": [
+          "visual"
+        ]
+      },
+      {
+        "activity": "Forklift olay yerinden uzaklaşıyor.",
+        "time_range": {
+          "start_sec": 0.0,
+          "end_sec": 0.0
+        },
+        "participants": [],
+        "operational_state": "unknown",
+        "evidence": [
+          "visual"
+        ]
+      },
+      {
+        "activity": "Yerde parçalar dağılıyor ve duman yükseliyor.",
+        "time_range": {
+          "start_sec": 0.0,
+          "end_sec": 0.0
+        },
+        "participants": [],
+        "operational_state": "unknown",
         "evidence": [
           "visual"
         ]
@@ -73,67 +97,61 @@
       {
         "id": "unknown",
         "purpose": "unknown",
-        "active_operations": [
-          "makine operasyonu",
-          "forklift operasyonu"
-        ],
+        "active_operations": [],
         "access_constraints": "unknown"
       }
     ],
-    "context_uncertainties": [
-      "Patlamanın tam nedeni ve patlama öncesi makine durumu belirsiz.",
-      "KKD eksikliğinin patlama riskine doğrudan etkisi kanıtlanamıyor, ancak genel güvenlik ihlali olarak kaydediliyor."
-    ]
+    "context_uncertainties": []
   },
   "results": [
     {
       "result_id": "result-1",
       "result_type": "incident",
-      "time": "00:07",
-      "end_time": "00:07",
-      "timestamp_sec": 7.0,
-      "duration": 0.0,
-      "event": "Makineden ani patlama ve alevler çıkması, personelin kaçışa başlaması",
+      "time": "00:08",
+      "end_time": "00:19",
+      "timestamp_sec": 8.0,
+      "duration": 11.0,
+      "event": "Makineden ani patlama ve alev çıkışı; personel ve forkliftin acil tahliye hareketi.",
       "event_type": "fire_explosion",
       "subjects": [
-        "insan_2",
-        "insan_7",
-        "insan_8",
-        "arac_1"
+        "insan",
+        "vehicle",
+        "machine"
       ],
       "zone": "unknown",
-      "hazard_mechanism": "Makineden çıkan ani patlama ve alevler, personelin doğrudan yanık, travma veya ölüm riskine maruz kalmasına neden olmuştur. Forkliftin yakınlığı ikincil ezilme riskini artırmıştır.",
+      "hazard_mechanism": "Makineden kaynaklanan ani patlama ve alevler; personel için yanık, travma ve duman zehirlenmesi riski; forklift için yangın yayılımı ve devrilme riski.",
       "severity": "critical",
       "evidence": {
         "geometric": {
-          "supports": true,
+          "supports": false,
           "observations": [
-            "00:07'de makine konumunda ani görsel değişim (patlama/alev)",
-            "Personel ve forklift hareket vektörlerinin kaçış yönünde olması"
+            "00:17'te araç ve insan arasında ~65 piksel mesafe tespit edildi, ancak bu patlama sonrası kaçış hareketliliğinin bir parçasıdır."
           ],
           "limitations": [
-            "Patlamanın fiziksel şiddeti ve yayılım yarıçapı piksel bazlı olarak tam ölçülemedi."
+            "Geometrik veri patlamanın kendisini ölçemez, sadece nesne konumlarını takip eder."
           ]
         },
         "visual": {
           "supports": true,
           "observations": [
-            "VLM: 'Makineden ani patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşımaktadır.'",
-            "Duman ve parçaların yerde yayılması"
+            "VLM: Makineden ani patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. (Güven: 0.95)",
+            "Duman ve yerde dağılan parçalar görsel olarak doğrulandı."
           ],
           "limitations": [
-            "Patlamanın kaynağı (elektriksel, kimyasal, mekanik) görsel olarak tam ayırt edilemedi."
+            "Patlamanın tam nedeni ve şiddeti görsel olarak sınırlıdır."
           ]
         },
         "rag": {
           "supports": false,
-          "observations": [],
+          "observations": [
+            "RAG 'dangerous_proximity' hipotezini destekler ancak bu, asıl olay olan patlamanın bir sonucu/yan etkisidir."
+          ],
           "limitations": [
-            "RAG hipotezleri patlama senaryosunu doğrudan kapsamıyor, ancak 'fire_explosion' benzeri kritik durumları destekleyebilir."
+            "RAG, patlama olayını doğrudan tespit etmez, sadece risk mekanizmalarını listeler."
           ]
         },
         "agreement": "corroborated",
-        "resolution": "Görsel kanıt (VLM) ve sahne bağlamı (patlama, kaçış) kritik bir olayı doğrulamaktadır. Geometrik hareket verileri de bu durumu desteklemektedir."
+        "resolution": "VLM görsel analizi patlama ve alevleri yüksek güvenle doğruladı. Geometrik veri, olay sonrası oluşan kaotik hareketliliği (kaçış) destekler niteliktedir. RAG hipotezleri bağlamı zenginleştirir ancak olayı kanıtlamaz."
       },
       "uncertain": false,
       "uncertainty_reason": "",
@@ -142,101 +160,49 @@
     {
       "result_id": "result-2",
       "result_type": "contextual_finding",
-      "time": "00:00",
-      "end_time": "00:19",
-      "timestamp_sec": 0.0,
-      "duration": 19.0,
-      "event": "Personellerde KKD (baret, yelek) eksikliği",
-      "event_type": "ppe_missing",
+      "time": "00:17",
+      "end_time": "00:17",
+      "timestamp_sec": 17.0,
+      "duration": 0.0,
+      "event": "Forklift ve personel arasında geçici tehlikeli yakınlık (kaçış sırasında).",
+      "event_type": "dangerous_proximity",
       "subjects": [
-        "insan_2",
-        "insan_7",
-        "insan_8"
+        "insan",
+        "vehicle"
       ],
       "zone": "unknown",
-      "hazard_mechanism": "Baret ve yelek eksikliği, patlama veya düşen parçalar durumunda kafa travması ve görünmezlik kaynaklı ezilme riskini artırmaktadır.",
+      "hazard_mechanism": "Acil durum kaçışı sırasında forklift ile personel arasındaki mesafenin azalması; çarpışma riski.",
       "severity": "high",
       "evidence": {
         "geometric": {
           "supports": true,
           "observations": [
-            "insan_2 (00:00), insan_7 (00:17), insan_8 (00:19) için KKD tespit skorları düşük."
+            "Araç ve insan merkezi arası mesafe ~65 piksel (eşik: 100 piksel)."
           ],
           "limitations": [
-            "Görüntü kalitesi ve açı nedeniyle bazı KKD parçalarının tam olarak gözden kaçırılma ihtimali var."
+            "Piksel mesafesi gerçek mesafeyi tam yansıtmayabilir; track-ID değişimleri olabilir."
           ]
         },
         "visual": {
           "supports": true,
           "observations": [
-            "Personellerin başlarında baret ve gövdelerinde reflektif yelek olmadığı görsel olarak doğrulanmıştır."
+            "Personel ve forkliftin aynı anda hareket halinde olduğu ve olay yerinden uzaklaştığı görülmektedir."
           ],
           "limitations": [
-            "Patlama sonrası duman nedeniyle son karelerdeki KKD durumu net değildir."
+            "Hareketin yönü ve hızı tam olarak ölçülemez."
           ]
         },
         "rag": {
           "supports": true,
           "observations": [
-            "RAG hipotezi 'ppe_missing' ile eşleşmektedir."
+            "RAG 'dangerous_proximity' hipotezi ile uyumlu."
           ],
           "limitations": [
-            "RAG tek başına kanıt değildir, ancak görsel kanıtla desteklenmektedir."
+            "Hipotez, patlama sonrası kaçış bağlamında değerlendirilmelidir."
           ]
         },
         "agreement": "corroborated",
-        "resolution": "Görsel ve geometrik kanıtlar KKD eksikliğini doğrulamaktadır. Bu, patlama anında riski artıran bir faktördür."
-      },
-      "uncertain": false,
-      "uncertainty_reason": "",
-      "confidence": 0.85
-    },
-    {
-      "result_id": "result-3",
-      "result_type": "contextual_finding",
-      "time": "00:17",
-      "end_time": "00:17",
-      "timestamp_sec": 17.0,
-      "duration": 0.0,
-      "event": "Forklift ile personel arasında tehlikeli yakınlık",
-      "event_type": "dangerous_proximity",
-      "subjects": [
-        "insan_7",
-        "arac_1"
-      ],
-      "zone": "unknown",
-      "hazard_mechanism": "Forklift ile personel arasındaki mesafenin güvenli sınırların altında olması, çarpışma ve ezilme riski oluşturmuştur.",
-      "severity": "medium",
-      "evidence": {
-        "geometric": {
-          "supports": true,
-          "observations": [
-            "00:17'de arac ve insan merkezi arası mesafe ~65 piksel (güvenli sınır 100 piksel)."
-          ],
-          "limitations": [
-            "Piksel mesafesi gerçek mesafeye tam olarak çevrilememiştir, derinlik algısı sınırlıdır."
-          ]
-        },
-        "visual": {
-          "supports": true,
-          "observations": [
-            "Forkliftin makineye ve personele yakın konumda olduğu görülmektedir."
-          ],
-          "limitations": [
-            "Patlama sonrası forkliftin hareketi ve personel konumu karmaşıktır."
-          ]
-        },
-        "rag": {
-          "supports": true,
-          "observations": [
-            "RAG hipotezi 'dangerous_proximity' ile eşleşmektedir."
-          ],
-          "limitations": [
-            "RAG tek başına kanıt değildir."
-          ]
-        },
-        "agreement": "corroborated",
-        "resolution": "Geometrik ve görsel kanıtlar tehlikeli yakınlığı desteklemektedir. Ancak, bu durum patlama anında değil, patlama sonrası kaçış sırasında tespit edilmiştir."
+        "resolution": "Geometrik ve görsel kanıtlar, patlama sonrası kaçış sırasında oluşan geçici bir yakınlığı doğrulamaktadır. Bu, asıl olayın (patlama) bir sonucu olarak değerlendirilir."
       },
       "uncertain": false,
       "uncertainty_reason": "",
@@ -246,22 +212,23 @@
   "uncertain": false,
   "uncertainty_reason": "",
   "confidence": 0.0,
-  "reasoning": "VLM ve sahne bağlamı, 00:07'de makineden çıkan patlama ve alevlerin kritik bir olay olduğunu doğrulamaktadır. Bu olay, personelin doğrudan yaralanma veya ölüm riskiyle karşı karşıya kalmasına neden olmuştur. KKD eksikliği ve forklift ile personel arasındaki tehlikeli yakınlık, bu kritik olayın riskini artıran faktörlerdir. Patlama anında personelin kaçış hareketi ve forkliftin geri çekilmesi, olayın ciddiyetini desteklemektedir. RAG hipotezleri, KKD eksikliği ve tehlikeli yakınlık gibi durumları desteklemektedir, ancak patlama olayı doğrudan görsel kanıtla doğrulanmıştır. Bu nedenle, overall_risk 'critical' olarak belirlenmiştir.",
+  "reasoning": "VLM analizi, makineden çıkan patlama ve alevleri 'critical' seviyede bir olay olarak doğrulamıştır. Bu, doğrudan bir yangın/patlama riski oluşturur. Geometrik veri, 00:17'de araç ve insan arasında tehlikeli yakınlık tespit etmiştir; ancak bu durum, patlama sonrası kaçış hareketliliği bağlamında, forkliftin olay yerinden uzaklaşma manevrası sırasında oluşmuş geçici bir yakınlık olarak yorumlanmıştır. RAG hipotezleri, potansiyel risk mekanizmalarını destekler ancak olayı kanıtlamaz. Genel risk, doğrulanmış patlama olayı nedeniyle 'critical' olarak belirlenmiştir. Acil durum protokolleri (siren, sağlık ekibi, yangın söndürme) tetiklenmelidir.",
   "actions": [
     "sound_alarm",
     "call_health_team",
     "secure_area",
-    "notify_supervisor"
+    "notify_supervisor",
+    "trigger_fire_suppression"
   ],
   "events": [
     {
-      "time": "00:07",
-      "event": "Makineden ani patlama ve alevler çıkması, personelin kaçışa başlaması",
+      "time": "00:08",
+      "event": "Makineden ani patlama ve alev çıkışı; personel ve forkliftin acil tahliye hareketi.",
       "event_type": "fire_explosion",
       "confidence": 0.95,
-      "timestamp_sec": 7.0,
-      "duration": 0.0,
-      "end_time": "00:07",
+      "timestamp_sec": 8.0,
+      "duration": 11.0,
+      "end_time": "00:19",
       "result_id": "result-1",
       "severity": "critical"
     }
@@ -281,6 +248,10 @@
     },
     {
       "tool_name": "notify_supervisor",
+      "params": {}
+    },
+    {
+      "tool_name": "trigger_fire_suppression",
       "params": {}
     }
   ],
@@ -308,6 +279,12 @@
       "tool": "notify_supervisor",
       "params": {},
       "mock_result": "notify_supervisor başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "trigger_fire_suppression",
+      "params": {},
+      "mock_result": "trigger_fire_suppression başarıyla simüle edildi."
     }
   ],
   "metadata": {
@@ -331,36 +308,6 @@
     ],
     "geometric_signals": [
       {
-        "event_type": "ppe_missing",
-        "timestamp": "00:00",
-        "description": "Personel insan_2 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "involved_track_ids": [
-          2
-        ],
-        "metadata": {
-          "missing_ppe": [
-            "baret",
-            "yelek"
-          ]
-        }
-      },
-      {
-        "event_type": "ppe_missing",
-        "timestamp": "00:17",
-        "description": "Personel insan_7 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "involved_track_ids": [
-          7
-        ],
-        "metadata": {
-          "missing_ppe": [
-            "baret",
-            "yelek"
-          ]
-        }
-      },
-      {
         "event_type": "dangerous_proximity",
         "timestamp": "00:17",
         "description": "arac ve insan arasında tehlikeli yakınlık (~65 piksel).",
@@ -373,132 +320,75 @@
           "estimated_distance_pixels": 64.63451090555264,
           "effective_limit_pixels": 100
         }
-      },
-      {
-        "event_type": "ppe_missing",
-        "timestamp": "00:19",
-        "description": "Personel insan_8 eksik KKD: baret, yelek.",
-        "confidence": 0.7,
-        "involved_track_ids": [
-          8
-        ],
-        "metadata": {
-          "missing_ppe": [
-            "baret",
-            "yelek"
-          ]
-        }
       }
     ],
     "vlm_interpretation": {
-      "packet_id": "08c9cd04-2d76-4678-b48f-c2e633d7a307",
+      "packet_id": "f5f25894-42b7-45c7-ba0d-28349544f4d6",
       "video_id": "daily-safety-failsthis-is-you-must-pay-a-abe7b2",
       "model_name": "vlm",
       "model_backend": "server",
-      "scene_summary_tr": "Sanayi bir üretim alanında, bir personel makineye yakın bir alanda çalışırken, bir forklift makinenin hemen yanında duruyor. 00:07'de makineden ani bir patlama ve alevler çıkıyor, personel kaçmaya başlıyor. Forklift sürücüsü durumu fark ederek geri çekiliyor. Patlamadan sonra duman ve parçalar yerde yayılıyor.",
+      "scene_summary_tr": "Sanayi bir üretim alanında, bir personel makineye yakın bir alanda çalışırken, yanındaki bir makineden ani bir patlama ve alevler çıkıyor. Patlamadan sonra personel kaçmaya başlıyor ve yerde parçalar dağılıyor. Aynı anda bir forklift, olay yerinden uzaklaşmaya başlıyor.",
       "detected_entities": [
         {
           "label": "person",
           "confidence_hint": "high",
-          "notes_tr": "Makineye yakın çalışan bir kişi ve forklift sürücüsü görülmektedir."
+          "notes_tr": "Makinenin yanında çalışan bir kişi, patlamadan sonra kaçıyor."
         },
         {
           "label": "vehicle",
           "confidence_hint": "high",
-          "notes_tr": "Sarı renkli forklift, makinenin hemen yanında duruyor. Tipi forklift olarak net bir şekilde tanımlanabilir."
+          "notes_tr": "Sarı renkli forklift, olay sırasında hareket halinde. Tipi forklift olabilir, ancak kesin model bilgisi yok."
         },
         {
           "label": "machine",
           "confidence_hint": "high",
-          "notes_tr": "Büyük boyutlu, metalik yapıda üretim makinesi. Patlama noktasıdır."
+          "notes_tr": "Yüksek yapıda, metalik, üretim hattı makinesi. Patlama bu makineden geliyor."
         },
         {
           "label": "smoke or flame",
           "confidence_hint": "high",
-          "notes_tr": "00:07'den itibaren makineden alevler ve duman çıkıyor, patlama sonrası yerde parçalar yayılıyor."
+          "notes_tr": "Patlamadan sonra alevler ve duman yükseliyor, yerde parçalar dağılıyor."
         },
         {
           "label": "rack/structure",
           "confidence_hint": "medium",
-          "notes_tr": "Makine etrafında metal raf ve koruyucu bariyerler mevcut."
+          "notes_tr": "Sarı rölelerle çevrili, üretim hattı platformu."
         }
       ],
       "detected_actions_tr": [
-        "Personel makineye yakın bir alanda çalışırken",
-        "Forklift makinenin yanında duruyor",
-        "Makineden ani bir patlama ve alevler çıkıyor",
-        "Personel kaçmaya başlıyor",
-        "Forklift sürücüsü geri çekiliyor",
-        "Patlamadan sonra duman ve parçalar yerde yayılıyor"
+        "Personel makineye yakın bir alanda çalışıyor.",
+        "Makineden ani bir patlama ve alevler çıkıyor.",
+        "Personel kaçmaya başlıyor.",
+        "Forklift olay yerinden uzaklaşıyor.",
+        "Yerde parçalar dağılıyor ve duman yükseliyor."
       ],
       "confidence_overall": 0.9,
       "inference": {
-        "latency_ms": 15716.682000005676,
-        "tokens_generated": 572
+        "latency_ms": 9451.392699993448,
+        "tokens_generated": 527
       },
-      "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi bir üretim alanında, bir personel makineye yakın bir alanda çalışırken, bir forklift makinenin hemen yanında duruyor. 00:07'de makineden ani bir patlama ve alevler çıkıyor, personel kaçmaya başlıyor. Forklift sürücüsü durumu fark ederek geri çekiliyor. Patlamadan sonra duman ve parçalar yerde yayılıyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makineye yakın çalışan bir kişi ve forklift sürücüsü görülmektedir.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli forklift, makinenin hemen yanında duruyor. Tipi forklift olarak net bir şekilde tanımlanabilir.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Büyük boyutlu, metalik yapıda üretim makinesi. Patlama noktasıdır.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"00:07'den itibaren makineden alevler ve duman çıkıyor, patlama sonrası yerde parçalar yayılıyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makine etrafında metal raf ve koruyucu bariyerler mevcut.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Personel makineye yakın bir alanda çalışırken\",\n    \"Forklift makinenin yanında duruyor\",\n    \"Makineden ani bir patlama ve alevler çıkıyor\",\n    \"Personel kaçmaya başlıyor\",\n    \"Forklift sürücüsü geri çekiliyor\",\n    \"Patlamadan sonra duman ve parçalar yerde yayılıyor\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makineden ani patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşımaktadır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 7.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+      "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi bir üretim alanında, bir personel makineye yakın bir alanda çalışırken, yanındaki bir makineden ani bir patlama ve alevler çıkıyor. Patlamadan sonra personel kaçmaya başlıyor ve yerde parçalar dağılıyor. Aynı anda bir forklift, olay yerinden uzaklaşmaya başlıyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin yanında çalışan bir kişi, patlamadan sonra kaçıyor.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli forklift, olay sırasında hareket halinde. Tipi forklift olabilir, ancak kesin model bilgisi yok.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yüksek yapıda, metalik, üretim hattı makinesi. Patlama bu makineden geliyor.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Patlamadan sonra alevler ve duman yükseliyor, yerde parçalar dağılıyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sarı rölelerle çevrili, üretim hattı platformu.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Personel makineye yakın bir alanda çalışıyor.\",\n    \"Makineden ani bir patlama ve alevler çıkıyor.\",\n    \"Personel kaçmaya başlıyor.\",\n    \"Forklift olay yerinden uzaklaşıyor.\",\n    \"Yerde parçalar dağılıyor ve duman yükseliyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makineden ani patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 8.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
       "risk_events": [
         {
-          "description_tr": "Makineden ani patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşımaktadır.",
+          "description_tr": "Makineden ani patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşır.",
           "severity": "critical",
           "confidence": 0.95,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
-          "timestamp_sec": 7.0
+          "timestamp_sec": 8.0
         }
       ],
       "risk_flags_tr": [
-        "Makineden ani patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşımaktadır."
+        "Makineden ani patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşır."
       ],
       "computed_confidence": 0.76,
       "reasoning_trace": "",
       "segment_start_sec": 0.0,
       "segment_end_sec": 19.333333333333332,
-      "created_at": "2026-08-27T22:19:15.389102+00:00"
+      "created_at": "2026-08-28T06:54:05.131061+00:00"
     },
     "rag_context": {
       "hypotheses": [
-        {
-          "pattern": "ppe_missing",
-          "hazard_mechanism": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği.",
-          "applicability_questions": [
-            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
-          ],
-          "required_evidence": [
-            "insan yakınında baret/yelek tespit edilmedi",
-            "kafa koruyucu yok",
-            "reflektif yelek görünmüyor",
-            "KKD sınıfı tespit skoru düşük"
-          ],
-          "disconfirming_evidence": [
-            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
-          ],
-          "potential_hazards": [
-            "Kafa travması",
-            "Görünmezlik kaynaklı ezilme"
-          ],
-          "action_hints": [
-            "sound_alarm",
-            "notify_supervisor"
-          ],
-          "similarity": 0.16,
-          "evidence_status": "signal_candidate",
-          "matched_signal": {
-            "event_type": "ppe_missing",
-            "timestamp": "00:19",
-            "description": "Personel insan_8 eksik KKD: baret, yelek.",
-            "confidence": 0.7,
-            "involved_track_ids": [
-              8
-            ],
-            "metadata": {
-              "missing_ppe": [
-                "baret",
-                "yelek"
-              ]
-            }
-          }
-        },
         {
           "pattern": "dangerous_proximity",
           "hazard_mechanism": "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski.",
@@ -526,8 +416,25 @@
             "call_ambulance",
             "notify_supervisor"
           ],
-          "similarity": 0.468,
+          "similarity": 0.377,
+          "retrieval_confidence": 0.377,
           "evidence_status": "signal_candidate",
+          "risk_score": 80,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "forklift ve insan merkezi arası mesafe < güvenli eşik",
+            "forklift hareket yönü insana doğru",
+            "insan forklift güvenlik koridorunda",
+            "manevra sırasında insan yakın"
+          ],
+          "required_nodes": [
+            "forklift",
+            "insan"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
           "matched_signal": {
             "event_type": "dangerous_proximity",
             "timestamp": "00:17",
@@ -570,8 +477,25 @@
             "secure_area",
             "notify_supervisor"
           ],
-          "similarity": 0.114,
+          "similarity": 0.098,
+          "retrieval_confidence": 0.098,
           "evidence_status": "structural_candidate",
+          "risk_score": 90,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "insan merkezi dikeyde ani düşüş (yüksek hız)",
+            "hız vektörü yukarıdan aşağıya ani değişim",
+            "insan bbox yüksekliği aniden küçüldü",
+            "insan hareketsiz zemin seviyesinde",
+            "çevresinde toplanma veya koşuşturma"
+          ],
+          "required_nodes": [
+            "insan"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -601,8 +525,72 @@
             "notify_supervisor",
             "sound_alarm"
           ],
-          "similarity": 0.09,
+          "similarity": 0.077,
+          "retrieval_confidence": 0.077,
           "evidence_status": "structural_candidate",
+          "risk_score": 50,
+          "risk_level": "Orta",
+          "indicators": [
+            "≥3 insan merkezi arası mesafe < eşik",
+            "insan sayısı yüksek dar alanda",
+            "hareket yönleri merkeze doğru",
+            "toplanma aktif çalışma bölgesinde"
+          ],
+          "required_nodes": [
+            "insan",
+            "insan",
+            "insan"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "ppe_missing",
+          "hazard_mechanism": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
+          ],
+          "required_evidence": [
+            "insan yakınında baret/yelek tespit edilmedi",
+            "kafa koruyucu yok",
+            "reflektif yelek görünmüyor",
+            "KKD sınıfı tespit skoru düşük"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Kafa travması",
+            "Görünmezlik kaynaklı ezilme"
+          ],
+          "action_hints": [
+            "sound_alarm",
+            "notify_supervisor"
+          ],
+          "similarity": 0.154,
+          "retrieval_confidence": 0.154,
+          "evidence_status": "structural_candidate",
+          "risk_score": 45,
+          "risk_level": "Orta",
+          "indicators": [
+            "insan yakınında baret/yelek tespit edilmedi",
+            "kafa koruyucu yok",
+            "reflektif yelek görünmüyor",
+            "KKD sınıfı tespit skoru düşük"
+          ],
+          "required_nodes": [
+            "insan"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -629,8 +617,22 @@
             "sound_alarm",
             "notify_supervisor"
           ],
-          "similarity": 0.041,
+          "similarity": 0.033,
+          "retrieval_confidence": 0.033,
           "evidence_status": "structural_candidate",
+          "risk_score": 65,
+          "risk_level": "Orta",
+          "indicators": [
+            "yetkisiz bölgede insan tespiti",
+            "güvenlik ihlali çizgisi aşıldı"
+          ],
+          "required_nodes": [
+            "insan"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -658,8 +660,22 @@
             "sound_alarm",
             "notify_supervisor"
           ],
-          "similarity": 0.031,
+          "similarity": 0.029,
+          "retrieval_confidence": 0.029,
           "evidence_status": "structural_candidate",
+          "risk_score": 60,
+          "risk_level": "Orta",
+          "indicators": [
+            "insan hız vektörü yüksek",
+            "koşma tespiti"
+          ],
+          "required_nodes": [
+            "insan"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -667,6 +683,50 @@
         }
       ],
       "unverified_hypotheses": [
+        {
+          "pattern": "forklift_collision",
+          "hazard_mechanism": "İki forklift veya forklift ile sabit nesne arasında çarpışma.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: forklift?"
+          ],
+          "required_evidence": [
+            "iki araç arasında temas",
+            "çarpma sesi/darbe",
+            "hasarlı forklift veya nesne",
+            "VLM tarafından forklift çarpışması bildirimi"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Yaralanma",
+            "Maddi hasar",
+            "Yangın/sızıntı"
+          ],
+          "action_hints": [
+            "stop_forklift",
+            "call_health_team",
+            "notify_supervisor"
+          ],
+          "similarity": 0.198,
+          "retrieval_confidence": 0.198,
+          "evidence_status": "unverified",
+          "risk_score": 75,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "iki araç arasında temas",
+            "çarpma sesi/darbe",
+            "hasarlı forklift veya nesne",
+            "VLM tarafından forklift çarpışması bildirimi"
+          ],
+          "required_nodes": [
+            "forklift"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ]
+        },
         {
           "pattern": "forklift_tip_over",
           "hazard_mechanism": "Forkliftin yan yatması, devrilmesi veya tekerleklerinin yerden kesilmesi.",
@@ -695,8 +755,25 @@
             "notify_supervisor",
             "stop_forklift"
           ],
-          "similarity": 0.238,
-          "evidence_status": "unverified"
+          "similarity": 0.172,
+          "retrieval_confidence": 0.172,
+          "evidence_status": "unverified",
+          "risk_score": 95,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "forklift bbox en/boy oranı anormal (yatay)",
+            "forklift açısı > 20° eğik",
+            "forklift merkezi ani yatay kayma",
+            "forklift hareketsiz ve anormal pozisyonda",
+            "çevresinde insan toplanması"
+          ],
+          "required_nodes": [
+            "forklift"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ]
         },
         {
           "pattern": "overhead_hazard",
@@ -718,132 +795,113 @@
             "sound_alarm",
             "secure_area"
           ],
-          "similarity": 0.131,
-          "evidence_status": "unverified"
+          "similarity": 0.09,
+          "retrieval_confidence": 0.09,
+          "evidence_status": "unverified",
+          "risk_score": 85,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "insanın hemen üzerinde hareketli yük"
+          ],
+          "required_nodes": [],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ]
         },
         {
-          "pattern": "vehicle_speeding",
-          "hazard_mechanism": "Forkliftin veya aracın tesis içi hız limitini aşması.",
+          "pattern": "conveyor_entanglement",
+          "hazard_mechanism": "Personelin kıyafetinin, saçının veya malzemesinin hareketli banda sıkışması.",
           "applicability_questions": [
-            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: forklift?"
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: makine, insan?"
           ],
           "required_evidence": [
-            "araç hız vektörü > limit"
+            "bant hareket halinde",
+            "insan banta yakın sıkışmış",
+            "tambur/aktarma mekanizması açık",
+            "VLM tarafından bant sıkışma"
           ],
           "disconfirming_evidence": [
             "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
           ],
           "potential_hazards": [
-            "Manevra kaybı",
-            "Ani çarpışma"
+            "Sıkışma",
+            "Ezilme",
+            "Ölüm"
           ],
           "action_hints": [
-            "sound_alarm",
-            "stop_forklift",
-            "notify_supervisor"
+            "isolate_electrical_grid",
+            "call_ambulance",
+            "secure_area"
           ],
-          "similarity": 0.068,
-          "evidence_status": "unverified"
+          "similarity": 0.086,
+          "retrieval_confidence": 0.086,
+          "evidence_status": "unverified",
+          "risk_score": 90,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "bant hareket halinde",
+            "insan banta yakın sıkışmış",
+            "tambur/aktarma mekanizması açık",
+            "VLM tarafından bant sıkışma"
+          ],
+          "required_nodes": [
+            "makine",
+            "insan"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ]
         },
         {
-          "pattern": "pallet_collapse",
-          "hazard_mechanism": "Palet yükünün devrilmesi, çökmesi veya tehlikeli pozisyonda olması.",
+          "pattern": "scaffold_collapse",
+          "hazard_mechanism": "İskele sisteminin çökmesi veya parçalanması sonucu personel ve malzeme düşmesi.",
           "applicability_questions": [
-            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: palet?"
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: iskele, insan?"
           ],
           "required_evidence": [
-            "palet bbox eğimli veya anormal",
-            "palet yüksekte dengesiz pozisyon",
-            "palet üzerindeki yük dağılımı bozulmuş",
-            "palet çevresinde insan varlığı",
-            "istif yüksekliği güvenli sınırı aşıyor"
+            "iskele parçaları dağılmış",
+            "personel iskele üzerinde sallanıyor",
+            "ankraj/ayaklar gevşek",
+            "VLM tarafından iskele çökme bildirimi"
           ],
           "disconfirming_evidence": [
             "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
           ],
           "potential_hazards": [
-            "Çalışanların ezilmesi",
-            "Acil çıkış yollarının kapanması"
+            "Çoklu düşme",
+            "Ezilme",
+            "Ölüm"
           ],
           "action_hints": [
-            "secure_area",
-            "notify_supervisor"
+            "broadcast_evacuation",
+            "call_ambulance",
+            "secure_area"
           ],
-          "similarity": 0.066,
-          "evidence_status": "unverified"
-        },
-        {
-          "pattern": "leakage",
-          "hazard_mechanism": "Sıvı/kimyasal sızıntı veya birikintisi — kayma ve zehirlenme riski.",
-          "applicability_questions": [
-            "Bu mekanizma için görüntü ve faaliyet bağlamında yeterli kanıt var mı?"
+          "similarity": 0.081,
+          "retrieval_confidence": 0.081,
+          "evidence_status": "unverified",
+          "risk_score": 95,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "iskele parçaları dağılmış",
+            "personel iskele üzerinde sallanıyor",
+            "ankraj/ayaklar gevşek",
+            "VLM tarafından iskele çökme bildirimi"
           ],
-          "required_evidence": [
-            "VLM tarafından sıvı birikintisi tespiti",
-            "zemin yansıması veya ıslak görünüm",
-            "garip renkte sıvı birikimi",
-            "insan kayma riski bölgede"
+          "required_nodes": [
+            "iskele",
+            "insan"
           ],
-          "disconfirming_evidence": [
-            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
-          ],
-          "potential_hazards": [
-            "Kayma ve düşme",
-            "Kimyasal yanık",
-            "Yangın (yanıcı madde ise)"
-          ],
-          "action_hints": [
-            "activate_cbrn_protocol",
-            "secure_area",
-            "notify_supervisor"
-          ],
-          "similarity": 0.054,
-          "evidence_status": "unverified"
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ]
         }
       ],
       "recommended_actions": [],
       "matched_patterns": [
-        {
-          "pattern": "ppe_missing",
-          "hazard_mechanism": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği.",
-          "applicability_questions": [
-            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
-          ],
-          "required_evidence": [
-            "insan yakınında baret/yelek tespit edilmedi",
-            "kafa koruyucu yok",
-            "reflektif yelek görünmüyor",
-            "KKD sınıfı tespit skoru düşük"
-          ],
-          "disconfirming_evidence": [
-            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
-          ],
-          "potential_hazards": [
-            "Kafa travması",
-            "Görünmezlik kaynaklı ezilme"
-          ],
-          "action_hints": [
-            "sound_alarm",
-            "notify_supervisor"
-          ],
-          "similarity": 0.16,
-          "evidence_status": "signal_candidate",
-          "matched_signal": {
-            "event_type": "ppe_missing",
-            "timestamp": "00:19",
-            "description": "Personel insan_8 eksik KKD: baret, yelek.",
-            "confidence": 0.7,
-            "involved_track_ids": [
-              8
-            ],
-            "metadata": {
-              "missing_ppe": [
-                "baret",
-                "yelek"
-              ]
-            }
-          }
-        },
         {
           "pattern": "dangerous_proximity",
           "hazard_mechanism": "Forklift ile personel arasında tehlikeli yakınlık — çarpma riski.",
@@ -871,8 +929,25 @@
             "call_ambulance",
             "notify_supervisor"
           ],
-          "similarity": 0.468,
+          "similarity": 0.377,
+          "retrieval_confidence": 0.377,
           "evidence_status": "signal_candidate",
+          "risk_score": 80,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "forklift ve insan merkezi arası mesafe < güvenli eşik",
+            "forklift hareket yönü insana doğru",
+            "insan forklift güvenlik koridorunda",
+            "manevra sırasında insan yakın"
+          ],
+          "required_nodes": [
+            "forklift",
+            "insan"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
           "matched_signal": {
             "event_type": "dangerous_proximity",
             "timestamp": "00:17",
@@ -915,8 +990,25 @@
             "secure_area",
             "notify_supervisor"
           ],
-          "similarity": 0.114,
+          "similarity": 0.098,
+          "retrieval_confidence": 0.098,
           "evidence_status": "structural_candidate",
+          "risk_score": 90,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "insan merkezi dikeyde ani düşüş (yüksek hız)",
+            "hız vektörü yukarıdan aşağıya ani değişim",
+            "insan bbox yüksekliği aniden küçüldü",
+            "insan hareketsiz zemin seviyesinde",
+            "çevresinde toplanma veya koşuşturma"
+          ],
+          "required_nodes": [
+            "insan"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -946,8 +1038,72 @@
             "notify_supervisor",
             "sound_alarm"
           ],
-          "similarity": 0.09,
+          "similarity": 0.077,
+          "retrieval_confidence": 0.077,
           "evidence_status": "structural_candidate",
+          "risk_score": 50,
+          "risk_level": "Orta",
+          "indicators": [
+            "≥3 insan merkezi arası mesafe < eşik",
+            "insan sayısı yüksek dar alanda",
+            "hareket yönleri merkeze doğru",
+            "toplanma aktif çalışma bölgesinde"
+          ],
+          "required_nodes": [
+            "insan",
+            "insan",
+            "insan"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "ppe_missing",
+          "hazard_mechanism": "Baret, yelek veya diğer kişisel koruyucu donanım (KKD) eksikliği.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
+          ],
+          "required_evidence": [
+            "insan yakınında baret/yelek tespit edilmedi",
+            "kafa koruyucu yok",
+            "reflektif yelek görünmüyor",
+            "KKD sınıfı tespit skoru düşük"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Kafa travması",
+            "Görünmezlik kaynaklı ezilme"
+          ],
+          "action_hints": [
+            "sound_alarm",
+            "notify_supervisor"
+          ],
+          "similarity": 0.154,
+          "retrieval_confidence": 0.154,
+          "evidence_status": "structural_candidate",
+          "risk_score": 45,
+          "risk_level": "Orta",
+          "indicators": [
+            "insan yakınında baret/yelek tespit edilmedi",
+            "kafa koruyucu yok",
+            "reflektif yelek görünmüyor",
+            "KKD sınıfı tespit skoru düşük"
+          ],
+          "required_nodes": [
+            "insan"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -974,8 +1130,22 @@
             "sound_alarm",
             "notify_supervisor"
           ],
-          "similarity": 0.041,
+          "similarity": 0.033,
+          "retrieval_confidence": 0.033,
           "evidence_status": "structural_candidate",
+          "risk_score": 65,
+          "risk_level": "Orta",
+          "indicators": [
+            "yetkisiz bölgede insan tespiti",
+            "güvenlik ihlali çizgisi aşıldı"
+          ],
+          "required_nodes": [
+            "insan"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -1003,8 +1173,22 @@
             "sound_alarm",
             "notify_supervisor"
           ],
-          "similarity": 0.031,
+          "similarity": 0.029,
+          "retrieval_confidence": 0.029,
           "evidence_status": "structural_candidate",
+          "risk_score": 60,
+          "risk_level": "Orta",
+          "indicators": [
+            "insan hız vektörü yüksek",
+            "koşma tespiti"
+          ],
+          "required_nodes": [
+            "insan"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -1016,14 +1200,14 @@
       {
         "result_id": "result-1",
         "result_type": "incident",
-        "seconds": 7.0,
-        "timestamp": "00:07",
-        "end_time": "00:07",
-        "timestamp_sec": 7.0,
-        "duration": 0.0,
+        "seconds": 8.0,
+        "timestamp": "00:08",
+        "end_time": "00:19",
+        "timestamp_sec": 8.0,
+        "duration": 11.0,
         "event_type": "fire_explosion",
-        "event": "Makineden ani patlama ve alevler çıkması, personelin kaçışa başlaması",
-        "hazard_mechanism": "Makineden çıkan ani patlama ve alevler, personelin doğrudan yanık, travma veya ölüm riskine maruz kalmasına neden olmuştur. Forkliftin yakınlığı ikincil ezilme riskini artırmıştır.",
+        "event": "Makineden ani patlama ve alev çıkışı; personel ve forkliftin acil tahliye hareketi.",
+        "hazard_mechanism": "Makineden kaynaklanan ani patlama ve alevler; personel için yanık, travma ve duman zehirlenmesi riski; forklift için yangın yayılımı ve devrilme riski.",
         "confidence": 0.95,
         "severity": "critical",
         "evidence_agreement": "corroborated",

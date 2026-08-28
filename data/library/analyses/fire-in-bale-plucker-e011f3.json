@@ -2,22 +2,22 @@
   "slug": "fire-in-bale-plucker-e011f3",
   "video_file": "videos/Fire in Bale Plucker.mp4",
   "video_name": "Fire in Bale Plucker",
-  "analyzed_at": "2026-08-27T22:22:46.438187+00:00",
-  "analysis_seconds": 69.9,
+  "analyzed_at": "2026-08-28T06:59:39.250498+00:00",
+  "analysis_seconds": 129.5,
   "video": {
     "duration_sec": 127.08,
     "fps": 25.0,
     "width": 440,
     "height": 360
   },
-  "summary": "Üretim tesisinde, beyaz pamuk benzeri bir malzemenin işlendiği taşıyıcı bant hattında, 00:50'den itibaren makine içinde ve çevresinde alevler ile yoğun duman oluşumu gözlemlenmiştir. Yangın, 01:00-02:07 aralığında hızla büyüyerek makine etrafındaki yükleri de içine almış ve ortamı yoğun dumanla kaplayarak görüşü engellemiştir. Görsel kanıtlar (VLM) yangın ve dumanı yüksek güvenle doğrularken, geometrik izleme verisi (Scene Graph) sadece tek bir paleti tespit etmiş, yangının yayılımını veya palet çökmesi gibi yapısal bir olayı destekleyecek hareket/çarpışma verisi sunmamıştır. RAG hipotezleri (palet çökmesi) bağlamda palet varlığını işaret etse de, yangın olayı palet çökmesinden bağımsız, doğrudan görsel olarak kanıtlanmış bir acil durumdur. İnsan varlığı tespit edilmediği için KKD veya erişim kısıtlaması gibi hipotezler doğrulanamamıştır.",
-  "headline": "Makine ve taşıyıcı bant üzerindeki pamuk benzeri malzemede yangın başl…",
+  "summary": "Üretim tesisinde, beyaz pamuk benzeri yanıcı bir malzemenin işlendiği taşıyıcı bant hattında, 00:50 civarında makine içinden başlayan ve hızla yayılan bir yangın gözlemlenmiştir. Alevler kısa sürede malzemeye ve çevreye sıçrayarak yoğun duman oluşumuna neden olmuş, 02:00 itibarıyla sahne tamamen dumanla kaplanmış ve görüş mesafesi sıfıra inmiştir. RAG verilerindeki palet çökme veya raf aşırı yüklenme hipotezleri, mevcut yangın olayı ve duman yoğunluğu nedeniyle doğrulanamamış veya öncelikli risk mekanizması olarak kabul edilmemiştir. Görsel kanıtlar yangının varlığını ve şiddetini net bir şekilde desteklerken, geometrik izleme duman nedeniyle kısıtlı kalmıştır.",
+  "headline": "Üretim hattında makine kaynaklı yangın başlangıcı ve yayılımı",
   "risk": "Yüksek",
   "overall_risk": "critical",
   "scene_context": {
     "environment": {
       "type": "production_facility",
-      "description": "Beyaz, pamuk benzeri malzemenin işlendiği bir üretim tesisi. Taşıyıcı bantlar ve işleme makineleri mevcuttur. 00:50'den itibaren ortam alev ve dumanla dolmuştur.",
+      "description": "Beyaz, pamuk benzeri yanıcı malzemenin işlendiği bir üretim tesisi. Taşıyıcı bantlar ve işleme makineleri mevcuttur.",
       "visible_entities": {
         "palet": 832
       },
@@ -28,42 +28,30 @@
         "smoke or flame"
       ],
       "visibility_limits": [
-        "01:15'ten itibaren yoğun duman nedeniyle görüş alanı büyük ölçüde kısıtlanmıştır."
+        "02:00 itibarıyla yoğun duman nedeniyle sahne tamamen görünmez hale gelmiştir."
       ]
     },
     "activities": [
       {
-        "activity": "Taşıyıcı bantlarda beyaz malzeme taşınması ve makinede işlenmesi.",
+        "activity": "Taşıyıcı bandlarda beyaz yanıcı madde işleniyor.",
         "time_range": {
           "start_sec": 0.0,
           "end_sec": 50.0
         },
         "participants": [],
-        "operational_state": "normal_operation",
+        "operational_state": "active",
         "evidence": [
           "visual"
         ]
       },
       {
-        "activity": "Makine içinde ve çevresinde alev ve duman oluşumu (Yangın başlangıcı).",
+        "activity": "Makineden çıkan alevlerin malzemeye yayılması ve yangının büyümesi.",
         "time_range": {
           "start_sec": 50.0,
           "end_sec": 127.0
         },
         "participants": [],
-        "operational_state": "fire_incident",
-        "evidence": [
-          "visual"
-        ]
-      },
-      {
-        "activity": "Yangının yükler üzerinde yayılması ve ortamın dumanla dolması.",
-        "time_range": {
-          "start_sec": 60.0,
-          "end_sec": 127.0
-        },
-        "participants": [],
-        "operational_state": "escalating_fire",
+        "operational_state": "emergency",
         "evidence": [
           "visual"
         ]
@@ -74,15 +62,13 @@
         "id": "production_line_zone",
         "purpose": "malzeme işleme ve taşıma",
         "active_operations": [
-          "yangın",
-          "duman yayılımı"
+          "yangın"
         ],
-        "access_constraints": "Görüş engeli ve yangın nedeniyle erişim tehlikelidir."
+        "access_constraints": "acil durum nedeniyle erişim yasak"
       }
     ],
     "context_uncertainties": [
-      "İnsan varlığı görsel olarak tespit edilememiştir (duman yoğunluğu nedeniyle).",
-      "Yangının tam kaynağı (mekanik arıza mı, elektriksel mi) görsel olarak ayırt edilememiştir."
+      "Duman yoğunluğu nedeniyle insan varlığı ve paletlerin fiziksel durumu (çökme riski vb.) son karelerde doğrulanamamaktadır."
     ]
   },
   "results": [
@@ -93,46 +79,46 @@
       "end_time": "02:07",
       "timestamp_sec": 50.0,
       "duration": 77.0,
-      "event": "Makine ve taşıyıcı bant üzerindeki pamuk benzeri malzemede yangın başlangıcı ve yayılımı",
-      "event_type": "fire_and_smoke",
+      "event": "Üretim hattında makine kaynaklı yangın başlangıcı ve yayılımı",
+      "event_type": "fire_outbreak_and_spread",
       "subjects": [
         "machine",
-        "load",
+        "load (pamuk benzeri madde)",
         "conveyor"
       ],
       "zone": "production_line_zone",
-      "hazard_mechanism": "Makinede oluşan alevlerin, yanıcı pamuk benzeri malzeme üzerinde hızla yayılması; yoğun dumanın solunum yolu tahrişi, zehirlenme ve tahliye yollarını görme engeli oluşturması.",
+      "hazard_mechanism": "Makinede oluşan aşırı ısınma veya kıvılcım, yanıcı pamuk benzeri malzemeyi tutuşturmuş; alevler taşıyıcı bant üzerindeki malzeme ile hızla yayılarak büyük bir yangına ve yoğun duman oluşumuna neden olmuştur. Duman, solunum yolu tahrişi, zehirlenme ve tahliye engeli riski oluşturmaktadır.",
       "severity": "critical",
       "evidence": {
         "geometric": {
           "supports": false,
           "observations": [],
           "limitations": [
-            "Sadece tek bir palet tespit edildi, yangın yayılımı veya çökme hareketi geometrik olarak izlenmedi."
+            "Duman ve alev nedeniyle nesne sınırları ve hareket takibi (track) 00:50 sonrası güvenilir değildir."
           ]
         },
         "visual": {
           "supports": true,
           "observations": [
-            "00:50'den itibaren alev ve duman görsel olarak net.",
-            "01:15'te görüş alanı duman nedeniyle kısıtlandı.",
-            "Yangının yükler üzerinde yayılması gözlemlendi."
+            "00:50'de makine içinden alev çıkışı",
+            "Alevlerin malzemeye sıçraması ve yayılması",
+            "Yoğun dumanın sahneyi kaplaması ve görüşü engellemesi"
           ],
           "limitations": [
-            "Duman nedeniyle insan varlığı veya detaylı ekipman durumu son karelerde belirsiz."
+            "Duman nedeniyle son karelerde detaylı görsel analiz mümkün değildir."
           ]
         },
         "rag": {
           "supports": false,
           "observations": [
-            "Palet çökmesi hipotezi palet varlığını destekler ancak yangın mekanizmasını açıklamaz."
+            "RAG'deki 'pallet_collapse' ve 'rack_overloading' hipotezleri yangın bağlamında ikincil kalmıştır ve yangın mekanizmasını açıklamaz."
           ],
           "limitations": [
-            "RAG verisi yangın olayını kanıtlamaz, sadece yapısal riskleri listeler."
+            "RAG verileri yangın öncesi yapısal risklere odaklanmıştır, mevcut yangın olayını tespit etmemiştir."
           ]
         },
         "agreement": "single_source",
-        "resolution": "Yangın olayı sadece görsel (VLM) kanıtla doğrulanmıştır. Geometrik veri yangını desteklemese de, alev ve dumanın görsel varlığı ve zaman içindeki büyümesi (00:50-02:07) olayı kesin kılar. RAG hipotezleri (palet çökmesi) bu spesifik yangın olayı için ikincil veya doğrulanmamıştır."
+        "resolution": "Görsel kanıtlar (VLM) yangın olayını %95 güvenle doğrulamaktadır. RAG hipotezleri (palet çökme vb.) mevcut yangın senaryosu için geçerli bir kanıt sağlamamakta ve çelişki oluşturmamaktadır; sadece yangın dışı risklerdir. Geometrik veri duman nedeniyle yetersizdir."
       },
       "uncertain": false,
       "uncertainty_reason": "",
@@ -142,18 +128,19 @@
   "uncertain": false,
   "uncertainty_reason": "",
   "confidence": 0.0,
-  "reasoning": "Görsel analiz (VLM), 00:50'den itibaren makine ve yüklerde alev ve duman oluşumunu, ardından yangının yayılmasını ve yoğun dumanla ortamın kapanmasını yüksek güvenle (0.95) tespit etmiştir. Bu, acil bir yangın olayıdır. Geometrik veri (Scene Graph) sadece statik bir palet tespit etmiş, yangın dinamiklerini desteklememiştir; ancak yangın gibi görsel olarak belirgin bir olayda VLM verisi baskındır. RAG'deki 'palet çökmesi' hipotezi, palet varlığına dayalı olsa da, mevcut yangın olayının bir sonucu veya nedeni olarak kanıtlanmamıştır. İnsan varlığı tespit edilmediğinden, KKD veya erişim ihlali gibi riskler değerlendirilememiştir. Olayın şiddeti (yangın, duman, yayılım) 'critical' seviyesindedir. Acil durum protokolleri (siren, alanı güvence altına alma, yangın söndürme sistemi tetikleme) devreye alınmalıdır.",
+  "reasoning": "Görsel analiz (VLM), 00:50'de başlayan ve hızla yayılan bir yangın ile yoğun duman oluşumunu net bir şekilde tespit etmiştir. Bu durum, 'critical' seviyesinde bir acil durumdur. RAG verilerindeki palet veya raf ile ilgili hipotezler, mevcut yangın olayının mekanizmasını açıklamaz ve yangın varlığında ikincil riskler olarak kalır; bu nedenle yangın riskini düşürmezler. Geometrik veri, duman nedeniyle yetersizdir ancak görsel kanıt yangının varlığını ve şiddetini tek başına doğrulamak için yeterlidir. Acil durum protokollerinin (siren, yangın söndürme, alan kilitleme) hemen devreye sokulması gerekmektedir.",
   "actions": [
     "sound_alarm",
     "secure_area",
     "trigger_fire_suppression",
+    "lockdown_facility",
     "notify_supervisor"
   ],
   "events": [
     {
       "time": "00:50",
-      "event": "Makine ve taşıyıcı bant üzerindeki pamuk benzeri malzemede yangın başlangıcı ve yayılımı",
-      "event_type": "fire_and_smoke",
+      "event": "Üretim hattında makine kaynaklı yangın başlangıcı ve yayılımı",
+      "event_type": "fire_outbreak_and_spread",
       "confidence": 0.95,
       "timestamp_sec": 50.0,
       "duration": 77.0,
@@ -173,6 +160,10 @@
     },
     {
       "tool_name": "trigger_fire_suppression",
+      "params": {}
+    },
+    {
+      "tool_name": "lockdown_facility",
       "params": {}
     },
     {
@@ -198,6 +189,12 @@
       "tool": "trigger_fire_suppression",
       "params": {},
       "mock_result": "trigger_fire_suppression başarıyla simüle edildi."
+    },
+    {
+      "status": "success",
+      "tool": "lockdown_facility",
+      "params": {},
+      "mock_result": "lockdown_facility başarıyla simüle edildi."
     },
     {
       "status": "success",
@@ -227,45 +224,45 @@
     ],
     "geometric_signals": [],
     "vlm_interpretation": {
-      "scene_summary_tr": "[00:00-01:00] Bir üretim tesisinde, iki taşımada beyaz, pamuk benzeri bir madde taşınıyor. Üstteki bir makine, bu maddeyi keserken, 00:50'den itibaren makinenin içinde ve etrafında alevler ve duman oluşmaya başlıyor. Bu, muhtemelen bir yangın veya aşırı ısınma olayıdır. [01:00-02:00] Üretim tesisinde, bir makinenin etrafında ve üzerindeki beyaz, pamuk benzeri madde üzerinde alevler ve yoğun duman oluşumu devam ediyor. Yangın, makinenin etrafındaki yüklerde yayılıyor ve ortam giderek dumanla doluyor. 01:00'dan itibaren yangın hızla büyüyor ve 01:15'te yoğun duman nedeniyle görüş alanını büyük ölçüde engelliyor. [02:00-02:07] Üretim tesisindeki yangın, yoğun duman ve alevlerle devam ediyor. Görüntü, dumanla kaplı bir alanda yayılan küçük alevlerin dağılımını gösteriyor. Ortam, görsel olarak çok az netlikte ve tehlikeli bir durumda.",
+      "scene_summary_tr": "[00:00-01:00] Bir üretim tesisinde, iki taşımada beyaz, pamuk benzeri bir madde taşınıyor. Üstteki bir makine, bu maddeyi keserken, 00:50'den itibaren makinenin içinden ve etrafında alevler çıkıyor. Bu, muhtemelen bir yangın veya aşırı ısınma olayıdır. [01:00-02:00] Üretim tesisinde, bir makinenin etrafında ve taşımada bulunan beyaz, pamuk benzeri madde üzerinde alevler hızla yayılıyor. Yangın, kısa sürede yoğun duman oluşturarak sahneyi kaplıyor ve üretim hattının büyük bir kısmını etkiliyor. [02:00-02:07] Üretim tesisindeki yangın, yoğun dumanla birlikte devam ediyor. Sahne, alevlerin hâlâ yayıldığı ve çevreyi kaplayan dumanla dolu bir ortamı gösteriyor. İşletme alanı tamamen görünmez hale gelmiş durumda.",
       "detected_entities": [
         {
           "label": "machine",
           "confidence_hint": "high",
-          "notes_tr": "Makine, taşımaya yerleştirilmiş bir kesme veya işleme cihazı gibi görünüyor. Üzerinde bir boru veya emme sistemi bulunuyor."
+          "notes_tr": "Makine, taşımaya yerleştirilmiş bir kesme veya işleme cihazı gibi görünüyor. Üzerinde bir boru veya hava emme sistemi bulunuyor."
         },
         {
           "label": "load",
           "confidence_hint": "high",
-          "notes_tr": "Taşıyıcı bandlarda beyaz, pamuk benzeri bir madde (muhtemelen tekstil atığı veya yastık doldurucu) bulunmaktadır."
+          "notes_tr": "Taşıyıcı bandlarda beyaz, pamuk benzeri bir madde (muhtemelen tekstil atığı veya yastık doldurucu) bulunuyor."
         },
         {
           "label": "conveyor",
           "confidence_hint": "high",
-          "notes_tr": "İki uzun taşıyıcı band, üretim hattının bir parçası olarak görünüyor."
+          "notes_tr": "İki paralel taşıyıcı band, üretim hattının bir parçası olarak çalışmakta."
         },
         {
           "label": "smoke or flame",
           "confidence_hint": "high",
-          "notes_tr": "00:50'den itibaren makinenin içinde ve etrafında alevler ve duman oluşumu gözlemleniyor. Bu, yangın veya aşırı ısınma işaretidir."
+          "notes_tr": "00:50'den itibaren makinenin içinden ve etrafında alevler ve duman görünüyor. Bu, yangın veya aşırı ısınma işaretidir."
         }
       ],
       "detected_actions_tr": [
         "Taşıyıcı bandlarda beyaz madde ilerliyor.",
         "Makine, maddeyi kesiyor veya işliyor.",
-        "00:50'den itibaren makinede alevler ve duman oluşuyor.",
-        "Alevler, makinenin etrafındaki maddeye yayılıyor.",
-        "Makinenin etrafında ve yüklerde alevlerin yayılması",
-        "Yoğun dumanın ortama yayılması",
-        "Yangının zaman içinde büyümesi ve kontrol altına alınmaması",
-        "Görüş alanının duman nedeniyle azalması",
-        "Yangın, duman içinde yayılıyor.",
-        "Alevler, dumanla karışık olarak hareket ediyor.",
-        "Ortam, yoğun dumanla kaplı ve görsel olarak belirsiz."
+        "Makinenin içinden 00:50'den itibaren alevler çıkıyor.",
+        "Alevler, taşımada bulunan maddeye yayılıyor.",
+        "Makinenin etrafında ve taşımada bulunan madde üzerinde alevler hızla yayılıyor.",
+        "Yangın, üretim hattının büyük bir kısmını etkiliyor.",
+        "Yoğun duman oluşumu, sahneyi giderek kaplıyor.",
+        "Alevler zamanla azalıyor ve duman yoğunluğu artıyor.",
+        "Yangın devam ediyor.",
+        "Duman yoğunluğu artıyor.",
+        "Alevlerin birkaç noktasında hâlâ yanması gözlemleniyor."
       ],
       "risk_events": [
         {
-          "description_tr": "Makine içinde ve etrafında alevler ve duman oluşumu, yangın tehlikesi oluşturuyor. Bu, üretim hattında çalışanlara ciddi bir tehlike teşkil edebilir ve yangın yayılabilir.",
+          "description_tr": "Makinenin içinden çıkan alevler, taşımada bulunan yanıcı maddeye yayılıyor. Bu, üretim hattında büyük bir yangın tehlikesi oluşturuyor ve çevredeki malzemeleri, ekipmanları ve çalışanları (varsa) ciddi şekilde tehdit ediyor.",
           "severity": "critical",
           "confidence": 0.95,
           "supporting_frame_count": 1,
@@ -274,16 +271,16 @@
           "timestamp": "00:50"
         },
         {
-          "description_tr": "Makinenin etrafında ve yüklerdeki yangın, üretim hattında çalışanlara ciddi bir tehlike teşkil ediyor. Yangın hızla yayılıyor ve duman yoğunluğu artıyor, bu da solunum zorluğu ve görsel engelleme riski oluşturuyor. Acil müdahale gerektiren bir durum.",
+          "description_tr": "Yangın, taşımada bulunan yanıcı maddeye hızla yayılıyor ve üretim hattının büyük bir kısmını etkiliyor. Yoğun duman oluşumu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor.",
           "severity": "critical",
           "confidence": 0.95,
           "supporting_frame_count": 1,
           "supporting_frame_positions": [],
-          "timestamp_sec": 120.0,
-          "timestamp": "02:00"
+          "timestamp_sec": 60.0,
+          "timestamp": "01:00"
         },
         {
-          "description_tr": "Yangın, dumanla birlikte hızla yayılıyor ve ortamda solunum zorluğu, görsel engelleme ve patlama riski oluşturuyor. Çalışanlar için acil tahliye gerektiren bir durum.",
+          "description_tr": "Yangın hâlâ devam ediyor ve yoğun duman üretiyor. Bu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor. Duman, görüşü tamamen engelleyerek kurtarma ve müdahale ekiplerinin çalışmalarını zorlaştırıyor.",
           "severity": "critical",
           "confidence": 0.95,
           "supporting_frame_count": 1,
@@ -293,15 +290,15 @@
         }
       ],
       "risk_flags_tr": [
-        "Makine içinde ve etrafında alevler ve duman oluşumu, yangın tehlikesi oluşturuyor. Bu, üretim hattında çalışanlara ciddi bir tehlike teşkil edebilir ve yangın yayılabilir.",
-        "Makinenin etrafında ve yüklerdeki yangın, üretim hattında çalışanlara ciddi bir tehlike teşkil ediyor. Yangın hızla yayılıyor ve duman yoğunluğu artıyor, bu da solunum zorluğu ve görsel engelleme riski oluşturuyor. Acil müdahale gerektiren bir durum.",
-        "Yangın, dumanla birlikte hızla yayılıyor ve ortamda solunum zorluğu, görsel engelleme ve patlama riski oluşturuyor. Çalışanlar için acil tahliye gerektiren bir durum."
+        "Makinenin içinden çıkan alevler, taşımada bulunan yanıcı maddeye yayılıyor. Bu, üretim hattında büyük bir yangın tehlikesi oluşturuyor ve çevredeki malzemeleri, ekipmanları ve çalışanları (varsa) ciddi şekilde tehdit ediyor.",
+        "Yangın, taşımada bulunan yanıcı maddeye hızla yayılıyor ve üretim hattının büyük bir kısmını etkiliyor. Yoğun duman oluşumu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor.",
+        "Yangın hâlâ devam ediyor ve yoğun duman üretiyor. Bu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor. Duman, görüşü tamamen engelleyerek kurtarma ve müdahale ekiplerinin çalışmalarını zorlaştırıyor."
       ],
       "confidence_overall": 0.9166666666666666,
       "computed_confidence": 0.7683333333333334,
       "segment_count": 3,
       "failed_segments": [],
-      "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Bir üretim tesisinde, iki taşımada beyaz, pamuk benzeri bir madde taşınıyor. Üstteki bir makine, bu maddeyi keserken, 00:50'den itibaren makinenin içinde ve etrafında alevler ve duman oluşmaya başlıyor. Bu, muhtemelen bir yangın veya aşırı \n  - [00:00] görülen varlıklar: conveyor, load, machine, smoke or flame\n  - [01:00] Üretim tesisinde, bir makinenin etrafında ve üzerindeki beyaz, pamuk benzeri madde üzerinde alevler ve yoğun duman oluşumu devam ediyor. Yangın, makinenin etrafındaki yüklerde yayılıyor ve ortam giderek dumanla doluyor. 01:00'dan itibaren y\n  - [01:00] görülen varlıklar: conveyor, load, machine, smoke or flame\n  - [02:00] Üretim tesisindeki yangın, yoğun duman ve alevlerle devam ediyor. Görüntü, dumanla kaplı bir alanda yayılan küçük alevlerin dağılımını gösteriyor. Ortam, görsel olarak çok az netlikte ve tehlikeli bir durumda.\n  - [02:00] görülen varlıklar: load, machine, smoke or flame\nZaman damgalı olaylar:\n  - 00:50 — Makine içinde ve etrafında alevler ve duman oluşumu, yangın tehlikesi oluşturuyor. Bu, üretim hattında çalışanlara ciddi bir tehlike teşkil edebilir ve yangın yayılabilir. [critical, güven 0.95]\n  - 02:00 — Makinenin etrafında ve yüklerdeki yangın, üretim hattında çalışanlara ciddi bir tehlike teşkil ediyor. Yangın hızla yayılıyor ve duman yoğunluğu artıyor, bu da solunum zorluğu ve görsel engelleme riski oluşturuyor. Acil müdahale gerektiren bir durum. [critical, güven 0.95]\n  - 02:00 — Yangın, dumanla birlikte hızla yayılıyor ve ortamda solunum zorluğu, görsel engelleme ve patlama riski oluşturuyor. Çalışanlar için acil tahliye gerektiren bir durum. [critical, güven 0.95]"
+      "memory_context": "ÖNCEKİ SEGMENTLERDEN TAŞINAN BAĞLAM (metin hafıza):\nSahne ve varlıklar:\n  - [00:00] Bir üretim tesisinde, iki taşımada beyaz, pamuk benzeri bir madde taşınıyor. Üstteki bir makine, bu maddeyi keserken, 00:50'den itibaren makinenin içinden ve etrafında alevler çıkıyor. Bu, muhtemelen bir yangın veya aşırı ısınma olayıdır.\n  - [00:00] görülen varlıklar: conveyor, load, machine, smoke or flame\n  - [01:00] Üretim tesisinde, bir makinenin etrafında ve taşımada bulunan beyaz, pamuk benzeri madde üzerinde alevler hızla yayılıyor. Yangın, kısa sürede yoğun duman oluşturarak sahneyi kaplıyor ve üretim hattının büyük bir kısmını etkiliyor.\n  - [01:00] görülen varlıklar: conveyor, load, machine, smoke or flame\n  - [02:00] Üretim tesisindeki yangın, yoğun dumanla birlikte devam ediyor. Sahne, alevlerin hâlâ yayıldığı ve çevreyi kaplayan dumanla dolu bir ortamı gösteriyor. İşletme alanı tamamen görünmez hale gelmiş durumda.\n  - [02:00] görülen varlıklar: load, machine, smoke or flame\nZaman damgalı olaylar:\n  - 00:50 — Makinenin içinden çıkan alevler, taşımada bulunan yanıcı maddeye yayılıyor. Bu, üretim hattında büyük bir yangın tehlikesi oluşturuyor ve çevredeki malzemeleri, ekipmanları ve çalışanları (varsa) ciddi şekilde tehdit ediyor. [critical, güven 0.95]\n  - 01:00 — Yangın, taşımada bulunan yanıcı maddeye hızla yayılıyor ve üretim hattının büyük bir kısmını etkiliyor. Yoğun duman oluşumu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor. [critical, güven 0.95]\n  - 02:00 — Yangın hâlâ devam ediyor ve yoğun duman üretiyor. Bu, çalışanların solunum sağlığını ciddi şekilde tehdit ediyor ve yangın kontrolü için acil müdahale gerekiyor. Duman, görüşü tamamen engelleyerek kurtarma ve müdahale ekiplerinin çalışmalarını zorlaştırıyor. [critical, güven 0.95]"
     },
     "rag_context": {
       "hypotheses": [
@@ -329,8 +326,119 @@
             "secure_area",
             "notify_supervisor"
           ],
-          "similarity": 0.636,
+          "similarity": 0.674,
+          "retrieval_confidence": 0.674,
           "evidence_status": "structural_candidate",
+          "risk_score": 75,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "palet bbox eğimli veya anormal",
+            "palet yüksekte dengesiz pozisyon",
+            "palet üzerindeki yük dağılımı bozulmuş",
+            "palet çevresinde insan varlığı",
+            "istif yüksekliği güvenli sınırı aşıyor"
+          ],
+          "required_nodes": [
+            "palet"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "rack_overloading",
+          "hazard_mechanism": "Depo rafının üzerindeki yük ağırlık ve hacim sınırını aşması.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: palet?"
+          ],
+          "required_evidence": [
+            "raf hücresi doluluğu yüksek",
+            "palet dışarı sarkıyor",
+            "raf profili bükülmüş",
+            "VLM tarafından raf aşırı yüklenme"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Raf çökme",
+            "Yük düşme",
+            "Tahliye engeli"
+          ],
+          "action_hints": [
+            "secure_area",
+            "notify_supervisor"
+          ],
+          "similarity": 0.266,
+          "retrieval_confidence": 0.266,
+          "evidence_status": "structural_candidate",
+          "risk_score": 75,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "raf hücresi doluluğu yüksek",
+            "palet dışarı sarkıyor",
+            "raf profili bükülmüş",
+            "VLM tarafından raf aşırı yüklenme"
+          ],
+          "required_nodes": [
+            "palet"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "pallet_stacking_too_high",
+          "hazard_mechanism": "Paletlerin güvenli yüksekliği aşacak şekilde üst üste konulması.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: palet?"
+          ],
+          "required_evidence": [
+            "palet yığıntısı çok yüksek",
+            "üst palet dengesiz",
+            "çatıya/ışıklara yakın",
+            "VLM tarafından yüksek istif"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Çökme",
+            "Yük düşme",
+            "Raf çarpma"
+          ],
+          "action_hints": [
+            "notify_supervisor",
+            "secure_area"
+          ],
+          "similarity": 0.417,
+          "retrieval_confidence": 0.417,
+          "evidence_status": "structural_candidate",
+          "risk_score": 65,
+          "risk_level": "Orta",
+          "indicators": [
+            "palet yığıntısı çok yüksek",
+            "üst palet dengesiz",
+            "çatıya/ışıklara yakın",
+            "VLM tarafından yüksek istif"
+          ],
+          "required_nodes": [
+            "palet"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -338,6 +446,95 @@
         }
       ],
       "unverified_hypotheses": [
+        {
+          "pattern": "forklift_pallet_piercing",
+          "hazard_mechanism": "Forklift çatallarının paleti delip yükü düşürmesi veya dengesiz taşıması.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: forklift, palet?"
+          ],
+          "required_evidence": [
+            "çatallar paletin üstünden çıkmış",
+            "yük sallanıyor",
+            "palet hasarlı",
+            "VLM tarafından çatal delme"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Yük düşme",
+            "Palet kırılma",
+            "Yaralanma"
+          ],
+          "action_hints": [
+            "stop_forklift",
+            "secure_area",
+            "notify_supervisor"
+          ],
+          "similarity": 0.201,
+          "retrieval_confidence": 0.201,
+          "evidence_status": "unverified",
+          "risk_score": 70,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "çatallar paletin üstünden çıkmış",
+            "yük sallanıyor",
+            "palet hasarlı",
+            "VLM tarafından çatal delme"
+          ],
+          "required_nodes": [
+            "forklift",
+            "palet"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ]
+        },
+        {
+          "pattern": "elevated_platform_tipped",
+          "hazard_mechanism": "Hareketli çalışma platformunun (MEP) devrilmesi.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
+          ],
+          "required_evidence": [
+            "platform sepeti eğilmiş",
+            "tekerlekler yerden kesilmiş",
+            "personel platform içinde sallanıyor",
+            "VLM tarafından platform devrilme"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Yüksekten düşme",
+            "Ezilme",
+            "Yaralanma"
+          ],
+          "action_hints": [
+            "call_ambulance",
+            "secure_area",
+            "notify_supervisor"
+          ],
+          "similarity": 0.17,
+          "retrieval_confidence": 0.17,
+          "evidence_status": "unverified",
+          "risk_score": 90,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "platform sepeti eğilmiş",
+            "tekerlekler yerden kesilmiş",
+            "personel platform içinde sallanıyor",
+            "VLM tarafından platform devrilme"
+          ],
+          "required_nodes": [
+            "insan"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ]
+        },
         {
           "pattern": "overhead_hazard",
           "hazard_mechanism": "Vinç veya yüksek raflardan düşme tehlikesi (Yüksekte hareket eden yük).",
@@ -358,8 +555,19 @@
             "sound_alarm",
             "secure_area"
           ],
-          "similarity": 0.137,
-          "evidence_status": "unverified"
+          "similarity": 0.113,
+          "retrieval_confidence": 0.113,
+          "evidence_status": "unverified",
+          "risk_score": 85,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "insanın hemen üzerinde hareketli yük"
+          ],
+          "required_nodes": [],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ]
         },
         {
           "pattern": "blocked_emergency_exit",
@@ -381,8 +589,23 @@
           "action_hints": [
             "notify_supervisor"
           ],
-          "similarity": 0.086,
-          "evidence_status": "unverified"
+          "similarity": 0.092,
+          "retrieval_confidence": 0.092,
+          "evidence_status": "unverified",
+          "risk_score": 75,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "çıkış kapısı önünde engel (palet, kutu vb.)",
+            "yangın ekipmanı önünde nesne"
+          ],
+          "required_nodes": [
+            "palet",
+            "kutu"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ]
         },
         {
           "pattern": "ppe_missing",
@@ -407,31 +630,24 @@
             "sound_alarm",
             "notify_supervisor"
           ],
-          "similarity": 0.066,
-          "evidence_status": "unverified"
-        },
-        {
-          "pattern": "restricted_time_access",
-          "hazard_mechanism": "Mesai saatleri dışında veya izinsiz zamanda bölgede yaya tespiti.",
-          "applicability_questions": [
-            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: insan?"
+          "similarity": 0.09,
+          "retrieval_confidence": 0.09,
+          "evidence_status": "unverified",
+          "risk_score": 45,
+          "risk_level": "Orta",
+          "indicators": [
+            "insan yakınında baret/yelek tespit edilmedi",
+            "kafa koruyucu yok",
+            "reflektif yelek görünmüyor",
+            "KKD sınıfı tespit skoru düşük"
           ],
-          "required_evidence": [
-            "zaman damgası mesai dışı ve insan tespit edildi"
+          "required_nodes": [
+            "insan"
           ],
-          "disconfirming_evidence": [
-            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
-          ],
-          "potential_hazards": [
-            "Hırsızlık/Sabotaj",
-            "Yalnız çalışma kazası"
-          ],
-          "action_hints": [
-            "sound_alarm",
-            "notify_supervisor"
-          ],
-          "similarity": 0.048,
-          "evidence_status": "unverified"
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ]
         }
       ],
       "recommended_actions": [],
@@ -460,8 +676,119 @@
             "secure_area",
             "notify_supervisor"
           ],
-          "similarity": 0.636,
+          "similarity": 0.674,
+          "retrieval_confidence": 0.674,
           "evidence_status": "structural_candidate",
+          "risk_score": 75,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "palet bbox eğimli veya anormal",
+            "palet yüksekte dengesiz pozisyon",
+            "palet üzerindeki yük dağılımı bozulmuş",
+            "palet çevresinde insan varlığı",
+            "istif yüksekliği güvenli sınırı aşıyor"
+          ],
+          "required_nodes": [
+            "palet"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "rack_overloading",
+          "hazard_mechanism": "Depo rafının üzerindeki yük ağırlık ve hacim sınırını aşması.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: palet?"
+          ],
+          "required_evidence": [
+            "raf hücresi doluluğu yüksek",
+            "palet dışarı sarkıyor",
+            "raf profili bükülmüş",
+            "VLM tarafından raf aşırı yüklenme"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Raf çökme",
+            "Yük düşme",
+            "Tahliye engeli"
+          ],
+          "action_hints": [
+            "secure_area",
+            "notify_supervisor"
+          ],
+          "similarity": 0.266,
+          "retrieval_confidence": 0.266,
+          "evidence_status": "structural_candidate",
+          "risk_score": 75,
+          "risk_level": "Yüksek",
+          "indicators": [
+            "raf hücresi doluluğu yüksek",
+            "palet dışarı sarkıyor",
+            "raf profili bükülmüş",
+            "VLM tarafından raf aşırı yüklenme"
+          ],
+          "required_nodes": [
+            "palet"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
+          "matched_signal": {
+            "event_type": "structural_match",
+            "source": "scene_graph"
+          }
+        },
+        {
+          "pattern": "pallet_stacking_too_high",
+          "hazard_mechanism": "Paletlerin güvenli yüksekliği aşacak şekilde üst üste konulması.",
+          "applicability_questions": [
+            "Aktif faaliyette şu varlıklar/koşullar mevcut mu: palet?"
+          ],
+          "required_evidence": [
+            "palet yığıntısı çok yüksek",
+            "üst palet dengesiz",
+            "çatıya/ışıklara yakın",
+            "VLM tarafından yüksek istif"
+          ],
+          "disconfirming_evidence": [
+            "Görünür bir kontrol veya faaliyet bağlamı bu mekanizmayı etkisizleştiriyor mu?"
+          ],
+          "potential_hazards": [
+            "Çökme",
+            "Yük düşme",
+            "Raf çarpma"
+          ],
+          "action_hints": [
+            "notify_supervisor",
+            "secure_area"
+          ],
+          "similarity": 0.417,
+          "retrieval_confidence": 0.417,
+          "evidence_status": "structural_candidate",
+          "risk_score": 65,
+          "risk_level": "Orta",
+          "indicators": [
+            "palet yığıntısı çok yüksek",
+            "üst palet dengesiz",
+            "çatıya/ışıklara yakın",
+            "VLM tarafından yüksek istif"
+          ],
+          "required_nodes": [
+            "palet"
+          ],
+          "hypothesis_purpose": [
+            "pre_incident_risk",
+            "post_incident_response"
+          ],
           "matched_signal": {
             "event_type": "structural_match",
             "source": "scene_graph"
@@ -478,9 +805,9 @@
         "end_time": "02:07",
         "timestamp_sec": 50.0,
         "duration": 77.0,
-        "event_type": "fire_and_smoke",
-        "event": "Makine ve taşıyıcı bant üzerindeki pamuk benzeri malzemede yangın başlangıcı ve yayılımı",
-        "hazard_mechanism": "Makinede oluşan alevlerin, yanıcı pamuk benzeri malzeme üzerinde hızla yayılması; yoğun dumanın solunum yolu tahrişi, zehirlenme ve tahliye yollarını görme engeli oluşturması.",
+        "event_type": "fire_outbreak_and_spread",
+        "event": "Üretim hattında makine kaynaklı yangın başlangıcı ve yayılımı",
+        "hazard_mechanism": "Makinede oluşan aşırı ısınma veya kıvılcım, yanıcı pamuk benzeri malzemeyi tutuşturmuş; alevler taşıyıcı bant üzerindeki malzeme ile hızla yayılarak büyük bir yangına ve yoğun duman oluşumuna neden olmuştur. Duman, solunum yolu tahrişi, zehirlenme ve tahliye engeli riski oluşturmaktadır.",
         "confidence": 0.95,
         "severity": "critical",
         "evidence_agreement": "single_source",

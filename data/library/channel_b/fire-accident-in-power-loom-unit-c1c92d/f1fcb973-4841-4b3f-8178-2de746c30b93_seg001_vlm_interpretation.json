@@ -1,0 +1,82 @@
+{
+  "packet_id": "f1fcb973-4841-4b3f-8178-2de746c30b93",
+  "video_id": "fire-accident-in-power-loom-unit-c1c92d",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir tekstil atölyesinde, bir işçi makineye müdahale ederken makinede ani bir yangın patlaması meydana gelir. İşçi yangın sonrası panikle kaçar ve daha sonra geri döner. Yangın, makinenin alt kısmında başlar ve hızla yayılır, yoğun duman oluşturur. Atölye, çok sayıda dokuma makinesi ve malzeme yığınlarıyla doludur.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İşçi, beyaz tank top ve kısa pantolon giymiş, ayakkabı takmamıştır."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Çok sayıda dokuma makinesi, ön planda olanı yangınla etkilenmiştir."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Makinenin alt kısmında başlayan alevler, ardından yoğun duman yayılmaya başlar."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Duvarlara ve makinelere bağlı kablolar ve yapısal elemanlar görülmektedir."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Makinelere yakın yerlerde kumaş yığınları ve malzeme torbaları bulunmaktadır."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, makineye müdahale ederken makinede yangın patlaması olur.",
+    "İşçi, yangın sonrası panikle atölyeden kaçar.",
+    "İşçi, daha sonra geri döner ve yangın bölgesinde hareket eder.",
+    "Yangın, makinenin alt kısmından başlayarak hızla yayılır ve yoğun duman oluşturur."
+  ],
+  "confidence_overall": 0.92,
+  "inference": {
+    "latency_ms": 16295.03979999572,
+    "tokens_generated": 744
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, bir işçi makineye müdahale ederken makinede ani bir yangın patlaması meydana gelir. İşçi yangın sonrası panikle kaçar ve daha sonra geri döner. Yangın, makinenin alt kısmında başlar ve hızla yayılır, yoğun duman oluşturur. Atölye, çok sayıda dokuma makinesi ve malzeme yığınlarıyla doludur.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İşçi, beyaz tank top ve kısa pantolon giymiş, ayakkabı takmamıştır.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Çok sayıda dokuma makinesi, ön planda olanı yangınla etkilenmiştir.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin alt kısmında başlayan alevler, ardından yoğun duman yayılmaya başlar.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Duvarlara ve makinelere bağlı kablolar ve yapısal elemanlar görülmektedir.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Makinelere yakın yerlerde kumaş yığınları ve malzeme torbaları bulunmaktadır.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, makineye müdahale ederken makinede yangın patlaması olur.\",\n    \"İşçi, yangın sonrası panikle atölyeden kaçar.\",\n    \"İşçi, daha sonra geri döner ve yangın bölgesinde hareket eder.\",\n    \"Yangın, makinenin alt kısmından başlayarak hızla yayılır ve yoğun duman oluşturur.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makinenin alt kısmında ani bir yangın patlaması meydana gelir. Alevler hızla yayılır ve yoğun duman oluşur, bu da çalışanların solunum sağlığına ve yangın yayılmasına yönelik ciddi bir tehlike oluşturur.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 50.4\n    },\n    {\n      \"description_tr\": \"İşçi, yangın sırasında ayakkabı takmamıştır. Bu, sıcak yüzeylere veya dumanlı ortamda yaralanma riskini artırır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 50.4\n    },\n    {\n      \"description_tr\": \"Yangın sonrası işçinin panikle kaçması, atölyede diğer çalışanların güvenliğini tehlikeye atar ve yangın kontrolü için gecikme yaratır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 42.4\n    }\n  ],\n  \"confidence_overall\": 0.92\n}",
+  "risk_events": [
+    {
+      "description_tr": "Makinenin alt kısmında ani bir yangın patlaması meydana gelir. Alevler hızla yayılır ve yoğun duman oluşur, bu da çalışanların solunum sağlığına ve yangın yayılmasına yönelik ciddi bir tehlike oluşturur.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 50.4
+    },
+    {
+      "description_tr": "İşçi, yangın sırasında ayakkabı takmamıştır. Bu, sıcak yüzeylere veya dumanlı ortamda yaralanma riskini artırır.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 50.4
+    },
+    {
+      "description_tr": "Yangın sonrası işçinin panikle kaçması, atölyede diğer çalışanların güvenliğini tehlikeye atar ve yangın kontrolü için gecikme yaratır.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 90.8
+    }
+  ],
+  "risk_flags_tr": [
+    "Makinenin alt kısmında ani bir yangın patlaması meydana gelir. Alevler hızla yayılır ve yoğun duman oluşur, bu da çalışanların solunum sağlığına ve yangın yayılmasına yönelik ciddi bir tehlike oluşturur.",
+    "İşçi, yangın sırasında ayakkabı takmamıştır. Bu, sıcak yüzeylere veya dumanlı ortamda yaralanma riskini artırır.",
+    "Yangın sonrası işçinin panikle kaçması, atölyede diğer çalışanların güvenliğini tehlikeye atar ve yangın kontrolü için gecikme yaratır."
+  ],
+  "computed_confidence": 0.7113,
+  "reasoning_trace": "",
+  "segment_start_sec": 48.4,
+  "segment_end_sec": 108.4,
+  "created_at": "2026-08-28T06:56:12.110735+00:00"
+}

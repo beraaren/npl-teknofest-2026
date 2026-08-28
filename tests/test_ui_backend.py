@@ -5,6 +5,7 @@ RAGLayer öneri eşleştirmesini doğrular.
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 import tempfile
@@ -114,3 +115,39 @@ def test_store_feedback_crud(tmp_path):
     finally:
         store.DB_PATH = original_db
 
+
+
+def test_rag_layer_common_conditions_has_ten_costed_items():
+    """Hızlı seçim katalogdan on yaygın, maliyetli durum alır."""
+    conditions = RAGLayer().common_conditions()
+    assert len(conditions) == 10
+    assert {item["condition_id"] for item in conditions} >= {
+        "forklift_yaya_yakinligi",
+        "kkd_eksikligi",
+        "yangin_veya_duman",
+    }
+    for item in conditions:
+        cost = item["maliyet_tahmini"]
+        assert cost["alt_sinir_tl"] > 0
+        assert cost["ust_sinir_tl"] >= cost["alt_sinir_tl"]
+        assert cost["para_birimi"] == "TRY"
+
+
+def test_suggestion_query_reports_known_and_custom_condition_costs():
+    """Katalog seçimi maliyet taşır; serbest metin kabul edilir ve maliyeti bilinmez."""
+    from backend.gateway.routers.ops import SuggestionQuery, query_suggestions
+
+    known = asyncio.run(query_suggestions(SuggestionQuery(
+        condition_id="kkd_eksikligi",
+        query_text="KKD eksikliği (baret/yelek)",
+    )))
+    assert known["selected_condition"]["cost_known"] is True
+    assert known["selected_condition"]["maliyet_tahmini"]["alt_sinir_tl"] == 8000
+
+    custom = asyncio.run(query_suggestions(SuggestionQuery(query_text="Özel havalandırma sorunu")))
+    assert custom["selected_condition"] == {
+        "condition_id": None,
+        "baslik": "Özel havalandırma sorunu",
+        "maliyet_tahmini": None,
+        "cost_known": False,
+    }

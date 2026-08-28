@@ -1,0 +1,65 @@
+{
+  "packet_id": "f5f25894-42b7-45c7-ba0d-28349544f4d6",
+  "video_id": "daily-safety-failsthis-is-you-must-pay-a-abe7b2",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Sanayi bir üretim alanında, bir personel makineye yakın bir alanda çalışırken, yanındaki bir makineden ani bir patlama ve alevler çıkıyor. Patlamadan sonra personel kaçmaya başlıyor ve yerde parçalar dağılıyor. Aynı anda bir forklift, olay yerinden uzaklaşmaya başlıyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "Makinenin yanında çalışan bir kişi, patlamadan sonra kaçıyor."
+    },
+    {
+      "label": "vehicle",
+      "confidence_hint": "high",
+      "notes_tr": "Sarı renkli forklift, olay sırasında hareket halinde. Tipi forklift olabilir, ancak kesin model bilgisi yok."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Yüksek yapıda, metalik, üretim hattı makinesi. Patlama bu makineden geliyor."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Patlamadan sonra alevler ve duman yükseliyor, yerde parçalar dağılıyor."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Sarı rölelerle çevrili, üretim hattı platformu."
+    }
+  ],
+  "detected_actions_tr": [
+    "Personel makineye yakın bir alanda çalışıyor.",
+    "Makineden ani bir patlama ve alevler çıkıyor.",
+    "Personel kaçmaya başlıyor.",
+    "Forklift olay yerinden uzaklaşıyor.",
+    "Yerde parçalar dağılıyor ve duman yükseliyor."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 9451.392699993448,
+    "tokens_generated": 527
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Sanayi bir üretim alanında, bir personel makineye yakın bir alanda çalışırken, yanındaki bir makineden ani bir patlama ve alevler çıkıyor. Patlamadan sonra personel kaçmaya başlıyor ve yerde parçalar dağılıyor. Aynı anda bir forklift, olay yerinden uzaklaşmaya başlıyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin yanında çalışan bir kişi, patlamadan sonra kaçıyor.\"\n    },\n    {\n      \"label\": \"vehicle\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Sarı renkli forklift, olay sırasında hareket halinde. Tipi forklift olabilir, ancak kesin model bilgisi yok.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Yüksek yapıda, metalik, üretim hattı makinesi. Patlama bu makineden geliyor.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Patlamadan sonra alevler ve duman yükseliyor, yerde parçalar dağılıyor.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sarı rölelerle çevrili, üretim hattı platformu.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"Personel makineye yakın bir alanda çalışıyor.\",\n    \"Makineden ani bir patlama ve alevler çıkıyor.\",\n    \"Personel kaçmaya başlıyor.\",\n    \"Forklift olay yerinden uzaklaşıyor.\",\n    \"Yerde parçalar dağılıyor ve duman yükseliyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"Makineden ani patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşır.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 8.0\n    }\n  ],\n  \"confidence_overall\": 0.9\n}",
+  "risk_events": [
+    {
+      "description_tr": "Makineden ani patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşır.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 8.0
+    }
+  ],
+  "risk_flags_tr": [
+    "Makineden ani patlama ve alevler çıkıyor; personel hemen kaçmaya başlıyor. Bu, ciddi yaralanma veya ölüm riski taşır."
+  ],
+  "computed_confidence": 0.76,
+  "reasoning_trace": "",
+  "segment_start_sec": 0.0,
+  "segment_end_sec": 19.333333333333332,
+  "created_at": "2026-08-28T06:54:05.131061+00:00"
+}

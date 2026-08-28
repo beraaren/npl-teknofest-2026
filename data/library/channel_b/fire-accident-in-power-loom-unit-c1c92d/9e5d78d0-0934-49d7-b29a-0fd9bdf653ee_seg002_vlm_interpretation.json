@@ -1,0 +1,83 @@
+{
+  "packet_id": "9e5d78d0-0934-49d7-b29a-0fd9bdf653ee",
+  "video_id": "fire-accident-in-power-loom-unit-c1c92d",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Bir tekstil atölyesinde, yangın sonrası dumanlı bir ortamda bir işçi kırmızı bir yangın söndürücü ile makineye müdahale eder. İşçi, yangın söndürücüyü kullanarak alevleri bastırmaya çalışır ve ardından başka bir işçi ortama girer. Ortamda yoğun duman ve yanmış malzemeler görülür.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İki işçi görülür: biri yangın söndürücüyle müdahale ederken, diğeri daha sonra ortama girer."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Dokuma makinesi gibi büyük endüstriyel makine, yangın sonrası dumanlı ve zarar görmüş durumdadır."
+    },
+    {
+      "label": "smoke or flame",
+      "confidence_hint": "high",
+      "notes_tr": "Makinenin etrafında yoğun duman ve küçük alevler görülür, yangın hâlâ devam etmektedir."
+    },
+    {
+      "label": "liquid/substance",
+      "confidence_hint": "medium",
+      "notes_tr": "Yangın söndürücüden çıkan maddi (muhtemelen CO2 veya toz) dumanla karışık olarak yayılır."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Atölyenin arka kısmında malzeme rafı veya yapısal destekler görülebilir."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, kırmızı bir yangın söndürücüyle makineye doğru ilerler.",
+    "İşçi, yangın söndürücüyü kullanarak makinenin alt kısmına doğrudan müdahale eder.",
+    "İşçi, yangın söndürücüyü kullanırken dumanlı ortamda hareket eder.",
+    "İkinci bir işçi, yangın söndürücü kullanırken ortama girer ve makinenin etrafında dolaşır.",
+    "İşçiler, yangın sonrası makinenin durumunu kontrol eder."
+  ],
+  "confidence_overall": 0.9,
+  "inference": {
+    "latency_ms": 14496.211200006655,
+    "tokens_generated": 833
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Bir tekstil atölyesinde, yangın sonrası dumanlı bir ortamda bir işçi kırmızı bir yangın söndürücü ile makineye müdahale eder. İşçi, yangın söndürücüyü kullanarak alevleri bastırmaya çalışır ve ardından başka bir işçi ortama girer. Ortamda yoğun duman ve yanmış malzemeler görülür.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İki işçi görülür: biri yangın söndürücüyle müdahale ederken, diğeri daha sonra ortama girer.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Dokuma makinesi gibi büyük endüstriyel makine, yangın sonrası dumanlı ve zarar görmüş durumdadır.\"\n    },\n    {\n      \"label\": \"smoke or flame\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Makinenin etrafında yoğun duman ve küçük alevler görülür, yangın hâlâ devam etmektedir.\"\n    },\n    {\n      \"label\": \"liquid/substance\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Yangın söndürücüden çıkan maddi (muhtemelen CO2 veya toz) dumanla karışık olarak yayılır.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Atölyenin arka kısmında malzeme rafı veya yapısal destekler görülebilir.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, kırmızı bir yangın söndürücüyle makineye doğru ilerler.\",\n    \"İşçi, yangın söndürücüyü kullanarak makinenin alt kısmına doğrudan müdahale eder.\",\n    \"İşçi, yangın söndürücüyü kullanırken dumanlı ortamda hareket eder.\",\n    \"İkinci bir işçi, yangın söndürücü kullanırken ortama girer ve makinenin etrafında dolaşır.\",\n    \"İşçiler, yangın sonrası makinenin durumunu kontrol eder.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, yangın söndürücü kullanırken dumanlı ve sıcak ortamda ayakkabı takmamıştır. Bu, sıcak yüzeylere temas veya duman nedeniyle yaralanma riskini artırır.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 110.0\n    },\n    {\n      \"description_tr\": \"Yangın söndürücü kullanılırken makinenin etrafında yoğun duman ve alevler devam etmektedir. Bu, solunum sağlığına zarar verme ve yangın yayılmasına yönelik ciddi bir tehlike oluşturur.\",\n      \"severity\": \"critical\",\n      \"confidence\": 0.95,\n      \"timestamp_sec\": 112.0\n    },\n    {\n      \"description_tr\": \"İkinci işçi, yangın söndürücü kullanılırken ortama girmiştir. Bu, yangın kontrolü sırasında başka bir kişinin tehlikeli ortama girmesiyle ilgili güvenlik ihlali oluşturur.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 120.0\n    }\n  ],\n  \"confidence_overall\": 0.90\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, yangın söndürücü kullanırken dumanlı ve sıcak ortamda ayakkabı takmamıştır. Bu, sıcak yüzeylere temas veya duman nedeniyle yaralanma riskini artırır.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 110.0
+    },
+    {
+      "description_tr": "Yangın söndürücü kullanılırken makinenin etrafında yoğun duman ve alevler devam etmektedir. Bu, solunum sağlığına zarar verme ve yangın yayılmasına yönelik ciddi bir tehlike oluşturur.",
+      "severity": "critical",
+      "confidence": 0.95,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 112.0
+    },
+    {
+      "description_tr": "İkinci işçi, yangın söndürücü kullanılırken ortama girmiştir. Bu, yangın kontrolü sırasında başka bir kişinin tehlikeli ortama girmesiyle ilgili güvenlik ihlali oluşturur.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, yangın söndürücü kullanırken dumanlı ve sıcak ortamda ayakkabı takmamıştır. Bu, sıcak yüzeylere temas veya duman nedeniyle yaralanma riskini artırır.",
+    "Yangın söndürücü kullanılırken makinenin etrafında yoğun duman ve alevler devam etmektedir. Bu, solunum sağlığına zarar verme ve yangın yayılmasına yönelik ciddi bir tehlike oluşturur.",
+    "İkinci işçi, yangın söndürücü kullanılırken ortama girmiştir. Bu, yangın kontrolü sırasında başka bir kişinin tehlikeli ortama girmesiyle ilgili güvenlik ihlali oluşturur."
+  ],
+  "computed_confidence": 0.7013,
+  "reasoning_trace": "",
+  "segment_start_sec": 108.4,
+  "segment_end_sec": 144.96,
+  "created_at": "2026-08-28T06:56:26.625655+00:00"
+}

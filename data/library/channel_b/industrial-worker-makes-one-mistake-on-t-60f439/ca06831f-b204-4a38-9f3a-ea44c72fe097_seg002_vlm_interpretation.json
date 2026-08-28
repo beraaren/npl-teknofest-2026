@@ -1,0 +1,86 @@
+{
+  "packet_id": "ca06831f-b204-4a38-9f3a-ea44c72fe097",
+  "video_id": "industrial-worker-makes-one-mistake-on-t-60f439",
+  "model_name": "vlm",
+  "model_backend": "server",
+  "scene_summary_tr": "Dar bir atölye ortamında, bir işçi torna tezgahında metal işleme yaparken görülüyor. İşçi, dönen parçaya yakın mesafede çalışırken el ve kollarını tehlikeli bölgeye sokuyor. Çalışma alanının etrafında çeşitli aletler ve malzemeler yer alıyor. 02:21'de ikinci bir işçi sahneye giriyor ve ilk işçinin yanında duruyor.",
+  "detected_entities": [
+    {
+      "label": "person",
+      "confidence_hint": "high",
+      "notes_tr": "İlk işçi, torna tezgahının başında çalışırken; ikinci işçi 02:21'de sahneye giriyor."
+    },
+    {
+      "label": "machine",
+      "confidence_hint": "high",
+      "notes_tr": "Torna tezgahı, dönen metal parçası ile çalıştırılıyor."
+    },
+    {
+      "label": "load",
+      "confidence_hint": "medium",
+      "notes_tr": "Torna tezgahında işlenen uzun metal çubuk."
+    },
+    {
+      "label": "rack/structure",
+      "confidence_hint": "medium",
+      "notes_tr": "Sahnenin sol tarafında yer alan metal çubuklar ve aletlerin bulunduğu raf veya yapı."
+    }
+  ],
+  "detected_actions_tr": [
+    "İşçi, torna tezgahında metal işleme yapıyor.",
+    "İşçi, dönen parçaya yakın mesafede el ve kollarını kullanıyor.",
+    "İkinci işçi, 02:21'de sahneye giriyor ve ilk işçinin yanında duruyor.",
+    "İşçiler, etrafında yer alan aletler ve malzemeler arasında çalışırken hareket ediyor."
+  ],
+  "confidence_overall": 0.88,
+  "inference": {
+    "latency_ms": 14020.695600003819,
+    "tokens_generated": 821
+  },
+  "raw_model_output": "{\n  \"scene_summary_tr\": \"Dar bir atölye ortamında, bir işçi torna tezgahında metal işleme yaparken görülüyor. İşçi, dönen parçaya yakın mesafede çalışırken el ve kollarını tehlikeli bölgeye sokuyor. Çalışma alanının etrafında çeşitli aletler ve malzemeler yer alıyor. 02:21'de ikinci bir işçi sahneye giriyor ve ilk işçinin yanında duruyor.\",\n  \"detected_entities\": [\n    {\n      \"label\": \"person\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"İlk işçi, torna tezgahının başında çalışırken; ikinci işçi 02:21'de sahneye giriyor.\"\n    },\n    {\n      \"label\": \"machine\",\n      \"confidence_hint\": \"high\",\n      \"notes_tr\": \"Torna tezgahı, dönen metal parçası ile çalıştırılıyor.\"\n    },\n    {\n      \"label\": \"load\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Torna tezgahında işlenen uzun metal çubuk.\"\n    },\n    {\n      \"label\": \"rack/structure\",\n      \"confidence_hint\": \"medium\",\n      \"notes_tr\": \"Sahnenin sol tarafında yer alan metal çubuklar ve aletlerin bulunduğu raf veya yapı.\"\n    }\n  ],\n  \"detected_actions_tr\": [\n    \"İşçi, torna tezgahında metal işleme yapıyor.\",\n    \"İşçi, dönen parçaya yakın mesafede el ve kollarını kullanıyor.\",\n    \"İkinci işçi, 02:21'de sahneye giriyor ve ilk işçinin yanında duruyor.\",\n    \"İşçiler, etrafında yer alan aletler ve malzemeler arasında çalışırken hareket ediyor.\"\n  ],\n  \"risk_events\": [\n    {\n      \"description_tr\": \"İşçi, dönen torna tezgahı parçasına yakın mesafede çalışırken, el ve kolları tehlikeli bölgeye girmiş durumda. Bu, dönen parçaya temas ederek kesik veya ezilme riski oluşturuyor.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.90,\n      \"timestamp_sec\": 120.0\n    },\n    {\n      \"description_tr\": \"İşçi, koruyucu gözlük veya yüz koruyucu kullanmadığı gözlemleniyor. Dönen parçalardan çıkan metal tozları veya parçaları göz ve yüzü yaralayabilir.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 120.0\n    },\n    {\n      \"description_tr\": \"İşçilerin etrafında yer alan aletler ve malzemeler, çalışma alanını darlaştırıyor ve acil durumda kaçış veya müdahale zorlaştırabilir.\",\n      \"severity\": \"medium\",\n      \"confidence\": 0.80,\n      \"timestamp_sec\": 120.0\n    },\n    {\n      \"description_tr\": \"İkinci işçi, 02:21'de sahneye girerek ilk işçinin yanında duruyor. Bu, dönen makineye yakın bir alanda olmakta ve potansiyel olarak tehlikeli bölgeye girmektedir.\",\n      \"severity\": \"high\",\n      \"confidence\": 0.85,\n      \"timestamp_sec\": 141.0\n    }\n  ],\n  \"confidence_overall\": 0.88\n}",
+  "risk_events": [
+    {
+      "description_tr": "İşçi, dönen torna tezgahı parçasına yakın mesafede çalışırken, el ve kolları tehlikeli bölgeye girmiş durumda. Bu, dönen parçaya temas ederek kesik veya ezilme riski oluşturuyor.",
+      "severity": "high",
+      "confidence": 0.9,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    },
+    {
+      "description_tr": "İşçi, koruyucu gözlük veya yüz koruyucu kullanmadığı gözlemleniyor. Dönen parçalardan çıkan metal tozları veya parçaları göz ve yüzü yaralayabilir.",
+      "severity": "medium",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    },
+    {
+      "description_tr": "İşçilerin etrafında yer alan aletler ve malzemeler, çalışma alanını darlaştırıyor ve acil durumda kaçış veya müdahale zorlaştırabilir.",
+      "severity": "medium",
+      "confidence": 0.8,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 120.0
+    },
+    {
+      "description_tr": "İkinci işçi, 02:21'de sahneye girerek ilk işçinin yanında duruyor. Bu, dönen makineye yakın bir alanda olmakta ve potansiyel olarak tehlikeli bölgeye girmektedir.",
+      "severity": "high",
+      "confidence": 0.85,
+      "supporting_frame_count": 1,
+      "supporting_frame_positions": [],
+      "timestamp_sec": 141.0
+    }
+  ],
+  "risk_flags_tr": [
+    "İşçi, dönen torna tezgahı parçasına yakın mesafede çalışırken, el ve kolları tehlikeli bölgeye girmiş durumda. Bu, dönen parçaya temas ederek kesik veya ezilme riski oluşturuyor.",
+    "İşçi, koruyucu gözlük veya yüz koruyucu kullanmadığı gözlemleniyor. Dönen parçalardan çıkan metal tozları veya parçaları göz ve yüzü yaralayabilir.",
+    "İşçilerin etrafında yer alan aletler ve malzemeler, çalışma alanını darlaştırıyor ve acil durumda kaçış veya müdahale zorlaştırabilir.",
+    "İkinci işçi, 02:21'de sahneye girerek ilk işçinin yanında duruyor. Bu, dönen makineye yakın bir alanda olmakta ve potansiyel olarak tehlikeli bölgeye girmektedir."
+  ],
+  "computed_confidence": 0.6253,
+  "reasoning_trace": "",
+  "segment_start_sec": 120.0,
+  "segment_end_sec": 180.0,
+  "created_at": "2026-08-28T07:02:43.767520+00:00"
+}
